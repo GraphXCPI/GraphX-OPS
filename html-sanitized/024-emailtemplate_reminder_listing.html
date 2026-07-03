@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en" style="--scrollbar-width: 15px; --moz-scrollbar-thin: 11px;"><plasmo-csui id="ff-overlay-container"></plasmo-csui><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <title>Admin :: Email Reminder</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="csrf-token" content="[hex-token]">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20data-codex-favicon-badge%3D%22codex-favicon-badge%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cimage%20href%3D%22data%3Aimage%2Fbmp%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGwklEQVR4nJxXSW8cRRR%2Br6q7Z8aOlwQvbDKBEAiJcovggJByQQgkJFCUExJXxIELvyBHLlw5cURcwiLBLWKxciERQlEknAQQOAs4dux4je2Z6a56fK%2Bqx%2BMx48mITsbTtbz63vveVpNQx3M6IZouaifPfMicfCxSbImQMBPHb66SyC0p%2FEf1lc3PaeHCZhB79vXxgWzgfbH8HkbjItKEDLYS%2FrLBH7z7D%2BozX31KdNYSnXctxKRTgXHRv444tQxM4ZRJEsZsWKCgSQ2jCo1uGlooxVxqHPOgFRkgaI69QaYU8czG%2BoJqceJ8B6LpVGCR46Qaa1QFG47Ah8uPvnsWT6uDvn1KXQw5v3tv6130DAmj0uqzHYhdGcDWe0L5AgbLOoLdBgcpDzV83REyy7Qw0lagwQVVeA5qXwMYXIAZpR3kQ9B48iq%2FVDIgPRQ4IUqRF1mx4mcBvORJCsE5oFQ1qMG%2Bu1y4dbDVPqi6WjgavA86%2F4KlawCv6yJ4YmFjhLyFEuvU5dmjwExwAVueImNPkS82TOBRD0JEEFdg4R0QcpEmM7sTA1sTmUn5aWx5GaMxQBd6UIg%2BCFho4cl%2B0YcCMQbgxBoUSETcEMDLPYAP3pURHFclP8I7YmOJYecPIG5GsemAyB4UNlDGl0F4GjZN77jPdNNKY70VRdRKgJ1vEOvxWay2YbbqIIh94Kq9d9c7RDRwwzPdKwZiEIrzKwjCDYjimwoYjsTQf8GKvxFcWzQJ%2FlsuqHsnmdyH5G1YX6cQA9w2Eixazxt5GJ7Dkef2UyAGoWOpW6F1zQIckwcOtZQQHQDFq2JMk%2Bz9tiUmUca2sL4CBRIovE2x%2Buh%2Fi%2FcU8dikLk%2FXIEQFGGdrn0AQHlICQS68QpoMCEJXZccjzdEhQ3OlWOYTCD0K4WNQdQyMF9QqoaQxhVQgd3A3xj4KxCdoreEhnLBmM1zrQ1qL1qjEiWda3C1Q1XqXADwFXOI1%2BRTGS9BAs8gHFh%2FKQHSBCYWogULES%2FjkkDRKJurDATAyCxfM02It3xHLm7mr1uYAdB3bJnDItoTQ00JMBsoUKEQLuzF6ugBiaAWU4bBUFFzrsgZhnMtQpCz9lzYDrjO8ZOo0aSU0KIOohSKWHs5ArAM%2B4fHEVg5S0RjhVjfjsg4YlzlvHqexNKMlagQxazNDforZHsP2YbW%2B7IbhRSMATpyIGOd6xUBMQ%2Fa%2BIagsAN2IPTW0RnVmAk02MZHQk8ZSWd2pmmjA6NYHyp6UlVBaUShe46geN2sz2tcFcQHtDr4v5gANSjjX8KeAQBWArJIG44NGuiPmC6iWbmPLTeTqIDCbvtW%2FQz%2BQos9mFLVDHUiRvCOWScudi2U4bEgRy4cwPkpJZVB9VgqiZPNJRMtRjla7sgUbiq5YwXRL4V4uiNrB6ys4ZhadcCgW1LKMgl7lAVE1THm6I5sh%2BMRgLzMyQ7apvLlgrPu1isx7dU98OhjYm5slnJvD9WIGRxRhjK6kRMOnjZAJhp9JKsVUS8ibdAJmjWsmaOnGlAN6EY7jML7GuZ%2FvpkDXQkSFqZtMNpF9oFm0uDTCFQmlANYPgoQxAB4O97vDiymuYs%2BpG8B3BWuDFPfCDaxuaoC%2Fu7nbXO5HgbCYZ27eUnKJvJ8MrVm4rlcrUQUMIeWkgdo7mh9Ze4RoeJgTmsLaDc13gDmrVxD4Dw6ALK1jcJH%2BvDDXzdbuDPz6zRIdf3sWlhyERkcjjaI1meL9lKts5XC1MnC1wOUAwG%2BgWDwKyGZoW1o2TDhb9fi5wUZvQ65%2FBbC53qzfqmW1y1CiglDJAJ2rG%2FQuECNaoJR5Bc2iGawMlXcHJNyewMqGOL6EPnl3H5zOlNjzmNrxt07hfvYuwngSCb0V%2B4nE9hJqIw3Fdu8fhJ4Z1kIb1BqENfqn0ZRP6Pcvb%2BwHkvRQAFHfXBDGRZhRZoOFsCeChMYgmpZhWm%2FOMVNVM0SqRQ1BQaVblOcrPTB6KkD1tYXF6qGpKzjrRZh7xHvNcc3veN0kad3%2BtGGrXj4kP1YHsPQb7sM%2Fkayv9cIwvRZp7pctco3vwfhVHNxEVJsAHn9ycFnpjL7HvmcUXeeaoO3KdqP4kW5O13tBMD384fSFN19KTPYOwE%2FAHXoPcIa5Q9ZHNlD5GIVRZoqi%2BVl%2B%2FdvLtCfv%2F48C4UmOnXnNJvxqEHLoPsqdMW10zQ1rEoRis0nuu%2BLa1z%2F0dS71%2BRSu%2Fgeb9KmE7PP4tVlTRONi1mEsaM64dEieG3e9yDdv9Huu6XcjDc%2FPw7m39RURXmOtDZymcFCKnx0ZfF714beo3KPH8uV%2Bj%2F0XAAD%2F%2F003fKcAAAAGSURBVAMA2K5kxWz7Eu4AAAAASUVORK5CYII%3D%22%20width%3D%2232%22%20height%3D%2232%22%20opacity%3D%220.3%22%20%2F%3E%3Cpath%20d%3D%22M3.04536%204.45259C2.7582%203.60299%203.60299%202.7582%204.45259%203.04536L14.1828%206.33403C15.1637%206.66558%2015.0872%208.08006%2014.0715%208.39045L10.2994%209.54319C9.93919%209.65327%209.65327%209.93919%209.54319%2010.2994L8.39046%2014.0715C8.08007%2015.0872%206.66558%2015.1637%206.33404%2014.1828L3.04536%204.45259Z%22%20fill%3D%22black%22%20stroke%3D%22white%22%20stroke-width%3D%221.5%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%20fill%22%20transform%3D%22translate(-2%20-2)%20scale(2.1)%22%20%2F%3E%3C%2Fsvg%3E" data-codex-favicon-badge="true" data-codex-original-favicon-href="https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/websitelogos/retailer_favicon_logo596.ico">
+
+<link href="https://visualgraphx.com/dist/admin/includes/css/admin_style.css?1779974870000" rel="stylesheet">
+    <script src="https://visualgraphx.com/thirdparty/ace-admin/js/ace-extra.js" type="text/javascript" data-sanitized="script-body-removed"></script>
+<style>@font-face { font-family: DMSans; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/DMSans-Regular.ttf'); }@font-face { font-family: PoppinsMedium; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Medium.otf'); }@font-face { font-family: PoppinsRegular; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Regular.otf'); }@font-face { font-family: Roboto; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Roboto-Regular.ttf'); }@font-face { font-family: Inter; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Inter-VariableFont_opsz,wght.ttf'); }</style></head>
+
+<body class="no-skin bgc-white  ">
+    <div class="body-container">
+        
+        <!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-expand-lg navbar-fixed navbar-default">
+    <noscript>
+        <div class="alert alert-danger text-center">Currently JavaScript is disabled in your browser, Administrator panel does not work properly. Check <a href="http://www.activatejavascript.org/" target="_blank">how to enable JavaScript</a> in various browsers.</div>
+    </noscript>
+    <div class="navbar-inner flex-wrap" id="navbar-container">
+
+        <div class="navbar-intro">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="btn btn-burger burger-arrowed static ml-2 d-flex d-xl-none collapsed" data-toggle-mobile="sidebar" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+                <span class="bars"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <!-- #section:basics/navbar.layout.brand -->
+                        <a href="https://visualgraphx.com/admin/welcome.php" class="admin_link navbar-brand text-white d-flex align-items-center py-0 mx-1 h-100">
+                <small class="text-center mr-2 py-1 px-2 text-50"><span class="fa-stack fa-md pr-2 d-inline-block" title="Admin">
+                <i class="far fa-home fa-stack-2x"></i>
+                <i class="fas fa-user-alt fa-stack-1x fa-lg"></i>
+            </span><i class="ace-icon fa fa-angle-down pl-1 d-inline-block d-lg-none text-140"></i></small>                <span class="d-inline-block resize-font" style="font-size: 16px;">
+                    Visual Graphx, LLC.                </span>
+            </a>
+            <i class="d-md-none fa fa-spinner fa-spin text-150 ajax_loader mt-2 orange2" style="display:none;"></i>
+
+        </div>
+                <div class="d-lg-none align-self-center header_icon_alignment">
+            <!-- #section:basics/navbar.toggle -->
+                                                        <button class="navbar-toggler collapsed quickSearchMobile btn btn-info" type="button" data-toggle="collapse" data-target="#quick-search-form">
+                    <i class="far fa-search"></i>
+                </button>
+                        <button class="navbar-toggler collapsed btn btn-info mr-1" type="button" data-toggle="collapse" data-target="#navbar-menu">
+                <span class="sr-only">Toogle User Menu</span>
+                <i class="far fa-user text-90"></i>
+            </button>
+            <!-- /section:basics/navbar.toggle -->
+        </div>
+                    <div class="navbar-content flex-wrap d-lg-flex d-none position-relative quickSearch">
+                                <form id="quick-search-form" class="form-inline-block mx-auto py-15">
+                    <div class="input-group px-2">
+                        <input type="text" class="form-control" aria-label="Text input with dropdown button" id="advance-search" autocomplete="off" placeholder="Search here...." data-searched="">
+                        <div class="input-group-append" id="button-addon4">
+                            <button class="btn btn-info" type="button" id="search-btn"><i class="far fa-search"></i></button>
+                        </div>
+                                                    <div class="dropdown ml-2 d-lg-block ">
+                                <button class="btn btn-info dropdown-toggle " type="button" id="showquickpinpages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-bookmark text-90"></i>
+                                </button>
+                                <div class="dropdown-menu p-0" id="pinpagesdown" aria-labelledby="showquickpinpages">
+                                    <div class="quickpinpagelist "><input type="text" name="quickpinpagelist" id="quickpinpagelist" value="" class="form-control "></div>                                </div>
+                            </div>
+                                            </div>
+                    
+                    <!-- Nav tabs -->
+                    <div class="bg-white search-result p-3 position-absolute" style="display: none;" id="advance-search-content">
+                                            <div class="menu-list" id="search-menu-items">
+                        </div>
+                                                                    <div class="search-tab-result d-none position-relative">
+                            <ul class="nav nav-tabs nav-customtabs " role="tablist" id="searchResultTab">
+                                <li class="nav-item"><a class="nav-link p-2 active" data-name="orders" data-toggle="tab" href="#orders_list">Orders</a></li><li class="nav-item"><a class="nav-link p-2 " data-name="customers" data-toggle="tab" href="#customers_list">Customers</a></li><li class="nav-item"><a class="nav-link p-2 " data-name="products" data-toggle="tab" href="#products_list">Products</a></li>                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div id="orders_list" class="tab-pane active"> <div id="no-orders-result"></div> <div class="row search-result-alignment" id="search-orders-result"> </div> <div id="orders-view-more" class="view-more-result pt-2"></div> </div><div id="customers_list" class="tab-pane "> <div id="no-customers-result"></div> <div class="row search-result-alignment" id="search-customers-result"> </div> <div id="customers-view-more" class="view-more-result pt-2"></div> </div><div id="products_list" class="tab-pane "> <div id="no-products-result"></div> <div class="row search-result-alignment" id="search-products-result"> </div> <div id="products-view-more" class="view-more-result pt-2"></div> </div>                            </div>
+                        </div>
+                                            </div>
+                </form>
+            </div>
+                <!--Christmas effect start-->
+                <!--Christmas effect end-->
+        <!-- #section:basics/navbar.dropdown -->
+        <div class="navbar-menu collapse navbar-collapse navbar-backdrop" id="navbar-menu" role="navigation">
+            <div class="navbar-nav">
+                <ul class="nav align-items-md-center">
+                                                                <li class="btn-danger nav-item d-flex align-items-center py-2 CatchTrash">
+                            <label href="javascript:void();" class="text-white px-2 mb-0">Cache</label>
+                            <input id="togglecache" name="togglecache" checked="checked" class="ace-switch ace-switch-yesno ace-switch-bars bgc-blue-d2" type="checkbox">
+                            <a href="javascript:void(0);" class="text-white px-2 catch-trash" title="Clear website cache" id="clearcache" onclick="if (!window.__cfRLUnblockHandlers) return false; clear_website_cache()"> <i class="far fa-lg fa-trash-alt"></i> </a>
+                        </li>
+                                        <li class="nav-item dropdown border-right-0">
+                        <a href="#" class="nav-link dropdown-toggle d-none d-md-flex" data-toggle="dropdown"><i class="fa fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu py-0 dropdown-animated brc-primary-m3 info-dropdown">
+
+                                                            <li class="transparent btn-purple dropdown-item ">
+                                    <a href="https://visualgraphx.com/admin/htmlhelp.php" data-placement="auto" data-toggle="tooltip" data-original-title="Click to view HTML help for storefront setup" target="_blank" class="btn-a-purple btn-h-purple"><i class="far fa-file-code"></i> <i class="fa fa-question d-none d-lg-inline-block"></i></a>
+                                </li>
+                                                                                        <li class="transparent btn-dark dropdown-item solution-help">
+                                    <a href="https://docs.onprintshop.com" data-placement="auto" data-toggle="tooltip" data-original-title="Click Here to get solution help" target="_blank" class="btn-a-dark btn-h-dark"><i class="fa fa-question-circle"></i></a>
+                                </li>
+                                                                                        <li class="transparent btn-blue dropdown-item">
+                                                                        <a class="btn-a-blue btn-h-blue" href="https://docs.onprintshop.com/latest-solution-releases" target="_blank" data-placement="auto" data-toggle="tooltip" data-original-title="Solution Version" style="text-decoration:none;">v12.2</a>
+                                </li>
+                                                    </ul>
+                    </li>
+                    <!--Christmas effect start-->
+                                        <!--Christmas effect end-->
+                                                <li class="btn-info nav-item">
+                                <a href="https://visualgraphx.com/" data-placement="bottom" data-toggle="tooltip" data-original-title="Storefront" target="_blank" class="nav-link"><i class="fa fa-desktop"></i></a>
+                            </li>
+                                        <li class="transparent d-none d-md-flex nav-item opclso align-items-center btn-success" id="lchat">
+                        <script type="text/javascript" data-sanitized="script-body-removed"></script><a name="chat_button" href="javascript:;" onclick="if (!window.__cfRLUnblockHandlers) return false; if(windowObjectReference==null||windowObjectReference.closed){windowObjectReference=window.open('/admin/livechat.php','ChatWindowName','width=550,height=800,resizable=0,scrollbars=0,status=0,toolbar=no,menubar=no,location=no')}else{windowObjectReference.focus()}" class="px-2 lz_cbl" style="padding:0;" data-placement="bottom" data-toggle="tooltip" data-original-title="Live Chat"><i class="far fa-2x fa-comments text-white"></i></a>                    </li>
+                                        <!-- #section:basics/navbar.user_menu -->
+                    <li class="nav-item user-dropdown d-flex d-md-block border-right-0">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle nav-link">
+                            <i class="fa fa-user mr-2"> </i>
+                            <span class="user-info">
+                                <small>Welcome, </small> cderamos                            </span>
+                            <i class="ace-icon fa fa-caret-down ml-2 d-none d-lg-inline-block"></i>
+                        </a>
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-caret dropdown-close py-0 border-left">
+                                                            <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/admin_favourite_link.php">
+                                        <i class="ace-icon fa fa-star"></i>
+                                        <span class="d-none d-md-inline-block">Set favorite links</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/changepassword.php">
+                                        <i class="ace-icon fa fa-user"></i>
+                                        <span class="d-none d-md-inline-block">Change Password</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/configure_2fa.php">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="d-md-inline-block">Configure 2FA</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-divider brc-primary-l2 my-0 d-none d-md-block"></li>
+                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                <a href="https://visualgraphx.com/admin/welcome.php?Action=Logout" id="logout-btn">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    <span class="d-none d-md-inline-block">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+        </div>
+    </div><!-- /.navbar-container -->
+</div>
+<!-- /section:basics/navbar.layout -->
+<script type="text/javascript" data-sanitized="script-body-removed"></script>
+        <div class="main-container" id="main-container">
+
+            <!-- #section:basics/sidebar -->
+<div id="sidebar" class="sidebar sidebar-fixed hoverable sidebar-default" data-gotoactive="true" data-pullup="true" data-subscroll="true">
+    <div class="sidebar-inner">
+        <div class="flex-grow-1 ace-scroll" ace-scroll="">
+            <div class="sidebar-section">
+                <!-- #section:basics/content.searchbox -->
+                <!-- <div class="sidebar-section-item">
+                    <i class="fadeinable fa fa-search text-info mr-n1"></i> -->
+                    <!-- 				<i class="ace-icon fa fa-search nav-search-icon"></i> -->
+                    <!-- <div class="fadeable d-inline-flex align-items-center" id="nav-search">
+                        <i class="far fa-search mr-n3 text-info"></i>
+                        <span class="input-icon">
+                            <input type="text" placeholder="Search" class="sidebar-search-input pl-4 pr-3" id="nav-search-input" autocomplete="off" />
+                        </span>
+                    </div>
+                </div> -->
+                <!-- /section:basics/content.searchbox -->
+                <div class="sidebar-section-item fadeable-left">
+                    <div class="fadeable">
+                                                    <a class="btn btn-success " data-toggle="tooltip" data-placement="top" title="List Orders" href=" https://visualgraphx.com/admin/order_listing.php">
+                                <i class="ace-icon far fa-shopping-cart"></i>
+                            </a>
+                                                    <a class="btn btn-warning " data-toggle="tooltip" data-placement="top" title="Website Customers" href=" https://visualgraphx.com/admin/user_listing.php">
+                                <i class="ace-icon far fa-user"></i>
+                            </a>
+                                                    <a class="btn btn-info " data-toggle="tooltip" data-placement="top" title="Print Products" href=" https://visualgraphx.com/admin/product_listing.php">
+                                <i class="ace-icon far fa-tags"></i>
+                            </a>
+                                                    <a class="btn btn-warning " data-toggle="tooltip" data-placement="top" title="PDF Block Templates" href=" https://visualgraphx.com/admin/template_manager.php">
+                                <i class="ace-icon far fa-file-pdf"></i>
+                            </a>
+                                                    <a class="btn btn-danger " data-toggle="tooltip" data-placement="top" title="Site Settings" href=" https://visualgraphx.com/admin/configuration_settings.php">
+                                <i class="ace-icon far fa-cogs"></i>
+                            </a>
+                                            </div>
+                    <div class="fadeinable sidebar-shortcuts-mini">
+                        <span class="btn btn-success p-0"></span>
+                        <span class="btn btn-info p-0"></span>
+                        <span class="btn btn-warning p-0"></span>
+                        <span class="btn btn-danger p-0"></span>
+                    </div>
+                </div><!-- /.sidebar-shortcuts -->
+            </div><!-- END - sidebar-section -->
+
+            <ul class="nav has-active-border">
+                                <li class="nav-item">
+                    <a href="https://visualgraphx.com/admin/welcome.php" class="nav-link">
+                        <i class="nav-icon fak fa-dashboard"></i>
+                        <span class="nav-text fadeable">Dashboard</span>
+                    </a>
+                    <b class="sub-arrow"></b>
+                </li>
+                                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-shopping-cart"></i>
+                                                <span class="nav-text fadeable">
+                                                    Orders                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/order_listing.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/order_listing.php" class=" nav-link"><span class="nav-text">List Orders</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/order_listing.php" class="nav-link"><span class="nav-text">List Orders</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/order_payment_request.php" class="nav-link"><span class="nav-text">Payment Request</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/create_order_user.php" class=" nav-link"><span class="nav-text">Add New Order</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/export_orders.php" class=" nav-link"><span class="nav-text">Export/API Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/process_status_listing.php" class=" nav-link"><span class="nav-text">Order Status</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/coupon_listing.php" class=" nav-link"><span class="nav-text">Coupons / Discount</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/reward_point_listing.php" class=" nav-link"><span class="nav-text">Store Credit</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/order_pending_listing.php" class=" nav-link"><span class="nav-text">Unpaid Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/order_archive_listing.php" class=" nav-link"><span class="nav-text">Archive Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-quote-management"></i>
+                                                <span class="nav-text fadeable">
+                                                    Quote Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_listing.php" class=" nav-link"><span class="nav-text">View Quotes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_product_printer_listing.php" class=" nav-link"><span class="nav-text">Printer Quotes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_status_listing.php" class=" nav-link"><span class="nav-text">Quote Status</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-user"></i>
+                                                <span class="nav-text fadeable">
+                                                    Customer                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/user_listing.php" class=" nav-link"><span class="nav-text">Website Customers</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/subscriber_listing.php" class=" nav-link"><span class="nav-text">Newsletter Subscribers</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/user_designs.php" class=" nav-link"><span class="nav-text">Customer Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/design_proofs_listing.php" class=" nav-link"><span class="nav-text">Design Proofs</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-store"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/corporate_listing.php" class=" nav-link"><span class="nav-text">Stores</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/corporate_store_profile_listing.php" class=" nav-link"><span class="nav-text">Store Fields</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-tags"></i>
+                                                <span class="nav-text fadeable">
+                                                    Products                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_listing.php" class=" nav-link"><span class="nav-text">Print Products</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/predefined_product_listing.php" class=" nav-link"><span class="nav-text">Ready To Buy Products</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_master_option_listing.php" class=" nav-link"><span class="nav-text">Product Options</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_category_listing.php" class=" nav-link"><span class="nav-text">Product Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_weight.php" class=" nav-link"><span class="nav-text">Product Weight/Days/SKU</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_tax_setting.php" class=" nav-link"><span class="nav-text">Products Tax/VAT Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/product_price_all.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/product_price_all.php" class=" nav-link"><span class="nav-text">Product Price</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_all.php" class="nav-link"><span class="nav-text">Product Price</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_bulk_update.php" class="nav-link"><span class="nav-text">Product Price - Bulk</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_bulk_option_update.php" class="nav-link"><span class="nav-text">Product Option Price - Bulk</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/modify_products_price.php" class="nav-link"><span class="nav-text">Product Price - Excel</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/all_products_price_bulk_update.php" class="nav-link"><span class="nav-text">Percentage (+/-)</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-templates"></i>
+                                                <span class="nav-text fadeable">
+                                                    Templates                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/template_manager.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/template_manager.php" class=" nav-link"><span class="nav-text">Product Templates</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/template_manager.php" class="nav-link"><span class="nav-text">Product Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/template_manager.php?tmtype=1" class="nav-link"><span class="nav-text">PDF Block Templates</span></a></li>
+                                                                                                                                                                                                                                                                                <li class="nav-item "><a href="https://visualgraphx.com/admin/design_layout_listing.php" class="nav-link"><span class="nav-text">Art Layouts</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/master_template_manager.php" class=" nav-link"><span class="nav-text">Product Master Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_properties_master.php" class=" nav-link"><span class="nav-text">Template Properties Master</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_category_listing.php" class=" nav-link"><span class="nav-text">Template Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_manager_duplicate.php" class=" nav-link"><span class="nav-text">Duplicate Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item active open">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-file-alt"></i>
+                                                <span class="nav-text fadeable">
+                                                    Content Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable show">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/cms_listing.php" class=" nav-link"><span class="nav-text">Contents</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/faq_listing.php" class=" nav-link"><span class="nav-text">FAQs</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/testimonial_listing.php" class=" nav-link"><span class="nav-text">Testimonials</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/top_banner_listing.php" class=" nav-link"><span class="nav-text">Banners</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item  open active">
+                                                                                                            <a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class=" nav-link"><span class="nav-text">Email/SMS</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable show">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class="nav-link"><span class="nav-text">Email Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sms_notification_listing.php" class="nav-link"><span class="nav-text">SMS Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item  active"><a href="https://visualgraphx.com/admin/emailtemplate_reminder_listing.php" class="nav-link"><span class="nav-text">Email Reminders</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/media_gallery_listing.php" class=" nav-link"><span class="nav-text">Media Gallery</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-cog"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Personalization                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_info_layout_listing.php" class=" nav-link"><span class="nav-text">Product Page Layout</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/language_constant_action.php" class=" nav-link"><span class="nav-text">Language Text References</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/menulink_listing.php" class=" nav-link"><span class="nav-text">Links - Header / Footer</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/sidebar_management.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/sidebar_management.php" class=" nav-link"><span class="nav-text">Sidebar Management</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sidebar_management.php" class="nav-link"><span class="nav-text">Sidebar Management</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sidebar_widget.php" class="nav-link"><span class="nav-text">Sidebar Widget</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/promotional_listing.php" class=" nav-link"><span class="nav-text">Promotional Message</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/theme_listing.php" class=" nav-link"><span class="nav-text">Website Themes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-globe"></i>
+                                                <span class="nav-text fadeable">
+                                                    SEO                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/seo_all.php" class=" nav-link"><span class="nav-text">Page title, Keyword setting</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/sitemap_xml.php" class=" nav-link"><span class="nav-text">Sitemaps</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/metatag.php" class=" nav-link"><span class="nav-text">Metatags Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/robot_creation.php" class=" nav-link"><span class="nav-text">Robots</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/url_redirection_listing.php" class=" nav-link"><span class="nav-text">Manage URL Redirection</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/seo_image_alt_text.php" class=" nav-link"><span class="nav-text">Image Alt Text</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-business-partners"></i>
+                                                <span class="nav-text fadeable">
+                                                    Business Partners                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/printer_listing.php" class=" nav-link"><span class="nav-text">Printer</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/sales_agent_listing.php" class=" nav-link"><span class="nav-text">Sales Agent</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-cogs"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Configuration                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/configuration_settings.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_settings.php" class=" nav-link"><span class="nav-text">Site Settings</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/configuration_settings.php" class="nav-link"><span class="nav-text">Site Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/language_listing.php" class="nav-link"><span class="nav-text">Languages</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/currency_listing.php" class="nav-link"><span class="nav-text">Currency</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/country_listing.php" class="nav-link"><span class="nav-text">Country / States</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/manage_image_optimization.php" class="nav-link"><span class="nav-text">Web Optimization</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/block_ip_action.php" class="nav-link"><span class="nav-text">Manage Site Access</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/manage_web_storage.php" class=" nav-link"><span class="nav-text">Manage Web Storage</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/manage_form_listing.php" class=" nav-link"><span class="nav-text">Manage Forms</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_payment_listing.php" class=" nav-link"><span class="nav-text">Payments Method</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_shipping_listing.php" class=" nav-link"><span class="nav-text">Shipping Method</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/tax_listing.php" class=" nav-link"><span class="nav-text">Tax / Vat Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_external_service_listing.php" class=" nav-link"><span class="nav-text">External Service Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-imposition"></i>
+                                                <span class="nav-text fadeable">
+                                                    Imposition Beta                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_sheet_size_listing.php" class=" nav-link"><span class="nav-text">Sheet Size Management</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_schema_listing.php" class=" nav-link"><span class="nav-text">Schema Manager</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_impose_job.php" class=" nav-link"><span class="nav-text">Impose Job</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_symbol_listing.php" class=" nav-link"><span class="nav-text">Marks Management</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_products_schema_setting.php" class=" nav-link"><span class="nav-text">Product Schema Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-designer-studio"></i>
+                                                <span class="nav-text fadeable">
+                                                    Designer Studio                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class=" nav-link"><span class="nav-text">Studio Settings</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class="nav-link"><span class="nav-text">Studio Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_language_constant_action.php" class="nav-link"><span class="nav-text">Language Text References</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_color_setting_listing.php" class="nav-link"><span class="nav-text">Color Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_css_setting_action.php" class="nav-link"><span class="nav-text">Custom CSS Setting</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/predefined_quote_listing.php" class="nav-link"><span class="nav-text">Predefined Text</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/products_studio_models_listing.php" class="nav-link"><span class="nav-text">Real Preview</span></a></li>
+                                                                                                                                                                                                                                                                                <li class="nav-item "><a href="https://visualgraphx.com/admin/preview_image_settings.php" class="nav-link"><span class="nav-text">Preview image settings</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_image_gallery_listing.php" class=" nav-link"><span class="nav-text">Images</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_imagecategory_listing.php" class=" nav-link"><span class="nav-text">Image Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_studio_font_listing.php" class=" nav-link"><span class="nav-text">Studio Fonts</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-chart-bar"></i>
+                                                <span class="nav-text fadeable">
+                                                    Reports                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Sales</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_order_summary.php" class="nav-link"><span class="nav-text">Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_orderdetails.php" class="nav-link"><span class="nav-text">Order Detail</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_order_product_details.php" class="nav-link"><span class="nav-text">Order Product Detail</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_payment_request.php" class="nav-link"><span class="nav-text">Payment Request</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_shipping_summary.php" class="nav-link"><span class="nav-text">Shipping Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_tax_summary.php" class="nav-link"><span class="nav-text">Tax Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_coupon_summary.php" class="nav-link"><span class="nav-text">Coupon Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_quote_summary.php" class="nav-link"><span class="nav-text">Quote Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_production_day_summary.php" class="nav-link"><span class="nav-text">Order Delivery</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Product</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_products_sales.php" class="nav-link"><span class="nav-text">Product Sales</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_templates_sales.php" class="nav-link"><span class="nav-text">Template Sales</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_inventory_request.php" class="nav-link"><span class="nav-text">Inventory Request</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_inventory.php" class="nav-link"><span class="nav-text">Inventory Report</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_product_stock_summary.php" class="nav-link"><span class="nav-text">Stock Summary</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Customers</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_customer_order_summary.php" class="nav-link"><span class="nav-text">Customer Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_payon_account.php" class="nav-link"><span class="nav-text">Payon Account</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_customer_details.php" class="nav-link"><span class="nav-text">Customer Details</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_download_print_file.php" class="nav-link"><span class="nav-text">Download Print File</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Partners</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_agent_commission.php" class="nav-link"><span class="nav-text">Sales Agent Commission</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_printer_order_summary.php" class="nav-link"><span class="nav-text">Printer Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_printer_commission.php" class="nav-link"><span class="nav-text">Printer/Vendor Commission</span></a></li>
+                                                                                                                                                                                                                                                                    </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/report_production_time_spent.php" class=" nav-link"><span class="nav-text">Production Time Spent</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/report_audit_log.php" class=" nav-link"><span class="nav-text">Log</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-admin"></i>
+                                                <span class="nav-text fadeable">
+                                                    Admin                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/admin_listing.php" class=" nav-link"><span class="nav-text">Admin</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/workflow_admin_listing.php" class=" nav-link"><span class="nav-text">Workflow Admin</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/admin_group.php" class=" nav-link"><span class="nav-text">Admin Group / Role</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul></div></li></ul>                                        <!-- #section:basics/sidebar.layout.minimize -->
+                                        <div class="sidebar-toggle sidebar-collapse text-center" id="sidebar-collapse">
+                                            <button type="button" class="radius-round  " data-toggle="sidebar" data-target="#sidebar" aria-controls="sidebar" aria-expanded="true" aria-label="Toggle sidebar">
+                                                <i class="ace-icon fa fa-angle-left" data-icon1="ace-icon fa fa-angle-left" data-icon2="ace-icon fa fa-angle-right"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- /section:basics/sidebar.layout.minimize -->
+                                        <script type="text/javascript" data-sanitized="script-body-removed"></script>
+                                    </div><!-- END -ace-scroll -->
+                                            </div><!-- END - sidebar inner -->
+        </div>
+        <!-- /section:basics/sidebar -->
+            <div class="main-content">
+
+                <!-- #section:basics/content.breadcrumbs -->
+<div class="breadcrumbs fixed-top d-flex align-items-center bg-light border-bottom flex-wrap" id="breadcrumbs">
+    <ul class="breadcrumb py-2">
+        <!--<li>
+			<i class="ace-icon fa fa-home home-icon"></i>
+			<a href="index.php">Home</a>
+		</li>
+		<li class="active">
+			Dashboard
+		</li>-->
+        <li class="breadcrumb-item text-95"><i class="fa fa-home home-icon"></i> <a href="https://visualgraphx.com/admin/welcome.php">Home</a> </li><li class="breadcrumb-item text-95"><a href="emailtemplate_listing.php">Email/SMS</a> </li><li class="active breadcrumb-item text-95">Email Reminder </li>    </ul><!-- /.breadcrumb -->
+    <i class="fa fa-spinner fa-spin text-150 ajax_loader" style="display:none;"></i>
+        <div class="pin_icon_data d-flex align-items-center store_header">
+        <div class="row align-items-center d-lg-flex d-none flex-nowrap">
+            <div class="col-auto px-0">
+                <a href="relogin.php?user_login_type=workflow&amp;s=[hex-token]" class="btn btn-primary btn-sm mr-3"><i class="far fa-sync"></i> Workflow</a>            </div>
+            <div class="col-auto pr-0"><label class="mr-2 my-1 "></label><label class="radio-inline"><input type="radio" name="header_filter" id="radio_store_filter" value="store_filter" class=" ace  "><span class="lbl"> Filter by Store</span></label><label class="radio-inline"><input type="radio" name="header_filter" id="radio_store_switch" value="store_switch" class=" ace  " checked="checked"><span class="lbl"> Login As</span></label></div>
+                <div class="col-12 col-md-5"><div class="store_filter d-none">
+                            <div class="input-group">
+                                <form name="form_filter" class="form-inline" method="post"><input type="hidden" name="header_filter_type" id="header_filter_type" value="filter" class=""><div class="dropdown bootstrap-select form-control dropdown-search"><select name="header_store_filter" id="store_filter" class="form-control dropdown-search selectpicker" onchange="if (!window.__cfRLUnblockHandlers) return false; storeClearState(this.id);" data-live-search="true" data-style="btn-white"><option class="optgroup" value="" data-icon="">All Store</option><option class="optgroup" value="0_0" data-icon="">Default Store</option><option value="-1_0" title="Retailer" class="suboption " data-icon="">Retailer</option><option value="-2_0" title="All Private Store" class="suboption " data-icon="">All Private Store</option><option value="0_9" title="2CT Media, LLC" class="suboption pl-5" data-icon="">2CT Media, LLC</option><option value="0_94" title="5 Words Media" class="suboption pl-5" data-icon="">5 Words Media</option><option value="0_119" title="5280 Motorcars" class="suboption pl-5" data-icon="">5280 Motorcars</option><option value="0_323" title="A&amp;A Glass" class="suboption pl-5" data-icon="">A&amp;A Glass</option><option value="0_274" title="A&amp;M Graphics Wraps" class="suboption pl-5" data-icon="">A&amp;M Graphics Wraps</option><option value="0_56" title="AAM, LLC CO The Preserve at San Tan" class="suboption pl-5" data-icon="">AAM, LLC CO The Preserve at San Tan</option><option value="0_16" title="Agriscaping Technologies, LLC" class="suboption pl-5" data-icon="">Agriscaping Technologies, LLC</option><option value="0_199" title="Agro Trans Solutions" class="suboption pl-5" data-icon="">Agro Trans Solutions</option><option value="0_196" title="AIA" class="suboption pl-5" data-icon="">AIA</option><option value="0_248" title="AIA Sports Properties (X)" class="suboption pl-5" data-icon="">AIA Sports Properties (X)</option><option value="0_293" title="AK Plumbing &amp; Mechanical (X)" class="suboption pl-5" data-icon="">AK Plumbing &amp; Mechanical (X)</option><option value="0_160" title="All About Play" class="suboption pl-5" data-icon="">All About Play</option><option value="0_291" title="Allsbc4u (X)" class="suboption pl-5" data-icon="">Allsbc4u (X)</option><option value="0_329" title="Amber Stone Construction, LLC" class="suboption pl-5" data-icon="">Amber Stone Construction, LLC</option><option value="0_272" title="Amy Simon Events (X)" class="suboption pl-5" data-icon="">Amy Simon Events (X)</option><option value="0_189" title="Another Level Installs" class="suboption pl-5" data-icon="">Another Level Installs</option><option value="0_222" title="Arc Impressions" class="suboption pl-5" data-icon="">Arc Impressions</option><option value="1_268" title="Arcadia High School" class="suboption pl-5" data-icon="text-purple float-right fas fa-user-unlock">Arcadia High School</option><option value="0_180" title="ARCH - Cesar Chavez High School" class="suboption pl-5" data-icon="">ARCH - Cesar Chavez High School</option><option value="0_89" title="Aristotle Air" class="suboption pl-5" data-icon="">Aristotle Air</option><option value="0_29" title="Arizona 811" class="suboption pl-5" data-icon="">Arizona 811</option><option value="0_59" title="Arizona Animal Welfare League" class="suboption pl-5" data-icon="">Arizona Animal Welfare League</option><option value="0_137" title="Arizona Commercial Signs" class="suboption pl-5" data-icon="">Arizona Commercial Signs</option><option value="0_265" title="Arizona Interscholastic Association Demo" class="suboption pl-5" data-icon="">Arizona Interscholastic Association Demo</option><option value="0_198" title="Arizona Land Rover owners" class="suboption pl-5" data-icon="">Arizona Land Rover owners</option><option value="0_120" title="Arizona Legends Realty" class="suboption pl-5" data-icon="">Arizona Legends Realty</option><option value="0_151" title="Arizona Original Wraps" class="suboption pl-5" data-icon="">Arizona Original Wraps</option><option value="0_72" title="Arizona Prinstine Roofing" class="suboption pl-5" data-icon="">Arizona Prinstine Roofing</option><option value="0_177" title="Arizona Water Extractors" class="suboption pl-5" data-icon="">Arizona Water Extractors</option><option value="0_86" title="ARK Clean Air LLC" class="suboption pl-5" data-icon="">ARK Clean Air LLC</option><option value="0_116" title="Armada" class="suboption pl-5" data-icon="">Armada</option><option value="0_313" title="Ascend Graphics" class="suboption pl-5" data-icon="">Ascend Graphics</option><option value="0_169" title="AZ Ranch Land and Homes" class="suboption pl-5" data-icon="">AZ Ranch Land and Homes</option><option value="0_98" title="AzTex Graphics, LLC" class="suboption pl-5" data-icon="">AzTex Graphics, LLC</option><option value="0_101" title="Bailey Marshall Corporation" class="suboption pl-5" data-icon="">Bailey Marshall Corporation</option><option value="0_190" title="Ball &amp; Chain Hot Shot Services LLC" class="suboption pl-5" data-icon="">Ball &amp; Chain Hot Shot Services LLC</option><option value="0_20" title="Ballistic Wraps" class="suboption pl-5" data-icon="">Ballistic Wraps</option><option value="0_11" title="BAM Strategic" class="suboption pl-5" data-icon="">BAM Strategic</option><option value="0_236" title="Bella Vista College Prep (X)" class="suboption pl-5" data-icon="">Bella Vista College Prep (X)</option><option value="0_271" title="Better Choice Homes" class="suboption pl-5" data-icon="">Better Choice Homes</option><option value="0_324" title="BG" class="suboption pl-5" data-icon="">BG</option><option value="0_241" title="BIG 3 Creative (X)" class="suboption pl-5" data-icon="">BIG 3 Creative (X)</option><option value="0_44" title="Big City Business Forms, Inc." class="suboption pl-5" data-icon="">Big City Business Forms, Inc.</option><option value="0_301" title="Big Guard Recovery (X)" class="suboption pl-5" data-icon="">Big Guard Recovery (X)</option><option value="0_103" title="Big3 Creative" class="suboption pl-5" data-icon="">Big3 Creative</option><option value="0_70" title="Bingham Equipment Company" class="suboption pl-5" data-icon="">Bingham Equipment Company</option><option value="0_319" title="Birkmeyer General Contractors" class="suboption pl-5" data-icon="">Birkmeyer General Contractors</option><option value="0_46" title="Black Metal Firearms" class="suboption pl-5" data-icon="">Black Metal Firearms</option><option value="0_142" title="Blend4" class="suboption pl-5" data-icon="">Blend4</option><option value="0_167" title="Boguey Concessions" class="suboption pl-5" data-icon="">Boguey Concessions</option><option value="0_117" title="Bonanza Pipe and Steel" class="suboption pl-5" data-icon="">Bonanza Pipe and Steel</option><option value="0_266" title="Boys and Girls Club of the Valley (X)" class="suboption pl-5" data-icon="">Boys and Girls Club of the Valley (X)</option><option value="0_65" title="Brandsmith" class="suboption pl-5" data-icon="">Brandsmith</option><option value="0_157" title="Brightsides LLC" class="suboption pl-5" data-icon="">Brightsides LLC</option><option value="0_316" title="Brilon Iron Works" class="suboption pl-5" data-icon="">Brilon Iron Works</option><option value="0_73" title="Brink's Inc - PAI" class="suboption pl-5" data-icon="">Brink's Inc - PAI</option><option value="0_161" title="Burks Remolding &amp; Electric" class="suboption pl-5" data-icon="">Burks Remolding &amp; Electric</option><option value="0_124" title="Business Funding Solutions Group" class="suboption pl-5" data-icon="">Business Funding Solutions Group</option><option value="0_55" title="Cactus Network LLC / Tech Pro LLC" class="suboption pl-5" data-icon="">Cactus Network LLC / Tech Pro LLC</option><option value="0_88" title="Cactus Network LLC / Tech Pro LLC (X)" class="suboption pl-5" data-icon="">Cactus Network LLC / Tech Pro LLC (X)</option><option value="0_148" title="Capital Landscapes" class="suboption pl-5" data-icon="">Capital Landscapes</option><option value="0_247" title="Capture Studios (X)" class="suboption pl-5" data-icon="">Capture Studios (X)</option><option value="0_322" title="Cara Mia Books" class="suboption pl-5" data-icon="">Cara Mia Books</option><option value="0_232" title="CarbonCapture (X)" class="suboption pl-5" data-icon="">CarbonCapture (X)</option><option value="0_195" title="Celestial Stem" class="suboption pl-5" data-icon="">Celestial Stem</option><option value="0_162" title="Cesar Chavez High School" class="suboption pl-5" data-icon="">Cesar Chavez High School</option><option value="0_224" title="Champions Premier League" class="suboption pl-5" data-icon="">Champions Premier League</option><option value="0_105" title="Chollacivil" class="suboption pl-5" data-icon="">Chollacivil</option><option value="0_122" title="Circle of Peace Church" class="suboption pl-5" data-icon="">Circle of Peace Church</option><option value="0_206" title="City of Chandler" class="suboption pl-5" data-icon="">City of Chandler</option><option value="0_285" title="City of Mesa" class="suboption pl-5" data-icon="">City of Mesa</option><option value="0_106" title="CMC" class="suboption pl-5" data-icon="">CMC</option><option value="0_187" title="Collaborative Sign &amp; Design" class="suboption pl-5" data-icon="">Collaborative Sign &amp; Design</option><option value="0_15" title="Collections Under The Sun (X)" class="suboption pl-5" data-icon="">Collections Under The Sun (X)</option><option value="0_330" title="Command Link" class="suboption pl-5" data-icon="">Command Link</option><option value="0_47" title="Commercial Metals Company" class="suboption pl-5" data-icon="">Commercial Metals Company</option><option value="0_170" title="Complete Fire Protection Inc" class="suboption pl-5" data-icon="">Complete Fire Protection Inc</option><option value="0_325" title="ComponetsAZ" class="suboption pl-5" data-icon="">ComponetsAZ</option><option value="0_327" title="Copper Basin Oral Surgery" class="suboption pl-5" data-icon="">Copper Basin Oral Surgery</option><option value="0_48" title="Corban Concepts" class="suboption pl-5" data-icon="">Corban Concepts</option><option value="0_40" title="Create Proof Print" class="suboption pl-5" data-icon="">Create Proof Print</option><option value="0_188" title="Creative Impressions Promo Marketing, LLC" class="suboption pl-5" data-icon="">Creative Impressions Promo Marketing, LLC</option><option value="0_158" title="CrossPoint Testing LLC" class="suboption pl-5" data-icon="">CrossPoint Testing LLC</option><option value="0_138" title="Crumb Rubber Manufactures" class="suboption pl-5" data-icon="">Crumb Rubber Manufactures</option><option value="0_58" title="Culvers - Queen Creek" class="suboption pl-5" data-icon="">Culvers - Queen Creek</option><option value="0_62" title="CyberWeld" class="suboption pl-5" data-icon="">CyberWeld</option><option value="0_140" title="D65 Concepts" class="suboption pl-5" data-icon="">D65 Concepts</option><option value="0_130" title="Dean's Graphics, Inc." class="suboption pl-5" data-icon="">Dean's Graphics, Inc.</option><option value="0_146" title="Del Monte Landscape" class="suboption pl-5" data-icon="">Del Monte Landscape</option><option value="0_109" title="DeLux Realty" class="suboption pl-5" data-icon="">DeLux Realty</option><option value="1_254" title="Demo1 (X)" class="suboption pl-5" data-icon="text-purple float-right fas fa-user-unlock">Demo1 (X)</option><option value="0_238" title="Desert Demo Pros (X)" class="suboption pl-5" data-icon="">Desert Demo Pros (X)</option><option value="0_212" title="Desert Landscape Solutions LLC" class="suboption pl-5" data-icon="">Desert Landscape Solutions LLC</option><option value="0_277" title="Desert Moon Yoga (X)" class="suboption pl-5" data-icon="">Desert Moon Yoga (X)</option><option value="0_278" title="Desert Moon Yoga (X)" class="suboption pl-5" data-icon="">Desert Moon Yoga (X)</option><option value="0_163" title="Desert Mountain Equine" class="suboption pl-5" data-icon="">Desert Mountain Equine</option><option value="0_219" title="Desert Pavers and Design (X)" class="suboption pl-5" data-icon="">Desert Pavers and Design (X)</option><option value="0_207" title="Desert Paws Agility Equipment" class="suboption pl-5" data-icon="">Desert Paws Agility Equipment</option><option value="0_239" title="Desert View Learning Center (X)" class="suboption pl-5" data-icon="">Desert View Learning Center (X)</option><option value="0_135" title="Diamond J Welding" class="suboption pl-5" data-icon="">Diamond J Welding</option><option value="0_115" title="Dino Turf Co LLC" class="suboption pl-5" data-icon="">Dino Turf Co LLC</option><option value="0_32" title="Dolphin Graphics" class="suboption pl-5" data-icon="">Dolphin Graphics</option><option value="0_263" title="Dot Graphics" class="suboption pl-5" data-icon="">Dot Graphics</option><option value="0_108" title="DOT/PHMSA" class="suboption pl-5" data-icon="">DOT/PHMSA</option><option value="0_300" title="Dream City Christian (X)" class="suboption pl-5" data-icon="">Dream City Christian (X)</option><option value="0_227" title="Dryer Vent Superheros (X)" class="suboption pl-5" data-icon="">Dryer Vent Superheros (X)</option><option value="0_237" title="DZRT PEST (X)" class="suboption pl-5" data-icon="">DZRT PEST (X)</option><option value="0_85" title="Elevated Machine and Fabrication" class="suboption pl-5" data-icon="">Elevated Machine and Fabrication</option><option value="0_113" title="ELITE VEHICLE OUTFITTERS (EVO)" class="suboption pl-5" data-icon="">ELITE VEHICLE OUTFITTERS (EVO)</option><option value="0_102" title="Epic Branding Solutions" class="suboption pl-5" data-icon="">Epic Branding Solutions</option><option value="0_244" title="Epic Media Design &amp; Print (X)" class="suboption pl-5" data-icon="">Epic Media Design &amp; Print (X)</option><option value="0_33" title="ER2" class="suboption pl-5" data-icon="">ER2</option><option value="0_83" title="Etzel Agency" class="suboption pl-5" data-icon="">Etzel Agency</option><option value="0_152" title="Eunice Hair Salon" class="suboption pl-5" data-icon="">Eunice Hair Salon</option><option value="0_179" title="Eventor" class="suboption pl-5" data-icon="">Eventor</option><option value="0_107" title="EZARC Building Solutions" class="suboption pl-5" data-icon="">EZARC Building Solutions</option><option value="0_66" title="F &amp; H Mine Supply Inc" class="suboption pl-5" data-icon="">F &amp; H Mine Supply Inc</option><option value="0_43" title="Fast Layne Plumbing" class="suboption pl-5" data-icon="">Fast Layne Plumbing</option><option value="0_321" title="FCP EURO" class="suboption pl-5" data-icon="">FCP EURO</option><option value="0_259" title="FENECON (X)" class="suboption pl-5" data-icon="">FENECON (X)</option><option value="0_53" title="FitnessFest-Janice Jaicks" class="suboption pl-5" data-icon="">FitnessFest-Janice Jaicks</option><option value="0_328" title="Flawless Meeting Technologies Inc" class="suboption pl-5" data-icon="">Flawless Meeting Technologies Inc</option><option value="0_96" title="Fleet Feet - QC" class="suboption pl-5" data-icon="">Fleet Feet - QC</option><option value="0_143" title="Florence H.S. Basketball Booster" class="suboption pl-5" data-icon="">Florence H.S. Basketball Booster</option><option value="0_147" title="Forest printing" class="suboption pl-5" data-icon="">Forest printing</option><option value="0_26" title="Friends of Horseshoe Park" class="suboption pl-5" data-icon="">Friends of Horseshoe Park</option><option value="0_183" title="Fur Mobile Pet Grooming" class="suboption pl-5" data-icon="">Fur Mobile Pet Grooming</option><option value="0_245" title="Fusion IRX" class="suboption pl-5" data-icon="">Fusion IRX</option><option value="0_68" title="GainsinBulk" class="suboption pl-5" data-icon="">GainsinBulk</option><option value="0_250" title="GCU ESports (X)" class="suboption pl-5" data-icon="">GCU ESports (X)</option><option value="0_153" title="Generation Church" class="suboption pl-5" data-icon="">Generation Church</option><option value="0_286" title="Gila County (X)" class="suboption pl-5" data-icon="">Gila County (X)</option><option value="0_281" title="Give N Go Hoops (X)" class="suboption pl-5" data-icon="">Give N Go Hoops (X)</option><option value="0_74" title="Gladiator Marketing" class="suboption pl-5" data-icon="">Gladiator Marketing</option><option value="0_221" title="Go Queen Creek (X)" class="suboption pl-5" data-icon="">Go Queen Creek (X)</option><option value="0_104" title="Goin' Postal" class="suboption pl-5" data-icon="">Goin' Postal</option><option value="0_171" title="Goldie's Motors" class="suboption pl-5" data-icon="">Goldie's Motors</option><option value="0_150" title="Green Flash Pest Control" class="suboption pl-5" data-icon="">Green Flash Pest Control</option><option value="0_225" title="Griffin RV (X)" class="suboption pl-5" data-icon="">Griffin RV (X)</option><option value="0_91" title="Hampton Inn Queen Creek" class="suboption pl-5" data-icon="">Hampton Inn Queen Creek</option><option value="0_69" title="Hanson Automotive" class="suboption pl-5" data-icon="">Hanson Automotive</option><option value="0_164" title="Happy Cans" class="suboption pl-5" data-icon="">Happy Cans</option><option value="0_35" title="Hart Design Firm" class="suboption pl-5" data-icon="">Hart Design Firm</option><option value="1_269" title="Highland High School" class="suboption pl-5" data-icon="text-purple float-right fas fa-user-unlock">Highland High School</option><option value="0_45" title="Horseshoe Park &amp; Equestrian Centre" class="suboption pl-5" data-icon="">Horseshoe Park &amp; Equestrian Centre</option><option value="0_279" title="HSL Construction Services (X)" class="suboption pl-5" data-icon="">HSL Construction Services (X)</option><option value="0_50" title="Ignite Physical Therapy" class="suboption pl-5" data-icon="">Ignite Physical Therapy</option><option value="0_297" title="ImprezWrapz &amp; Graphics (X)" class="suboption pl-5" data-icon="">ImprezWrapz &amp; Graphics (X)</option><option value="0_81" title="Inkpulsive Printing LLC" class="suboption pl-5" data-icon="">Inkpulsive Printing LLC</option><option value="0_246" title="Inkpulsive Printing LLC (X)" class="suboption pl-5" data-icon="">Inkpulsive Printing LLC (X)</option><option value="0_139" title="Interior Design by Miranda" class="suboption pl-5" data-icon="">Interior Design by Miranda</option><option value="0_229" title="IPS" class="suboption pl-5" data-icon="">IPS</option><option value="0_25" title="IT Printing" class="suboption pl-5" data-icon="">IT Printing</option><option value="0_22" title="it's not paint." class="suboption pl-5" data-icon="">it's not paint.</option><option value="0_314" title="J&amp;R Graphics" class="suboption pl-5" data-icon="">J&amp;R Graphics</option><option value="0_97" title="JandR Graphics and Printing" class="suboption pl-5" data-icon="">JandR Graphics and Printing</option><option value="0_14" title="JayRey Graphics" class="suboption pl-5" data-icon="">JayRey Graphics</option><option value="0_317" title="Jennifer Theabold" class="suboption pl-5" data-icon="">Jennifer Theabold</option><option value="0_205" title="Jesus Church" class="suboption pl-5" data-icon="">Jesus Church</option><option value="0_273" title="JL Exhibit Services (X)" class="suboption pl-5" data-icon="">JL Exhibit Services (X)</option><option value="0_283" title="JNR Incorporated (X)" class="suboption pl-5" data-icon="">JNR Incorporated (X)</option><option value="0_193" title="JT Magen" class="suboption pl-5" data-icon="">JT Magen</option><option value="0_61" title="KABOOM CANDY CO LLC." class="suboption pl-5" data-icon="">KABOOM CANDY CO LLC.</option><option value="0_156" title="Kahoots Feed &amp; Pet Store" class="suboption pl-5" data-icon="">Kahoots Feed &amp; Pet Store</option><option value="0_186" title="Kandace Horning" class="suboption pl-5" data-icon="">Kandace Horning</option><option value="0_144" title="Kimes Ranch" class="suboption pl-5" data-icon="">Kimes Ranch</option><option value="0_76" title="Knockout Plumbing" class="suboption pl-5" data-icon="">Knockout Plumbing</option><option value="0_185" title="KOA Steamers" class="suboption pl-5" data-icon="">KOA Steamers</option><option value="0_149" title="Kodiak Dustless" class="suboption pl-5" data-icon="">Kodiak Dustless</option><option value="0_92" title="Kodiak Tile &amp; Stone" class="suboption pl-5" data-icon="">Kodiak Tile &amp; Stone</option><option value="0_280" title="KS Signs" class="suboption pl-5" data-icon="">KS Signs</option><option value="0_290" title="KunglJungleSigns (X)" class="suboption pl-5" data-icon="">KunglJungleSigns (X)</option><option value="0_311" title="LAT Graphics" class="suboption pl-5" data-icon="">LAT Graphics</option><option value="0_41" title="Legacy Traditional Schools" class="suboption pl-5" data-icon="">Legacy Traditional Schools</option><option value="0_111" title="LEOPARD AVIATION LLC" class="suboption pl-5" data-icon="">LEOPARD AVIATION LLC</option><option value="0_121" title="Lickity Split Express Courier" class="suboption pl-5" data-icon="">Lickity Split Express Courier</option><option value="0_197" title="Linron Company" class="suboption pl-5" data-icon="">Linron Company</option><option value="0_178" title="Little League" class="suboption pl-5" data-icon="">Little League</option><option value="0_192" title="LTY Promotions" class="suboption pl-5" data-icon="">LTY Promotions</option><option value="0_71" title="Market Dwellings" class="suboption pl-5" data-icon="">Market Dwellings</option><option value="0_240" title="Martinez Firm (X)" class="suboption pl-5" data-icon="">Martinez Firm (X)</option><option value="0_80" title="Maryvale High School" class="suboption pl-5" data-icon="">Maryvale High School</option><option value="0_306" title="Mattress by Apointment (X)" class="suboption pl-5" data-icon="">Mattress by Apointment (X)</option><option value="0_175" title="Mesa Gateway Airport Authority" class="suboption pl-5" data-icon="">Mesa Gateway Airport Authority</option><option value="0_210" title="Mesa RV" class="suboption pl-5" data-icon="">Mesa RV</option><option value="0_49" title="Metso (X)" class="suboption pl-5" data-icon="">Metso (X)</option><option value="0_154" title="Metso USA Inc" class="suboption pl-5" data-icon="">Metso USA Inc</option><option value="0_256" title="Metso USA Inc. (X)" class="suboption pl-5" data-icon="">Metso USA Inc. (X)</option><option value="0_172" title="Mexicolor printing LLC" class="suboption pl-5" data-icon="">Mexicolor printing LLC</option><option value="0_13" title="Minuteman Press" class="suboption pl-5" data-icon="">Minuteman Press</option><option value="0_284" title="MLS Next (X)" class="suboption pl-5" data-icon="">MLS Next (X)</option><option value="0_118" title="MosconiStudio" class="suboption pl-5" data-icon="">MosconiStudio</option><option value="0_208" title="Mountain View High School" class="suboption pl-5" data-icon="">Mountain View High School</option><option value="0_308" title="Naismith Awards (X)" class="suboption pl-5" data-icon="">Naismith Awards (X)</option><option value="0_213" title="Naismith Basketball Hall of Fame" class="suboption pl-5" data-icon="">Naismith Basketball Hall of Fame</option><option value="0_202" title="National Office Products &amp; Printing, Inc." class="suboption pl-5" data-icon="">National Office Products &amp; Printing, Inc.</option><option value="0_296" title="Neil Pergolas (X)" class="suboption pl-5" data-icon="">Neil Pergolas (X)</option><option value="0_289" title="Nelson Electric (X)" class="suboption pl-5" data-icon="">Nelson Electric (X)</option><option value="0_99" title="Never Late Printing" class="suboption pl-5" data-icon="">Never Late Printing</option><option value="0_82" title="New Star Realty and Relocation" class="suboption pl-5" data-icon="">New Star Realty and Relocation</option><option value="0_304" title="New Vac Lift (X)" class="suboption pl-5" data-icon="">New Vac Lift (X)</option><option value="0_223" title="Northland Auto Center (X)" class="suboption pl-5" data-icon="">Northland Auto Center (X)</option><option value="0_209" title="Northwest Christian School" class="suboption pl-5" data-icon="">Northwest Christian School</option><option value="0_326" title="Nothing Bundt Cakes" class="suboption pl-5" data-icon="">Nothing Bundt Cakes</option><option value="0_63" title="Nova Signs &amp; Graphics, Inc." class="suboption pl-5" data-icon="">Nova Signs &amp; Graphics, Inc.</option><option value="0_251" title="Oasis Community Church (X)" class="suboption pl-5" data-icon="">Oasis Community Church (X)</option><option value="0_303" title="Octopus Pool Service (X)" class="suboption pl-5" data-icon="">Octopus Pool Service (X)</option><option value="0_216" title="Olympus Cleaning" class="suboption pl-5" data-icon="">Olympus Cleaning</option><option value="0_191" title="On My Game (OMG)" class="suboption pl-5" data-icon="">On My Game (OMG)</option><option value="0_159" title="Palm Lane Properties" class="suboption pl-5" data-icon="">Palm Lane Properties</option><option value="0_52" title="Patriot Landscape Services" class="suboption pl-5" data-icon="">Patriot Landscape Services</option><option value="0_114" title="Paul Saylor Creative" class="suboption pl-5" data-icon="">Paul Saylor Creative</option><option value="0_201" title="Peak Experience Realty" class="suboption pl-5" data-icon="">Peak Experience Realty</option><option value="0_87" title="Peco Signs &amp; Wraps" class="suboption pl-5" data-icon="">Peco Signs &amp; Wraps</option><option value="0_252" title="Pegasus Pool &amp; Spa (X)" class="suboption pl-5" data-icon="">Pegasus Pool &amp; Spa (X)</option><option value="0_30" title="Phillips Plumbing" class="suboption pl-5" data-icon="">Phillips Plumbing</option><option value="0_242" title="Phoenix Beach Volleyball (X)" class="suboption pl-5" data-icon="">Phoenix Beach Volleyball (X)</option><option value="0_17" title="Phoenix Online Media" class="suboption pl-5" data-icon="">Phoenix Online Media</option><option value="0_233" title="Phoenix Raceway (X)" class="suboption pl-5" data-icon="">Phoenix Raceway (X)</option><option value="1_310" title="Phoenix United" class="suboption pl-5" data-icon="text-purple float-right fas fa-user-unlock">Phoenix United</option><option value="0_184" title="Photo Play" class="suboption pl-5" data-icon="">Photo Play</option><option value="0_181" title="Pickett Elementary" class="suboption pl-5" data-icon="">Pickett Elementary</option><option value="0_166" title="Pinal County Sheriff's Department" class="suboption pl-5" data-icon="">Pinal County Sheriff's Department</option><option value="0_234" title="Pinal County Sheriff's Office" class="suboption pl-5" data-icon="">Pinal County Sheriff's Office</option><option value="0_100" title="Play It Safe Playgrounds" class="suboption pl-5" data-icon="">Play It Safe Playgrounds</option><option value="0_127" title="Poles &amp; Holes Construction" class="suboption pl-5" data-icon="">Poles &amp; Holes Construction</option><option value="0_203" title="Poneman Basketball LLC" class="suboption pl-5" data-icon="">Poneman Basketball LLC</option><option value="0_7" title="Position Sports" class="suboption pl-5" data-icon="">Position Sports</option><option value="0_267" title="Position Sports Demo" class="suboption pl-5" data-icon="">Position Sports Demo</option><option value="0_211" title="Power Sand Volleyball" class="suboption pl-5" data-icon="">Power Sand Volleyball</option><option value="0_182" title="Precision Dynamics International" class="suboption pl-5" data-icon="">Precision Dynamics International</option><option value="0_27" title="Prime Time Thermographics" class="suboption pl-5" data-icon="">Prime Time Thermographics</option><option value="0_38" title="Primetime Electric, LLC" class="suboption pl-5" data-icon="">Primetime Electric, LLC</option><option value="0_200" title="printing2" class="suboption pl-5" data-icon="">printing2</option><option value="0_133" title="Pro Performance" class="suboption pl-5" data-icon="">Pro Performance</option><option value="0_235" title="Pro Rivals Open" class="suboption pl-5" data-icon="">Pro Rivals Open</option><option value="0_307" title="Process Matters (X)" class="suboption pl-5" data-icon="">Process Matters (X)</option><option value="0_19" title="Proud Owner Design LLP" class="suboption pl-5" data-icon="">Proud Owner Design LLP</option><option value="0_21" title="Quality Sign Company" class="suboption pl-5" data-icon="">Quality Sign Company</option><option value="0_320" title="Queen Creek Botanical Gardens" class="suboption pl-5" data-icon="">Queen Creek Botanical Gardens</option><option value="0_90" title="Queen Creek Health Center" class="suboption pl-5" data-icon="">Queen Creek Health Center</option><option value="0_8" title="Radix" class="suboption pl-5" data-icon="">Radix</option><option value="0_4" title="RCS" class="suboption pl-5" data-icon="">RCS</option><option value="0_112" title="RE/MAX Solutions" class="suboption pl-5" data-icon="">RE/MAX Solutions</option><option value="0_18" title="Red Brick Studios" class="suboption pl-5" data-icon="">Red Brick Studios</option><option value="0_51" title="Red Rocks Branding" class="suboption pl-5" data-icon="">Red Rocks Branding</option><option value="0_95" title="Renovate Pros" class="suboption pl-5" data-icon="">Renovate Pros</option><option value="0_5" title="Retail" class="suboption pl-5" data-icon="">Retail</option><option value="0_67" title="RLJ Enterprises" class="suboption pl-5" data-icon="">RLJ Enterprises</option><option value="0_132" title="Rodeo Naked Co." class="suboption pl-5" data-icon="">Rodeo Naked Co.</option><option value="0_299" title="Rough Stock Western Hats (X)" class="suboption pl-5" data-icon="">Rough Stock Western Hats (X)</option><option value="0_77" title="Ruggiero's Ace Hardware" class="suboption pl-5" data-icon="">Ruggiero's Ace Hardware</option><option value="0_12" title="Ryan's Signs" class="suboption pl-5" data-icon="">Ryan's Signs</option><option value="0_249" title="Saguaro High School" class="suboption pl-5" data-icon="">Saguaro High School</option><option value="0_298" title="Saguaro State Construction (X)" class="suboption pl-5" data-icon="">Saguaro State Construction (X)</option><option value="0_264" title="San Tan Water Solutions (X)" class="suboption pl-5" data-icon="">San Tan Water Solutions (X)</option><option value="0_262" title="Sandra Day O'Connor High School" class="suboption pl-5" data-icon="">Sandra Day O'Connor High School</option><option value="0_34" title="Schmidty Racing Suspensions" class="suboption pl-5" data-icon="">Schmidty Racing Suspensions</option><option value="0_165" title="Schnepf Elementary School" class="suboption pl-5" data-icon="">Schnepf Elementary School</option><option value="0_214" title="Select Choice Insurance Group" class="suboption pl-5" data-icon="">Select Choice Insurance Group</option><option value="0_125" title="Seven Peaks Fence and Barns" class="suboption pl-5" data-icon="">Seven Peaks Fence and Barns</option><option value="0_226" title="Sign Source (X)" class="suboption pl-5" data-icon="">Sign Source (X)</option><option value="0_2" title="Silent-Aire" class="suboption pl-5" data-icon="">Silent-Aire</option><option value="0_141" title="Simpson Strong-Tie" class="suboption pl-5" data-icon="">Simpson Strong-Tie</option><option value="0_275" title="Skyline Education (X)" class="suboption pl-5" data-icon="">Skyline Education (X)</option><option value="0_270" title="Skyline Schools (X)" class="suboption pl-5" data-icon="">Skyline Schools (X)</option><option value="0_176" title="Smith Painting &amp; Services" class="suboption pl-5" data-icon="">Smith Painting &amp; Services</option><option value="0_155" title="Sol Paintless Dent Repair" class="suboption pl-5" data-icon="">Sol Paintless Dent Repair</option><option value="0_294" title="Source One Events (X)" class="suboption pl-5" data-icon="">Source One Events (X)</option><option value="0_84" title="Southeast Valley Rentals" class="suboption pl-5" data-icon="">Southeast Valley Rentals</option><option value="0_24" title="Southern Carlson" class="suboption pl-5" data-icon="">Southern Carlson</option><option value="0_129" title="Sozo" class="suboption pl-5" data-icon="">Sozo</option><option value="0_57" title="Sparkle Grooming Co" class="suboption pl-5" data-icon="">Sparkle Grooming Co</option><option value="0_79" title="Spectrum Shade" class="suboption pl-5" data-icon="">Spectrum Shade</option><option value="0_23" title="Spotlight Signs and Imaging Solutions" class="suboption pl-5" data-icon="">Spotlight Signs and Imaging Solutions</option><option value="0_215" title="SPS Plus Architects" class="suboption pl-5" data-icon="">SPS Plus Architects</option><option value="0_126" title="Styfl Rattlers" class="suboption pl-5" data-icon="">Styfl Rattlers</option><option value="0_36" title="Sunland Asphalt" class="suboption pl-5" data-icon="">Sunland Asphalt</option><option value="0_134" title="Tank N Barrel" class="suboption pl-5" data-icon="">Tank N Barrel</option><option value="0_305" title="TBI Luxury Transportation (X)" class="suboption pl-5" data-icon="">TBI Luxury Transportation (X)</option><option value="0_64" title="Teeple for Sheriff" class="suboption pl-5" data-icon="">Teeple for Sheriff</option><option value="0_315" title="Test Corp 1" class="suboption pl-5" data-icon="">Test Corp 1</option><option value="0_145" title="Texas Roadhouse" class="suboption pl-5" data-icon="">Texas Roadhouse</option><option value="0_75" title="TGT Transport" class="suboption pl-5" data-icon="">TGT Transport</option><option value="0_243" title="The Equipment Barn (X)" class="suboption pl-5" data-icon="">The Equipment Barn (X)</option><option value="0_258" title="The Foster Alliance (X)" class="suboption pl-5" data-icon="">The Foster Alliance (X)</option><option value="0_42" title="The Lab North America Inc." class="suboption pl-5" data-icon="">The Lab North America Inc.</option><option value="0_217" title="The Lou Next" class="suboption pl-5" data-icon="">The Lou Next</option><option value="0_37" title="The Sign Jungle" class="suboption pl-5" data-icon="">The Sign Jungle</option><option value="0_54" title="The Squeegee Gurus" class="suboption pl-5" data-icon="">The Squeegee Gurus</option><option value="0_282" title="The Wearhouse On 377 (X)" class="suboption pl-5" data-icon="">The Wearhouse On 377 (X)</option><option value="0_220" title="TIME Life Coaching (X)" class="suboption pl-5" data-icon="">TIME Life Coaching (X)</option><option value="0_218" title="Tint Cartel" class="suboption pl-5" data-icon="">Tint Cartel</option><option value="0_276" title="Top Tech Apprenticeship (X)" class="suboption pl-5" data-icon="">Top Tech Apprenticeship (X)</option><option value="0_231" title="Touch of Turquoise (X)" class="suboption pl-5" data-icon="">Touch of Turquoise (X)</option><option value="0_31" title="Town of Queen Creek" class="suboption pl-5" data-icon="">Town of Queen Creek</option><option value="0_260" title="Treelike Storage (X)" class="suboption pl-5" data-icon="">Treelike Storage (X)</option><option value="0_292" title="Trilar Industrial Equipment Supplies (X)" class="suboption pl-5" data-icon="">Trilar Industrial Equipment Supplies (X)</option><option value="0_131" title="Trinity Mennonite Church" class="suboption pl-5" data-icon="">Trinity Mennonite Church</option><option value="0_228" title="Tru Force Proxy (X)" class="suboption pl-5" data-icon="">Tru Force Proxy (X)</option><option value="0_309" title="True West Pool Co (X)" class="suboption pl-5" data-icon="">True West Pool Co (X)</option><option value="0_253" title="TUFF SHED (X)" class="suboption pl-5" data-icon="">TUFF SHED (X)</option><option value="0_295" title="Underground Buzz (X)" class="suboption pl-5" data-icon="">Underground Buzz (X)</option><option value="0_28" title="Universal" class="suboption pl-5" data-icon="">Universal</option><option value="0_93" title="US DOT/PHMSA" class="suboption pl-5" data-icon="">US DOT/PHMSA</option><option value="0_257" title="UTV Stereo (X)" class="suboption pl-5" data-icon="">UTV Stereo (X)</option><option value="0_312" title="Valley Wrap and Design" class="suboption pl-5" data-icon="">Valley Wrap and Design</option><option value="0_110" title="Van Marcke Trade Supply" class="suboption pl-5" data-icon="">Van Marcke Trade Supply</option><option value="0_255" title="Vestar (X)" class="suboption pl-5" data-icon="">Vestar (X)</option><option value="0_39" title="Visual Graphx" class="suboption pl-5" data-icon="">Visual Graphx</option><option value="0_78" title="Water Bucks" class="suboption pl-5" data-icon="">Water Bucks</option><option value="0_60" title="We Fix It Home Services" class="suboption pl-5" data-icon="">We Fix It Home Services</option><option value="0_174" title="wereinkling.com" class="suboption pl-5" data-icon="">wereinkling.com</option><option value="0_230" title="Western Walls (X)" class="suboption pl-5" data-icon="">Western Walls (X)</option><option value="0_318" title="Wheel Medics" class="suboption pl-5" data-icon="">Wheel Medics</option><option value="0_1" title="Wholesale (X)" class="suboption pl-5" data-icon="">Wholesale (X)</option><option value="0_173" title="Wild West Water Delivery" class="suboption pl-5" data-icon="">Wild West Water Delivery</option><option value="0_123" title="WonderWise Preschool" class="suboption pl-5" data-icon="">WonderWise Preschool</option><option value="0_287" title="Xavier College Prep (X)" class="suboption pl-5" data-icon="">Xavier College Prep (X)</option><option value="0_136" title="XC Crismon Booster Club" class="suboption pl-5" data-icon="">XC Crismon Booster Club</option><option value="0_194" title="Xnrgy (X)" class="suboption pl-5" data-icon="">Xnrgy (X)</option><option value="0_168" title="XNRGY Climate Systems US, LLC" class="suboption pl-5" data-icon="">XNRGY Climate Systems US, LLC</option><option value="0_3" title="Yellowstone Landscape" class="suboption pl-5" data-icon="">Yellowstone Landscape</option><option value="0_302" title="Zona Tailer Sales (X)" class="suboption pl-5" data-icon="">Zona Tailer Sales (X)</option><option class="optgroup" value="3_6" data-icon="text-purple float-right fas fa-sitemap">Position Sports (X)</option></select><button type="button" tabindex="-1" class="btn dropdown-toggle btn-white bs-placeholder" data-toggle="dropdown" role="combobox" aria-owns="bs-select-1" aria-haspopup="listbox" aria-expanded="false" data-id="store_filter" title="All Store"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">All Store</div></div> </div></button><div class="dropdown-menu "><div class="bs-searchbox"><input type="search" class="form-control" autocomplete="off" role="combobox" aria-label="Search" aria-controls="bs-select-1" aria-autocomplete="list"></div><div class="inner show" role="listbox" id="bs-select-1" tabindex="-1"><ul class="dropdown-menu inner show" role="presentation"></ul></div></div></div>
+                                <input type="hidden" name="ops_csrf_token" value="[masked]"></form>
+                            </div>
+                        </div><div class="store_switch">
+                            <div class="input-group">
+                                <form name="form_switch" class="form-inline" method="post"><input type="hidden" name="header_filter_type" id="header_filter_type" value="switch" class=""><div class="dropdown bootstrap-select form-control dropdown-search"><select name="header_store_filter" id="store_switch" class="form-control dropdown-search selectpicker" onchange="if (!window.__cfRLUnblockHandlers) return false; storeClearState(this.id);" data-live-search="true" data-style="btn-white"><option class="optgroup" value="-1_1" data-icon="">cderamos</option><option value="0_9" title="2CT Media, LLC" class="suboption " data-icon="">2CT Media, LLC</option><option value="0_94" title="5 Words Media" class="suboption " data-icon="">5 Words Media</option><option value="0_119" title="5280 Motorcars" class="suboption " data-icon="">5280 Motorcars</option><option value="0_323" title="A&amp;A Glass" class="suboption " data-icon="">A&amp;A Glass</option><option value="0_274" title="A&amp;M Graphics Wraps" class="suboption " data-icon="">A&amp;M Graphics Wraps</option><option value="0_56" title="AAM, LLC CO The Preserve at San Tan" class="suboption " data-icon="">AAM, LLC CO The Preserve at San Tan</option><option value="0_16" title="Agriscaping Technologies, LLC" class="suboption " data-icon="">Agriscaping Technologies, LLC</option><option value="0_199" title="Agro Trans Solutions" class="suboption " data-icon="">Agro Trans Solutions</option><option value="0_196" title="AIA" class="suboption " data-icon="">AIA</option><option value="0_160" title="All About Play" class="suboption " data-icon="">All About Play</option><option value="0_329" title="Amber Stone Construction, LLC" class="suboption " data-icon="">Amber Stone Construction, LLC</option><option value="0_189" title="Another Level Installs" class="suboption " data-icon="">Another Level Installs</option><option value="0_222" title="Arc Impressions" class="suboption " data-icon="">Arc Impressions</option><option value="1_268" title="Arcadia High School" class="suboption " data-icon="text-purple float-right fas fa-user-unlock">Arcadia High School</option><option value="0_180" title="ARCH - Cesar Chavez High School" class="suboption " data-icon="">ARCH - Cesar Chavez High School</option><option value="0_89" title="Aristotle Air" class="suboption " data-icon="">Aristotle Air</option><option value="0_29" title="Arizona 811" class="suboption " data-icon="">Arizona 811</option><option value="0_59" title="Arizona Animal Welfare League" class="suboption " data-icon="">Arizona Animal Welfare League</option><option value="0_137" title="Arizona Commercial Signs" class="suboption " data-icon="">Arizona Commercial Signs</option><option value="0_265" title="Arizona Interscholastic Association Demo" class="suboption " data-icon="">Arizona Interscholastic Association Demo</option><option value="0_198" title="Arizona Land Rover owners" class="suboption " data-icon="">Arizona Land Rover owners</option><option value="0_120" title="Arizona Legends Realty" class="suboption " data-icon="">Arizona Legends Realty</option><option value="0_151" title="Arizona Original Wraps" class="suboption " data-icon="">Arizona Original Wraps</option><option value="0_72" title="Arizona Prinstine Roofing" class="suboption " data-icon="">Arizona Prinstine Roofing</option><option value="0_177" title="Arizona Water Extractors" class="suboption " data-icon="">Arizona Water Extractors</option><option value="0_86" title="ARK Clean Air LLC" class="suboption " data-icon="">ARK Clean Air LLC</option><option value="0_116" title="Armada" class="suboption " data-icon="">Armada</option><option value="0_313" title="Ascend Graphics" class="suboption " data-icon="">Ascend Graphics</option><option value="0_169" title="AZ Ranch Land and Homes" class="suboption " data-icon="">AZ Ranch Land and Homes</option><option value="0_98" title="AzTex Graphics, LLC" class="suboption " data-icon="">AzTex Graphics, LLC</option><option value="0_101" title="Bailey Marshall Corporation" class="suboption " data-icon="">Bailey Marshall Corporation</option><option value="0_190" title="Ball &amp; Chain Hot Shot Services LLC" class="suboption " data-icon="">Ball &amp; Chain Hot Shot Services LLC</option><option value="0_20" title="Ballistic Wraps" class="suboption " data-icon="">Ballistic Wraps</option><option value="0_11" title="BAM Strategic" class="suboption " data-icon="">BAM Strategic</option><option value="0_271" title="Better Choice Homes" class="suboption " data-icon="">Better Choice Homes</option><option value="0_324" title="BG" class="suboption " data-icon="">BG</option><option value="0_44" title="Big City Business Forms, Inc." class="suboption " data-icon="">Big City Business Forms, Inc.</option><option value="0_103" title="Big3 Creative" class="suboption " data-icon="">Big3 Creative</option><option value="0_70" title="Bingham Equipment Company" class="suboption " data-icon="">Bingham Equipment Company</option><option value="0_319" title="Birkmeyer General Contractors" class="suboption " data-icon="">Birkmeyer General Contractors</option><option value="0_46" title="Black Metal Firearms" class="suboption " data-icon="">Black Metal Firearms</option><option value="0_142" title="Blend4" class="suboption " data-icon="">Blend4</option><option value="0_167" title="Boguey Concessions" class="suboption " data-icon="">Boguey Concessions</option><option value="0_117" title="Bonanza Pipe and Steel" class="suboption " data-icon="">Bonanza Pipe and Steel</option><option value="0_65" title="Brandsmith" class="suboption " data-icon="">Brandsmith</option><option value="0_157" title="Brightsides LLC" class="suboption " data-icon="">Brightsides LLC</option><option value="0_316" title="Brilon Iron Works" class="suboption " data-icon="">Brilon Iron Works</option><option value="0_73" title="Brink's Inc - PAI" class="suboption " data-icon="">Brink's Inc - PAI</option><option value="0_161" title="Burks Remolding &amp; Electric" class="suboption " data-icon="">Burks Remolding &amp; Electric</option><option value="0_124" title="Business Funding Solutions Group" class="suboption " data-icon="">Business Funding Solutions Group</option><option value="0_55" title="Cactus Network LLC / Tech Pro LLC" class="suboption " data-icon="">Cactus Network LLC / Tech Pro LLC</option><option value="0_148" title="Capital Landscapes" class="suboption " data-icon="">Capital Landscapes</option><option value="0_322" title="Cara Mia Books" class="suboption " data-icon="">Cara Mia Books</option><option value="0_195" title="Celestial Stem" class="suboption " data-icon="">Celestial Stem</option><option value="0_162" title="Cesar Chavez High School" class="suboption " data-icon="">Cesar Chavez High School</option><option value="0_224" title="Champions Premier League" class="suboption " data-icon="">Champions Premier League</option><option value="0_105" title="Chollacivil" class="suboption " data-icon="">Chollacivil</option><option value="0_122" title="Circle of Peace Church" class="suboption " data-icon="">Circle of Peace Church</option><option value="0_206" title="City of Chandler" class="suboption " data-icon="">City of Chandler</option><option value="0_285" title="City of Mesa" class="suboption " data-icon="">City of Mesa</option><option value="0_106" title="CMC" class="suboption " data-icon="">CMC</option><option value="0_187" title="Collaborative Sign &amp; Design" class="suboption " data-icon="">Collaborative Sign &amp; Design</option><option value="0_330" title="Command Link" class="suboption " data-icon="">Command Link</option><option value="0_47" title="Commercial Metals Company" class="suboption " data-icon="">Commercial Metals Company</option><option value="0_170" title="Complete Fire Protection Inc" class="suboption " data-icon="">Complete Fire Protection Inc</option><option value="0_325" title="ComponetsAZ" class="suboption " data-icon="">ComponetsAZ</option><option value="0_327" title="Copper Basin Oral Surgery" class="suboption " data-icon="">Copper Basin Oral Surgery</option><option value="0_48" title="Corban Concepts" class="suboption " data-icon="">Corban Concepts</option><option value="0_40" title="Create Proof Print" class="suboption " data-icon="">Create Proof Print</option><option value="0_188" title="Creative Impressions Promo Marketing, LLC" class="suboption " data-icon="">Creative Impressions Promo Marketing, LLC</option><option value="0_158" title="CrossPoint Testing LLC" class="suboption " data-icon="">CrossPoint Testing LLC</option><option value="0_138" title="Crumb Rubber Manufactures" class="suboption " data-icon="">Crumb Rubber Manufactures</option><option value="0_58" title="Culvers - Queen Creek" class="suboption " data-icon="">Culvers - Queen Creek</option><option value="0_62" title="CyberWeld" class="suboption " data-icon="">CyberWeld</option><option value="0_140" title="D65 Concepts" class="suboption " data-icon="">D65 Concepts</option><option value="0_130" title="Dean's Graphics, Inc." class="suboption " data-icon="">Dean's Graphics, Inc.</option><option value="0_146" title="Del Monte Landscape" class="suboption " data-icon="">Del Monte Landscape</option><option value="0_109" title="DeLux Realty" class="suboption " data-icon="">DeLux Realty</option><option value="0_212" title="Desert Landscape Solutions LLC" class="suboption " data-icon="">Desert Landscape Solutions LLC</option><option value="0_163" title="Desert Mountain Equine" class="suboption " data-icon="">Desert Mountain Equine</option><option value="0_207" title="Desert Paws Agility Equipment" class="suboption " data-icon="">Desert Paws Agility Equipment</option><option value="0_135" title="Diamond J Welding" class="suboption " data-icon="">Diamond J Welding</option><option value="0_115" title="Dino Turf Co LLC" class="suboption " data-icon="">Dino Turf Co LLC</option><option value="0_32" title="Dolphin Graphics" class="suboption " data-icon="">Dolphin Graphics</option><option value="0_263" title="Dot Graphics" class="suboption " data-icon="">Dot Graphics</option><option value="0_108" title="DOT/PHMSA" class="suboption " data-icon="">DOT/PHMSA</option><option value="0_85" title="Elevated Machine and Fabrication" class="suboption " data-icon="">Elevated Machine and Fabrication</option><option value="0_113" title="ELITE VEHICLE OUTFITTERS (EVO)" class="suboption " data-icon="">ELITE VEHICLE OUTFITTERS (EVO)</option><option value="0_102" title="Epic Branding Solutions" class="suboption " data-icon="">Epic Branding Solutions</option><option value="0_33" title="ER2" class="suboption " data-icon="">ER2</option><option value="0_83" title="Etzel Agency" class="suboption " data-icon="">Etzel Agency</option><option value="0_152" title="Eunice Hair Salon" class="suboption " data-icon="">Eunice Hair Salon</option><option value="0_179" title="Eventor" class="suboption " data-icon="">Eventor</option><option value="0_107" title="EZARC Building Solutions" class="suboption " data-icon="">EZARC Building Solutions</option><option value="0_66" title="F &amp; H Mine Supply Inc" class="suboption " data-icon="">F &amp; H Mine Supply Inc</option><option value="0_43" title="Fast Layne Plumbing" class="suboption " data-icon="">Fast Layne Plumbing</option><option value="0_321" title="FCP EURO" class="suboption " data-icon="">FCP EURO</option><option value="0_53" title="FitnessFest-Janice Jaicks" class="suboption " data-icon="">FitnessFest-Janice Jaicks</option><option value="0_328" title="Flawless Meeting Technologies Inc" class="suboption " data-icon="">Flawless Meeting Technologies Inc</option><option value="0_96" title="Fleet Feet - QC" class="suboption " data-icon="">Fleet Feet - QC</option><option value="0_143" title="Florence H.S. Basketball Booster" class="suboption " data-icon="">Florence H.S. Basketball Booster</option><option value="0_147" title="Forest printing" class="suboption " data-icon="">Forest printing</option><option value="0_26" title="Friends of Horseshoe Park" class="suboption " data-icon="">Friends of Horseshoe Park</option><option value="0_183" title="Fur Mobile Pet Grooming" class="suboption " data-icon="">Fur Mobile Pet Grooming</option><option value="0_245" title="Fusion IRX" class="suboption " data-icon="">Fusion IRX</option><option value="0_68" title="GainsinBulk" class="suboption " data-icon="">GainsinBulk</option><option value="0_153" title="Generation Church" class="suboption " data-icon="">Generation Church</option><option value="0_74" title="Gladiator Marketing" class="suboption " data-icon="">Gladiator Marketing</option><option value="0_104" title="Goin' Postal" class="suboption " data-icon="">Goin' Postal</option><option value="0_171" title="Goldie's Motors" class="suboption " data-icon="">Goldie's Motors</option><option value="0_150" title="Green Flash Pest Control" class="suboption " data-icon="">Green Flash Pest Control</option><option value="0_91" title="Hampton Inn Queen Creek" class="suboption " data-icon="">Hampton Inn Queen Creek</option><option value="0_69" title="Hanson Automotive" class="suboption " data-icon="">Hanson Automotive</option><option value="0_164" title="Happy Cans" class="suboption " data-icon="">Happy Cans</option><option value="0_35" title="Hart Design Firm" class="suboption " data-icon="">Hart Design Firm</option><option value="1_269" title="Highland High School" class="suboption " data-icon="text-purple float-right fas fa-user-unlock">Highland High School</option><option value="0_45" title="Horseshoe Park &amp; Equestrian Centre" class="suboption " data-icon="">Horseshoe Park &amp; Equestrian Centre</option><option value="0_50" title="Ignite Physical Therapy" class="suboption " data-icon="">Ignite Physical Therapy</option><option value="0_81" title="Inkpulsive Printing LLC" class="suboption " data-icon="">Inkpulsive Printing LLC</option><option value="0_139" title="Interior Design by Miranda" class="suboption " data-icon="">Interior Design by Miranda</option><option value="0_229" title="IPS" class="suboption " data-icon="">IPS</option><option value="0_25" title="IT Printing" class="suboption " data-icon="">IT Printing</option><option value="0_22" title="it's not paint." class="suboption " data-icon="">it's not paint.</option><option value="0_314" title="J&amp;R Graphics" class="suboption " data-icon="">J&amp;R Graphics</option><option value="0_97" title="JandR Graphics and Printing" class="suboption " data-icon="">JandR Graphics and Printing</option><option value="0_14" title="JayRey Graphics" class="suboption " data-icon="">JayRey Graphics</option><option value="0_317" title="Jennifer Theabold" class="suboption " data-icon="">Jennifer Theabold</option><option value="0_205" title="Jesus Church" class="suboption " data-icon="">Jesus Church</option><option value="0_193" title="JT Magen" class="suboption " data-icon="">JT Magen</option><option value="0_61" title="KABOOM CANDY CO LLC." class="suboption " data-icon="">KABOOM CANDY CO LLC.</option><option value="0_156" title="Kahoots Feed &amp; Pet Store" class="suboption " data-icon="">Kahoots Feed &amp; Pet Store</option><option value="0_186" title="Kandace Horning" class="suboption " data-icon="">Kandace Horning</option><option value="0_144" title="Kimes Ranch" class="suboption " data-icon="">Kimes Ranch</option><option value="0_76" title="Knockout Plumbing" class="suboption " data-icon="">Knockout Plumbing</option><option value="0_185" title="KOA Steamers" class="suboption " data-icon="">KOA Steamers</option><option value="0_149" title="Kodiak Dustless" class="suboption " data-icon="">Kodiak Dustless</option><option value="0_92" title="Kodiak Tile &amp; Stone" class="suboption " data-icon="">Kodiak Tile &amp; Stone</option><option value="0_280" title="KS Signs" class="suboption " data-icon="">KS Signs</option><option value="0_311" title="LAT Graphics" class="suboption " data-icon="">LAT Graphics</option><option value="0_41" title="Legacy Traditional Schools" class="suboption " data-icon="">Legacy Traditional Schools</option><option value="0_111" title="LEOPARD AVIATION LLC" class="suboption " data-icon="">LEOPARD AVIATION LLC</option><option value="0_121" title="Lickity Split Express Courier" class="suboption " data-icon="">Lickity Split Express Courier</option><option value="0_197" title="Linron Company" class="suboption " data-icon="">Linron Company</option><option value="0_178" title="Little League" class="suboption " data-icon="">Little League</option><option value="0_192" title="LTY Promotions" class="suboption " data-icon="">LTY Promotions</option><option value="0_71" title="Market Dwellings" class="suboption " data-icon="">Market Dwellings</option><option value="0_80" title="Maryvale High School" class="suboption " data-icon="">Maryvale High School</option><option value="0_175" title="Mesa Gateway Airport Authority" class="suboption " data-icon="">Mesa Gateway Airport Authority</option><option value="0_210" title="Mesa RV" class="suboption " data-icon="">Mesa RV</option><option value="0_154" title="Metso USA Inc" class="suboption " data-icon="">Metso USA Inc</option><option value="0_172" title="Mexicolor printing LLC" class="suboption " data-icon="">Mexicolor printing LLC</option><option value="0_13" title="Minuteman Press" class="suboption " data-icon="">Minuteman Press</option><option value="0_118" title="MosconiStudio" class="suboption " data-icon="">MosconiStudio</option><option value="0_208" title="Mountain View High School" class="suboption " data-icon="">Mountain View High School</option><option value="0_213" title="Naismith Basketball Hall of Fame" class="suboption " data-icon="">Naismith Basketball Hall of Fame</option><option value="0_202" title="National Office Products &amp; Printing, Inc." class="suboption " data-icon="">National Office Products &amp; Printing, Inc.</option><option value="0_99" title="Never Late Printing" class="suboption " data-icon="">Never Late Printing</option><option value="0_82" title="New Star Realty and Relocation" class="suboption " data-icon="">New Star Realty and Relocation</option><option value="0_209" title="Northwest Christian School" class="suboption " data-icon="">Northwest Christian School</option><option value="0_326" title="Nothing Bundt Cakes" class="suboption " data-icon="">Nothing Bundt Cakes</option><option value="0_63" title="Nova Signs &amp; Graphics, Inc." class="suboption " data-icon="">Nova Signs &amp; Graphics, Inc.</option><option value="0_216" title="Olympus Cleaning" class="suboption " data-icon="">Olympus Cleaning</option><option value="0_191" title="On My Game (OMG)" class="suboption " data-icon="">On My Game (OMG)</option><option value="0_159" title="Palm Lane Properties" class="suboption " data-icon="">Palm Lane Properties</option><option value="0_52" title="Patriot Landscape Services" class="suboption " data-icon="">Patriot Landscape Services</option><option value="0_114" title="Paul Saylor Creative" class="suboption " data-icon="">Paul Saylor Creative</option><option value="0_201" title="Peak Experience Realty" class="suboption " data-icon="">Peak Experience Realty</option><option value="0_87" title="Peco Signs &amp; Wraps" class="suboption " data-icon="">Peco Signs &amp; Wraps</option><option value="0_30" title="Phillips Plumbing" class="suboption " data-icon="">Phillips Plumbing</option><option value="0_17" title="Phoenix Online Media" class="suboption " data-icon="">Phoenix Online Media</option><option value="1_310" title="Phoenix United" class="suboption " data-icon="text-purple float-right fas fa-user-unlock">Phoenix United</option><option value="0_184" title="Photo Play" class="suboption " data-icon="">Photo Play</option><option value="0_181" title="Pickett Elementary" class="suboption " data-icon="">Pickett Elementary</option><option value="0_166" title="Pinal County Sheriff's Department" class="suboption " data-icon="">Pinal County Sheriff's Department</option><option value="0_234" title="Pinal County Sheriff's Office" class="suboption " data-icon="">Pinal County Sheriff's Office</option><option value="0_100" title="Play It Safe Playgrounds" class="suboption " data-icon="">Play It Safe Playgrounds</option><option value="0_127" title="Poles &amp; Holes Construction" class="suboption " data-icon="">Poles &amp; Holes Construction</option><option value="0_203" title="Poneman Basketball LLC" class="suboption " data-icon="">Poneman Basketball LLC</option><option value="0_7" title="Position Sports" class="suboption " data-icon="">Position Sports</option><option value="0_267" title="Position Sports Demo" class="suboption " data-icon="">Position Sports Demo</option><option value="0_211" title="Power Sand Volleyball" class="suboption " data-icon="">Power Sand Volleyball</option><option value="0_182" title="Precision Dynamics International" class="suboption " data-icon="">Precision Dynamics International</option><option value="0_27" title="Prime Time Thermographics" class="suboption " data-icon="">Prime Time Thermographics</option><option value="0_38" title="Primetime Electric, LLC" class="suboption " data-icon="">Primetime Electric, LLC</option><option value="0_200" title="printing2" class="suboption " data-icon="">printing2</option><option value="0_133" title="Pro Performance" class="suboption " data-icon="">Pro Performance</option><option value="0_235" title="Pro Rivals Open" class="suboption " data-icon="">Pro Rivals Open</option><option value="0_19" title="Proud Owner Design LLP" class="suboption " data-icon="">Proud Owner Design LLP</option><option value="0_21" title="Quality Sign Company" class="suboption " data-icon="">Quality Sign Company</option><option value="0_320" title="Queen Creek Botanical Gardens" class="suboption " data-icon="">Queen Creek Botanical Gardens</option><option value="0_90" title="Queen Creek Health Center" class="suboption " data-icon="">Queen Creek Health Center</option><option value="0_8" title="Radix" class="suboption " data-icon="">Radix</option><option value="0_4" title="RCS" class="suboption " data-icon="">RCS</option><option value="0_112" title="RE/MAX Solutions" class="suboption " data-icon="">RE/MAX Solutions</option><option value="0_18" title="Red Brick Studios" class="suboption " data-icon="">Red Brick Studios</option><option value="0_51" title="Red Rocks Branding" class="suboption " data-icon="">Red Rocks Branding</option><option value="0_95" title="Renovate Pros" class="suboption " data-icon="">Renovate Pros</option><option value="0_5" title="Retail" class="suboption " data-icon="">Retail</option><option value="0_67" title="RLJ Enterprises" class="suboption " data-icon="">RLJ Enterprises</option><option value="0_132" title="Rodeo Naked Co." class="suboption " data-icon="">Rodeo Naked Co.</option><option value="0_77" title="Ruggiero's Ace Hardware" class="suboption " data-icon="">Ruggiero's Ace Hardware</option><option value="0_12" title="Ryan's Signs" class="suboption " data-icon="">Ryan's Signs</option><option value="0_249" title="Saguaro High School" class="suboption " data-icon="">Saguaro High School</option><option value="0_262" title="Sandra Day O'Connor High School" class="suboption " data-icon="">Sandra Day O'Connor High School</option><option value="0_34" title="Schmidty Racing Suspensions" class="suboption " data-icon="">Schmidty Racing Suspensions</option><option value="0_165" title="Schnepf Elementary School" class="suboption " data-icon="">Schnepf Elementary School</option><option value="0_214" title="Select Choice Insurance Group" class="suboption " data-icon="">Select Choice Insurance Group</option><option value="0_125" title="Seven Peaks Fence and Barns" class="suboption " data-icon="">Seven Peaks Fence and Barns</option><option value="0_2" title="Silent-Aire" class="suboption " data-icon="">Silent-Aire</option><option value="0_141" title="Simpson Strong-Tie" class="suboption " data-icon="">Simpson Strong-Tie</option><option value="0_176" title="Smith Painting &amp; Services" class="suboption " data-icon="">Smith Painting &amp; Services</option><option value="0_155" title="Sol Paintless Dent Repair" class="suboption " data-icon="">Sol Paintless Dent Repair</option><option value="0_84" title="Southeast Valley Rentals" class="suboption " data-icon="">Southeast Valley Rentals</option><option value="0_24" title="Southern Carlson" class="suboption " data-icon="">Southern Carlson</option><option value="0_129" title="Sozo" class="suboption " data-icon="">Sozo</option><option value="0_57" title="Sparkle Grooming Co" class="suboption " data-icon="">Sparkle Grooming Co</option><option value="0_79" title="Spectrum Shade" class="suboption " data-icon="">Spectrum Shade</option><option value="0_23" title="Spotlight Signs and Imaging Solutions" class="suboption " data-icon="">Spotlight Signs and Imaging Solutions</option><option value="0_215" title="SPS Plus Architects" class="suboption " data-icon="">SPS Plus Architects</option><option value="0_126" title="Styfl Rattlers" class="suboption " data-icon="">Styfl Rattlers</option><option value="0_36" title="Sunland Asphalt" class="suboption " data-icon="">Sunland Asphalt</option><option value="0_134" title="Tank N Barrel" class="suboption " data-icon="">Tank N Barrel</option><option value="0_64" title="Teeple for Sheriff" class="suboption " data-icon="">Teeple for Sheriff</option><option value="0_315" title="Test Corp 1" class="suboption " data-icon="">Test Corp 1</option><option value="0_145" title="Texas Roadhouse" class="suboption " data-icon="">Texas Roadhouse</option><option value="0_75" title="TGT Transport" class="suboption " data-icon="">TGT Transport</option><option value="0_42" title="The Lab North America Inc." class="suboption " data-icon="">The Lab North America Inc.</option><option value="0_217" title="The Lou Next" class="suboption " data-icon="">The Lou Next</option><option value="0_37" title="The Sign Jungle" class="suboption " data-icon="">The Sign Jungle</option><option value="0_54" title="The Squeegee Gurus" class="suboption " data-icon="">The Squeegee Gurus</option><option value="0_218" title="Tint Cartel" class="suboption " data-icon="">Tint Cartel</option><option value="0_31" title="Town of Queen Creek" class="suboption " data-icon="">Town of Queen Creek</option><option value="0_131" title="Trinity Mennonite Church" class="suboption " data-icon="">Trinity Mennonite Church</option><option value="0_28" title="Universal" class="suboption " data-icon="">Universal</option><option value="0_93" title="US DOT/PHMSA" class="suboption " data-icon="">US DOT/PHMSA</option><option value="0_312" title="Valley Wrap and Design" class="suboption " data-icon="">Valley Wrap and Design</option><option value="0_110" title="Van Marcke Trade Supply" class="suboption " data-icon="">Van Marcke Trade Supply</option><option value="0_39" title="Visual Graphx" class="suboption " data-icon="">Visual Graphx</option><option value="0_78" title="Water Bucks" class="suboption " data-icon="">Water Bucks</option><option value="0_60" title="We Fix It Home Services" class="suboption " data-icon="">We Fix It Home Services</option><option value="0_174" title="wereinkling.com" class="suboption " data-icon="">wereinkling.com</option><option value="0_318" title="Wheel Medics" class="suboption " data-icon="">Wheel Medics</option><option value="0_173" title="Wild West Water Delivery" class="suboption " data-icon="">Wild West Water Delivery</option><option value="0_123" title="WonderWise Preschool" class="suboption " data-icon="">WonderWise Preschool</option><option value="0_136" title="XC Crismon Booster Club" class="suboption " data-icon="">XC Crismon Booster Club</option><option value="0_168" title="XNRGY Climate Systems US, LLC" class="suboption " data-icon="">XNRGY Climate Systems US, LLC</option><option value="0_3" title="Yellowstone Landscape" class="suboption " data-icon="">Yellowstone Landscape</option></select><button type="button" tabindex="-1" class="btn dropdown-toggle btn-white" data-toggle="dropdown" role="combobox" aria-owns="bs-select-2" aria-haspopup="listbox" aria-expanded="false" data-id="store_switch" title="cderamos"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">cderamos</div></div> </div></button><div class="dropdown-menu "><div class="bs-searchbox"><input type="search" class="form-control" autocomplete="off" role="combobox" aria-label="Search" aria-controls="bs-select-2" aria-autocomplete="list"></div><div class="inner show" role="listbox" id="bs-select-2" tabindex="-1"><ul class="dropdown-menu inner show" role="presentation"></ul></div></div></div>
+                                <input type="hidden" name="ops_csrf_token" value="[masked]"></form>
+                            </div>
+                        </div></div>        </div>
+        <div class="d-flex flex-row-reverse align-items-center ml-2 text-120">
+                        <a class="ml-2 full_screen_icon" href="javascript:void(0);" onclick="if (!window.__cfRLUnblockHandlers) return false; toggleFullscreen();" data-placement="auto" data-toggle="tooltip" data-original-title="Toggle full screen" style="text-decoration:none;"><i class="far fa-expand"></i></a>
+                        <span class="pr-1" id="pin_icon">
+                <i class="fas fa-thumbtack pin-icon pinpagebtn fa-sm" data-placement="left" title="Pin this page" data-toggle="modal" data-target="#saveadminpinpage"></i>            </span>
+        </div>
+    </div>
+</div>
+<!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content pt-lg-5">
+
+                    <div class="row" id="emailtemplate_reminder_listing_content">
+                        <div class="col-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            <div class="page-header">
+	<h1>Email Reminder</h1>
+</div>
+
+<div class="row">
+	<div class="col-12">
+				<div class="alert alert-danger page-info-message"> At present, no email reminder services are active for your site. Please ensure the 'Mailgun' external service is configured and enabled correctly.To activate any of the email reminder statuses, please contact technical team. </div>
+	</div>
+</div>
+<div class="tabbable tabs-above">
+	<ul id="emailReminderTab" class="nav nav-tabs">
+		<li class="nav-item active">
+			<a href="#defaultEmailReminder" class="nav-link active" data-toggle="tab" aria-expanded="true">
+				Default Reminder			</a>
+		</li>	
+		<li class="nav-item">
+			<a href="#additionalEmailReminder" class="nav-link" data-toggle="tab" aria-expanded="false">
+				Additional Reminder			</a>
+		</li>
+	</ul>
+	
+	<div class="tab-content">
+		<div class="tab-pane active show" id="defaultEmailReminder">
+			<div id="ops-table-default_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="form-row search_row mb-1"><div class="col-md-10 col-9 search-container"><div id="ops-table-default_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="ops-table-default"></label></div></div><div class="col-md-2 col-3 tableTools-container text-right"><div class="btn-group btn-overlap"><a class="DTTT_button btn btn-outline-primary btn-sm" id="ToolTables_ops-table-default_0" title="Print" tabindex="0" aria-controls="ops-table-default"><span><i class="far fa-print text-110 text-grey"></i></span></a></div></div><div id="ops-table-default_processing" class="dataTables_processing col-12 alert alert-info" style="display: none;">Processing...<br><i class="fa fa-spinner fa-spin bigger-250"></i><div><div></div><div></div><div></div><div></div></div></div></div><div class="table-responsive"><table id="ops-table-default" class="table table-striped table-sm table-bordered table-hover dataTable no-footer DTTT_selectable" aria-describedby="ops-table-default_info">
+				<thead>
+					<tr><th data-data="sr" data-class-name="text-center" class="text-center sorting" tabindex="0" aria-controls="ops-table-default" rowspan="1" colspan="1" aria-label="Sr#: activate to sort column ascending">Sr#</th><th data-data="email_subject" class="sorting" tabindex="0" aria-controls="ops-table-default" rowspan="1" colspan="1" aria-label="Email Subject: activate to sort column ascending">Email Subject</th><th data-data="status" data-type="html" data-class-name="text-center" class="text-center sorting" tabindex="0" aria-controls="ops-table-default" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th><th data-data="email_settings" data-orderable="false" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Settings">Settings</th><th data-data="Action" data-orderable="false" data-searchable="false" data-class-name="no-print" class="no-print sorting_disabled" rowspan="1" colspan="1" aria-label="Action">Action</th></tr>
+				</thead><tbody><tr id="template_id:132" class="odd"><td class="  text-center">1</td><td><a href="#" class="fancybox-help" title="Reminder for Total Pending Amount: Reference IDs - {invoice_reference_ids}">Reminder for Total Pending Amount: Reference IDs - {invoice_reference_ids}</a><div class="helpcontenthtml" style="display:none;"><table align="center" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td>
+
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td align="center" class="layout-grid-line" valign="top" colspan="3">
+                                <!-- ── Page header ── -->
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%" class="layout-header"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td height="75">
+
+                                                <h1>
+                                                    Clear Your Outstanding Amount</h1>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr></tbody></table>
+                                <!-- ── Page header ── -->
+                                <!-- ── content ── -->
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <p>
+                                                    Hello {customer_name},</p>
+
+                                                <p class="mt-2">
+                                                    This is just a friendly reminder about your outstanding balance.
+                                                </p>
+
+                                                <p class="mt-2">
+                                                    We have noticed that there is an outstanding amount of {total_outstanding_amount} pending.
+                                                </p>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%">
+
+                                                                <h3>Payment Details:</h3>
+
+                                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%" colspan="2">
+
+                                                                                <table border="1" style="border-collapse: collapse;" cellpadding="7" cellspacing="0" width="100%"><tbody><tr><td class="th-bg border" width="30%"><strong>Invoice</strong>
+                                                                                            </td>
+                                                                                            <td width="70%" class="border">{invoice_reference_ids}
+                                                                                            </td></tr>
+                                                                                        <tr><td class="th-bg border" width="30%"><strong>Total Amount Due</strong>
+                                                                                            </td>
+                                                                                            <td width="70%" class="border">{total_outstanding_amount}
+                                                                                            </td></tr></tbody></table>
+                                                                            </td></tr></tbody></table>
+                                                            </td></tr></tbody></table>
+
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <p>
+                                                    We hereby request you to make the payment request:</p>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td align="left">
+
+                                                                <table cellpadding="0" cellspacing="0" width="170" border="0"><tbody><tr><td class="post_button">
+                                                                                <a href="{payment_link}" style=" text-decoration:none;"><strong>Pay Now</strong></a>
+                                                                            </td></tr></tbody></table>
+                                                            </td></tr></tbody></table>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <p>
+                                                    If you have already made the payment, please ignore this email.</p>
+
+                                                <p>
+                                                    <br>
+                                                </p>
+
+                                                <p>For any other query, please <a href="{SITE_URL}contact_us.html" id="isPasted">contact us</a> and we’ll be happy to help.</p>
+
+                                                <p>
+                                                    <br>
+                                                </p>
+
+                                                <div>{SIGNATURE}</div>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td coldiv="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+                                <!-- ── content ── -->
+                            </td></tr></tbody></table>
+            </td></tr></tbody></table></div><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">This email is sent to remind the customer of the total pending amount for their order(s) including the reference IDs for their records, and to facilitate payment.</div></span><br><small>( PAYON_OUTSTANDING_AMOUNT_REMINDER )</small></td><td class="  text-center"><input type="checkbox" name="status" id="status" checked="checked" value="1" class="form-control ace ace-switch ace-switch-check ace-switch-times bgc-success text-danger change_status"><span class="d-none">1</span></td><td></td><td class="  no-print"><div class="btn-group col-btn-actions inline-action-btn"><a href="emailtemplate_action.php?Action=edit&amp;id=132&amp;stype=1" data-original-title="Edit" data-toggle="tooltip" data-placement="bottom"><i class="far fa-pencil icon-on-left btn btn-outline-lightgrey btn-sm mr-15 p-2"></i> </a><a href="email_scheduler_setting.php?id=132" data-original-title="Reminder Setting" data-toggle="tooltip" data-placement="bottom"><i class="far fa-cog icon-on-left btn btn-outline-lightgrey btn-sm mr-15 p-2"></i> </a></div></td></tr><tr id="template_id:129" class="even"><td class="  text-center">2</td><td><a href="#" class="fancybox-help" title="Payment Pending for Your Order: Order #{order_id}">Payment Pending for Your Order: Order #{order_id}</a><div class="helpcontenthtml" style="display:none;"><table align="center" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td>
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td align="center" class="layout-grid-line" valign="top" colspan="3">
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%" class="layout-header"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td height="75" style="width: 98.4047%;">
+                                                <h1>
+                                                </h1>
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%">
+                                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%" colspan="2">
+                                                                                <table border="1" style="border-collapse: collapse;" cellpadding="7" cellspacing="0" width="100%"><tbody><tr><td class="th-bg border" width="30%" style="width: 29.9769%; background-color: rgb(41, 105, 176);">
+                                                                                                <div style="text-align: center;"><strong><span style="font-size: 28px; color: rgb(255, 255, 255);">Order Payment Due</span></strong></div>
+                                                                                            </td></tr></tbody></table>
+                                                                            </td></tr></tbody></table>
+                                                            </td></tr></tbody></table>
+                                            </td></tr></tbody></table>
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td colspan="3" height="25"></td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+                                                <p>
+                                                    Hello {customer_name},</p>
+                                                <p class="mt-2">
+                                                    This is a friendly reminder that an Order has not yet been paid.</p>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25"></td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%">
+                                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%" colspan="2">
+                                                                                <table border="1" style="border-collapse: collapse;" cellpadding="7" cellspacing="0" width="100%"><tbody><tr><td class="th-bg border" width="30%" style="width: 29.9769%;"><strong>Order ID</strong></td>
+                                                                                            <td width="70%" class="border" style="width: 69.9074%;">{order_id}
+                                                                                            </td></tr>
+                                                                                        <tr><td class="th-bg border" width="30%" style="width: 29.9769%;"><strong>Balance Due</strong></td>
+                                                                                            <td width="70%" class="border" style="width: 69.9074%;">{amount}
+                                                                                            </td></tr>
+                                                                                        <tr><td class="th-bg border" width="30%" style="width: 29.9769%;"><strong>Comments</strong></td>
+                                                                                            <td width="70%" class="border" style="width: 69.9074%;">{admin_comment}
+                                                                                            </td></tr></tbody></table>
+                                                                            </td></tr></tbody></table>
+                                                            </td></tr></tbody></table>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25"></td></tr></tbody></table>
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+                                                <div style="text-align: center;"><a href="{payment_link}" style=" text-decoration:none;"><strong><span style="font-size: 24px;">Pay Now</span></strong></a></div>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25"></td></tr></tbody></table>
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+                                                <p>If you have already made the payment, please ignore this email.</p>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25"></td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+                                                <p>
+                                                    For any other questions, please <a href="{SITE_URL}contact_us.html">contact us</a>, we’ll be happy to help.</p>
+                                                <p>
+                                                    <br>
+                                                </p>
+                                                <div>{SIGNATURE}</div>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr></tbody></table>
+
+                            </td></tr>
+                        <tr><td colspan="3" height="25"></td></tr></tbody></table>
+            </td></tr></tbody></table></div><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">This email is sent to remind the customer that payment for their order is still pending (against the payment request) encouraging them to complete the payment to avoid delays in processing or shipping.</div></span><br><small>( PAYMENT_REMINDER_UNPAID_PAYMENT_REQUEST )</small></td><td class="  text-center"><input type="checkbox" name="status" id="status" checked="checked" value="1" class="form-control ace ace-switch ace-switch-check ace-switch-times bgc-success text-danger change_status"><span class="d-none">1</span></td><td><dl class="dl-horizontal"><dt><b>Available To :</b></dt><dd>All Store</dd><span class="d-none"><br></span><dt><b>Number of Days :</b></dt><dd>5</dd><span class="d-none"><br></span><dt><b>Repeat Notification :</b></dt><dd>2</dd><span class="d-none"><br></span></dl></td><td class="  no-print"><div class="btn-group col-btn-actions inline-action-btn"><a href="emailtemplate_action.php?Action=edit&amp;id=129&amp;stype=1" data-original-title="Edit" data-toggle="tooltip" data-placement="bottom"><i class="far fa-pencil icon-on-left btn btn-outline-lightgrey btn-sm mr-15 p-2"></i> </a><a href="email_scheduler_setting.php?id=129" data-original-title="Reminder Setting" data-toggle="tooltip" data-placement="bottom"><i class="far fa-cog icon-on-left btn btn-outline-lightgrey btn-sm mr-15 p-2"></i> </a></div></td></tr><tr id="template_id:128" class="odd"><td class="  text-center">3</td><td><a href="#" class="fancybox-help" title="Transaction Failed: Order #{order_id}">Transaction Failed: Order #{order_id}</a><div class="helpcontenthtml" style="display:none;"><table align="center" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td>
+
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td align="center" class="layout-grid-line" valign="top" colspan="3">
+                                <!-- Page header -->
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%" class="layout-header"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td height="75">
+
+                                                <h1>
+                                                    Transaction Failed</h1>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr></tbody></table>
+                                <!-- Page header -->
+                                <!-- content -->
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <p>
+                                                    Hello {customer_name},</p>
+
+                                                <p class="mt-2">
+                                                    This is a gentle reminder to let you know that your online transaction for Order #{order_id} has failed. But don’t worry, you can complete your transaction:</p>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+                                <!-- content -->
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td align="left">
+
+                                                                <table cellpadding="0" cellspacing="0" width="170" border="0"><tbody><tr><td class="post_button"><a href="{orderdetails_link}" style=" text-decoration:none;"><strong>View Order</strong></a></td></tr></tbody></table>
+                                                            </td></tr></tbody></table>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr>
+                                        <tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <p>Please take a moment to review your order information.</p>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+                                <!-- Order summary -->
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <h3>
+                                                    Order Summary</h3>
+                                                <div>{card_details}</div>
+                                            </td>
+                                            <td width="20">&nbsp;</td></tr>
+                                        <tr><td colspan="3" height="25">
+                                                <br>
+                                            </td></tr></tbody></table>
+
+                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="20">&nbsp;</td>
+                                            <td>
+
+                                                <h3>
+                                                    Order Total</h3>
+
+                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><!-- order details -->
+                                                            <td width="50%" class="stacked">
+
+                                                                <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td width="100%" colspan="2">
+
+                                                                                <table border="1" style="border[Truncated]

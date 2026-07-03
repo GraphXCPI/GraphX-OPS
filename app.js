@@ -38,8 +38,58 @@ const revisedMenu = [
   { label: "Admin Users", icon: "♙", view: "admin", children: ["Users", "Roles"] }
 ];
 
+const liveReferences = {
+  "115-welcome": [
+    { label: "GX-002 Dashboard", src: "./live-screenshots/dashboard-gx002.png" }
+  ],
+  "012-corporate_listing": [
+    { label: "Stores list", src: "./live-screenshots/stores-list.png" },
+    { label: "Duplicate Store Data modal", src: "./live-screenshots/duplicate-store-data.png" },
+    { label: "Markup Master from Stores", src: "./live-screenshots/markup-master.png" },
+    { label: "Store edit markup assignment", src: "./live-screenshots/edit-store-markup.png" }
+  ],
+  "007-cms_listing": [
+    { label: "Fixed CMS content", src: "./live-screenshots/cms-fixed-content.png" },
+    { label: "Hidden CMS help editor", src: "./live-screenshots/cms-hidden-help.png" }
+  ],
+  "041-media_gallery_listing": [
+    { label: "Current image manager", src: "./live-screenshots/image-manager.png" }
+  ],
+  "025-export_orders": [
+    { label: "Export/API Orders", src: "./live-screenshots/export-api-orders.png" },
+    { label: "Export/API Settings", src: "./live-screenshots/export-api-settings.png" },
+    { label: "Hot Folder Settings", src: "./live-screenshots/hot-folder-settings.png" },
+    { label: "Advanced API", src: "./live-screenshots/advanced-api.png" },
+    { label: "Webhook Settings", src: "./live-screenshots/webhook-settings.png" }
+  ],
+  "010-configuration_settings": [
+    { label: "Store configuration cards", src: "./live-screenshots/store-config-cards.png" }
+  ],
+  "056-product_listing": [
+    { label: "Print Products list", src: "./live-screenshots/print-products-list.png" },
+    { label: "Product settings", src: "./live-screenshots/product-settings.png" }
+  ],
+  "049-predefined_product_listing": [
+    { label: "Ready To Buy Products list", src: "./live-screenshots/ready-to-buy-products-list.png" }
+  ],
+  "054-product_category_listing": [
+    { label: "Product category SEO", src: "./live-screenshots/product-category-seo.png" }
+  ],
+  "093-seo_all": [
+    { label: "Dynamic CMS page SEO", src: "./live-screenshots/cms-dynamic-page-seo.png" }
+  ],
+  "046-order_listing": [
+    { label: "Orders menu structure", src: "./live-screenshots/orders-menu.png" }
+  ]
+};
+
+const currentLabelOverrides = {
+  "115-welcome": "Dashboard",
+  "093-seo_all": "Page title, Keyword setting"
+};
+
 const state = {
-  mode: "revised",
+  mode: "baseline",
   currentPage: "115-welcome",
   currentView: "dashboard",
   search: "",
@@ -72,6 +122,10 @@ function pathName(hrefOrPath) {
   try { return new URL(hrefOrPath).pathname; } catch { return hrefOrPath || ""; }
 }
 
+function pageLabel(p) {
+  return currentLabelOverrides[p?.slug] || p?.label || p?.title || "Dashboard";
+}
+
 function allRows(slug) {
   const p = key(slug);
   return (p?.tables || []).flatMap(t => t.sampleRows || []);
@@ -83,10 +137,11 @@ function firstTable(slug) {
 }
 
 function routeLink(slug) {
-  return `../ops-admin-deconstruction-2026-07-03/html-sanitized/${slug}.html`;
+  return `./html-sanitized/${slug}.html`;
 }
 
 function appShell(content) {
+  if (state.mode === "baseline") return baselineShell();
   const menu = state.mode === "baseline" ? currentMenu : revisedMenu;
   return `
     <div class="app">
@@ -103,6 +158,79 @@ function appShell(content) {
           ${toolbar()}
           ${content}
         </section>
+      </div>
+    </div>
+  `;
+}
+
+function baselineShell() {
+  const current = page(state.currentPage) || capture.pages[0];
+  const refs = liveReferences[current.slug] || [];
+  return `
+    <div class="baseline-app">
+      <header class="baseline-control">
+        <div>
+          <strong>OPS Admin Simulator</strong>
+          <span>Current OPS captured page fidelity</span>
+        </div>
+        <div class="mode-switch">
+          <button data-mode="baseline" class="active">Current OPS</button>
+          <button data-mode="revised">Proposed</button>
+        </div>
+      </header>
+      <div class="baseline-layout">
+        <aside class="baseline-nav">
+          <div class="baseline-nav-head">Captured OPS Pages</div>
+          ${currentMenu.map(renderBaselineMenuGroup).join("")}
+        </aside>
+        <section class="baseline-frame-wrap">
+          <div class="baseline-frame-title">
+            <div>
+              <strong>${esc(pageLabel(current))}</strong>
+              <span>${esc(pathName(current.href))}</span>
+            </div>
+            <a class="btn light" href="${routeLink(current.slug)}" target="_blank" rel="noopener">Open captured HTML</a>
+          </div>
+          ${refs.length ? renderLiveReferences(refs, current) : `<iframe class="baseline-frame" title="Current OPS captured ${esc(pageLabel(current))}" src="${routeLink(current.slug)}"></iframe>`}
+        </section>
+      </div>
+    </div>
+  `;
+}
+
+function renderLiveReferences(refs, current) {
+  return `
+    <div class="live-reference-pane">
+      <div class="live-reference-note">
+        Showing live GX-002 screenshots supplied during review. Captured sanitized HTML is still available from the button above for DOM/field reference.
+      </div>
+      ${refs.map(ref => `
+        <figure class="live-reference">
+          <figcaption>${esc(ref.label)}</figcaption>
+          <img src="${esc(ref.src)}" alt="${esc(ref.label)}">
+        </figure>
+      `).join("")}
+      <details class="captured-html-details">
+        <summary>Show sanitized captured HTML for ${esc(pageLabel(current))}</summary>
+        <iframe class="baseline-frame embedded" title="Captured HTML ${esc(pageLabel(current))}" src="${routeLink(current.slug)}"></iframe>
+      </details>
+    </div>
+  `;
+}
+
+function renderBaselineMenuGroup(group) {
+  const active = group.pages?.includes(state.currentPage);
+  return `
+    <div class="baseline-nav-group">
+      <button class="baseline-nav-title ${active ? "active" : ""}" data-page="${group.pages[0]}">
+        <span><span class="nav-icon">${group.icon}</span>${esc(group.label)}</span><span>⌄</span>
+      </button>
+      <div class="baseline-nav-items">
+        ${group.pages.map(slug => page(slug)).filter(Boolean).map(p => `
+          <button class="baseline-nav-item ${state.currentPage === p.slug ? "active" : ""}" data-page="${p.slug}">
+            ${esc(pageLabel(p))}
+          </button>
+        `).join("")}
       </div>
     </div>
   `;

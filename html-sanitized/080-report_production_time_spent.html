@@ -1,0 +1,989 @@
+<!doctype html>
+<html lang="en" style="--scrollbar-width: 15px; --moz-scrollbar-thin: 11px;"><plasmo-csui id="ff-overlay-container"></plasmo-csui><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <title>Admin :: Production Time Spent</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="csrf-token" content="[hex-token]">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20data-codex-favicon-badge%3D%22codex-favicon-badge%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cimage%20href%3D%22data%3Aimage%2Fbmp%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGwklEQVR4nJxXSW8cRRR%2Br6q7Z8aOlwQvbDKBEAiJcovggJByQQgkJFCUExJXxIELvyBHLlw5cURcwiLBLWKxciERQlEknAQQOAs4dux4je2Z6a56fK%2Bqx%2BMx48mITsbTtbz63vveVpNQx3M6IZouaifPfMicfCxSbImQMBPHb66SyC0p%2FEf1lc3PaeHCZhB79vXxgWzgfbH8HkbjItKEDLYS%2FrLBH7z7D%2BozX31KdNYSnXctxKRTgXHRv444tQxM4ZRJEsZsWKCgSQ2jCo1uGlooxVxqHPOgFRkgaI69QaYU8czG%2BoJqceJ8B6LpVGCR46Qaa1QFG47Ah8uPvnsWT6uDvn1KXQw5v3tv6130DAmj0uqzHYhdGcDWe0L5AgbLOoLdBgcpDzV83REyy7Qw0lagwQVVeA5qXwMYXIAZpR3kQ9B48iq%2FVDIgPRQ4IUqRF1mx4mcBvORJCsE5oFQ1qMG%2Bu1y4dbDVPqi6WjgavA86%2F4KlawCv6yJ4YmFjhLyFEuvU5dmjwExwAVueImNPkS82TOBRD0JEEFdg4R0QcpEmM7sTA1sTmUn5aWx5GaMxQBd6UIg%2BCFho4cl%2B0YcCMQbgxBoUSETcEMDLPYAP3pURHFclP8I7YmOJYecPIG5GsemAyB4UNlDGl0F4GjZN77jPdNNKY70VRdRKgJ1vEOvxWay2YbbqIIh94Kq9d9c7RDRwwzPdKwZiEIrzKwjCDYjimwoYjsTQf8GKvxFcWzQJ%2FlsuqHsnmdyH5G1YX6cQA9w2Eixazxt5GJ7Dkef2UyAGoWOpW6F1zQIckwcOtZQQHQDFq2JMk%2Bz9tiUmUca2sL4CBRIovE2x%2Buh%2Fi%2FcU8dikLk%2FXIEQFGGdrn0AQHlICQS68QpoMCEJXZccjzdEhQ3OlWOYTCD0K4WNQdQyMF9QqoaQxhVQgd3A3xj4KxCdoreEhnLBmM1zrQ1qL1qjEiWda3C1Q1XqXADwFXOI1%2BRTGS9BAs8gHFh%2FKQHSBCYWogULES%2FjkkDRKJurDATAyCxfM02It3xHLm7mr1uYAdB3bJnDItoTQ00JMBsoUKEQLuzF6ugBiaAWU4bBUFFzrsgZhnMtQpCz9lzYDrjO8ZOo0aSU0KIOohSKWHs5ArAM%2B4fHEVg5S0RjhVjfjsg4YlzlvHqexNKMlagQxazNDforZHsP2YbW%2B7IbhRSMATpyIGOd6xUBMQ%2Fa%2BIagsAN2IPTW0RnVmAk02MZHQk8ZSWd2pmmjA6NYHyp6UlVBaUShe46geN2sz2tcFcQHtDr4v5gANSjjX8KeAQBWArJIG44NGuiPmC6iWbmPLTeTqIDCbvtW%2FQz%2BQos9mFLVDHUiRvCOWScudi2U4bEgRy4cwPkpJZVB9VgqiZPNJRMtRjla7sgUbiq5YwXRL4V4uiNrB6ys4ZhadcCgW1LKMgl7lAVE1THm6I5sh%2BMRgLzMyQ7apvLlgrPu1isx7dU98OhjYm5slnJvD9WIGRxRhjK6kRMOnjZAJhp9JKsVUS8ibdAJmjWsmaOnGlAN6EY7jML7GuZ%2FvpkDXQkSFqZtMNpF9oFm0uDTCFQmlANYPgoQxAB4O97vDiymuYs%2BpG8B3BWuDFPfCDaxuaoC%2Fu7nbXO5HgbCYZ27eUnKJvJ8MrVm4rlcrUQUMIeWkgdo7mh9Ze4RoeJgTmsLaDc13gDmrVxD4Dw6ALK1jcJH%2BvDDXzdbuDPz6zRIdf3sWlhyERkcjjaI1meL9lKts5XC1MnC1wOUAwG%2BgWDwKyGZoW1o2TDhb9fi5wUZvQ65%2FBbC53qzfqmW1y1CiglDJAJ2rG%2FQuECNaoJR5Bc2iGawMlXcHJNyewMqGOL6EPnl3H5zOlNjzmNrxt07hfvYuwngSCb0V%2B4nE9hJqIw3Fdu8fhJ4Z1kIb1BqENfqn0ZRP6Pcvb%2BwHkvRQAFHfXBDGRZhRZoOFsCeChMYgmpZhWm%2FOMVNVM0SqRQ1BQaVblOcrPTB6KkD1tYXF6qGpKzjrRZh7xHvNcc3veN0kad3%2BtGGrXj4kP1YHsPQb7sM%2Fkayv9cIwvRZp7pctco3vwfhVHNxEVJsAHn9ycFnpjL7HvmcUXeeaoO3KdqP4kW5O13tBMD384fSFN19KTPYOwE%2FAHXoPcIa5Q9ZHNlD5GIVRZoqi%2BVl%2B%2FdvLtCfv%2F48C4UmOnXnNJvxqEHLoPsqdMW10zQ1rEoRis0nuu%2BLa1z%2F0dS71%2BRSu%2Fgeb9KmE7PP4tVlTRONi1mEsaM64dEieG3e9yDdv9Huu6XcjDc%2FPw7m39RURXmOtDZymcFCKnx0ZfF714beo3KPH8uV%2Bj%2F0XAAD%2F%2F003fKcAAAAGSURBVAMA2K5kxWz7Eu4AAAAASUVORK5CYII%3D%22%20width%3D%2232%22%20height%3D%2232%22%20opacity%3D%220.3%22%20%2F%3E%3Cpath%20d%3D%22M3.04536%204.45259C2.7582%203.60299%203.60299%202.7582%204.45259%203.04536L14.1828%206.33403C15.1637%206.66558%2015.0872%208.08006%2014.0715%208.39045L10.2994%209.54319C9.93919%209.65327%209.65327%209.93919%209.54319%2010.2994L8.39046%2014.0715C8.08007%2015.0872%206.66558%2015.1637%206.33404%2014.1828L3.04536%204.45259Z%22%20fill%3D%22black%22%20stroke%3D%22white%22%20stroke-width%3D%221.5%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%20fill%22%20transform%3D%22translate(-2%20-2)%20scale(2.1)%22%20%2F%3E%3C%2Fsvg%3E" data-codex-favicon-badge="true" data-codex-original-favicon-href="https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/websitelogos/retailer_favicon_logo596.ico">
+
+<link href="https://visualgraphx.com/dist/admin/includes/css/admin_style.css?1779974870000" rel="stylesheet">
+    <script src="https://visualgraphx.com/thirdparty/ace-admin/js/ace-extra.js" type="text/javascript" data-sanitized="script-body-removed"></script>
+<style>@font-face { font-family: DMSans; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/DMSans-Regular.ttf'); }@font-face { font-family: PoppinsMedium; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Medium.otf'); }@font-face { font-family: PoppinsRegular; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Regular.otf'); }@font-face { font-family: Roboto; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Roboto-Regular.ttf'); }@font-face { font-family: Inter; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Inter-VariableFont_opsz,wght.ttf'); }</style></head>
+
+<body class="no-skin bgc-white  ">
+    <div class="body-container">
+        
+        <!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-expand-lg navbar-fixed navbar-default">
+    <noscript>
+        <div class="alert alert-danger text-center">Currently JavaScript is disabled in your browser, Administrator panel does not work properly. Check <a href="http://www.activatejavascript.org/" target="_blank">how to enable JavaScript</a> in various browsers.</div>
+    </noscript>
+    <div class="navbar-inner flex-wrap" id="navbar-container">
+
+        <div class="navbar-intro">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="btn btn-burger burger-arrowed static ml-2 d-flex d-xl-none collapsed" data-toggle-mobile="sidebar" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+                <span class="bars"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <!-- #section:basics/navbar.layout.brand -->
+                        <a href="https://visualgraphx.com/admin/welcome.php" class="admin_link navbar-brand text-white d-flex align-items-center py-0 mx-1 h-100">
+                <small class="text-center mr-2 py-1 px-2 text-50"><span class="fa-stack fa-md pr-2 d-inline-block" title="Admin">
+                <i class="far fa-home fa-stack-2x"></i>
+                <i class="fas fa-user-alt fa-stack-1x fa-lg"></i>
+            </span><i class="ace-icon fa fa-angle-down pl-1 d-inline-block d-lg-none text-140"></i></small>                <span class="d-inline-block resize-font" style="font-size: 16px;">
+                    Visual Graphx, LLC.                </span>
+            </a>
+            <i class="d-md-none fa fa-spinner fa-spin text-150 ajax_loader mt-2 orange2" style="display:none;"></i>
+
+        </div>
+                <div class="d-lg-none align-self-center header_icon_alignment">
+            <!-- #section:basics/navbar.toggle -->
+                                                        <button class="navbar-toggler collapsed quickSearchMobile btn btn-info" type="button" data-toggle="collapse" data-target="#quick-search-form">
+                    <i class="far fa-search"></i>
+                </button>
+                        <button class="navbar-toggler collapsed btn btn-info mr-1" type="button" data-toggle="collapse" data-target="#navbar-menu">
+                <span class="sr-only">Toogle User Menu</span>
+                <i class="far fa-user text-90"></i>
+            </button>
+            <!-- /section:basics/navbar.toggle -->
+        </div>
+                    <div class="navbar-content flex-wrap d-lg-flex d-none position-relative quickSearch">
+                                <form id="quick-search-form" class="form-inline-block mx-auto py-15">
+                    <div class="input-group px-2">
+                        <input type="text" class="form-control" aria-label="Text input with dropdown button" id="advance-search" autocomplete="off" placeholder="Search here...." data-searched="">
+                        <div class="input-group-append" id="button-addon4">
+                            <button class="btn btn-info" type="button" id="search-btn"><i class="far fa-search"></i></button>
+                        </div>
+                                                    <div class="dropdown ml-2 d-lg-block ">
+                                <button class="btn btn-info dropdown-toggle " type="button" id="showquickpinpages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-bookmark text-90"></i>
+                                </button>
+                                <div class="dropdown-menu p-0" id="pinpagesdown" aria-labelledby="showquickpinpages">
+                                    <div class="quickpinpagelist "><input type="text" name="quickpinpagelist" id="quickpinpagelist" value="" class="form-control "></div>                                </div>
+                            </div>
+                                            </div>
+                    
+                    <!-- Nav tabs -->
+                    <div class="bg-white search-result p-3 position-absolute" style="display: none;" id="advance-search-content">
+                                            <div class="menu-list" id="search-menu-items">
+                        </div>
+                                                                    <div class="search-tab-result d-none position-relative">
+                            <ul class="nav nav-tabs nav-customtabs " role="tablist" id="searchResultTab">
+                                <li class="nav-item"><a class="nav-link p-2 active" data-name="orders" data-toggle="tab" href="#orders_list">Orders</a></li><li class="nav-item"><a class="nav-link p-2 " data-name="customers" data-toggle="tab" href="#customers_list">Customers</a></li><li class="nav-item"><a class="nav-link p-2 " data-name="products" data-toggle="tab" href="#products_list">Products</a></li>                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div id="orders_list" class="tab-pane active"> <div id="no-orders-result"></div> <div class="row search-result-alignment" id="search-orders-result"> </div> <div id="orders-view-more" class="view-more-result pt-2"></div> </div><div id="customers_list" class="tab-pane "> <div id="no-customers-result"></div> <div class="row search-result-alignment" id="search-customers-result"> </div> <div id="customers-view-more" class="view-more-result pt-2"></div> </div><div id="products_list" class="tab-pane "> <div id="no-products-result"></div> <div class="row search-result-alignment" id="search-products-result"> </div> <div id="products-view-more" class="view-more-result pt-2"></div> </div>                            </div>
+                        </div>
+                                            </div>
+                </form>
+            </div>
+                <!--Christmas effect start-->
+                <!--Christmas effect end-->
+        <!-- #section:basics/navbar.dropdown -->
+        <div class="navbar-menu collapse navbar-collapse navbar-backdrop" id="navbar-menu" role="navigation">
+            <div class="navbar-nav">
+                <ul class="nav align-items-md-center">
+                                                                <li class="btn-danger nav-item d-flex align-items-center py-2 CatchTrash">
+                            <label href="javascript:void();" class="text-white px-2 mb-0">Cache</label>
+                            <input id="togglecache" name="togglecache" checked="checked" class="ace-switch ace-switch-yesno ace-switch-bars bgc-blue-d2" type="checkbox">
+                            <a href="javascript:void(0);" class="text-white px-2 catch-trash" title="Clear website cache" id="clearcache" onclick="if (!window.__cfRLUnblockHandlers) return false; clear_website_cache()"> <i class="far fa-lg fa-trash-alt"></i> </a>
+                        </li>
+                                        <li class="nav-item dropdown border-right-0">
+                        <a href="#" class="nav-link dropdown-toggle d-none d-md-flex" data-toggle="dropdown"><i class="fa fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu py-0 dropdown-animated brc-primary-m3 info-dropdown">
+
+                                                            <li class="transparent btn-purple dropdown-item ">
+                                    <a href="https://visualgraphx.com/admin/htmlhelp.php" data-placement="auto" data-toggle="tooltip" data-original-title="Click to view HTML help for storefront setup" target="_blank" class="btn-a-purple btn-h-purple"><i class="far fa-file-code"></i> <i class="fa fa-question d-none d-lg-inline-block"></i></a>
+                                </li>
+                                                                                        <li class="transparent btn-dark dropdown-item solution-help">
+                                    <a href="https://docs.onprintshop.com" data-placement="auto" data-toggle="tooltip" data-original-title="Click Here to get solution help" target="_blank" class="btn-a-dark btn-h-dark"><i class="fa fa-question-circle"></i></a>
+                                </li>
+                                                                                        <li class="transparent btn-blue dropdown-item">
+                                                                        <a class="btn-a-blue btn-h-blue" href="https://docs.onprintshop.com/latest-solution-releases" target="_blank" data-placement="auto" data-toggle="tooltip" data-original-title="Solution Version" style="text-decoration:none;">v12.2</a>
+                                </li>
+                                                    </ul>
+                    </li>
+                    <!--Christmas effect start-->
+                                        <!--Christmas effect end-->
+                                                <li class="btn-info nav-item">
+                                <a href="https://visualgraphx.com/" data-placement="bottom" data-toggle="tooltip" data-original-title="Storefront" target="_blank" class="nav-link"><i class="fa fa-desktop"></i></a>
+                            </li>
+                                        <li class="transparent d-none d-md-flex nav-item opclso align-items-center btn-success" id="lchat">
+                        <script type="text/javascript" data-sanitized="script-body-removed"></script><a name="chat_button" href="javascript:;" onclick="if (!window.__cfRLUnblockHandlers) return false; if(windowObjectReference==null||windowObjectReference.closed){windowObjectReference=window.open('/admin/livechat.php','ChatWindowName','width=550,height=800,resizable=0,scrollbars=0,status=0,toolbar=no,menubar=no,location=no')}else{windowObjectReference.focus()}" class="px-2 lz_cbl" style="padding:0;" data-placement="bottom" data-toggle="tooltip" data-original-title="Live Chat"><i class="far fa-2x fa-comments text-white"></i></a>                    </li>
+                                        <!-- #section:basics/navbar.user_menu -->
+                    <li class="nav-item user-dropdown d-flex d-md-block border-right-0">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle nav-link">
+                            <i class="fa fa-user mr-2"> </i>
+                            <span class="user-info">
+                                <small>Welcome, </small> cderamos                            </span>
+                            <i class="ace-icon fa fa-caret-down ml-2 d-none d-lg-inline-block"></i>
+                        </a>
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-caret dropdown-close py-0 border-left">
+                                                            <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/admin_favourite_link.php">
+                                        <i class="ace-icon fa fa-star"></i>
+                                        <span class="d-none d-md-inline-block">Set favorite links</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/changepassword.php">
+                                        <i class="ace-icon fa fa-user"></i>
+                                        <span class="d-none d-md-inline-block">Change Password</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/configure_2fa.php">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="d-md-inline-block">Configure 2FA</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-divider brc-primary-l2 my-0 d-none d-md-block"></li>
+                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                <a href="https://visualgraphx.com/admin/welcome.php?Action=Logout" id="logout-btn">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    <span class="d-none d-md-inline-block">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+        </div>
+    </div><!-- /.navbar-container -->
+</div>
+<!-- /section:basics/navbar.layout -->
+<script type="text/javascript" data-sanitized="script-body-removed"></script>
+        <div class="main-container" id="main-container">
+
+            <!-- #section:basics/sidebar -->
+<div id="sidebar" class="sidebar sidebar-fixed hoverable sidebar-default" data-gotoactive="true" data-pullup="true" data-subscroll="true">
+    <div class="sidebar-inner">
+        <div class="flex-grow-1 ace-scroll" ace-scroll="">
+            <div class="sidebar-section">
+                <!-- #section:basics/content.searchbox -->
+                <!-- <div class="sidebar-section-item">
+                    <i class="fadeinable fa fa-search text-info mr-n1"></i> -->
+                    <!-- 				<i class="ace-icon fa fa-search nav-search-icon"></i> -->
+                    <!-- <div class="fadeable d-inline-flex align-items-center" id="nav-search">
+                        <i class="far fa-search mr-n3 text-info"></i>
+                        <span class="input-icon">
+                            <input type="text" placeholder="Search" class="sidebar-search-input pl-4 pr-3" id="nav-search-input" autocomplete="off" />
+                        </span>
+                    </div>
+                </div> -->
+                <!-- /section:basics/content.searchbox -->
+                <div class="sidebar-section-item fadeable-left">
+                    <div class="fadeable">
+                                                    <a class="btn btn-success " data-toggle="tooltip" data-placement="top" title="List Orders" href=" https://visualgraphx.com/admin/order_listing.php">
+                                <i class="ace-icon far fa-shopping-cart"></i>
+                            </a>
+                                                    <a class="btn btn-warning " data-toggle="tooltip" data-placement="top" title="Website Customers" href=" https://visualgraphx.com/admin/user_listing.php">
+                                <i class="ace-icon far fa-user"></i>
+                            </a>
+                                                    <a class="btn btn-info " data-toggle="tooltip" data-placement="top" title="Print Products" href=" https://visualgraphx.com/admin/product_listing.php">
+                                <i class="ace-icon far fa-tags"></i>
+                            </a>
+                                                    <a class="btn btn-warning " data-toggle="tooltip" data-placement="top" title="PDF Block Templates" href=" https://visualgraphx.com/admin/template_manager.php">
+                                <i class="ace-icon far fa-file-pdf"></i>
+                            </a>
+                                                    <a class="btn btn-danger " data-toggle="tooltip" data-placement="top" title="Site Settings" href=" https://visualgraphx.com/admin/configuration_settings.php">
+                                <i class="ace-icon far fa-cogs"></i>
+                            </a>
+                                            </div>
+                    <div class="fadeinable sidebar-shortcuts-mini">
+                        <span class="btn btn-success p-0"></span>
+                        <span class="btn btn-info p-0"></span>
+                        <span class="btn btn-warning p-0"></span>
+                        <span class="btn btn-danger p-0"></span>
+                    </div>
+                </div><!-- /.sidebar-shortcuts -->
+            </div><!-- END - sidebar-section -->
+
+            <ul class="nav has-active-border">
+                                <li class="nav-item">
+                    <a href="https://visualgraphx.com/admin/welcome.php" class="nav-link">
+                        <i class="nav-icon fak fa-dashboard"></i>
+                        <span class="nav-text fadeable">Dashboard</span>
+                    </a>
+                    <b class="sub-arrow"></b>
+                </li>
+                                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-shopping-cart"></i>
+                                                <span class="nav-text fadeable">
+                                                    Orders                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/order_listing.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/order_listing.php" class=" nav-link"><span class="nav-text">List Orders</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/order_listing.php" class="nav-link"><span class="nav-text">List Orders</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/order_payment_request.php" class="nav-link"><span class="nav-text">Payment Request</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/create_order_user.php" class=" nav-link"><span class="nav-text">Add New Order</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/export_orders.php" class=" nav-link"><span class="nav-text">Export/API Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/process_status_listing.php" class=" nav-link"><span class="nav-text">Order Status</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/coupon_listing.php" class=" nav-link"><span class="nav-text">Coupons / Discount</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/reward_point_listing.php" class=" nav-link"><span class="nav-text">Store Credit</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/order_pending_listing.php" class=" nav-link"><span class="nav-text">Unpaid Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/order_archive_listing.php" class=" nav-link"><span class="nav-text">Archive Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-quote-management"></i>
+                                                <span class="nav-text fadeable">
+                                                    Quote Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_listing.php" class=" nav-link"><span class="nav-text">View Quotes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_product_printer_listing.php" class=" nav-link"><span class="nav-text">Printer Quotes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_status_listing.php" class=" nav-link"><span class="nav-text">Quote Status</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-user"></i>
+                                                <span class="nav-text fadeable">
+                                                    Customer                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/user_listing.php" class=" nav-link"><span class="nav-text">Website Customers</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/subscriber_listing.php" class=" nav-link"><span class="nav-text">Newsletter Subscribers</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/user_designs.php" class=" nav-link"><span class="nav-text">Customer Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/design_proofs_listing.php" class=" nav-link"><span class="nav-text">Design Proofs</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-store"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/corporate_listing.php" class=" nav-link"><span class="nav-text">Stores</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/corporate_store_profile_listing.php" class=" nav-link"><span class="nav-text">Store Fields</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-tags"></i>
+                                                <span class="nav-text fadeable">
+                                                    Products                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_listing.php" class=" nav-link"><span class="nav-text">Print Products</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/predefined_product_listing.php" class=" nav-link"><span class="nav-text">Ready To Buy Products</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_master_option_listing.php" class=" nav-link"><span class="nav-text">Product Options</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_category_listing.php" class=" nav-link"><span class="nav-text">Product Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_weight.php" class=" nav-link"><span class="nav-text">Product Weight/Days/SKU</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_tax_setting.php" class=" nav-link"><span class="nav-text">Products Tax/VAT Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/product_price_all.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/product_price_all.php" class=" nav-link"><span class="nav-text">Product Price</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_all.php" class="nav-link"><span class="nav-text">Product Price</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_bulk_update.php" class="nav-link"><span class="nav-text">Product Price - Bulk</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_bulk_option_update.php" class="nav-link"><span class="nav-text">Product Option Price - Bulk</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/modify_products_price.php" class="nav-link"><span class="nav-text">Product Price - Excel</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/all_products_price_bulk_update.php" class="nav-link"><span class="nav-text">Percentage (+/-)</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-templates"></i>
+                                                <span class="nav-text fadeable">
+                                                    Templates                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/template_manager.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/template_manager.php" class=" nav-link"><span class="nav-text">Product Templates</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/template_manager.php" class="nav-link"><span class="nav-text">Product Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/template_manager.php?tmtype=1" class="nav-link"><span class="nav-text">PDF Block Templates</span></a></li>
+                                                                                                                                                                                                                                                                                <li class="nav-item "><a href="https://visualgraphx.com/admin/design_layout_listing.php" class="nav-link"><span class="nav-text">Art Layouts</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/master_template_manager.php" class=" nav-link"><span class="nav-text">Product Master Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_properties_master.php" class=" nav-link"><span class="nav-text">Template Properties Master</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_category_listing.php" class=" nav-link"><span class="nav-text">Template Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_manager_duplicate.php" class=" nav-link"><span class="nav-text">Duplicate Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-file-alt"></i>
+                                                <span class="nav-text fadeable">
+                                                    Content Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/cms_listing.php" class=" nav-link"><span class="nav-text">Contents</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/faq_listing.php" class=" nav-link"><span class="nav-text">FAQs</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/testimonial_listing.php" class=" nav-link"><span class="nav-text">Testimonials</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/top_banner_listing.php" class=" nav-link"><span class="nav-text">Banners</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class=" nav-link"><span class="nav-text">Email/SMS</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class="nav-link"><span class="nav-text">Email Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sms_notification_listing.php" class="nav-link"><span class="nav-text">SMS Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/emailtemplate_reminder_listing.php" class="nav-link"><span class="nav-text">Email Reminders</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/media_gallery_listing.php" class=" nav-link"><span class="nav-text">Media Gallery</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-cog"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Personalization                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_info_layout_listing.php" class=" nav-link"><span class="nav-text">Product Page Layout</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/language_constant_action.php" class=" nav-link"><span class="nav-text">Language Text References</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/menulink_listing.php" class=" nav-link"><span class="nav-text">Links - Header / Footer</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/sidebar_management.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/sidebar_management.php" class=" nav-link"><span class="nav-text">Sidebar Management</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sidebar_management.php" class="nav-link"><span class="nav-text">Sidebar Management</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sidebar_widget.php" class="nav-link"><span class="nav-text">Sidebar Widget</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/promotional_listing.php" class=" nav-link"><span class="nav-text">Promotional Message</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/theme_listing.php" class=" nav-link"><span class="nav-text">Website Themes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-globe"></i>
+                                                <span class="nav-text fadeable">
+                                                    SEO                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/seo_all.php" class=" nav-link"><span class="nav-text">Page title, Keyword setting</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/sitemap_xml.php" class=" nav-link"><span class="nav-text">Sitemaps</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/metatag.php" class=" nav-link"><span class="nav-text">Metatags Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/robot_creation.php" class=" nav-link"><span class="nav-text">Robots</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/url_redirection_listing.php" class=" nav-link"><span class="nav-text">Manage URL Redirection</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/seo_image_alt_text.php" class=" nav-link"><span class="nav-text">Image Alt Text</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-business-partners"></i>
+                                                <span class="nav-text fadeable">
+                                                    Business Partners                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/printer_listing.php" class=" nav-link"><span class="nav-text">Printer</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/sales_agent_listing.php" class=" nav-link"><span class="nav-text">Sales Agent</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-cogs"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Configuration                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/configuration_settings.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_settings.php" class=" nav-link"><span class="nav-text">Site Settings</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/configuration_settings.php" class="nav-link"><span class="nav-text">Site Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/language_listing.php" class="nav-link"><span class="nav-text">Languages</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/currency_listing.php" class="nav-link"><span class="nav-text">Currency</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/country_listing.php" class="nav-link"><span class="nav-text">Country / States</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/manage_image_optimization.php" class="nav-link"><span class="nav-text">Web Optimization</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/block_ip_action.php" class="nav-link"><span class="nav-text">Manage Site Access</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/manage_web_storage.php" class=" nav-link"><span class="nav-text">Manage Web Storage</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/manage_form_listing.php" class=" nav-link"><span class="nav-text">Manage Forms</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_payment_listing.php" class=" nav-link"><span class="nav-text">Payments Method</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_shipping_listing.php" class=" nav-link"><span class="nav-text">Shipping Method</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/tax_listing.php" class=" nav-link"><span class="nav-text">Tax / Vat Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_external_service_listing.php" class=" nav-link"><span class="nav-text">External Service Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-imposition"></i>
+                                                <span class="nav-text fadeable">
+                                                    Imposition Beta                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_sheet_size_listing.php" class=" nav-link"><span class="nav-text">Sheet Size Management</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_schema_listing.php" class=" nav-link"><span class="nav-text">Schema Manager</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_impose_job.php" class=" nav-link"><span class="nav-text">Impose Job</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_symbol_listing.php" class=" nav-link"><span class="nav-text">Marks Management</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_products_schema_setting.php" class=" nav-link"><span class="nav-text">Product Schema Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-designer-studio"></i>
+                                                <span class="nav-text fadeable">
+                                                    Designer Studio                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class=" nav-link"><span class="nav-text">Studio Settings</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class="nav-link"><span class="nav-text">Studio Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_language_constant_action.php" class="nav-link"><span class="nav-text">Language Text References</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_color_setting_listing.php" class="nav-link"><span class="nav-text">Color Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_css_setting_action.php" class="nav-link"><span class="nav-text">Custom CSS Setting</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/predefined_quote_listing.php" class="nav-link"><span class="nav-text">Predefined Text</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/products_studio_models_listing.php" class="nav-link"><span class="nav-text">Real Preview</span></a></li>
+                                                                                                                                                                                                                                                                                <li class="nav-item "><a href="https://visualgraphx.com/admin/preview_image_settings.php" class="nav-link"><span class="nav-text">Preview image settings</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_image_gallery_listing.php" class=" nav-link"><span class="nav-text">Images</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_imagecategory_listing.php" class=" nav-link"><span class="nav-text">Image Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_studio_font_listing.php" class=" nav-link"><span class="nav-text">Studio Fonts</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item active open">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-chart-bar"></i>
+                                                <span class="nav-text fadeable">
+                                                    Reports                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable show">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Sales</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_order_summary.php" class="nav-link"><span class="nav-text">Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_orderdetails.php" class="nav-link"><span class="nav-text">Order Detail</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_order_product_details.php" class="nav-link"><span class="nav-text">Order Product Detail</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_payment_request.php" class="nav-link"><span class="nav-text">Payment Request</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_shipping_summary.php" class="nav-link"><span class="nav-text">Shipping Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_tax_summary.php" class="nav-link"><span class="nav-text">Tax Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_coupon_summary.php" class="nav-link"><span class="nav-text">Coupon Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_quote_summary.php" class="nav-link"><span class="nav-text">Quote Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_production_day_summary.php" class="nav-link"><span class="nav-text">Order Delivery</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Product</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_products_sales.php" class="nav-link"><span class="nav-text">Product Sales</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_templates_sales.php" class="nav-link"><span class="nav-text">Template Sales</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_inventory_request.php" class="nav-link"><span class="nav-text">Inventory Request</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_inventory.php" class="nav-link"><span class="nav-text">Inventory Report</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_product_stock_summary.php" class="nav-link"><span class="nav-text">Stock Summary</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Customers</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_customer_order_summary.php" class="nav-link"><span class="nav-text">Customer Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_payon_account.php" class="nav-link"><span class="nav-text">Payon Account</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_customer_details.php" class="nav-link"><span class="nav-text">Customer Details</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_download_print_file.php" class="nav-link"><span class="nav-text">Download Print File</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Partners</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_agent_commission.php" class="nav-link"><span class="nav-text">Sales Agent Commission</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_printer_order_summary.php" class="nav-link"><span class="nav-text">Printer Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_printer_commission.php" class="nav-link"><span class="nav-text">Printer/Vendor Commission</span></a></li>
+                                                                                                                                                                                                                                                                    </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item  active">
+                                                                                                        <a href="https://visualgraphx.com/admin/report_production_time_spent.php" class=" nav-link"><span class="nav-text">Production Time Spent</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/report_audit_log.php" class=" nav-link"><span class="nav-text">Log</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-admin"></i>
+                                                <span class="nav-text fadeable">
+                                                    Admin                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/admin_listing.php" class=" nav-link"><span class="nav-text">Admin</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/workflow_admin_listing.php" class=" nav-link"><span class="nav-text">Workflow Admin</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/admin_group.php" class=" nav-link"><span class="nav-text">Admin Group / Role</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul></div></li></ul>                                        <!-- #section:basics/sidebar.layout.minimize -->
+                                        <div class="sidebar-toggle sidebar-collapse text-center" id="sidebar-collapse">
+                                            <button type="button" class="radius-round  " data-toggle="sidebar" data-target="#sidebar" aria-controls="sidebar" aria-expanded="true" aria-label="Toggle sidebar">
+                                                <i class="ace-icon fa fa-angle-left" data-icon1="ace-icon fa fa-angle-left" data-icon2="ace-icon fa fa-angle-right"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- /section:basics/sidebar.layout.minimize -->
+                                        <script type="text/javascript" data-sanitized="script-body-removed"></script>
+                                    </div><!-- END -ace-scroll -->
+                                            </div><!-- END - sidebar inner -->
+        </div>
+        <!-- /section:basics/sidebar -->
+            <div class="main-content">
+
+                <!-- #section:basics/content.breadcrumbs -->
+<div class="breadcrumbs fixed-top d-flex align-items-center bg-light border-bottom flex-wrap" id="breadcrumbs">
+    <ul class="breadcrumb py-2">
+        <!--<li>
+			<i class="ace-icon fa fa-home home-icon"></i>
+			<a href="index.php">Home</a>
+		</li>
+		<li class="active">
+			Dashboard
+		</li>-->
+        <li class="breadcrumb-item text-95"><i class="fa fa-home home-icon"></i> <a href="https://visualgraphx.com/admin/welcome.php">Home</a> </li><li class="breadcrumb-item text-95">Production Time Spent </li><li class="active breadcrumb-item text-95">Order Product Wise </li>    </ul><!-- /.breadcrumb -->
+    <i class="fa fa-spinner fa-spin text-150 ajax_loader" style="display:none;"></i>
+        <div class="pin_icon_data d-flex align-items-center store_header">
+        <div class="row align-items-center d-lg-flex d-none flex-nowrap">
+            <div class="col-auto px-0">
+                <a href="relogin.php?user_login_type=workflow&amp;s=[hex-token]" class="btn btn-primary btn-sm mr-3"><i class="far fa-sync"></i> Workflow</a>            </div>
+                    </div>
+        <div class="d-flex flex-row-reverse align-items-center ml-2 text-120">
+                        <a class="ml-2 full_screen_icon" href="javascript:void(0);" onclick="if (!window.__cfRLUnblockHandlers) return false; toggleFullscreen();" data-placement="auto" data-toggle="tooltip" data-original-title="Toggle full screen" style="text-decoration:none;"><i class="far fa-expand"></i></a>
+                        <span class="pr-1" id="pin_icon">
+                <i class="fas fa-thumbtack pin-icon pinpagebtn fa-sm" data-placement="left" title="Pin this page" data-toggle="modal" data-target="#saveadminpinpage"></i>            </span>
+        </div>
+    </div>
+</div>
+<!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content pt-lg-5">
+
+                    <div class="row" id="report_production_time_spent_content">
+                        <div class="col-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                                    <div class="row">
+            <div class="col-12  d-lg-none">
+                <button class="navbar-toggler btn btn-primary w-100 text-left collapsed" type="button" data-toggle="collapse" data-target=".section_toolbar" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">
+                    <span class="sr-only">Toggle sidebar</span> <i class="nav-icon fak fa-dashboard white text-125"></i> </button>
+            </div>
+        </div>
+        <div class="row" translate="no">
+            <div class="col-12">
+                <div class="section_toolbar opsStateClear navbar-collapse collapse show h-sidebar navbar-menu navbar-backdrop bg-light tabs-above mb-2">
+                    <ul class="nav nav-tabs border-bottom d-block d-md-flex visible-links">
+                                                    <li class="nav-item text-md-center"> <a href="report_production_time_spent.php?type=OW" class="nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-shopping-cart text-130"></i> <span class="menu-text">Order Wise</span></a> </li>
+                                                    <li class="nav-item text-md-center"> <a href="report_production_time_spent.php?type=OPW" class="active nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-tags text-130"></i> <span class="menu-text">Order Product Wise</span></a> </li>
+                                                
+                    </ul>
+                                </div>
+            </div>
+        </div>
+<div class="row page-header">
+    <div class=" col-md-4">
+        <h1>Order Product Wise</h1>
+    </div>
+    <div class="col-md-8">
+        <div class="float-right mt-2 mb-3"><button class="btn btn btn-grey btn-sm mr6 exportedFilesList ml-2" title="Generated Report Files" type="button"><i class="nav-icon far fa-file-excel"></i></button></div><script type="text/javascript" data-sanitized="script-body-removed"></script>    </div>
+</div>
+<div class="border-bottom pb-md-2 mb-md-4 ">
+    <form id="form1" method="get" class="form-inline">
+        <div class="form-group mt-1 mr-1">
+            <input type="hidden" name="type" id="type" value="OPW" class=""><select name="mon[]" id="mon[]" class="form-control  multiselect" multiple="multiple" style="display: none;"><option title="July-2026" value="2026-07" selected="selected" data-icon="">July-2026</option><option title="June-2026" value="2026-06" data-icon="">June-2026</option><option title="May-2026" value="2026-05" data-icon="">May-2026</option><option title="April-2026" value="2026-04" data-icon="">April-2026</option><option title="March-2026" value="2026-03" data-icon="">March-2026</option><option title="February-2026" value="2026-02" data-icon="">February-2026</option></select><div class="btn-group"><button data-toggle="dropdown" class="multiselect dropdown-toggle btn btn-white" type="button" title="July-2026"><span class="multiselect-selected-text">July-2026</span> <i class="far fa-angle-down ml-1 mt-0 float-none"></i></button><ul class="multiselect-container dropdown-menu" style="max-height: 300px; overflow: hidden auto;"><li class="multiselect-item filter" value="0"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"><span class="input-group-append"><button class="btn btn-white multiselect-clear-filter" type="button"><i class="fa fa-times-circle text-danger opacity-3"></i></button></span></div></li><li class="active"><a tabindex="0"><label class="checkbox" title="July-2026"><input type="checkbox" class="ace" value="2026-07"><span class="lbl"></span> July-2026</label></a></li><li><a tabindex="0"><label class="checkbox" title="June-2026"><input type="checkbox" class="ace" value="2026-06"><span class="lbl"></span> June-2026</label></a></li><li><a tabindex="0"><label class="checkbox" title="May-2026"><input type="checkbox" class="ace" value="2026-05"><span class="lbl"></span> May-2026</label></a></li><li><a tabindex="0"><label class="checkbox" title="April-2026"><input type="checkbox" class="ace" value="2026-04"><span class="lbl"></span> April-2026</label></a></li><li><a tabindex="0"><label class="checkbox" title="March-2026"><input type="checkbox" class="ace" value="2026-03"><span class="lbl"></span> March-2026</label></a></li><li><a tabindex="0"><label class="checkbox" title="February-2026"><input type="checkbox" class="ace" value="2026-02"><span class="lbl"></span> February-2026</label></a></li></ul></div>        </div>
+                    <div class="form-group mt-1 mr-1">
+                <select name="u[]" id="u[]" class="form-control  multiselect" multiple="multiple" data-noneselecttext="User" style="display: none;"><optgroup label="Admin"><option value="A_1" title="cderamos" class="suboption " data-icon="">cderamos</option><option value="A_3" title="along" class="suboption " data-icon="">along</option><option value="A_6" title="hho" class="suboption " data-icon="">hho</option><option value="A_7" title="ppthecrazy" class="suboption " data-icon="">ppthecrazy</option><option value="A_8" title="briangSA" class="suboption " data-icon="">briangSA</option><option value="A_11" title="[email]" class="suboption " data-icon="">[email]</option><option value="A_12" title="jdighans" class="suboption " data-icon="">jdighans</option><option value="A_13" title="kfoley" class="suboption " data-icon="">kfoley</option><option value="A_15" title="jyoder" class="suboption " data-icon="">jyoder</option><option value="A_16" title="VGaccounting" class="suboption " data-icon="">VGaccounting</option><option value="A_17" title="memohSA" class="suboption " data-icon="">memohSA</option><option value="A_20" title="meet" class="suboption " data-icon="">meet</option><option value="A_21" title="marketing" class="suboption " data-icon="">marketing</option><option value="A_22" title="[email]" class="suboption " data-icon="">[email]</option><option value="A_24" title="VGDev" class="suboption " data-icon="">VGDev</option><option value="A_25" title="JK" class="suboption " data-icon="">JK</option><option value="A_26" title="kaushal" class="suboption " data-icon="">kaushal</option><option value="A_27" title="Designer" class="suboption " data-icon="">Designer</option><option value="A_28" title="KhushbuP" class="suboption " data-icon="">KhushbuP</option><option value="A_29" title="codex" class="suboption " data-icon="">codex</option><option value="A_30" title="jeet" class="suboption " data-icon="">jeet</option><option value="A_31" title="bfoss" class="suboption " data-icon="">bfoss</option></optgroup><optgroup label="Printer"><option value="PA_1" title="B2Sign.com" class="suboption " data-icon="">B2Sign.com</option></optgroup><optgroup label="Assigned To"><option value="WA_1" title="briang" class="suboption " data-icon="">briang</option><option value="WA_4" title="jdighansWA" class="suboption " data-icon="">jdighansWA</option><option value="WM_5" title="cderamosWA" class="suboption " data-icon="">cderamosWA</option><option value="WM_6" title="andylWA" class="suboption " data-icon="">andylWA</option><option value="WA_7" title="jyoderWA" class="suboption " data-icon="">jyoderWA</option><option value="WA_8" title="memoh" class="suboption " data-icon="">memoh</option><option value="WA_9" title="hhoWA" class="suboption " data-icon="">hhoWA</option><option value="WA_10" title="bfossWA" class="suboption " data-icon="">bfossWA</option></optgroup></select><div class="btn-group"><button data-toggle="dropdown" class="multiselect dropdown-toggle btn btn-white" type="button" title="User"><span class="multiselect-selected-text">User</span> <i class="far fa-angle-down ml-1 mt-0 float-none"></i></button><ul class="multiselect-container dropdown-menu" style="max-height: 300px; overflow: hidden auto;"><li class="multiselect-item filter" value="0"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"><span class="input-group-append"><button class="btn btn-white multiselect-clear-filter" type="button"><i class="fa fa-times-circle text-danger opacity-3"></i></button></span></div></li><li class="multiselect-item multiselect-group"><label>Admin</label></li><li><a tabindex="0"><label class="checkbox" title="cderamos"><input type="checkbox" class="ace" value="A_1"><span class="lbl"></span> cderamos</label></a></li><li><a tabindex="0"><label class="checkbox" title="along"><input type="checkbox" class="ace" value="A_3"><span class="lbl"></span> along</label></a></li><li><a tabindex="0"><label class="checkbox" title="hho"><input type="checkbox" class="ace" value="A_6"><span class="lbl"></span> hho</label></a></li><li><a tabindex="0"><label class="checkbox" title="ppthecrazy"><input type="checkbox" class="ace" value="A_7"><span class="lbl"></span> ppthecrazy</label></a></li><li><a tabindex="0"><label class="checkbox" title="briangSA"><input type="checkbox" class="ace" value="A_8"><span class="lbl"></span> briangSA</label></a></li><li><a tabindex="0"><label class="checkbox" title="[email]"><input type="checkbox" class="ace" value="A_11"><span class="lbl"></span> [email]</label></a></li><li><a tabindex="0"><label class="checkbox" title="jdighans"><input type="checkbox" class="ace" value="A_12"><span class="lbl"></span> jdighans</label></a></li><li><a tabindex="0"><label class="checkbox" title="kfoley"><input type="checkbox" class="ace" value="A_13"><span class="lbl"></span> kfoley</label></a></li><li><a tabindex="0"><label class="checkbox" title="jyoder"><input type="checkbox" class="ace" value="A_15"><span class="lbl"></span> jyoder</label></a></li><li><a tabindex="0"><label class="checkbox" title="VGaccounting"><input type="checkbox" class="ace" value="A_16"><span class="lbl"></span> VGaccounting</label></a></li><li><a tabindex="0"><label class="checkbox" title="memohSA"><input type="checkbox" class="ace" value="A_17"><span class="lbl"></span> memohSA</label></a></li><li><a tabindex="0"><label class="checkbox" title="meet"><input type="checkbox" class="ace" value="A_20"><span class="lbl"></span> meet</label></a></li><li><a tabindex="0"><label class="checkbox" title="marketing"><input type="checkbox" class="ace" value="A_21"><span class="lbl"></span> marketing</label></a></li><li><a tabindex="0"><label class="checkbox" title="[email]"><input type="checkbox" class="ace" value="A_22"><span class="lbl"></span> [email]</label></a></li><li><a tabindex="0"><label class="checkbox" title="VGDev"><input type="checkbox" class="ace" value="A_24"><span class="lbl"></span> VGDev</label></a></li><li><a tabindex="0"><label class="checkbox" title="JK"><input type="checkbox" class="ace" value="A_25"><span class="lbl"></span> JK</label></a></li><li><a tabindex="0"><label class="checkbox" title="kaushal"><input type="checkbox" class="ace" value="A_26"><span class="lbl"></span> kaushal</label></a></li><li><a tabindex="0"><label class="checkbox" title="Designer"><input type="checkbox" class="ace" value="A_27"><span class="lbl"></span> Designer</label></a></li><li><a tabindex="0"><label class="checkbox" title="KhushbuP"><input type="checkbox" class="ace" value="A_28"><span class="lbl"></span> KhushbuP</label></a></li><li><a tabindex="0"><label class="checkbox" title="codex"><input type="checkbox" class="ace" value="A_29"><span class="lbl"></span> codex</label></a></li><li><a tabindex="0"><label class="checkbox" title="jeet"><input type="checkbox" class="ace" value="A_30"><span class="lbl"></span> jeet</label></a></li><li><a tabindex="0"><label class="checkbox" title="bfoss"><input type="checkbox" class="ace" value="A_31"><span class="lbl"></span> bfoss</label></a></li><li class="multiselect-item multiselect-group"><label>Printer</label></li><li><a tabindex="0"><label class="checkbox" title="B2Sign.com"><input type="checkbox" class="ace" value="PA_1"><span class="lbl"></span> B2Sign.com</label></a></li><li class="multiselect-item multiselect-group"><label>Assigned To</label></li><li><a tabindex="0"><label class="checkbox" title="briang"><input type="checkbox" class="ace" value="WA_1"><span class="lbl"></span> briang</label></a></li><li><a tabindex="0"><label class="checkbox" title="jdighansWA"><input type="checkbox" class="ace" value="WA_4"><span class="lbl"></span> jdighansWA</label></a></li><li><a tabindex="0"><label class="checkbox" title="cderamosWA"><input type="checkbox" class="ace" value="WM_5"><span class="lbl"></span> cderamosWA</label></a></li><li><a tabindex="0"><label class="checkbox" title="andylWA"><input type="checkbox" class="ace" value="WM_6"><span class="lbl"></span> andylWA</label></a></li><li><a tabindex="0"><label class="checkbox" title="jyoderWA"><input type="checkbox" class="ace" value="WA_7"><span class="lbl"></span> jyoderWA</label></a></li><li><a tabindex="0"><label class="checkbox" title="memoh"><input type="checkbox" class="ace" value="WA_8"><span class="lbl"></span> memoh</label></a></li><li><a tabindex="0"><label class="checkbox" title="hhoWA"><input type="checkbox" class="ace" value="WA_9"><span class="lbl"></span> hhoWA</label></a></li><li><a tabindex="0"><label class="checkbox" title="bfossWA"><input type="checkbox" class="ace" value="WA_10"><span class="lbl"></span> bfossWA</label></a></li></ul></div>            </div>
+                <div class="form-group mt-1 mr-1">
+            <select name="st[]" id="st[]" class="form-control  multiselect" multiple="multiple" data-include-select-all-option="true" data-select-all-name="select_all" data-select-all-value="0" data-noneselecttext="Order Product Status" style="display: none;"><option title="Quote" value="50" selected="selected" data-icon="">Quote</option><option title="Reprint Product" value="61" selected="selected" data-icon="">Reprint Product</option><option title="Pending Design" value="56" selected="selected" data-icon="">Pending Design</option><option title="Awaiting Artwork" value="22" selected="selected" data-icon="">Awaiting Artwork</option><option title="Designing" value="55" selected="selected" data-icon="">Designing</option><option title="Outsourced: Hart Design Firm" value="91" selected="selected" data-icon="">Outsourced: Hart Design Firm</option><option title="New" value="46" selected="selected" data-icon="">New</option><option title="Preflighting" value="51" selected="selected" data-icon="">Preflighting</option><option title="Preflight: Sizing File" value="62" selected="selected" data-icon="">Preflight: Sizing File</option><option title="Preflight: Choosing Substrate" value="63" selected="selected" data-icon="">Preflight: Choosing Substrate</option><option title="Preflight: File Check" value="64" selected="selected" data-icon="">Preflight: File Check</option><option title="Preflight: Color Management" value="65" selected="selected" data-icon="">Preflight: Color Management</option><option title="Preflight: Creating Holes" value="66" selected="selected" data-icon="">Preflight: Creating Holes</option><option title="Preflight: Checking Cut Paths" value="67" selected="selected" data-icon="">Preflight: Checking Cut Paths</option><option title="Preflight: Creating Cut Paths" value="68" selected="selected" data-icon="">Preflight: Creating Cut Paths</option><option title="Preflight: Creating Bleed" value="69" selected="selected" data-icon="">Preflight: Creating Bleed</option><option title="Preflight: Banner Hem &amp; Pocket Creation" value="70" selected="selected" data-icon="">Preflight: Banner Hem &amp; Pocket Creation</option><option title="Preflight: Generating White" value="71" selected="selected" data-icon="">Preflight: Generating White</option><option title="Preflight: Generating Custom Panels" value="73" selected="selected" data-icon="">Preflight: Generating Custom Panels</option><option title="Preflight: Generating Auto-Panels" value="72" selected="selected" data-icon="">Preflight: Generating Auto-Panels</option><option title="Preflight: File Error" value="44" selected="selected" data-icon="">Preflight: File Error</option><option title="Preflight: Generating Proof" value="21" selected="selected" data-icon="">Preflight: Generating Proof</option><option title="Preflight: Awaiting Review" value="92" selected="selected" data-icon="">Preflight: Awaiting Review</option><option title="Proof: Awaiting Review" value="20" selected="selected" data-icon="">Proof: Awaiting Review</option><option title="Proof: Rejected" value="24" selected="selected" data-icon="">Proof: Rejected</option><option title="Proof: Awaiting Changes" value="32" selected="selected" data-icon="">Proof: Awaiting Changes</option><option title="Proof: Approved" value="23" selected="selected" data-icon="">Proof: Approved</option><option title="Proof: Approved with Changes" value="33" selected="selected" data-icon="">Proof: Approved with Changes</option><option title="Scheduling / Nesting" value="8" selected="selected" data-icon="">Scheduling / Nesting</option><option title="Outsourced: MBS Standoff Systems" value="81" selected="selected" data-icon="">Outsourced: MBS Standoff Systems</option><option title="Retrieving From Inventory" value="57" selected="selected" data-icon="">Retrieving From Inventory</option><option title="Materials On Order" value="41" selected="selected" data-icon="">Materials On Order</option><option title="In RIP" value="43" selected="selected" data-icon="">In RIP</option><option title="Printing" value="10" selected="selected" data-icon="">Printing</option><option title="Outsourced: B2 Signs" value="74" selected="selected" data-icon="">Outsourced: B2 Signs</option><option title="Outsourced: Epic Branding Solutions" value="77" selected="selected" data-icon="">Outsourced: Epic Branding Solutions</option><option title="Outsourced: Indy Imaging" value="80" selected="selected" data-icon="">Outsourced: Indy Imaging</option><option title="Outsourced: BCT / Prime Time Thermographics / Blend4" value="83" selected="selected" data-icon="">Outsourced: BCT / Prime Time Thermographics / Blend4</option><option title="Outsourced: China Flag Makers" value="76" selected="selected" data-icon="">Outsourced: China Flag Makers</option><option title="Outsourced: Minuteman Press (Queen Creek)" value="79" selected="selected" data-icon="">Outsourced: Minuteman Press (Queen Creek)</option><option title="Outsourced: Alpha Graphics" value="95" selected="selected" data-icon="">Outsourced: Alpha Graphics</option><option title="Outsourced: WS display" value="75" selected="selected" data-icon="">Outsourced: WS display</option><option title="Outsourced: Blue Media (Wasserman)" value="78" selected="selected" data-icon="">Outsourced: Blue Media (Wasserman)</option><option title="Laminating" value="12" selected="selected" data-icon="">Laminating</option><option title="Cutting" value="36" selected="selected" data-icon="">Cutting</option><option title="Finishing" value="37" selected="selected" data-icon="">Finishing</option><option title="Outsourced: Phoenix Awning" value="82" selected="selected" data-icon="">Outsourced: Phoenix Awning</option><option title="Quality Control" value="38" selected="selected" data-icon="">Quality Control</option><option title="Packaging" value="39" selected="selected" data-icon="">Packaging</option><option title="Installation: Scheduling" value="84" selected="selected" data-icon="">Installation: Scheduling</option><option title="Packaged" value="25" selected="selected" data-icon="">Packaged</option><option title="Installation: Scheduled" value="86" selected="selected" data-icon="">Installation: Scheduled</option><option title="Installation: In Progress" value="88" selected="selected" data-icon="">Installation: In Progress</option><option title="Outsourced: VisionIT Media" value="87" selected="selected" data-icon="">Outsourced: VisionIT Media</option><option title="Outsourced: Vanguard Vinyl Wraps (Gavin Filicicchia)" value="90" selected="selected" data-icon="">Outsourced: Vanguard Vinyl Wraps (Gavin Filicicchia)</option><option title="Outsourced: FlexCity Street Gear (Tonnie)" value="89" selected="selected" data-icon="">Outsourced: FlexCity Street Gear (Tonnie)</option><option title="Outsourced: Another Level Installs" value="85" selected="selected" data-icon="">Outsourced: Another Level Installs</option><option title="Outsourced: Chapter One Installations (Eric Aragon)" value="94" selected="selected" data-icon="">Outsourced: Chapter One Installations (Eric Aragon)</option><option title="Installation: Quality Control" value="93" selected="selected" data-icon="">Installation: Quality Control</option><option title="Reprint" value="58" selected="selected" data-icon="">Reprint</option><option title="Cancellation Request" value="30" selected="selected" data-icon="">Cancellation Request</option><option title="Fulfilled" value="45" selected="selected" data-icon="">Fulfilled</option><option title="Cancelled" value="31" selected="selected" data-icon="">Cancelled</option><option title="Refunded" value="34" selected="selected" data-icon="">Refunded</option></select><div class="btn-group"><button data-toggle="dropdown" class="multiselect dropdown-toggle btn btn-white" type="button" title="Quote, Reprint Product, Pending Design, Awaiting Artwork, Designing, Outsourced: Hart Design Firm, New, Preflighting, Preflight: Sizing File, Preflight: Choosing Substrate, Preflight: File Check, Preflight: Color Management, Preflight: Creating Holes, Preflight: Checking Cut Paths, Preflight: Creating Cut Paths, Preflight: Creating Bleed, Preflight: Banner Hem &amp; Pocket Creation, Preflight: Generating White, Preflight: Generating Custom Panels, Preflight: Generating Auto-Panels, Preflight: File Error, Preflight: Generating Proof, Preflight: Awaiting Review, Proof: Awaiting Review, Proof: Rejected, Proof: Awaiting Changes, Proof: Approved, Proof: Approved with Changes, Scheduling / Nesting, Outsourced: MBS Standoff Systems, Retrieving From Inventory, Materials On Order, In RIP, Printing, Outsourced: B2 Signs, Outsourced: Epic Branding Solutions, Outsourced: Indy Imaging, Outsourced: BCT / Prime Time Thermographics / Blend4, Outsourced: China Flag Makers, Outsourced: Minuteman Press (Queen Creek), Outsourced: Alpha Graphics, Outsourced: WS display, Outsourced: Blue Media (Wasserman), Laminating, Cutting, Finishing, Outsourced: Phoenix Awning, Quality Control, Packaging, Installation: Scheduling, Packaged, Installation: Scheduled, Installation: In Progress, Outsourced: VisionIT Media, Outsourced: Vanguard Vinyl Wraps (Gavin Filicicchia), Outsourced: FlexCity Street Gear (Tonnie), Outsourced: Another Level Installs, Outsourced: Chapter One Installations (Eric Aragon), Installation: Quality Control, Reprint, Cancellation Request, Fulfilled, Cancelled, Refunded"><span class="multiselect-selected-text">All selected (64)</span> <i class="far fa-angle-down ml-1 mt-0 float-none"></i></button><ul class="multiselect-container dropdown-menu" style="max-height: 300px; overflow: hidden auto;"><li class="multiselect-item filter" value="0"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"><span class="input-group-append"><button class="btn btn-white multiselect-clear-filter" type="button"><i class="fa fa-times-circle text-danger opacity-3"></i></button></span></div></li><li class="multiselect-item multiselect-all active"><a tabindex="0" class="multiselect-all"><label class="checkbox"><input class="ace" type="checkbox" name="select_all" value="0"><span class="lbl"> Select All</span></label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Quote"><input type="checkbox" class="ace" value="50"><span class="lbl"></span> Quote</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Reprint Product"><input type="checkbox" class="ace" value="61"><span class="lbl"></span> Reprint Product</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Pending Design"><input type="checkbox" class="ace" value="56"><span class="lbl"></span> Pending Design</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Awaiting Artwork"><input type="checkbox" class="ace" value="22"><span class="lbl"></span> Awaiting Artwork</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Designing"><input type="checkbox" class="ace" value="55"><span class="lbl"></span> Designing</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Hart Design Firm"><input type="checkbox" class="ace" value="91"><span class="lbl"></span> Outsourced: Hart Design Firm</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="New"><input type="checkbox" class="ace" value="46"><span class="lbl"></span> New</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflighting"><input type="checkbox" class="ace" value="51"><span class="lbl"></span> Preflighting</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Sizing File"><input type="checkbox" class="ace" value="62"><span class="lbl"></span> Preflight: Sizing File</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Choosing Substrate"><input type="checkbox" class="ace" value="63"><span class="lbl"></span> Preflight: Choosing Substrate</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: File Check"><input type="checkbox" class="ace" value="64"><span class="lbl"></span> Preflight: File Check</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Color Management"><input type="checkbox" class="ace" value="65"><span class="lbl"></span> Preflight: Color Management</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Creating Holes"><input type="checkbox" class="ace" value="66"><span class="lbl"></span> Preflight: Creating Holes</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Checking Cut Paths"><input type="checkbox" class="ace" value="67"><span class="lbl"></span> Preflight: Checking Cut Paths</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Creating Cut Paths"><input type="checkbox" class="ace" value="68"><span class="lbl"></span> Preflight: Creating Cut Paths</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Creating Bleed"><input type="checkbox" class="ace" value="69"><span class="lbl"></span> Preflight: Creating Bleed</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Banner Hem &amp; Pocket Creation"><input type="checkbox" class="ace" value="70"><span class="lbl"></span> Preflight: Banner Hem &amp; Pocket Creation</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Generating White"><input type="checkbox" class="ace" value="71"><span class="lbl"></span> Preflight: Generating White</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Generating Custom Panels"><input type="checkbox" class="ace" value="73"><span class="lbl"></span> Preflight: Generating Custom Panels</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Generating Auto-Panels"><input type="checkbox" class="ace" value="72"><span class="lbl"></span> Preflight: Generating Auto-Panels</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: File Error"><input type="checkbox" class="ace" value="44"><span class="lbl"></span> Preflight: File Error</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Generating Proof"><input type="checkbox" class="ace" value="21"><span class="lbl"></span> Preflight: Generating Proof</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Preflight: Awaiting Review"><input type="checkbox" class="ace" value="92"><span class="lbl"></span> Preflight: Awaiting Review</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Proof: Awaiting Review"><input type="checkbox" class="ace" value="20"><span class="lbl"></span> Proof: Awaiting Review</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Proof: Rejected"><input type="checkbox" class="ace" value="24"><span class="lbl"></span> Proof: Rejected</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Proof: Awaiting Changes"><input type="checkbox" class="ace" value="32"><span class="lbl"></span> Proof: Awaiting Changes</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Proof: Approved"><input type="checkbox" class="ace" value="23"><span class="lbl"></span> Proof: Approved</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Proof: Approved with Changes"><input type="checkbox" class="ace" value="33"><span class="lbl"></span> Proof: Approved with Changes</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Scheduling / Nesting"><input type="checkbox" class="ace" value="8"><span class="lbl"></span> Scheduling / Nesting</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: MBS Standoff Systems"><input type="checkbox" class="ace" value="81"><span class="lbl"></span> Outsourced: MBS Standoff Systems</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Retrieving From Inventory"><input type="checkbox" class="ace" value="57"><span class="lbl"></span> Retrieving From Inventory</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Materials On Order"><input type="checkbox" class="ace" value="41"><span class="lbl"></span> Materials On Order</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="In RIP"><input type="checkbox" class="ace" value="43"><span class="lbl"></span> In RIP</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Printing"><input type="checkbox" class="ace" value="10"><span class="lbl"></span> Printing</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: B2 Signs"><input type="checkbox" class="ace" value="74"><span class="lbl"></span> Outsourced: B2 Signs</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Epic Branding Solutions"><input type="checkbox" class="ace" value="77"><span class="lbl"></span> Outsourced: Epic Branding Solutions</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Indy Imaging"><input type="checkbox" class="ace" value="80"><span class="lbl"></span> Outsourced: Indy Imaging</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: BCT / Prime Time Thermographics / Blend4"><input type="checkbox" class="ace" value="83"><span class="lbl"></span> Outsourced: BCT / Prime Time Thermographics / Blend4</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: China Flag Makers"><input type="checkbox" class="ace" value="76"><span class="lbl"></span> Outsourced: China Flag Makers</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Minuteman Press (Queen Creek)"><input type="checkbox" class="ace" value="79"><span class="lbl"></span> Outsourced: Minuteman Press (Queen Creek)</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Alpha Graphics"><input type="checkbox" class="ace" value="95"><span class="lbl"></span> Outsourced: Alpha Graphics</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: WS display"><input type="checkbox" class="ace" value="75"><span class="lbl"></span> Outsourced: WS display</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Blue Media (Wasserman)"><input type="checkbox" class="ace" value="78"><span class="lbl"></span> Outsourced: Blue Media (Wasserman)</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Laminating"><input type="checkbox" class="ace" value="12"><span class="lbl"></span> Laminating</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Cutting"><input type="checkbox" class="ace" value="36"><span class="lbl"></span> Cutting</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Finishing"><input type="checkbox" class="ace" value="37"><span class="lbl"></span> Finishing</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Phoenix Awning"><input type="checkbox" class="ace" value="82"><span class="lbl"></span> Outsourced: Phoenix Awning</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Quality Control"><input type="checkbox" class="ace" value="38"><span class="lbl"></span> Quality Control</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Packaging"><input type="checkbox" class="ace" value="39"><span class="lbl"></span> Packaging</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Installation: Scheduling"><input type="checkbox" class="ace" value="84"><span class="lbl"></span> Installation: Scheduling</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Packaged"><input type="checkbox" class="ace" value="25"><span class="lbl"></span> Packaged</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Installation: Scheduled"><input type="checkbox" class="ace" value="86"><span class="lbl"></span> Installation: Scheduled</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Installation: In Progress"><input type="checkbox" class="ace" value="88"><span class="lbl"></span> Installation: In Progress</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: VisionIT Media"><input type="checkbox" class="ace" value="87"><span class="lbl"></span> Outsourced: VisionIT Media</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Vanguard Vinyl Wraps (Gavin Filicicchia)"><input type="checkbox" class="ace" value="90"><span class="lbl"></span> Outsourced: Vanguard Vinyl Wraps (Gavin Filicicchia)</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: FlexCity Street Gear (Tonnie)"><input type="checkbox" class="ace" value="89"><span class="lbl"></span> Outsourced: FlexCity Street Gear (Tonnie)</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Another Level Installs"><input type="checkbox" class="ace" value="85"><span class="lbl"></span> Outsourced: Another Level Installs</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Outsourced: Chapter One Installations (Eric Aragon)"><input type="checkbox" class="ace" value="94"><span class="lbl"></span> Outsourced: Chapter One Installations (Eric Aragon)</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Installation: Quality Control"><input type="checkbox" class="ace" value="93"><span class="lbl"></span> Installation: Quality Control</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Reprint"><input type="checkbox" class="ace" value="58"><span class="lbl"></span> Reprint</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Cancellation Request"><input type="checkbox" class="ace" value="30"><span class="lbl"></span> Cancellation Request</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Fulfilled"><input type="checkbox" class="ace" value="45"><span class="lbl"></span> Fulfilled</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Cancelled"><input type="checkbox" class="ace" value="31"><span class="lbl"></span> Cancelled</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="Refunded"><input type="checkbox" class="ace" value="34"><span class="lbl"></span> Refunded</label></a></li></ul></div>        </div>
+        <div class="form-group mt-1">
+            <button class="btn btn-primary btn-sm" id="submit_data" type="button" name="Submit" value="sr" onclick="if (!window.__cfRLUnblockHandlers) return false; mergeAndSubmit()">Show Report</button><a class="btn btn-primary btn-sm btn-padding btn-link" id="reset_ops-table" href="report_production_time_spent.php">Reset</a>        </div>
+    </form>
+</div>
+<form id="form2" class="form-inline-block d-none">
+    <div class="form-inline">
+        <label for="view" class="mr-2 d-none d-lg-block">View</label>
+        <div class="form-group mr-1">
+            <select name="view" id="view" class="form-control " onchange="if (!window.__cfRLUnblockHandlers) return false; mergeAndSubmit()"><option title="View Daily" value="daily" data-icon="">View Daily</option><option title="View Weekly" value="weekly" selected="selected" data-icon="">View Weekly</option><option title="View Monthly" value="monthly" data-icon="">View Monthly</option></select>        </div>
+        <label for="col" class="mr-2 d-none d-lg-block">Additional Columns</label>
+        <div class="form-group mr-1">
+            <select name="col[]" id="col[]" class="form-control  multiselect" multiple="multiple" onchange="if (!window.__cfRLUnblockHandlers) return false; mergeAndSubmit()" style="display: none;"><option title="Order Products" value="product_title" data-icon="">Order Products</option><option title="User" value="user" data-icon="">User</option><option title="From Status" value="status" selected="selected" data-icon="">From Status</option><option title="To Status" value="new_status_id" data-icon="">To Status</option></select><div class="btn-group"><button data-toggle="dropdown" class="multiselect dropdown-toggle btn btn-white" type="button" title="From Status"><span class="multiselect-selected-text">From Status</span> <i class="far fa-angle-down ml-1 mt-0 float-none"></i></button><ul class="multiselect-container dropdown-menu" style="max-height: 300px; overflow: hidden auto;"><li class="multiselect-item filter" value="0"><div class="input-group"><span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span><input class="form-control multiselect-search" type="text" placeholder="Search"><span class="input-group-append"><button class="btn btn-white multiselect-clear-filter" type="button"><i class="fa fa-times-circle text-danger opacity-3"></i></button></span></div></li><li><a tabindex="0"><label class="checkbox" title="Order Products"><input type="checkbox" class="ace" value="product_title"><span class="lbl"></span> Order Products</label></a></li><li><a tabindex="0"><label class="checkbox" title="User"><input type="checkbox" class="ace" value="user"><span class="lbl"></span> User</label></a></li><li class="active"><a tabindex="0"><label class="checkbox" title="From Status"><input type="checkbox" class="ace" value="status"><span class="lbl"></span> From Status</label></a></li><li><a tabindex="0"><label class="checkbox" title="To Status"><input type="checkbox" class="ace" value="new_status_id"><span class="lbl"></span> To Status</label></a></li></ul></div>        </div>
+    </div>
+</form>
+<div class="fancybox-modal-content" id="showReportSettings"><div class="fancybox-modal-body"><div class="modal-dialog modal-md"><form name="report_settings_frm" id="report_settings_frm" method="POST" data-language="1"><div id="modal_detail" class="modal-content no-border"><div class="modal-header"><h4 class="modal-title blue bigger-150">Report Field Setting</h4></div><div class="modal-body"><div class="row"><div class="col-sm-12"><fieldset style="max-height:700px;" scrolling="auto"><ul id="report_field_list" class="export_sortable ui-sortable"><li class="not-sortable"><div class="row "><div class="col-sm-5 text-left"></div><div class="col-sm-7 text-right"><button class="btn btn-sm mr6 btn-primary" type="submit" id="save" value="save_option_data" name="optionAction"><i class="fa fa-save ace-icon bigger-100"></i> Save</button><button class="btn btn-sm btn-primary" type="submit" id="save_global_data" value="save_global_data" name="optionAction" style="margin-left: 2%;"><i class="fa fa-save ace-icon bigger-100"></i> Save for All</button><button class="btn btn btn-link btn-sm" id="reset_option_data" value="reset_option_data" name="optionAction" type="button">Reset</button></div></div></li></ul><div class="row"><div class="col-12 text-left"><div class="tabs-above"><ul class="nav nav-tabs"><li class="nav-item"> <a href="javascript:void(0);" class="nav-link radius-0 active text-90 check" id="displayData" onclick="if (!window.__cfRLUnblockHandlers) return false; displayData()">Display</a> </li><li class="nav-item"> <a href="javascript:void(0);" class="nav-link radius-0 text-90" id="exportData" onclick="if (!window.__cfRLUnblockHandlers) return false; exportData()">Export</a> </li></ul></div></div></div><ul class="export_sortable mt-3 ui-sortable"><label class="mx-1"><input type="checkbox" class="select_all checkAll">  <span class="lbl ml6"> <b>Select All</b></span></label><li class="display ui-state-default ui-sortable-handle"><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline w-90"><input type="checkbox" class="ace displayChecked" name="report_data_field_save[report_fields_key][]" id="order_duration" value="order_duration" checked="Checked"> <span class="lbl ml6"> Period (order_duration)</span></label></li><li class="display ui-state-default ui-sortable-handle"><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline w-90"><input type="checkbox" class="ace displayChecked" name="report_data_field_save[report_fields_key][]" id="job_count" value="job_count" checked="Checked"> <span class="lbl ml6"> Job Count (job_count)</span></label></li><li class="display ui-state-default ui-sortable-handle"><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline w-90"><input type="checkbox" class="ace displayChecked" name="report_data_field_save[report_fields_key][]" id="job_duration" value="job_duration" checked="Checked"> <span class="lbl ml6"> Time Span (job_duration)</span></label></li><li class="display ui-state-default ui-sortable-handle"><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline w-90"><input type="checkbox" class="ace displayChecked" name="report_data_field_save[report_fields_key][]" id="job_total_duration" value="job_total_duration" checked="Checked"> <span class="lbl ml6"> Total Time Spent (job_total_duration)</span></label></li><li class="display ui-state-default ui-sortable-handle"><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline w-90"><input type="checkbox" class="ace displayChecked" name="report_data_field_save[report_fields_key][]" id="average" value="average" checked="Checked"> <span class="lbl ml6"> Avg. Time Spent per Job (average)</span></label></li><li class="export d-none ui-state-default ui-sortable-handle" style=""><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline "><input type="checkbox" class="exportChecked" name="report_export_field_save[report_fields_key][]" id="order_duration" value="order_duration" checked="Checked"> <span class="lbl ml6"> Period (order_duration)</span></label></li><li class="export d-none ui-state-default ui-sortable-handle" style=""><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline "><input type="checkbox" class="exportChecked" name="report_export_field_save[report_fields_key][]" id="job_count" value="job_count" checked="Checked"> <span class="lbl ml6"> Job Count (job_count)</span></label></li><li class="export d-none ui-state-default ui-sortable-handle" style=""><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline "><input type="checkbox" class="exportChecked" name="report_export_field_save[report_fields_key][]" id="job_duration" value="job_duration" checked="Checked"> <span class="lbl ml6"> Time Span (job_duration)</span></label></li><li class="export d-none ui-state-default ui-sortable-handle" style=""><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline "><input type="checkbox" class="exportChecked" name="report_export_field_save[report_fields_key][]" id="job_total_duration" value="job_total_duration" checked="Checked"> <span class="lbl ml6"> Total Time Spent (job_total_duration)</span></label></li><li class="export d-none ui-state-default ui-sortable-handle" style=""><span class="ui-icon ui-icon-arrowthick-2-n-s d-inline-block"></span><label class="checkbox-inline "><input type="checkbox" class="exportChecked" name="report_export_field_save[report_fields_key][]" id="average" value="average" checked="Checked"> <span class="lbl ml6"> Avg. Time Spent per Job (average)</span></label></li></ul></fieldset></div></div></div></div><input type="hidden" name="ops_csrf_token" value="[masked]"></form></div></div></div><div class="fancybox-modal-content" id="showExportedFiles"><div class="fancybox-modal-body"><div class="modal-dialog modal-lg"><div id="modal_detail" class="modal-content no-border"><div class="modal-header"><h4 class="modal-title blue bigger-150 p-2">Generated Report Files</h4></div><div class="modal-body"><div class="exportfiles"><div class="row"><div class="col-12 my-2 reportModalTableHtml"><table class="table" id="showExportedFilesTable"><thead><tr> <th data-data="sr" scope="col">Sr#</th> <th data-data="reportTitle" scope="col">Report Title</th> <th data-data="reportDate" scope="col">Date</th> <th data-data="Action" data-orderable="false" scope="col">Delete</th></tr></thead></table></div></div></div></div></div></div></div></div><script type="text/javascript" language="javascript" data-sanitized="script-body-removed"></script>
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+                <div class="footer h-auto">
+    <div class="footer-inner">
+        <!-- #section:basics/footer -->
+        <div class="py-1 border-none border-t-1 brc-grey-l1">
+            <span class="text-muted">
+                <small><i>07-03-2026 14:29</i> </small>
+                <span class="px-2">|</span>
+            </span>
+                        <span class="text-muted">
+                <small>Copyright ©2026. All rights reserved.</small>
+            </span>
+        </div>
+        <!-- /section:basics/footer -->
+    </div>
+
+    </div>
+                <div class="footer-tools">
+                    <a id="btn-scroll-up" href="#" class="btn-scroll-up btn btn-dark btn-smd mb-2 mr-2">
+                        <i class="fa fa-angle-double-up mx-1"></i>
+                    </a>
+                </div>
+            </div><!-- /.main-content -->
+            <div class="modal savepinpages" id="saveadminpinpage" tabindex="-1" role="dialog" aria-labelledby="saveadminpinpage">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h3 class="modal-title text-primary text-150">Pin this page</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                    <div class="pinpag-title "><input type="text" name="pin_page_title" id="pin_page_title" value="" class="form-control "></div>                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-primary ml-2 pin-pages" id="common_pin_page" type="button" name="button" value="">Save</button>                    </div>
+                </div>
+                </div>
+            </div>
+        </div><!-- /.main-container -->
+    <div class="scroll-btn-observe"></div></div><!-- /.body-container -->
+    <div aria-hidden="true" aria-labelledby="barcodeScannerLabel" role="dialog" id="barcodeReaderModal" class="fancybox-modal-content">
+        <div class="fancybox__content">
+            <div class="border-0">
+                <div class=" py-2 px-3 rounded-0 bg-primary w-100">
+                    <h4 class=" text-white text-140 mb-0 py-2" id="scanner-title">Scan any QR / Barcode</h4>
+                </div>
+                <div class="p-2">
+                    <div id="scanner-content" data-productid="" style="display: none;">
+                    </div>
+                    <div id="scanner-camera">
+                        <video id="barcode-reader" style="width:325px; height:228px; object-fit: cover;"></video>
+                        <div class="form-group mr-2 mb-0 w-100 mt-2" id="cameraDeviceList" style="display:none">
+                            <select id="cameraDevices" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="scanner-footer">
+            </div>
+        </div>
+    </div>
+    
+<script type="text/javascript" data-sanitized="script-body-removed"></script><script type="text/javascript" data-sanitized="script-body-removed"></script><script src="https://visualgraphx.com/dist/admin/includes/js/admin_script.js?1782471260000" type="text/javascript" data-sanitized="script-body-removed"></script>
+<script src="https://visualgraphx.com/admin/includes/js/reports.js?[phone]" type="text/javascript" data-sanitized="script-body-removed"></script>
+<script type="text/javascript" data-sanitized="script-body-removed"></script>    
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;[hex-token]&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous" data-sanitized="script-body-removed"></script>
+
+
+</body><div id="codex-agent-overlay-root" data-codex-agent-overlay-root="true"></div></html>

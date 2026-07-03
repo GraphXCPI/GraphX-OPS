@@ -1,0 +1,1775 @@
+<!doctype html>
+<html lang="en" style="--scrollbar-width: 15px; --moz-scrollbar-thin: 11px;"><plasmo-csui id="ff-overlay-container"></plasmo-csui><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <title>Admin :: Site Settings</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="csrf-token" content="[hex-token]">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20data-codex-favicon-badge%3D%22codex-favicon-badge%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cimage%20href%3D%22data%3Aimage%2Fbmp%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGwklEQVR4nJxXSW8cRRR%2Br6q7Z8aOlwQvbDKBEAiJcovggJByQQgkJFCUExJXxIELvyBHLlw5cURcwiLBLWKxciERQlEknAQQOAs4dux4je2Z6a56fK%2Bqx%2BMx48mITsbTtbz63vveVpNQx3M6IZouaifPfMicfCxSbImQMBPHb66SyC0p%2FEf1lc3PaeHCZhB79vXxgWzgfbH8HkbjItKEDLYS%2FrLBH7z7D%2BozX31KdNYSnXctxKRTgXHRv444tQxM4ZRJEsZsWKCgSQ2jCo1uGlooxVxqHPOgFRkgaI69QaYU8czG%2BoJqceJ8B6LpVGCR46Qaa1QFG47Ah8uPvnsWT6uDvn1KXQw5v3tv6130DAmj0uqzHYhdGcDWe0L5AgbLOoLdBgcpDzV83REyy7Qw0lagwQVVeA5qXwMYXIAZpR3kQ9B48iq%2FVDIgPRQ4IUqRF1mx4mcBvORJCsE5oFQ1qMG%2Bu1y4dbDVPqi6WjgavA86%2F4KlawCv6yJ4YmFjhLyFEuvU5dmjwExwAVueImNPkS82TOBRD0JEEFdg4R0QcpEmM7sTA1sTmUn5aWx5GaMxQBd6UIg%2BCFho4cl%2B0YcCMQbgxBoUSETcEMDLPYAP3pURHFclP8I7YmOJYecPIG5GsemAyB4UNlDGl0F4GjZN77jPdNNKY70VRdRKgJ1vEOvxWay2YbbqIIh94Kq9d9c7RDRwwzPdKwZiEIrzKwjCDYjimwoYjsTQf8GKvxFcWzQJ%2FlsuqHsnmdyH5G1YX6cQA9w2Eixazxt5GJ7Dkef2UyAGoWOpW6F1zQIckwcOtZQQHQDFq2JMk%2Bz9tiUmUca2sL4CBRIovE2x%2Buh%2Fi%2FcU8dikLk%2FXIEQFGGdrn0AQHlICQS68QpoMCEJXZccjzdEhQ3OlWOYTCD0K4WNQdQyMF9QqoaQxhVQgd3A3xj4KxCdoreEhnLBmM1zrQ1qL1qjEiWda3C1Q1XqXADwFXOI1%2BRTGS9BAs8gHFh%2FKQHSBCYWogULES%2FjkkDRKJurDATAyCxfM02It3xHLm7mr1uYAdB3bJnDItoTQ00JMBsoUKEQLuzF6ugBiaAWU4bBUFFzrsgZhnMtQpCz9lzYDrjO8ZOo0aSU0KIOohSKWHs5ArAM%2B4fHEVg5S0RjhVjfjsg4YlzlvHqexNKMlagQxazNDforZHsP2YbW%2B7IbhRSMATpyIGOd6xUBMQ%2Fa%2BIagsAN2IPTW0RnVmAk02MZHQk8ZSWd2pmmjA6NYHyp6UlVBaUShe46geN2sz2tcFcQHtDr4v5gANSjjX8KeAQBWArJIG44NGuiPmC6iWbmPLTeTqIDCbvtW%2FQz%2BQos9mFLVDHUiRvCOWScudi2U4bEgRy4cwPkpJZVB9VgqiZPNJRMtRjla7sgUbiq5YwXRL4V4uiNrB6ys4ZhadcCgW1LKMgl7lAVE1THm6I5sh%2BMRgLzMyQ7apvLlgrPu1isx7dU98OhjYm5slnJvD9WIGRxRhjK6kRMOnjZAJhp9JKsVUS8ibdAJmjWsmaOnGlAN6EY7jML7GuZ%2FvpkDXQkSFqZtMNpF9oFm0uDTCFQmlANYPgoQxAB4O97vDiymuYs%2BpG8B3BWuDFPfCDaxuaoC%2Fu7nbXO5HgbCYZ27eUnKJvJ8MrVm4rlcrUQUMIeWkgdo7mh9Ze4RoeJgTmsLaDc13gDmrVxD4Dw6ALK1jcJH%2BvDDXzdbuDPz6zRIdf3sWlhyERkcjjaI1meL9lKts5XC1MnC1wOUAwG%2BgWDwKyGZoW1o2TDhb9fi5wUZvQ65%2FBbC53qzfqmW1y1CiglDJAJ2rG%2FQuECNaoJR5Bc2iGawMlXcHJNyewMqGOL6EPnl3H5zOlNjzmNrxt07hfvYuwngSCb0V%2B4nE9hJqIw3Fdu8fhJ4Z1kIb1BqENfqn0ZRP6Pcvb%2BwHkvRQAFHfXBDGRZhRZoOFsCeChMYgmpZhWm%2FOMVNVM0SqRQ1BQaVblOcrPTB6KkD1tYXF6qGpKzjrRZh7xHvNcc3veN0kad3%2BtGGrXj4kP1YHsPQb7sM%2Fkayv9cIwvRZp7pctco3vwfhVHNxEVJsAHn9ycFnpjL7HvmcUXeeaoO3KdqP4kW5O13tBMD384fSFN19KTPYOwE%2FAHXoPcIa5Q9ZHNlD5GIVRZoqi%2BVl%2B%2FdvLtCfv%2F48C4UmOnXnNJvxqEHLoPsqdMW10zQ1rEoRis0nuu%2BLa1z%2F0dS71%2BRSu%2Fgeb9KmE7PP4tVlTRONi1mEsaM64dEieG3e9yDdv9Huu6XcjDc%2FPw7m39RURXmOtDZymcFCKnx0ZfF714beo3KPH8uV%2Bj%2F0XAAD%2F%2F003fKcAAAAGSURBVAMA2K5kxWz7Eu4AAAAASUVORK5CYII%3D%22%20width%3D%2232%22%20height%3D%2232%22%20opacity%3D%220.3%22%20%2F%3E%3Cpath%20d%3D%22M3.04536%204.45259C2.7582%203.60299%203.60299%202.7582%204.45259%203.04536L14.1828%206.33403C15.1637%206.66558%2015.0872%208.08006%2014.0715%208.39045L10.2994%209.54319C9.93919%209.65327%209.65327%209.93919%209.54319%2010.2994L8.39046%2014.0715C8.08007%2015.0872%206.66558%2015.1637%206.33404%2014.1828L3.04536%204.45259Z%22%20fill%3D%22black%22%20stroke%3D%22white%22%20stroke-width%3D%221.5%22%20stroke-linejoin%3D%22round%22%20paint-order%3D%22stroke%20fill%22%20transform%3D%22translate(-2%20-2)%20scale(2.1)%22%20%2F%3E%3C%2Fsvg%3E" data-codex-favicon-badge="true" data-codex-original-favicon-href="https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/websitelogos/retailer_favicon_logo596.ico">
+
+<link href="https://visualgraphx.com/dist/admin/includes/css/admin_style.css?1779974870000" rel="stylesheet">
+    <script src="https://visualgraphx.com/thirdparty/ace-admin/js/ace-extra.js" type="text/javascript" data-sanitized="script-body-removed"></script>
+<style>@font-face { font-family: DMSans; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/DMSans-Regular.ttf'); }@font-face { font-family: PoppinsMedium; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Medium.otf'); }@font-face { font-family: PoppinsRegular; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Regular.otf'); }@font-face { font-family: Roboto; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Roboto-Regular.ttf'); }@font-face { font-family: Inter; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Inter-VariableFont_opsz,wght.ttf'); }</style></head>
+
+<body class="no-skin bgc-white  ">
+    <div class="body-container">
+        
+        <!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-expand-lg navbar-fixed navbar-default">
+    <noscript>
+        <div class="alert alert-danger text-center">Currently JavaScript is disabled in your browser, Administrator panel does not work properly. Check <a href="http://www.activatejavascript.org/" target="_blank">how to enable JavaScript</a> in various browsers.</div>
+    </noscript>
+    <div class="navbar-inner flex-wrap" id="navbar-container">
+
+        <div class="navbar-intro">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="btn btn-burger burger-arrowed static ml-2 d-flex d-xl-none collapsed" data-toggle-mobile="sidebar" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+                <span class="bars"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <!-- #section:basics/navbar.layout.brand -->
+                        <a href="https://visualgraphx.com/admin/welcome.php" class="admin_link navbar-brand text-white d-flex align-items-center py-0 mx-1 h-100">
+                <small class="text-center mr-2 py-1 px-2 text-50"><span class="fa-stack fa-md pr-2 d-inline-block" title="Admin">
+                <i class="far fa-home fa-stack-2x"></i>
+                <i class="fas fa-user-alt fa-stack-1x fa-lg"></i>
+            </span><i class="ace-icon fa fa-angle-down pl-1 d-inline-block d-lg-none text-140"></i></small>                <span class="d-inline-block resize-font" style="font-size: 16px;">
+                    Visual Graphx, LLC.                </span>
+            </a>
+            <i class="d-md-none fa fa-spinner fa-spin text-150 ajax_loader mt-2 orange2" style="display:none;"></i>
+
+        </div>
+                <div class="d-lg-none align-self-center header_icon_alignment">
+            <!-- #section:basics/navbar.toggle -->
+                                                        <button class="navbar-toggler collapsed quickSearchMobile btn btn-info" type="button" data-toggle="collapse" data-target="#quick-search-form">
+                    <i class="far fa-search"></i>
+                </button>
+                        <button class="navbar-toggler collapsed btn btn-info mr-1" type="button" data-toggle="collapse" data-target="#navbar-menu">
+                <span class="sr-only">Toogle User Menu</span>
+                <i class="far fa-user text-90"></i>
+            </button>
+            <!-- /section:basics/navbar.toggle -->
+        </div>
+                    <div class="navbar-content flex-wrap d-lg-flex d-none position-relative quickSearch">
+                                <form id="quick-search-form" class="form-inline-block mx-auto py-15">
+                    <div class="input-group px-2">
+                        <input type="text" class="form-control" aria-label="Text input with dropdown button" id="advance-search" autocomplete="off" placeholder="Search here...." data-searched="">
+                        <div class="input-group-append" id="button-addon4">
+                            <button class="btn btn-info" type="button" id="search-btn"><i class="far fa-search"></i></button>
+                        </div>
+                                                    <div class="dropdown ml-2 d-lg-block ">
+                                <button class="btn btn-info dropdown-toggle " type="button" id="showquickpinpages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-bookmark text-90"></i>
+                                </button>
+                                <div class="dropdown-menu p-0" id="pinpagesdown" aria-labelledby="showquickpinpages">
+                                    <div class="quickpinpagelist "><input type="text" name="quickpinpagelist" id="quickpinpagelist" value="" class="form-control "></div>                                </div>
+                            </div>
+                                            </div>
+                    
+                    <!-- Nav tabs -->
+                    <div class="bg-white search-result p-3 position-absolute" style="display: none;" id="advance-search-content">
+                                            <div class="menu-list" id="search-menu-items">
+                        </div>
+                                                                    <div class="search-tab-result d-none position-relative">
+                            <ul class="nav nav-tabs nav-customtabs " role="tablist" id="searchResultTab">
+                                <li class="nav-item"><a class="nav-link p-2 active" data-name="orders" data-toggle="tab" href="#orders_list">Orders</a></li><li class="nav-item"><a class="nav-link p-2 " data-name="customers" data-toggle="tab" href="#customers_list">Customers</a></li><li class="nav-item"><a class="nav-link p-2 " data-name="products" data-toggle="tab" href="#products_list">Products</a></li>                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div id="orders_list" class="tab-pane active"> <div id="no-orders-result"></div> <div class="row search-result-alignment" id="search-orders-result"> </div> <div id="orders-view-more" class="view-more-result pt-2"></div> </div><div id="customers_list" class="tab-pane "> <div id="no-customers-result"></div> <div class="row search-result-alignment" id="search-customers-result"> </div> <div id="customers-view-more" class="view-more-result pt-2"></div> </div><div id="products_list" class="tab-pane "> <div id="no-products-result"></div> <div class="row search-result-alignment" id="search-products-result"> </div> <div id="products-view-more" class="view-more-result pt-2"></div> </div>                            </div>
+                        </div>
+                                            </div>
+                </form>
+            </div>
+                <!--Christmas effect start-->
+                <!--Christmas effect end-->
+        <!-- #section:basics/navbar.dropdown -->
+        <div class="navbar-menu collapse navbar-collapse navbar-backdrop" id="navbar-menu" role="navigation">
+            <div class="navbar-nav">
+                <ul class="nav align-items-md-center">
+                                                                <li class="btn-danger nav-item d-flex align-items-center py-2 CatchTrash">
+                            <label href="javascript:void();" class="text-white px-2 mb-0">Cache</label>
+                            <input id="togglecache" name="togglecache" checked="checked" class="ace-switch ace-switch-yesno ace-switch-bars bgc-blue-d2" type="checkbox">
+                            <a href="javascript:void(0);" class="text-white px-2 catch-trash" title="Clear website cache" id="clearcache" onclick="if (!window.__cfRLUnblockHandlers) return false; clear_website_cache()"> <i class="far fa-lg fa-trash-alt"></i> </a>
+                        </li>
+                                        <li class="nav-item dropdown border-right-0">
+                        <a href="#" class="nav-link dropdown-toggle d-none d-md-flex" data-toggle="dropdown"><i class="fa fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu py-0 dropdown-animated brc-primary-m3 info-dropdown">
+
+                                                            <li class="transparent btn-purple dropdown-item ">
+                                    <a href="https://visualgraphx.com/admin/htmlhelp.php" data-placement="auto" data-toggle="tooltip" data-original-title="Click to view HTML help for storefront setup" target="_blank" class="btn-a-purple btn-h-purple"><i class="far fa-file-code"></i> <i class="fa fa-question d-none d-lg-inline-block"></i></a>
+                                </li>
+                                                                                        <li class="transparent btn-dark dropdown-item solution-help">
+                                    <a href="https://docs.onprintshop.com" data-placement="auto" data-toggle="tooltip" data-original-title="Click Here to get solution help" target="_blank" class="btn-a-dark btn-h-dark"><i class="fa fa-question-circle"></i></a>
+                                </li>
+                                                                                        <li class="transparent btn-blue dropdown-item">
+                                                                        <a class="btn-a-blue btn-h-blue" href="https://docs.onprintshop.com/latest-solution-releases" target="_blank" data-placement="auto" data-toggle="tooltip" data-original-title="Solution Version" style="text-decoration:none;">v12.2</a>
+                                </li>
+                                                    </ul>
+                    </li>
+                    <!--Christmas effect start-->
+                                        <!--Christmas effect end-->
+                                                <li class="btn-info nav-item">
+                                <a href="https://visualgraphx.com/" data-placement="bottom" data-toggle="tooltip" data-original-title="Storefront" target="_blank" class="nav-link"><i class="fa fa-desktop"></i></a>
+                            </li>
+                                        <li class="transparent d-none d-md-flex nav-item opclso align-items-center btn-success" id="lchat">
+                        <script type="text/javascript" data-sanitized="script-body-removed"></script><a name="chat_button" href="javascript:;" onclick="if (!window.__cfRLUnblockHandlers) return false; if(windowObjectReference==null||windowObjectReference.closed){windowObjectReference=window.open('/admin/livechat.php','ChatWindowName','width=550,height=800,resizable=0,scrollbars=0,status=0,toolbar=no,menubar=no,location=no')}else{windowObjectReference.focus()}" class="px-2 lz_cbl" style="padding:0;" data-placement="bottom" data-toggle="tooltip" data-original-title="Live Chat"><i class="far fa-2x fa-comments text-white"></i></a>                    </li>
+                                        <!-- #section:basics/navbar.user_menu -->
+                    <li class="nav-item user-dropdown d-flex d-md-block border-right-0">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle nav-link">
+                            <i class="fa fa-user mr-2"> </i>
+                            <span class="user-info">
+                                <small>Welcome, </small> cderamos                            </span>
+                            <i class="ace-icon fa fa-caret-down ml-2 d-none d-lg-inline-block"></i>
+                        </a>
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-caret dropdown-close py-0 border-left">
+                                                            <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/admin_favourite_link.php">
+                                        <i class="ace-icon fa fa-star"></i>
+                                        <span class="d-none d-md-inline-block">Set favorite links</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/changepassword.php">
+                                        <i class="ace-icon fa fa-user"></i>
+                                        <span class="d-none d-md-inline-block">Change Password</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                    <a href="https://visualgraphx.com/admin/configure_2fa.php">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="d-md-inline-block">Configure 2FA</span>
+                                    </a>
+                                </li>
+                                                                                        <li class="dropdown-divider brc-primary-l2 my-0 d-none d-md-block"></li>
+                                                        <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                                <a href="https://visualgraphx.com/admin/welcome.php?Action=Logout" id="logout-btn">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    <span class="d-none d-md-inline-block">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+        </div>
+    </div><!-- /.navbar-container -->
+</div>
+<!-- /section:basics/navbar.layout -->
+<script type="text/javascript" data-sanitized="script-body-removed"></script>
+        <div class="main-container" id="main-container">
+
+            <!-- #section:basics/sidebar -->
+<div id="sidebar" class="sidebar sidebar-fixed hoverable sidebar-default" data-gotoactive="true" data-pullup="true" data-subscroll="true">
+    <div class="sidebar-inner">
+        <div class="flex-grow-1 ace-scroll" ace-scroll="">
+            <div class="sidebar-section">
+                <!-- #section:basics/content.searchbox -->
+                <!-- <div class="sidebar-section-item">
+                    <i class="fadeinable fa fa-search text-info mr-n1"></i> -->
+                    <!-- 				<i class="ace-icon fa fa-search nav-search-icon"></i> -->
+                    <!-- <div class="fadeable d-inline-flex align-items-center" id="nav-search">
+                        <i class="far fa-search mr-n3 text-info"></i>
+                        <span class="input-icon">
+                            <input type="text" placeholder="Search" class="sidebar-search-input pl-4 pr-3" id="nav-search-input" autocomplete="off" />
+                        </span>
+                    </div>
+                </div> -->
+                <!-- /section:basics/content.searchbox -->
+                <div class="sidebar-section-item fadeable-left">
+                    <div class="fadeable">
+                                                    <a class="btn btn-success " data-toggle="tooltip" data-placement="top" title="List Orders" href=" https://visualgraphx.com/admin/order_listing.php">
+                                <i class="ace-icon far fa-shopping-cart"></i>
+                            </a>
+                                                    <a class="btn btn-warning " data-toggle="tooltip" data-placement="top" title="Website Customers" href=" https://visualgraphx.com/admin/user_listing.php">
+                                <i class="ace-icon far fa-user"></i>
+                            </a>
+                                                    <a class="btn btn-info " data-toggle="tooltip" data-placement="top" title="Print Products" href=" https://visualgraphx.com/admin/product_listing.php">
+                                <i class="ace-icon far fa-tags"></i>
+                            </a>
+                                                    <a class="btn btn-warning " data-toggle="tooltip" data-placement="top" title="PDF Block Templates" href=" https://visualgraphx.com/admin/template_manager.php">
+                                <i class="ace-icon far fa-file-pdf"></i>
+                            </a>
+                                                    <a class="btn btn-danger " data-toggle="tooltip" data-placement="top" title="Site Settings" href=" https://visualgraphx.com/admin/configuration_settings.php">
+                                <i class="ace-icon far fa-cogs"></i>
+                            </a>
+                                            </div>
+                    <div class="fadeinable sidebar-shortcuts-mini">
+                        <span class="btn btn-success p-0"></span>
+                        <span class="btn btn-info p-0"></span>
+                        <span class="btn btn-warning p-0"></span>
+                        <span class="btn btn-danger p-0"></span>
+                    </div>
+                </div><!-- /.sidebar-shortcuts -->
+            </div><!-- END - sidebar-section -->
+
+            <ul class="nav has-active-border">
+                                <li class="nav-item">
+                    <a href="https://visualgraphx.com/admin/welcome.php" class="nav-link">
+                        <i class="nav-icon fak fa-dashboard"></i>
+                        <span class="nav-text fadeable">Dashboard</span>
+                    </a>
+                    <b class="sub-arrow"></b>
+                </li>
+                                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-shopping-cart"></i>
+                                                <span class="nav-text fadeable">
+                                                    Orders                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/order_listing.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/order_listing.php" class=" nav-link"><span class="nav-text">List Orders</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/order_listing.php" class="nav-link"><span class="nav-text">List Orders</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/order_payment_request.php" class="nav-link"><span class="nav-text">Payment Request</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/create_order_user.php" class=" nav-link"><span class="nav-text">Add New Order</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/export_orders.php" class=" nav-link"><span class="nav-text">Export/API Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/process_status_listing.php" class=" nav-link"><span class="nav-text">Order Status</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/coupon_listing.php" class=" nav-link"><span class="nav-text">Coupons / Discount</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/reward_point_listing.php" class=" nav-link"><span class="nav-text">Store Credit</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/order_pending_listing.php" class=" nav-link"><span class="nav-text">Unpaid Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/order_archive_listing.php" class=" nav-link"><span class="nav-text">Archive Orders</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-quote-management"></i>
+                                                <span class="nav-text fadeable">
+                                                    Quote Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_listing.php" class=" nav-link"><span class="nav-text">View Quotes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_product_printer_listing.php" class=" nav-link"><span class="nav-text">Printer Quotes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/quote_status_listing.php" class=" nav-link"><span class="nav-text">Quote Status</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-user"></i>
+                                                <span class="nav-text fadeable">
+                                                    Customer                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/user_listing.php" class=" nav-link"><span class="nav-text">Website Customers</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/subscriber_listing.php" class=" nav-link"><span class="nav-text">Newsletter Subscribers</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/user_designs.php" class=" nav-link"><span class="nav-text">Customer Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/design_proofs_listing.php" class=" nav-link"><span class="nav-text">Design Proofs</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-store"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/corporate_listing.php" class=" nav-link"><span class="nav-text">Stores</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/corporate_store_profile_listing.php" class=" nav-link"><span class="nav-text">Store Fields</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-tags"></i>
+                                                <span class="nav-text fadeable">
+                                                    Products                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_listing.php" class=" nav-link"><span class="nav-text">Print Products</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/predefined_product_listing.php" class=" nav-link"><span class="nav-text">Ready To Buy Products</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_master_option_listing.php" class=" nav-link"><span class="nav-text">Product Options</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_category_listing.php" class=" nav-link"><span class="nav-text">Product Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_weight.php" class=" nav-link"><span class="nav-text">Product Weight/Days/SKU</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_tax_setting.php" class=" nav-link"><span class="nav-text">Products Tax/VAT Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/product_price_all.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/product_price_all.php" class=" nav-link"><span class="nav-text">Product Price</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_all.php" class="nav-link"><span class="nav-text">Product Price</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_bulk_update.php" class="nav-link"><span class="nav-text">Product Price - Bulk</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/product_price_bulk_option_update.php" class="nav-link"><span class="nav-text">Product Option Price - Bulk</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/modify_products_price.php" class="nav-link"><span class="nav-text">Product Price - Excel</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/all_products_price_bulk_update.php" class="nav-link"><span class="nav-text">Percentage (+/-)</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-templates"></i>
+                                                <span class="nav-text fadeable">
+                                                    Templates                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/template_manager.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/template_manager.php" class=" nav-link"><span class="nav-text">Product Templates</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/template_manager.php" class="nav-link"><span class="nav-text">Product Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/template_manager.php?tmtype=1" class="nav-link"><span class="nav-text">PDF Block Templates</span></a></li>
+                                                                                                                                                                                                                                                                                <li class="nav-item "><a href="https://visualgraphx.com/admin/design_layout_listing.php" class="nav-link"><span class="nav-text">Art Layouts</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/master_template_manager.php" class=" nav-link"><span class="nav-text">Product Master Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_properties_master.php" class=" nav-link"><span class="nav-text">Template Properties Master</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_category_listing.php" class=" nav-link"><span class="nav-text">Template Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/template_manager_duplicate.php" class=" nav-link"><span class="nav-text">Duplicate Templates</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-file-alt"></i>
+                                                <span class="nav-text fadeable">
+                                                    Content Management                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/cms_listing.php" class=" nav-link"><span class="nav-text">Contents</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/faq_listing.php" class=" nav-link"><span class="nav-text">FAQs</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/testimonial_listing.php" class=" nav-link"><span class="nav-text">Testimonials</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/top_banner_listing.php" class=" nav-link"><span class="nav-text">Banners</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class=" nav-link"><span class="nav-text">Email/SMS</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/emailtemplate_listing.php" class="nav-link"><span class="nav-text">Email Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sms_notification_listing.php" class="nav-link"><span class="nav-text">SMS Templates</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/emailtemplate_reminder_listing.php" class="nav-link"><span class="nav-text">Email Reminders</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/media_gallery_listing.php" class=" nav-link"><span class="nav-text">Media Gallery</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-cog"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Personalization                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/product_info_layout_listing.php" class=" nav-link"><span class="nav-text">Product Page Layout</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/language_constant_action.php" class=" nav-link"><span class="nav-text">Language Text References</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/menulink_listing.php" class=" nav-link"><span class="nav-text">Links - Header / Footer</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/sidebar_management.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/sidebar_management.php" class=" nav-link"><span class="nav-text">Sidebar Management</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sidebar_management.php" class="nav-link"><span class="nav-text">Sidebar Management</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/sidebar_widget.php" class="nav-link"><span class="nav-text">Sidebar Widget</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/promotional_listing.php" class=" nav-link"><span class="nav-text">Promotional Message</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/theme_listing.php" class=" nav-link"><span class="nav-text">Website Themes</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-globe"></i>
+                                                <span class="nav-text fadeable">
+                                                    SEO                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/seo_all.php" class=" nav-link"><span class="nav-text">Page title, Keyword setting</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/sitemap_xml.php" class=" nav-link"><span class="nav-text">Sitemaps</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/metatag.php" class=" nav-link"><span class="nav-text">Metatags Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/robot_creation.php" class=" nav-link"><span class="nav-text">Robots</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/url_redirection_listing.php" class=" nav-link"><span class="nav-text">Manage URL Redirection</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/seo_image_alt_text.php" class=" nav-link"><span class="nav-text">Image Alt Text</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-business-partners"></i>
+                                                <span class="nav-text fadeable">
+                                                    Business Partners                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/printer_listing.php" class=" nav-link"><span class="nav-text">Printer</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/sales_agent_listing.php" class=" nav-link"><span class="nav-text">Sales Agent</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item active open">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-cogs"></i>
+                                                <span class="nav-text fadeable">
+                                                    Store Configuration                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable show">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item  open active">
+                                                                                                            <a href="https://visualgraphx.com/admin/configuration_settings.php" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_settings.php" class=" nav-link"><span class="nav-text">Site Settings</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable show">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item  active"><a href="https://visualgraphx.com/admin/configuration_settings.php" class="nav-link"><span class="nav-text">Site Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/language_listing.php" class="nav-link"><span class="nav-text">Languages</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/currency_listing.php" class="nav-link"><span class="nav-text">Currency</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/country_listing.php" class="nav-link"><span class="nav-text">Country / States</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/manage_image_optimization.php" class="nav-link"><span class="nav-text">Web Optimization</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/block_ip_action.php" class="nav-link"><span class="nav-text">Manage Site Access</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/manage_web_storage.php" class=" nav-link"><span class="nav-text">Manage Web Storage</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/manage_form_listing.php" class=" nav-link"><span class="nav-text">Manage Forms</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_payment_listing.php" class=" nav-link"><span class="nav-text">Payments Method</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_shipping_listing.php" class=" nav-link"><span class="nav-text">Shipping Method</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/tax_listing.php" class=" nav-link"><span class="nav-text">Tax / Vat Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/configuration_external_service_listing.php" class=" nav-link"><span class="nav-text">External Service Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-imposition"></i>
+                                                <span class="nav-text fadeable">
+                                                    Imposition Beta                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_sheet_size_listing.php" class=" nav-link"><span class="nav-text">Sheet Size Management</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_schema_listing.php" class=" nav-link"><span class="nav-text">Schema Manager</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_impose_job.php" class=" nav-link"><span class="nav-text">Impose Job</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_symbol_listing.php" class=" nav-link"><span class="nav-text">Marks Management</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/imposition_products_schema_setting.php" class=" nav-link"><span class="nav-text">Product Schema Settings</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-designer-studio"></i>
+                                                <span class="nav-text fadeable">
+                                                    Designer Studio                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class=" nav-link"><span class="nav-text">Studio Settings</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_configuration_setting.php?master=1" class="nav-link"><span class="nav-text">Studio Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_language_constant_action.php" class="nav-link"><span class="nav-text">Language Text References</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_color_setting_listing.php" class="nav-link"><span class="nav-text">Color Settings</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/studio_css_setting_action.php" class="nav-link"><span class="nav-text">Custom CSS Setting</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/predefined_quote_listing.php" class="nav-link"><span class="nav-text">Predefined Text</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/products_studio_models_listing.php" class="nav-link"><span class="nav-text">Real Preview</span></a></li>
+                                                                                                                                                                                                                                                                                <li class="nav-item "><a href="https://visualgraphx.com/admin/preview_image_settings.php" class="nav-link"><span class="nav-text">Preview image settings</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_image_gallery_listing.php" class=" nav-link"><span class="nav-text">Images</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_imagecategory_listing.php" class=" nav-link"><span class="nav-text">Image Categories</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/designer_studio_font_listing.php" class=" nav-link"><span class="nav-text">Studio Fonts</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon far fa-chart-bar"></i>
+                                                <span class="nav-text fadeable">
+                                                    Reports                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Sales</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_order_summary.php" class="nav-link"><span class="nav-text">Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_orderdetails.php" class="nav-link"><span class="nav-text">Order Detail</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_order_product_details.php" class="nav-link"><span class="nav-text">Order Product Detail</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_payment_request.php" class="nav-link"><span class="nav-text">Payment Request</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_shipping_summary.php" class="nav-link"><span class="nav-text">Shipping Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_tax_summary.php" class="nav-link"><span class="nav-text">Tax Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_coupon_summary.php" class="nav-link"><span class="nav-text">Coupon Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_quote_summary.php" class="nav-link"><span class="nav-text">Quote Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_production_day_summary.php" class="nav-link"><span class="nav-text">Order Delivery</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Product</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_products_sales.php" class="nav-link"><span class="nav-text">Product Sales</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_templates_sales.php" class="nav-link"><span class="nav-text">Template Sales</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_inventory_request.php" class="nav-link"><span class="nav-text">Inventory Request</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_inventory.php" class="nav-link"><span class="nav-text">Inventory Report</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_product_stock_summary.php" class="nav-link"><span class="nav-text">Stock Summary</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Customers</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_customer_order_summary.php" class="nav-link"><span class="nav-text">Customer Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_payon_account.php" class="nav-link"><span class="nav-text">Payon Account</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_customer_details.php" class="nav-link"><span class="nav-text">Customer Details</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_download_print_file.php" class="nav-link"><span class="nav-text">Download Print File</span></a></li>
+                                                                                                                            </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                            <a href="https://visualgraphx.com/admin/" class="p-0 menusubtoggle dropdown-toggle position-absolute position-tr py-1 px-2 dropdown-toggle nav-link"><i class="arrow far fa-angle-down"></i></a>
+                                                                                                        <a href="https://visualgraphx.com/admin/" class="dropdown-toggle nav-link"><span class="nav-text">Partners</span></a>
+
+                                                    
+                                                                                                            <div class="submenu collapse hideable ">
+                                                            <ul class="submenu-inner">
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_sales_agent_commission.php" class="nav-link"><span class="nav-text">Sales Agent Commission</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_printer_order_summary.php" class="nav-link"><span class="nav-text">Printer Order Summary</span></a></li>
+                                                                                                                                                                                                            <li class="nav-item "><a href="https://visualgraphx.com/admin/report_printer_commission.php" class="nav-link"><span class="nav-text">Printer/Vendor Commission</span></a></li>
+                                                                                                                                                                                                                                                                    </ul>
+                                                        </div>
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/report_production_time_spent.php" class=" nav-link"><span class="nav-text">Production Time Spent</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/report_audit_log.php" class=" nav-link"><span class="nav-text">Log</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul> <!-- closed ul --> </div> <!-- Closed hideable--> </li> <!-- Closed li for the sub-menu -->                                        <li class="nav-item ">
+                                            <a href="#" class="nav-link dropdown-toggle">
+                                                <i class="nav-icon fak fa-admin"></i>
+                                                <span class="nav-text fadeable">
+                                                    Admin                                                </span>
+                                                <i class="arrow far fa-angle-down"></i>
+                                            </a>
+                                            <div class="submenu collapse hideable ">
+                                                <ul class="submenu-inner">
+                                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/admin_listing.php" class=" nav-link"><span class="nav-text">Admin</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/workflow_admin_listing.php" class=" nav-link"><span class="nav-text">Workflow Admin</span></a>
+
+                                                    
+                                                                                                    </li>
+                                                                                <li class="nav-item ">
+                                                                                                        <a href="https://visualgraphx.com/admin/admin_group.php" class=" nav-link"><span class="nav-text">Admin Group / Role</span></a>
+
+                                                    
+                                                                                                    </li>
+                                </ul></div></li></ul>                                        <!-- #section:basics/sidebar.layout.minimize -->
+                                        <div class="sidebar-toggle sidebar-collapse text-center" id="sidebar-collapse">
+                                            <button type="button" class="radius-round  " data-toggle="sidebar" data-target="#sidebar" aria-controls="sidebar" aria-expanded="true" aria-label="Toggle sidebar">
+                                                <i class="ace-icon fa fa-angle-left" data-icon1="ace-icon fa fa-angle-left" data-icon2="ace-icon fa fa-angle-right"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- /section:basics/sidebar.layout.minimize -->
+                                        <script type="text/javascript" data-sanitized="script-body-removed"></script>
+                                    </div><!-- END -ace-scroll -->
+                                            </div><!-- END - sidebar inner -->
+        </div>
+        <!-- /section:basics/sidebar -->
+            <div class="main-content">
+
+                <!-- #section:basics/content.breadcrumbs -->
+<div class="breadcrumbs fixed-top d-flex align-items-center bg-light border-bottom flex-wrap" id="breadcrumbs">
+    <ul class="breadcrumb py-2">
+        <!--<li>
+			<i class="ace-icon fa fa-home home-icon"></i>
+			<a href="index.php">Home</a>
+		</li>
+		<li class="active">
+			Dashboard
+		</li>-->
+        <li class="breadcrumb-item text-95"><i class="fa fa-home home-icon"></i> <a href="https://visualgraphx.com/admin/welcome.php">Home</a> </li><li class="active breadcrumb-item text-95">Site Settings </li>    </ul><!-- /.breadcrumb -->
+    <i class="fa fa-spinner fa-spin text-150 ajax_loader" style="display:none;"></i>
+        <div class="pin_icon_data d-flex align-items-center store_header">
+        <div class="row align-items-center d-lg-flex d-none flex-nowrap">
+            <div class="col-auto px-0">
+                <a href="relogin.php?user_login_type=workflow&amp;s=[hex-token]" class="btn btn-primary btn-sm mr-3"><i class="far fa-sync"></i> Workflow</a>            </div>
+                    </div>
+        <div class="d-flex flex-row-reverse align-items-center ml-2 text-120">
+                        <a class="ml-2 full_screen_icon" href="javascript:void(0);" onclick="if (!window.__cfRLUnblockHandlers) return false; toggleFullscreen();" data-placement="auto" data-toggle="tooltip" data-original-title="Toggle full screen" style="text-decoration:none;"><i class="far fa-expand"></i></a>
+                            <a class="ml-2 pr-1" href="https://docs.onprintshop.com/user-manual/site-settings" target="_blank" data-toggle="tooltip" data-original-title="Help" data-placement="auto"><i class="fal fa-question-square"></i></a>
+                        <span class="pr-1" id="pin_icon">
+                <i class="fas fa-thumbtack pin-icon pinpagebtn fa-sm" data-placement="left" title="Pin this page" data-toggle="modal" data-target="#saveadminpinpage"></i>            </span>
+        </div>
+    </div>
+</div>
+<!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content pt-lg-5">
+
+                    <div class="row" id="configuration_settings_content">
+                        <div class="col-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                                    <div class="row">
+            <div class="col-12  d-lg-none">
+                <button class="navbar-toggler btn btn-primary w-100 text-left collapsed" type="button" data-toggle="collapse" data-target=".section_toolbar" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">
+                    <span class="sr-only">Toggle sidebar</span> <i class="nav-icon fak fa-dashboard white text-125"></i> </button>
+            </div>
+        </div>
+        <div class="row" translate="no">
+            <div class="col-12">
+                <div class="section_toolbar opsStateClear navbar-collapse collapse show h-sidebar navbar-menu navbar-backdrop bg-light tabs-above mb-2">
+                    <ul class="nav nav-tabs border-bottom d-block d-md-flex visible-links">
+                                                    <li class="nav-item text-md-center"> <a href="configuration_settings.php" class="active nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-cogs text-130"></i> <span class="menu-text">Site Settings</span></a> </li>
+                                                    <li class="nav-item text-md-center"> <a href="language_listing.php" class="nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-language text-130"></i> <span class="menu-text">Languages</span></a> </li>
+                                                    <li class="nav-item text-md-center"> <a href="currency_listing.php" class="nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon fab fa-gg-circle text-130"></i> <span class="menu-text">Currency</span></a> </li>
+                                                    <li class="nav-item text-md-center"> <a href="country_listing.php" class="nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-globe text-130"></i> <span class="menu-text">Country/States</span></a> </li>
+                                                    <li class="nav-item text-md-center"> <a href="manage_image_optimization.php" class="nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-tachometer-alt-fast text-130"></i> <span class="menu-text">Web Optimization</span></a> </li>
+                                                    <li class="nav-item text-md-center"> <a href="block_ip_action.php" class="nav-link radius-0"> <i class="d-md-block mb-md-2 mr-1 mr-md-0 p-0 menu-icon far fa-ban text-130"></i> <span class="menu-text">Manage Site Access</span></a> </li>
+                                                
+                    </ul>
+                                </div>
+            </div>
+        </div>
+<form class="form-horizontal" rel="opsform" data-validate="true" role="form" name="frm_configuration_settings" id="frm_configuration_settings" method="post" novalidate="novalidate">
+	<div class="page-header">
+		<h1>Site Settings</h1>
+		<div class="float-md-right d-inline-flex flex-wrap form_action_buttons mx-1 mx-md-0" data-buttonscroll="true"> <button class="btn btn-primary btn-sm radius-0 ml-1" type="submit" id="btn-action-save" name="Submit" value="Save"><i class="far fa-save ace-icon mr-1"></i> Save</button><button class="btn btn-light btn-sm radius-0 ml-1" type="reset" name="btnreset" id="btn-action-reset" value="Reset"><i class="far fa-undo text-90 ace-icon mr-1"></i><span class="d-none d-lg-inline-block">Reset</span></button></div>	</div>
+	<div class="row">
+		<div class="col-lg-12 search-container">
+		   <div class="dataTables_filter" id="ops-table_filter">
+			 <label>Search : <input type="text" value="" class="text_box_medium" id="search_config"> </label>
+			 <input type="hidden" value="" id="search_config_url">
+		   </div>
+		</div>
+	</div>
+	<div class="space-6"></div>
+	<div class="tabs-above">
+	<ul id="SettingTab" class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+				<a href="#TabContent_8" id="tab_8" class="nav-link active show" data-toggle="tab" aria-expanded="true">
+					Customers				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_10" id="tab_10" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Product				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_11" id="tab_11" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Template				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_9" id="tab_9" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Images				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_25" id="tab_25" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Store Personalization				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_7" id="tab_7" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Store Configuration				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_17" id="tab_17" class="nav-link " data-toggle="tab" aria-expanded="true">
+					SEO				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_6" id="tab_6" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Miscellaneous				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_1" id="tab_1" class="nav-link " data-toggle="tab" aria-expanded="true">
+					After Login Redirection				</a>
+			</li>	
+					<li class="nav-item">
+				<a href="#TabContent_3" id="tab_3" class="nav-link " data-toggle="tab" aria-expanded="true">
+					Theme Settings				</a>
+			</li>	
+			</ul>
+	<div class="tab-content">
+							<div class="tab-pane fade active show" id="TabContent_8">
+				<table id="ops-table_8" class="table table-striped table-bordered table-hover maintable">
+					<thead>
+						<tr>
+												
+												
+															<th>Description</th>
+								<th>Settings</th>
+												
+						</tr>
+                        <tr class="no_records_found d-none">
+                            <td colspan="3" class="dataTables_empty text-center" valign="top">
+                                <span class="badge badge-warning text-110"><i class="ace-icon fa fa-exclamation-triangle"></i> No Records Found</span>
+                            </td>
+    	    		    </tr>
+					</thead>
+					<tbody>
+								 
+						
+					
+								
+						
+						
+                        															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Notify Customer after Newsletter Subscription										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[67]" id="txtconfig[67]"><option value="Yes" selected="selected">Yes</option><option value="No">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Newsletter Subscription Checkbox										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">When enabled, "Send Newsletter" checkbox will be visible on the Storefront.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[49]" id="txtconfig[49]"><option value="Yes" selected="selected">Yes</option><option value="No">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Guest Customer Login?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[75]" id="txtconfig[75]"><option value="Yes">Yes</option><option value="No" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Authorization while registering Customers? 										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">If enabled, Customer won't be able to login on Storefront until Customer status is changed to 'Active'</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[220]" id="txtconfig[220]"><option value="no">No</option><option value="yes" selected="selected">Authorize from Admin</option><option value="email_verification">Authorize with Email Verification</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable "Add Pay on Balance" for Customers										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">For Store: The "Add Pay On Balance" option will be available for the store customers if Customer wise value is set in the "Pay On Account" setting for the store and the online payment method is available for the store.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[265]" id="txtconfig[265]"><option value="n">None</option><option value="r">Default Store</option><option value="c">All Private/Public Store</option><option value="b" selected="selected">Both</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable User Profile Update Notification										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><ul>
+    <li><b>None:</b> User profile update notification gets disabled.</li>
+    <li><b>Default Store:</b>Only Default Store will receive an email about user profile update.</li>
+    <li><b>All Private/Public Store:</b>All Private/Public Store customers will receive an email about the user profile update.</li>
+    <li><b>Both:</b>All the website customers will receive email notification about user profile update.</li>
+ </ul></div></span>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">If enabled, then Mail Notification will be sent to customers on Profile Updates.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[277]" id="txtconfig[277]"><option value="0">None</option><option value="1">Default Store</option><option value="2">All Private/Public Store</option><option value="3" selected="selected">Both</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable the ‘Agree to Terms &amp; Condition’ checkbox										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><ul>
+ <li><b>None:</b> Checkbox hide.</li>
+ <li><b>Default Checked:</b> Checkbox visible with default checked.</li>
+ <li><b>Default Unchecked:</b> Checkbox visible with default unchecked.</li>
+</ul></div></span>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">When enabled, an ‘Agree to Terms &amp; Condition’ checkbox will be visible on the storefront at the Registration (Normal, Quick &amp; Guest), Contact Us &amp; Newsletter Subscription block.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[284]" id="txtconfig[284]"><option value="0">None</option><option value="1" selected="selected">Default Checked</option><option value="2">Default Unchecked</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Password Strength for Front Customer										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><b>Low:</b> Minimun 8 characters.<br><b>Medium:</b> At least 10 characters in length with one uppercase letter, one lowercase letter, and one digit.<br><b>Strong:</b> At least 12 characters in length with one uppercase letter, one lowercase letter, one digit, and one special character.</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[322]" id="txtconfig[322]"><option value="L" selected="selected">Low</option><option value="M">Medium</option><option value="S">Strong</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer Lastname										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[69]" id="txtconfig[69]"><option value="lastname-1" selected="selected">Lastname - Active &amp; Mandatory</option><option value="lastname-2"> Lastname - Active &amp; Not Mandatory</option><option value="lastname-3"> Lastname - Inactive</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer State										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[70]" id="txtconfig[70]"><option value="state-1" selected="selected">State - Active &amp; Mandatory</option><option value="state-2"> State - Active &amp; Not Mandatory</option><option value="state-3"> State - Inactive</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer Address 2										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[71]" id="txtconfig[71]"><option value="suburb-1">Address 2 - Active &amp; Mandatory</option><option value="suburb-2" selected="selected"> Address 2 - Active &amp; Not Mandatory</option><option value="suburb-3"> Address 2 - Inactive</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer Company Name										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[143]" id="txtconfig[143]"><option value="companyname-1">Company Name - Active &amp; Mandatory</option><option value="companyname-2" selected="selected"> Company Name - Active &amp; Not Mandatory</option><option value="companyname-3"> Company Name - Inactive</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer City										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[278]" id="txtconfig[278]"><option value="city-1" selected="selected">City - Active &amp; Mandatory</option><option value="city-2"> City - Active &amp; Not Mandatory</option><option value="city-3"> City - Inactive</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer Zipcode										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[72]" id="txtconfig[72]"><option value="zipcode-1" selected="selected">Zipcode - Active &amp; Mandatory</option><option value="zipcode-2"> Zipcode - Active &amp; Not Mandatory</option><option value="zipcode-3"> Zipcode - Inactive</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Default Country Name										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[6]" id="txtconfig[6]"><option value="1">Afghanistan</option><option value="2">Albania</option><option value="3">Algeria</option><option value="4">American Samoa</option><option value="5">Andorra</option><option value="6">Angola</option><option value="7">Anguilla</option><option value="8">Antarctica</option><option value="9">Antigua and Barbuda</option><option value="10">Argentina</option><option value="11">Armenia</option><option value="12">Aruba</option><option value="13">Australia</option><option value="14">Austria</option><option value="15">Azerbaijan</option><option value="16">Bahamas</option><option value="17">Bahrain</option><option value="18">Bangladesh</option><option value="19">Barbados</option><option value="20">Belarus</option><option value="21">Belgium</option><option value="22">Belize</option><option value="23">Benin</option><option value="24">Bermuda</option><option value="25">Bhutan</option><option value="26">Bolivia</option><option value="27">Bosnia and Herzegowina</option><option value="28">Botswana</option><option value="29">Bouvet Island</option><option value="30">Brazil</option><option value="31">British Indian Ocean Territory</option><option value="32">Brunei Darussalam</option><option value="33">Bulgaria</option><option value="34">Burkina Faso</option><option value="35">Burundi</option><option value="36">Cambodia</option><option value="37">Cameroon</option><option value="38">Canada</option><option value="39">Cape Verde</option><option value="40">Cayman Islands</option><option value="41">Central African Republic</option><option value="42">Chad</option><option value="43">Chile</option><option value="44">China</option><option value="45">Christmas Island</option><option value="46">Cocos (Keeling) Islands</option><option value="47">Colombia</option><option value="48">Comoros</option><option value="49">Congo</option><option value="50">Cook Islands</option><option value="51">Costa Rica</option><option value="52">Cote D'Ivoire</option><option value="53">Croatia</option><option value="54">Cuba</option><option value="55">Cyprus</option><option value="56">Czech Republic</option><option value="57">Denmark</option><option value="58">Djibouti</option><option value="59">Dominica</option><option value="60">Dominican Republic</option><option value="61">East Timor</option><option value="62">Ecuador</option><option value="63">Egypt</option><option value="64">El Salvador</option><option value="65">Equatorial Guinea</option><option value="66">Eritrea</option><option value="67">Estonia</option><option value="68">Ethiopia</option><option value="69">Falkland Islands (Malvinas)</option><option value="70">Faroe Islands</option><option value="71">Fiji</option><option value="72">Finland</option><option value="73">France</option><option value="74">France, Metropolitan</option><option value="75">French Guiana</option><option value="76">French Polynesia</option><option value="77">French Southern Territories</option><option value="78">Gabon</option><option value="79">Gambia</option><option value="80">Georgia</option><option value="81">Germany</option><option value="82">Ghana</option><option value="83">Gibraltar</option><option value="84">Greece</option><option value="85">Greenland</option><option value="86">Grenada</option><option value="87">Guadeloupe</option><option value="88">Guam</option><option value="89">Guatemala</option><option value="243">Guernsey</option><option value="90">Guinea</option><option value="91">Guinea-bissau</option><option value="92">Guyana</option><option value="93">Haiti</option><option value="94">Heard and Mc Donald Islands</option><option value="95">Honduras</option><option value="96">Hong Kong</option><option value="97">Hungary</option><option value="98">Iceland</option><option value="99">India</option><option value="100">Indonesia</option><option value="101">Iran (Islamic Republic of)</option><option value="102">Iraq</option><option value="103">Ireland</option><option value="104">Israel</option><option value="105">Italy</option><option value="106">Jamaica</option><option value="107">Japan</option><option value="242">Jersey</option><option value="108">Jordan</option><option value="109">Kazakhstan</option><option value="110">Kenya</option><option value="111">Kiribati</option><option value="113">Korea, Republic of</option><option value="114">Kuwait</option><option value="115">Kyrgyzstan</option><option value="117">Latvia</option><option value="118">Lebanon</option><option value="119">Lesotho</option><option value="120">Liberia</option><option value="121">Libyan Arab Jamahiriya</option><option value="122">Liechtenstein</option><option value="123">Lithuania</option><option value="124">Luxembourg</option><option value="125">Macau</option><option value="127">Madagascar</option><option value="128">Malawi</option><option value="129">Malaysia</option><option value="130">Maldives</option><option value="131">Mali</option><option value="132">Malta</option><option value="133">Marshall Islands</option><option value="134">Martinique</option><option value="135">Mauritania</option><option value="136">Mauritius</option><option value="137">Mayotte</option><option value="138">Mexico</option><option value="139">Micronesia, Federated States of</option><option value="140">Moldova, Republic of</option><option value="141">Monaco</option><option value="142">Mongolia</option><option value="241">Montenegro</option><option value="143">Montserrat</option><option value="144">Morocco</option><option value="145">Mozambique</option><option value="146">Myanmar</option><option value="147">Namibia</option><option value="148">Nauru</option><option value="149">Nepal</option><option value="150">Netherlands</option><option value="151">Netherlands Antilles</option><option value="152">New Caledonia</option><option value="153">New Zealand</option><option value="154">Nicaragua</option><option value="155">Niger</option><option value="156">Nigeria</option><option value="157">Niue</option><option value="158">Norfolk Island</option><option value="159">Northern Mariana Islands</option><option value="160">Norway</option><option value="161">Oman</option><option value="162">Pakistan</option><option value="163">Palau</option><option value="164">Panama</option><option value="165">Papua New Guinea</option><option value="166">Paraguay</option><option value="167">Peru</option><option value="168">Philippines</option><option value="169">Pitcairn</option><option value="170">Poland</option><option value="171">Portugal</option><option value="172">Puerto Rico</option><option value="173">Qatar</option><option value="174">Reunion</option><option value="175">Romania</option><option value="176">Russian Federation</option><option value="177">Rwanda</option><option value="178">Saint Kitts and Nevis</option><option value="179">Saint Lucia</option><option value="181">Samoa</option><option value="182">San Marino</option><option value="183">Sao Tome and Principe</option><option value="184">Saudi Arabia</option><option value="185">Senegal</option><option value="240">Serbia</option><option value="186">Seychelles</option><option value="187">Sierra Leone</option><option value="188">Singapore</option><option value="189">Slovakia (Slovak Republic)</option><option value="190">Slovenia</option><option value="191">Solomon Islands</option><option value="192">Somalia</option><option value="193">South Africa</option><option value="195">Spain</option><option value="196">Sri Lanka</option><option value="197">St. Helena</option><option value="198">St. Pierre and Miquelon</option><option value="199">Sudan</option><option value="200">Suriname</option><option value="201">Svalbard and Jan Mayen Islands</option><option value="202">Swaziland</option><option value="203">Sweden</option><option value="204">Switzerland</option><option value="205">Syrian Arab Republic</option><option value="206">Taiwan</option><option value="207">Tajikistan</option><option value="208">Tanzania, United Republic of</option><option value="209">Thailand</option><option value="210">Togo</option><option value="211">Tokelau</option><option value="212">Tonga</option><option value="213">Trinidad and Tobago</option><option value="214">Tunisia</option><option value="215">Turkey</option><option value="216">Turkmenistan</option><option value="217">Turks and Caicos Islands</option><option value="218">Tuvalu</option><option value="219">Uganda</option><option value="220">Ukraine</option><option value="221">United Arab Emirates</option><option value="222">United Kingdom</option><option value="223" selected="selected">United States</option><option value="224">United States Minor Outlying Islands</option><option value="225">Uruguay</option><option value="226">Uzbekistan</option><option value="227">Vanuatu</option><option value="228">Vatican City State (Holy See)</option><option value="229">Venezuela</option><option value="230">Vietnam</option><option value="231">Virgin Islands (British)</option><option value="232">Virgin Islands (U.S.)</option><option value="233">Wallis and Futuna Islands</option><option value="234">Western Sahara</option><option value="235">Yemen</option><option value="236">Yugoslavia</option><option value="237">Zaire</option><option value="238">Zambia</option><option value="239">Zimbabwe</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Customer Phone										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[184]" id="txtconfig[184]"><option value="phone-1" selected="selected">Phone - Active &amp; Mandatory</option><option value="phone-2"> Phone - Active &amp; Not mandatory</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Validate Phone Number										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Validate the phone number as per the selection of country</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[279]" id="txtconfig[279]"><option value="1" selected="selected">Yes</option><option value="0">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Default user group										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Select the default user group for customers. All the new customers will be by default assigned to this selected user group.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[318]" id="txtconfig[318]"><option value="0">None</option><option value="1">Yellowstone Landscape</option><option value="2">JayRey Graphics</option><option value="3">Visual Graphx</option><option value="4">RootsNBoots</option></select></div></td>
+								</tr>
+												</tbody>
+				</table>
+			</div>
+							<div class="tab-pane fade " id="TabContent_10">
+				<table id="ops-table_10" class="table table-striped table-bordered table-hover maintable">
+					<thead>
+						<tr>
+												
+												
+															<th>Description</th>
+								<th>Settings</th>
+												
+						</tr>
+                        <tr class="no_records_found d-none">
+                            <td colspan="3" class="dataTables_empty text-center" valign="top">
+                                <span class="badge badge-warning text-110"><i class="ace-icon fa fa-exclamation-triangle"></i> No Records Found</span>
+                            </td>
+    	    		    </tr>
+					</thead>
+					<tbody>
+								 
+						
+					
+								
+						
+						
+                        															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Product Category / Product Category with Group? 										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">If you set Product Category as Yes, then all the Product Category which are active will be displayed in the side menu, otherwise products list will be displayed in the side menu</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[55]" id="txtconfig[55]"><option value="Yes">Yes</option><option value="No">No</option><option value="Yesg" selected="selected">Yes with Group</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Show Product Price before Customer login										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">When this setting is set to 'No', it will show the price on the website only after the customer logs in to Storefront.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[218]" id="txtconfig[218]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Product View More Option Count										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Set options count to display on cart page for additional option.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="5" id="txtconfig[290]" name="txtconfig[290]"></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Pdf Preview For Quote/Offline Order Product										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">When you enable this setting, it will allow the users to view a PDF preview of their custom product quote or offline order.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[313]" id="txtconfig[313]"><option value="Yes" selected="selected">Yes</option><option value="No">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Option to download help templates on 'Upload Design' page - Front										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[206]" id="txtconfig[206]"><option value="yes" selected="selected">Enable</option><option value="no">Disable</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Measurement Unit for Product Size										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Product Size can be made available in MM, CM or Inch throughout the site i.e. Front-side and Admin-side by selecting the option from dropdown menu</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[30]" id="txtconfig[30]"><option value="Inch" selected="selected">Inch</option><option value="MM">MM</option><option value="CM">CM</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display format for Product Price list page										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><b>Expanded Format:</b> Pricing for all the products will be displayed at once. <br> <b>Collapsed Format:</b> Pricing for all the products will be displayed after clicking on the individual product name. </div></span>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">On the Pricing page, the price for all the products will be displayed along with a link to view the respective products. </div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[54]" id="txtconfig[54]"><option value="0">Expanded Format</option><option value="1" selected="selected"> Collapsed Format</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Alternate text to be displayed if 'Show Product Price before Customer login' is set to 'No' - Front										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Enter alternate text to be displayed instead of Product Price</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="--" id="txtconfig[219]" name="txtconfig[219]"></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 No. of Products to be displayed in each row in Mobile										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Used to set products to display per row in Mobile <small>(Available For Hover zoom,Slide Up,None and Product Title At Top.)</small></div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[270]" id="txtconfig[270]"><option value="1" selected="selected">1</option><option value="2">2</option><option value="3">3</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Set the position for the Upload Center description										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[271]" id="txtconfig[271]"><option value="0">Top</option><option value="1">Bottom</option><option value="2">Left</option><option value="3" selected="selected">Right</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 No. of products to be displayed in each row in iPad										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[287]" id="txtconfig[287]"><option value="1">1</option><option value="2">2</option><option value="3" selected="selected">3</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Visual Price Calculator for Admin Users										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Enable this setting to allow admin users to access and use the Visual Price Calculator when viewing the price calculator.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[334]" id="txtconfig[334]"><option value="1">Yes</option><option value="0" selected="selected">No</option></select></div></td>
+								</tr>
+												</tbody>
+				</table>
+			</div>
+							<div class="tab-pane fade " id="TabContent_11">
+				<table id="ops-table_11" class="table table-striped table-bordered table-hover maintable">
+					<thead>
+						<tr>
+												
+												
+															<th>Description</th>
+								<th>Settings</th>
+												
+						</tr>
+                        <tr class="no_records_found d-none">
+                            <td colspan="3" class="dataTables_empty text-center" valign="top">
+                                <span class="badge badge-warning text-110"><i class="ace-icon fa fa-exclamation-triangle"></i> No Records Found</span>
+                            </td>
+    	    		    </tr>
+					</thead>
+					<tbody>
+								 
+						
+					
+								
+						
+						
+                        															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Matching Templates based on grouping to customers										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">Save and View Matching Template button will appear on Shopping Cart and Product Additional Info page only if this option is set to 'Yes' and if the template belongs to a particular Template Group</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[74]" id="txtconfig[74]"><option value="Yes">Yes</option><option value="No" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Template Category?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[221]" id="txtconfig[221]"><option value="0">None</option><option value="1" selected="selected">Default Store</option><option value="2">All Private/Public Store</option><option value="3">All</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Template Auto Personalization										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Pre-fetch user data and auto fill in template</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[238]" id="txtconfig[238]"><option value="0">Disbale</option><option value="1"> Only for Registered Customers</option><option value="2"> Only for Store Customers</option><option value="3" selected="selected"> For All</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Template Cost?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Provide facility to add additional template cost.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[263]" id="txtconfig[263]"><option value="yes">Yes</option><option value="no" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Template Auto Personalization Using Cache										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Pre-fetch the user's previously added data from the cache and auto-fill in the template.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[286]" id="txtconfig[286]"><option value="0">Disbale</option><option value="1"> Only for Registered Customers</option><option value="2"> Only for Store Customers</option><option value="3" selected="selected"> For All</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 No. of Templates to be displayed in each row										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[33]" id="txtconfig[33]"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4" selected="selected">4</option></select></div></td>
+								</tr>
+												</tbody>
+				</table>
+			</div>
+							<div class="tab-pane fade " id="TabContent_9">
+				<table id="ops-table_9" class="table table-striped table-bordered table-hover maintable">
+					<thead>
+						<tr>
+												
+												
+															<th>Description</th>
+								<th>Settings</th>
+												
+						</tr>
+                        <tr class="no_records_found d-none">
+                            <td colspan="3" class="dataTables_empty text-center" valign="top">
+                                <span class="badge badge-warning text-110"><i class="ace-icon fa fa-exclamation-triangle"></i> No Records Found</span>
+                            </td>
+    	    		    </tr>
+					</thead>
+					<tbody>
+								 
+						
+					
+								
+						
+						
+                        															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 No. of User Images to be displayed per page - Front										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="20" id="txtconfig[35]" name="txtconfig[35]"></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Maximum Crop Image width for User Images - Front										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="420" id="txtconfig[81]" name="txtconfig[81]"></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Maximum Crop Image height for User Images - Front										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="400" id="txtconfig[82]" name="txtconfig[82]"></div></td>
+								</tr>
+												</tbody>
+				</table>
+			</div>
+							<div class="tab-pane fade " id="TabContent_25">
+				<table id="ops-table_25" class="table table-striped table-bordered table-hover maintable">
+					<thead>
+						<tr>
+												
+												
+															<th>Description</th>
+								<th>Settings</th>
+												
+						</tr>
+                        <tr class="no_records_found d-none">
+                            <td colspan="3" class="dataTables_empty text-center" valign="top">
+                                <span class="badge badge-warning text-110"><i class="ace-icon fa fa-exclamation-triangle"></i> No Records Found</span>
+                            </td>
+    	    		    </tr>
+					</thead>
+					<tbody>
+								 
+						
+					
+								
+						
+						
+                        															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable 'Send Mail' Functionality in Price Calculator										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[212]" id="txtconfig[212]"><option value="Yes">Yes</option><option value="No" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Number of pages to be displayed  in each row of CMS block (Blog Pages)										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Add the number of pages to display on Desktop, iPad, and mobile devices. For example, 3|2|1 (Desktop|iPad|Mobile).</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="3|2|1" id="txtconfig[298]" name="txtconfig[298]"></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Select Currency For Display										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">You Can Select Store Specific Currency or Default Currency</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[312]" id="txtconfig[312]"><option value="0" selected="selected">Default</option><option value="1"> Store Wise</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display style for Language and Currency										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[45]" id="txtconfig[45]"><option value="icon" selected="selected">Icon</option><option value="dropdown">Dropdown</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Shipping Calculator 										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><b>Yes:</b> When selected, this will display the shipping calculator for all products.<br><b>No:</b> When selected, this will avoid displaying the shipping calculator.<br><b>Print Product:</b> When selected, this will display the shipping calculator for print products only.</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[130]" id="txtconfig[130]"><option value="yes">Yes</option><option value="no" selected="selected"> No</option><option value="printproduct"> Print Products</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Style Breadcrumbs										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block"> </div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[190]" id="txtconfig[190]"><option value="Yes-Above Heading">Above Page Heading</option><option value="Yes-Above Heading With Link" selected="selected"> Above Page Heading With Link</option><option value="Yes-Below Heading"> Below Page Heading</option><option value="Yes-Below Heading With Link">Below Page Heading With Link</option><option value="No">Disable</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable the Promotional Message section										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">This setting enables the Promotional message section under the Store Personalization module.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[245]" id="txtconfig[245]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+												</tbody>
+				</table>
+			</div>
+							<div class="tab-pane fade " id="TabContent_7">
+				<table id="ops-table_7" class="table table-striped table-bordered table-hover maintable">
+					<thead>
+						<tr>
+												
+												
+															<th>Description</th>
+								<th>Settings</th>
+												
+						</tr>
+                        <tr class="no_records_found d-none">
+                            <td colspan="3" class="dataTables_empty text-center" valign="top">
+                                <span class="badge badge-warning text-110"><i class="ace-icon fa fa-exclamation-triangle"></i> No Records Found</span>
+                            </td>
+    	    		    </tr>
+					</thead>
+					<tbody>
+								 
+						
+					
+								
+						
+						
+                        															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Coupon Management Module 										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">If Coupon Management module is enabled, then 'Coupon Code' field will be displayed on the payment page<br>
+When coupon code is redeemed by customer, then coupon amount will be deducted from the order subtotal<br></div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[21]" id="txtconfig[21]"><option value="yes" selected="selected">Yes</option><option value="no"> no</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Currency based on Language Selection										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><ul>
+<li><b>Yes â€“</b> The option to select the language will be made available at the front store, but the default currency chosen from Admin will be taken into consideration.</li>
+<li><b>No â€“</b> The option to select the language and currency will be made available at the front store, customer will have to choose the desired language and currency from the dropdown available.</li>
+</ul></div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[44]" id="txtconfig[44]"><option value="yes">Yes</option><option value="no" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable QR code module?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[142]" id="txtconfig[142]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Quote module?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[141]" id="txtconfig[141]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Hide customer's detail for printer/vendor admin panel										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[183]" id="txtconfig[183]"><option value="yes" selected="selected">None</option><option value="no">Personal/billing </option><option value="all">Personal/billing/shipping (All)</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Printer module?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[182]" id="txtconfig[182]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable zero price on additional option? 										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">If 'Enable zero price on additional option?' is 'Yes' then additional option price will be displayed like $0.00, otherwise additional option price will be displayed as blank</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[188]" id="txtconfig[188]"><option value="Yes">Yes</option><option value="No" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Comment Field for Customer? - Front										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[199]" id="txtconfig[199]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Auto Archive of Orders? 										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[200]" id="txtconfig[200]"><option value="Yes" selected="selected">Yes</option><option value="No">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Reward module?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[216]" id="txtconfig[216]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable printer/vendor price? - Admin										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Enable/Disable additional price input fields for printer in admin product price set up interface</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[217]" id="txtconfig[217]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Auto Approve Order Feedbacks 										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">When Auto Approve is set to <b>Yes</b>, it will automatically approve user feedback and display on front side (If Yotpo is disabled)<br>
+If Auto Approve is set to <b>No</b>, user feedback needs to be enabled from order details to display on front side</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[227]" id="txtconfig[227]"><option value="yes">Yes</option><option value="no" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable first name and last name for newsletter										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">If enabled, first name and last name fields will become necessary to be filled by users subscribing to newsletter</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[228]" id="txtconfig[228]"><option value="yes">Yes</option><option value="no" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Estimated Delivery Date at Front Store										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Enable/Disable to display estimated delivery date at front store</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[229]" id="txtconfig[229]"><option value="Yes" selected="selected">Yes</option><option value="No">No</option><option value="Retailers">Default Store</option><option value="Corporates">All Private/Public Store</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Sales Agent module?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[237]" id="txtconfig[237]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Discount Management Module										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">If Discount Management module is enabled, then administrator will able to set discount either product wise or can able to create a set of products which knows as combo product offer. If all condition satisfied in frontstore customer will get discount on individual product or on combo group products.</div></span>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Enable/Disable Discount Module</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[243]" id="txtconfig[243]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Print Store Branch Management Module										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">If Print Store Branch Module is enabled, administrator will able to manage multiple branches / stores across the city or state or country. Administrator can see all branch activity and total orders with their admin.</div></span>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Enable/Disable Print Store Branch Module</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[254]" id="txtconfig[254]"><option value="yes">Yes</option><option value="no" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Quick Registration										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[257]" id="txtconfig[257]"><option value="0" selected="selected">None</option><option value="1">Default Store</option><option value="2">All Private/Public Store</option><option value="3">Both</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Cookie Warning Popup Message and Accessibility Widget?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[261]" id="txtconfig[261]"><option value="no">No</option><option value="yes" selected="selected">Only Cookie Warning Popup Message</option><option value="only_acs">Only Accessibility Widget</option><option value="both">Both</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Quote Request Product										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Provide facility wherein customer can request a quote for single or multiple product. In multiple product, customer shall be able to request a quote by entering more than one different products. Also please note that the email templates will have to be updated accordingly for the same.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[262]" id="txtconfig[262]"><option value="single">Single Product</option><option value="multiple" selected="selected">Multiple Product</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Store invoice due days list										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">List of due days which can be used to set payment due date for invoice.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><input type="text" class="form-control " value="15,30,45,60,90" id="txtconfig[264]" name="txtconfig[264]"></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Website Caching										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">This will cache product listing, template category data, etc. for better website performance</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[266]" id="txtconfig[266]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Payment Processing Fee Configuration?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Provide facility to configure processing fees on selected payment methods.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[267]" id="txtconfig[267]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable Payment Status Mapping With Payment Method?										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Provide facility to map Payment status with payment methods configuration section.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[269]" id="txtconfig[269]"><option value="yes" selected="selected">Yes</option><option value="no">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Existing Product's Details &amp; Options in Quote Form										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Provision to allow actual details selection for existing product while placing quote</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[283]" id="txtconfig[283]"><option value="yes" selected="selected">Yes</option><option value="no"> No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Display Estimated Individual Delivery Days										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">When you set the setting value to Yes, then on the front store, the estimated delivery days will be displayed for each of the shipping methods individually.</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[292]" id="txtconfig[292]"><option value="No">No</option><option value="Yes" selected="selected">Yes</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Local pickup method display style										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;">Choose how Local Pickup is displayed at the storefront (NOT applicable at checkout):  <br> <b>Default :</b> Local Pickup appears in the common shipping method dropdown. <br><b>Separate :</b> Local Pickup is shown as a separate shipping method.</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[301]" id="txtconfig[301]"><option value="0">Default</option><option value="1" selected="selected">Separate</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Shipping methods display style at front store										 <label class="border-0 bg-none pl-0 text-grey"></label><span class="ml-1 align-self-start long_help"><a class="help-button rounded-circle btn-xs cursor-pointer  text-white btn btn-sm btn-info" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a><div class="helpcontenthtml" style="display:none;word-wrap: break-word;"><b>Dropdown (All Pages):</b> Dropdown style will be used on Checkout, Product Info Shipping Calculator, Quote Shipping Calculator and Store Inventory Request page.<br><b>Radio (Checkout Only):</b> Radio buttons will be shown only on the Checkout page; all other pages will use dropdown style.<br><b>Radio (All Pages):</b> Radio buttons will be used on Checkout, Product Info Shipping Calculator, Quote Shipping Calculator and Store Inventory Request page.</div></span>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[302]" id="txtconfig[302]"><option value="1" selected="selected">Dropdown (All Places)</option><option value="2"> Radio (Only Checkout)</option><option value="3"> Radio (All Places)</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Quote Default Product Type										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Choose the default option from "Existing" or "Custom" product types to be displayed for Request Quotes.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[303]" id="txtconfig[303]"><option value="existing" selected="selected">Existing</option><option value="custom">Custom</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable captcha validation after failed payment attempt(s)										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">Captcha validation will be available on payment screen after 2 failed payment attempt(s)</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[305]" id="txtconfig[305]"><option value="1">Yes</option><option value="0" selected="selected">No</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Enable order feedback option in order details page front side.										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 		                					 <small class="short-help-block">
+											 	   <div class="help-block">If you want to display feedback option then set setting as Yes.</div>
+											 </small>
+										 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[311]" id="txtconfig[311]"><option value="0">No</option><option value="1" selected="selected">Yes</option></select></div></td>
+								</tr>
+															<tr>
+	                				<td class="width-60">
+	                															 <div class="input-group">
+										 Store Wise Local Time Zone										 <label class="border-0 bg-none pl-0 text-grey"></label>	                					 	                					 </div>
+	                					 </td>
+									<td class="width-40"><div class="col-md-9"><select class="form-control" name="txtconfig[314]" id="txtconfig[314]" disabled=""><option value="" selected="selected">Select Timezone</option><option value="Africa/Abidjan">Africa/Abidjan (UTC+00:00)</option><option value="Africa/Accra">Africa/Accra (UTC+00:00)</option><option value="Africa/Addis_Ababa">Africa/Addis_Ababa (UTC+03:00)</option><option value="Africa/Algiers">Africa/Algiers (UTC+01:00)</option><option value="Africa/Asmara">Africa/Asmara (UTC+03:00)</option><option value="Africa/Bamako">Africa/Bamako (UTC+00:00)</option><option value="Africa/Bangui">Africa/Bangui (UTC+01:00)</option><option value="Africa/Banjul">Africa/Banjul (UTC+00:00)</option><option value="Africa/Bissau">Africa/Bissau (UTC+00:00)</option><option value="Africa/Blantyre">Africa/Blantyre (UTC+02:00)</option><option value="Africa/Brazzaville">Africa/Brazzaville (UTC+01:00)</option><option value="Africa/Bujumbura">Africa/Bujumbura (UTC+02:00)</option><option value="Africa/Cairo">Africa/Cairo (UTC+02:00)</option><option value="Africa/Casablanca">Africa/Casablanca (UTC+01:00)</option><option value="Africa/Ceuta">Africa/Ceuta (UTC+02:00)</option><option value="Africa/Conakry">Africa/Conakry (UTC+00:00)</option><option value="Africa/Dakar">Africa/Dakar (UTC+00:00)</option><option value="Africa/Dar_es_Salaam">Africa/Dar_es_Salaam (UTC+03:00)</option><option value="Africa/Djibouti">Africa/Djibouti (UTC+03:00)</option><option value="Africa/Douala">Africa/Douala (UTC+01:00)</option><option value="Africa/El_Aaiun">Africa/El_Aaiun (UTC+01:00)</option><option value="Africa/Freetown">Africa/Freetown (UTC+00:00)</option><option value="Africa/Gaborone">Africa/Gaborone (UTC+02:00)</option><option value="Africa/Harare">Africa/Harare (UTC+02:00)</option><option value="Africa/Johannesburg">Africa/Johannesburg (UTC+02:00)</option><option value="Africa/Juba">Africa/Juba (UTC+02:00)</option><option value="Africa/Kampala">Africa/Kampala (UTC+03:00)</option><option value="Africa/Khartoum">Africa/Khartoum (UTC+02:00)</option><option value="Africa/Kigali">Africa/Kigali (UTC+02:00)</option><option value="Africa/Kinshasa">Africa/Kinshasa (UTC+01:00)</option><option value="Africa/Lagos">Africa/Lagos (UTC+01:00)</option><option value="Africa/Libreville">Africa/Libreville (UTC+01:00)</option><option value="Africa/Lome">Africa/Lome (UTC+00:00)</option><option value="Africa/Luanda">Africa/Luanda (UTC+01:00)</option><option value="Africa/Lubumbashi">Africa/Lubumbashi (UTC+02:00)</option><option value="Africa/Lusaka">Africa/Lusaka (UTC+02:00)</option><option value="Africa/Malabo">Africa/Malabo (UTC+01:00)</option><option value="Africa/Maputo">Africa/Maputo (UTC+02:00)</option><option value="Africa/Maseru">Africa/Maseru (UTC+02:00)</option><option value="Africa/Mbabane">Africa/Mbabane (UTC+02:00)</option><option value="Africa/Mogadishu">Africa/Mogadishu (UTC+03:00)</option><option value="Africa/Monrovia">Africa/Monrovia (UTC+00:00)</option><option value="Africa/Nairobi">Africa/Nairobi (UTC+03:00)</option><option value="Africa/Ndjamena">Africa/Ndjamena (UTC+01:00)</option><option value="Africa/Niamey">Africa/Niamey (UTC+01:00)</option><option value="Africa/Nouakchott">Africa/Nouakchott (UTC+00:00)</option><option value="Africa/Ouagadougou">Africa/Ouagadougou (UTC+00:00)</option><option value="Africa/Porto-Novo">Africa/Porto-Novo (UTC+01:00)</option><option value="Africa/Sao_Tome">Africa/Sao_Tome (UTC+00:00)</option><option value="Africa/Tripoli">Africa/Tripoli (UTC+02:00)</option><option value="Africa/Tunis">Africa/Tunis (UTC+01:00)</option><option value="Africa/Windhoek">Africa/Windhoek (UTC+02:00)</option><option value="America/Adak">America/Adak (UTC-09:00)</option><option value="America/Anchorage">America/Anchorage (UTC-08:00)</option><option value="America/Anguilla">America/Anguilla (UTC-04:00)</option><option value="America/Antigua">America/Antigua (UTC-04:00)</option><option value="America/Araguaina">America/Araguaina (UTC-03:00)</option><option value="America/Argentina/Buenos_Aires">America/Argentina/Buenos_Aires (UTC-03:00)</option><option value="America/Argentina/Catamarca">America/Argentina/Catamarca (UTC-03:00)</option><option value="America/Argentina/Cordoba">America/Argentina/Cordoba (UTC-03:00)</option><option value="America/Argentina/Jujuy">America/Argentina/Jujuy (UTC-03:00)</option><option value="America/Argentina/La_Rioja">America/Argentina/La_Rioja (UTC-03:00)</option><option value="America/Argentina/Mendoza">America/Argentina/Mendoza (UTC-03:00)</option><option value="America/Argentina/Rio_Gallegos">America/Argentina/Rio_Gallegos (UTC-03:00)</option><option value="America/Argentina/Salta">America/Argentina/Salta (UTC-03:00)</option><option value="America/Argentina/San_Juan">America/Argentina/San_Juan (UTC-03:00)</option><option value="America/Argentina/San_Luis">America/Argentina/San_Luis (UTC-03:00)</option><option value="America/Argentina/Tucuman">America/Argentina/Tucuman (UTC-03:00)</option><option value="America/Argentina/Ushuaia">America/Argentina/Ushuaia (UTC-03:00)</option><option value="America/Aruba">America/Aruba (UTC-04:00)</option><option value="America/Asuncion">America/Asuncion (UTC-04:00)</option><option value="America/Atikokan">America/Atikokan (UTC-05:00)</option><option value="America/Bahia">America/Bahia (UTC-03:00)</option><option value="America/Bahia_Banderas">America/Bahia_Banderas (UTC-05:00)</option><option value="America/Barbados">America/Barbados (UTC-04:00)</option><option value="America/Belem">America/Belem (UTC-03:00)</option><option value="America/Belize">America/Belize (UTC-06:00)</option><option value="America/Blanc-Sablon">America/Blanc-Sablon (UTC-04:00)</option><option value="America/Boa_Vista">America/Boa_Vista (UTC-04:00)</option><option value="America/Bogota">America/Bogota (UTC-05:00)</option><option value="America/Boise">America/Boise (UTC-06:00)</option><option value="America/Cambridge_Bay">America/Cambridge_Bay (UTC-06:00)</option><option value="America/Campo_Grande">America/Campo_Grande (UTC-04:00)</option><option value="America/Cancun">America/Cancun (UTC-05:00)</option><option value="America/Caracas">America/Caracas (UTC-04:00)</option><option value="America/Cayenne">America/Cayenne (UTC-03:00)</option><option value="America/Cayman">America/Cayman (UTC-05:00)</option><option value="America/Chicago">America/Chicago (UTC-05:00)</option><option value="America/Chihuahua">America/Chihuahua (UTC-06:00)</option><option value="America/Costa_Rica">America/Costa_Rica (UTC-06:00)</option><option value="America/Creston">America/Creston (UTC-07:00)</option><option value="America/Cuiaba">America/Cuiaba (UTC-04:00)</option><option value="America/Curacao">America/Curacao (UTC-04:00)</option><option value="America/Danmarkshavn">America/Danmarkshavn (UTC+00:00)</option><option value="America/Dawson">America/Dawson (UTC-07:00)</option><option value="America/Dawson_Creek">America/Dawson_Creek (UTC-07:00)</option><option value="America/Denver">America/Denver (UTC-06:00)</option><option value="America/Detroit">America/Detroit (UTC-04:00)</option><option value="America/Dominica">America/Dominica (UTC-04:00)</option><option value="America/Edmonton">America/Edmonton (UTC-06:00)</option><option value="America/Eirunepe">America/Eirunepe (UTC-05:00)</option><option value="America/El_Salvador">America/El_Salvador (UTC-06:00)</option><option value="America/Fort_Nelson">America/Fort_Nelson (UTC-07:00)</option><option value="America/Fortaleza">America/Fortaleza (UTC-03:00)</option><option value="America/Glace_Bay">America/Glace_Bay (UTC-03:00)</option><option value="America/Goose_Bay">America/Goose_Bay (UTC-03:00)</option><option value="America/Grand_Turk">America/Grand_Turk (UTC-04:00)</option><option value="America/Grenada">America/Grenada (UTC-04:00)</option><option value="America/Guadeloupe">America/Guadeloupe (UTC-04:00)</option><option value="America/Guatemala">America/Guatemala (UTC-06:00)</option><option value="America/Guayaquil">America/Guayaquil (UTC-05:00)</option><option value="America/Guyana">America/Guyana (UTC-04:00)</option><option value="America/Halifax">America/Halifax (UTC-03:00)</option><option value="America/Havana">America/Havana (UTC-04:00)</option><option value="America/Hermosillo">America/Hermosillo (UTC-07:00)</option><option value="America/Indiana/Indianapolis">America/Indiana/Indianapolis (UTC-04:00)</option><option value="America/Indiana/Knox">America/Indiana/Knox (UTC-05:00)</option><option value="America/Indiana/Marengo">America/Indiana/Marengo (UTC-04:00)</option><option value="America/Indiana/Petersburg">America/Indiana/Petersburg (UTC-04:00)</option><option value="America/Indiana/Tell_City">America/Indiana/Tell_City (UTC-05:00)</option><option value="America/Indiana/Vevay">America/Indiana/Vevay (UTC-04:00)</option><option value="America/Indiana/Vincennes">America/Indiana/Vincennes (UTC-04:00)</option><option value="America/Indiana/Winamac">America/Indiana/Winamac (UTC-04:00)</option><option value="America/Inuvik">America/Inuvik (UTC-06:00)</option><option value="America/Iqaluit">America/Iqaluit (UTC-04:00)</option><option value="America/Jamaica">America/Jamaica (UTC-05:00)</option><option value="America/Juneau">America/Juneau (UTC-08:00)</option><option value="America/Kentucky/Louisville">America/Kentucky/Louisville (UTC-04:00)</option><option value="America/Kentucky/Monticello">America/Kentucky/Monticello (UTC-04:00)</option><option value="America/Kralendijk">America/Kralendijk (UTC-04:00)</option><option value="America/La_Paz">America/La_Paz (UTC-04:00)</option><option value="America/Lima">America/Lima (UTC-05:00)</option><option value="America/Los_Angeles">America/Los_Angeles (UTC-07:00)</option><option value="America/Lower_Princes">America/Lower_Princes (UTC-04:00)</option><option value="America/Maceio">America/Maceio (UTC-03:00)</option><option value="America/Managua">America/Managua (UTC-06:00)</option><option value="America/Manaus">America/Manaus (UTC-04:00)</option><option value="America/Marigot">America/Marigot (UTC-04:00)</option><option value="America/Martinique">America/Martinique (UTC-04:00)</option><option value="America/Matamoros">America/Matamoros (UTC-05:00)</option><option value="America/Mazatlan">America/Mazatlan (UTC-06:00)</option><option value="America/Menominee">America/Menominee (UTC-05:00)</option><option value="America/Merida">America/Merida (UTC-05:00)</option><option value="America/Metlakatla">America/Metlakatla (UTC-08:00)</option><option value="America/Mexico_City">America/Mexico_City (UTC-05:00)</option><option value="America/Miquelon">America/Miquelon (UTC-02:00)</option><option value="America/Moncton">America/Moncton (UTC-03:00)</option><option value="America/Monterrey">America/Monterrey (UTC-05:00)</option><option value="America/Montevideo">America/Montevideo (UTC-03:00)</option><option value="America/Montserrat">America/Montserrat (UTC-04:00)</option><option value="America/Nassau">America/Nassau (UTC-04:00)</option><option value="America/New_York">America/New_York (UTC-04:00)</option><option value="America/Nipigon">America/Nipigon (UTC-04:00)</option><option value="America/Nome">America/Nome (UTC-08:00)</option><option value="America/Noronha">America/Noronha (UTC-02:00)</option><option value="America/North_Dakota/Beulah">America/North_Dakota/Beulah (UTC-05:00)</option><option value="America/North_Dakota/Center">America/North_Dakota/Center (UTC-05:00)</option><option value="America/North_Dakota/New_Salem">America/North_Dakota/New_Salem (UTC-05:00)</option><option value="America/Nuuk">America/Nuuk (UTC-02:00)</option><option value="America/Ojinaga">America/Ojinaga (UTC-06:00)</option><option value="America/Panama">America/Panama (UTC-05:00)</option><option value="America/Pangnirtung">America/Pangnirtung (UTC-04:00)</option><option value="America/Paramaribo">America/Paramaribo (UTC-03:00)</option><option value="America/Phoenix">America/Phoenix (UTC-07:00)</option><option value="America/Port-au-Prince">America/Port-au-Prince (UTC-04:00)</option><option value="America/Port_of_Spain">America/Port_of_Spain (UTC-04:00)</option><option value="America/Porto_Velho">America/Porto_Velho (UTC-04:00)</option><option value="America/Puerto_Rico">America/Puerto_Rico (UTC-04:00)</option><option value="America/Punta_Arenas">America/Punta_Arenas (UTC-03:00)</option><option value="America/Rainy_River">America/Rainy_River (UTC-05:00)</option><option value="America/Rankin_Inlet">America/Rankin_Inlet (UTC-05:00)</option><option value="America/Recife">America/Recife (UTC-03:00)</option><option value="America/Regina">America/Regina (UTC-06:00)</option><option value="America/Resolute">America/Resolute (UTC-05:00)</option><option value="America/Rio_Branco">America/Rio_Branco (UTC-05:00)<[Truncated]
