@@ -24,6 +24,9 @@ const icon = {
   reports: "chart-line",
   admin: "user-shield",
   api: "rotate",
+  builder: "sitemap",
+  alerts: "bell",
+  media: "images",
 };
 
 const currentMenu = [
@@ -170,32 +173,48 @@ const currentMenu = [
 const proposedMenu = [
   { id: "dashboard", label: "Dashboard", icon: icon.dashboard, page: "dashboard" },
   { id: "orders", label: "Orders", icon: icon.orders, children: [
-    { label: "Master Orders", page: "orders" },
-    { label: "Payment Requests", page: "payment-request" },
-    { label: "Job Board", page: "job-board" },
-    { label: "Status & Filters", page: "order-status" },
+    { label: "Orders", page: "orders" },
+    { label: "Add New Order", page: "add-order" },
+    { label: "Order Status", page: "order-status" },
+    { label: "Coupons / Discount", page: "coupons" },
+    { label: "Store Credit", page: "store-credit" },
   ] },
   { id: "quotes", label: "Quotes", icon: icon.quotes, children: [
-    { label: "Customer Quotes", page: "quotes" },
+    { label: "Quotes", page: "quotes" },
+    { label: "Add New Quote", page: "add-quote" },
     { label: "Quote Status", page: "quote-status" },
+  ] },
+  { id: "partners", label: "Vendors & Partners", icon: icon.partners, children: [
+    { label: "Vendor Quotes", page: "vendor-quotes" },
+    { label: "Vendors", page: "vendors" },
+    { label: "Sales Agents & Partners", page: "sales-agents" },
   ] },
   { id: "customers", label: "Customer Accounts", icon: icon.customers, children: [
     { label: "Customers", page: "customers" },
+    { label: "B2B Account Users", page: "b2b-account-users" },
+    { label: "Store Admins", page: "store-admins" },
+    { label: "User Groups", page: "user-groups" },
     { label: "Newsletter", page: "newsletter" },
     { label: "Design Proofs", page: "design-proofs" },
   ] },
   { id: "stores", label: "Store Management", icon: icon.stores, children: [
     { label: "Stores", page: "stores" },
+    { label: "B2B Store Theme", page: "b2b-store-theme" },
     { label: "Store Fields", page: "store-fields" },
     { label: "Store Workspace", page: "store-workspace" },
+    { label: "Duplicate Store Data", page: "duplicate-store-data" },
   ] },
   { id: "catalog", label: "Product Catalog", icon: icon.products, children: [
     { label: "Products", page: "product-catalog" },
     { label: "Product Options", page: "product-options" },
-    { label: "Categories", page: "product-categories" },
+    { label: "Product Categories", page: "product-categories" },
     { label: "Category Groups", page: "category-groups" },
     { label: "Page Categories", page: "page-categories" },
+    { label: "Product Weight/Days/SKU", page: "product-weight" },
+    { label: "Product Tax/VAT Settings", page: "product-tax" },
     { label: "Pricing", page: "product-price" },
+    { label: "Markup Master", page: "markup-master" },
+    { label: "Manage Stock", page: "manage-stock" },
   ] },
   { id: "templates", label: "Templates", icon: icon.templates, children: [
     { label: "Product Templates", page: "templates" },
@@ -203,35 +222,59 @@ const proposedMenu = [
     { label: "Art Layouts", page: "art-layouts" },
     { label: "Template Categories", page: "template-categories" },
   ] },
-  { id: "content", label: "Content & Help Media", icon: icon.content, children: [
-    { label: "CMS Pages", page: "cms-pages" },
-    { label: "Help Media", page: "help-media" },
-    { label: "FAQs", page: "faqs" },
-    { label: "Banners", page: "banners" },
-    { label: "Email/SMS", page: "email-templates" },
+  { id: "site-builder", label: "Site Builder", icon: icon.builder, children: [
+    { label: "Pages", page: "cms-pages" },
+    { label: "Page Categories", page: "page-categories" },
+    { label: "Links & Menus", page: "links" },
+    { label: "Sidebar Management", page: "sidebar-management" },
+    { label: "Sidebar Widget", page: "sidebar-widget" },
+    { label: "Themes", page: "themes" },
+    { label: "Account Pages", page: "account-pages" },
+    { label: "Product Layout Builder", page: "product-page-layout" },
+    { label: "Product Showcase", page: "product-showcase" },
+    { label: "Content Management", page: "site-content", children: [
+      { label: "Website Logos", page: "website-logos" },
+      { label: "Storefront Text References", page: "language-text" },
+      { label: "Banners", page: "banners" },
+      { label: "Asset Manager", page: "asset-manager" },
+      { label: "Help Media", page: "help-media" },
+      { label: "Form Management", page: "form-management" },
+      { label: "Breadcrumbs", page: "breadcrumbs" },
+      { label: "FAQs", page: "faqs" },
+      { label: "Testimonials", page: "testimonials" },
+    ] },
+  ] },
+  { id: "alerts", label: "Alerts & Notifications", icon: icon.alerts, children: [
+    { label: "Email Templates", page: "email-templates" },
+    { label: "SMS Templates", page: "sms-templates" },
+    { label: "Alert Automations", page: "email-reminders" },
+  ] },
+  { id: "config", label: "Store Configuration", icon: icon.config, children: [
+    { label: "Site Settings", page: "site-settings" },
+    { label: "Languages", page: "languages" },
+    { label: "Currency", page: "currency" },
+    { label: "Country / States", page: "country-states" },
+    { label: "Web Optimization", page: "web-optimization" },
+    { label: "Manage Site Access", page: "site-access" },
+    { label: "Payments", page: "payments" },
+    { label: "Shipping", page: "shipping" },
+    { label: "Tax / VAT Settings", page: "tax-settings" },
+    { label: "External Service Settings", page: "external-services" },
+    { label: "Admin Panel Text References", page: "admin-text" },
+  ] },
+  { id: "api", label: "Export & API", icon: icon.api, children: [
+    { label: "Order Exports", page: "export-api-orders" },
+    { label: "API & Webhooks", page: "api-webhooks" },
   ] },
   { id: "seo", label: "SEO", icon: icon.seo, children: [
     { label: "Global SEO", page: "seo-global" },
     { label: "Product SEO", page: "product-seo" },
     { label: "Category SEO", page: "category-seo" },
+    { label: "Category Group SEO", page: "category-group-seo" },
+    { label: "Page Category SEO", page: "page-category-seo" },
     { label: "Content SEO", page: "content-seo" },
+    { label: "Asset SEO", page: "asset-seo" },
     { label: "Redirects", page: "redirects" },
-  ] },
-  { id: "partners", label: "Vendors & Partners", icon: icon.partners, children: [
-    { label: "Vendor Quotes", page: "vendor-quotes" },
-    { label: "Vendors", page: "vendors" },
-    { label: "Sales Agents & Partners", page: "sales-agents" },
-  ] },
-  { id: "api", label: "Export, API & Webhooks", icon: icon.api, children: [
-    { label: "Order Exports", page: "export-api-orders" },
-    { label: "API & Webhooks", page: "api-webhooks" },
-  ] },
-  { id: "config", label: "Store Configuration", icon: icon.config, children: [
-    { label: "Site Settings", page: "site-settings" },
-    { label: "Languages", page: "languages" },
-    { label: "Payments", page: "payments" },
-    { label: "Shipping", page: "shipping" },
-    { label: "Admin Panel Text References", page: "admin-text" },
   ] },
   { id: "imposition", label: "Product Imposition", icon: icon.imposition, children: [
     { label: "Sheet Sizes", page: "sheet-sizes" },
@@ -279,6 +322,29 @@ const products = [
   ["321", "10ft Event Tent", "Size : 10ft Event Tent", "Available To : All Store", "Range Based With Multiplication", "Off"],
 ];
 
+const pageFamilies = {
+  orders: ["orders", "payment-request", "add-order", "order-status", "coupons", "store-credit", "unpaid-orders", "archive-orders", "job-board"],
+  quotes: ["quotes", "add-quote", "quote-status"],
+  vendor: ["vendor-quotes", "vendors", "sales-agents"],
+  customer: ["customers", "newsletter", "design-proofs", "b2b-account-users", "store-admins", "user-groups"],
+  store: ["stores", "store-fields", "store-workspace", "duplicate-store-data", "b2b-store-theme"],
+  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "page-categories", "product-weight", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
+  template: ["templates", "pdf-blocks", "art-layouts", "template-categories"],
+  builder: ["cms-pages", "site-content", "links", "sidebar-management", "sidebar-widget", "themes", "account-pages", "product-page-layout", "product-showcase", "website-logos", "language-text", "banners", "asset-manager", "help-media", "media-gallery", "form-management", "breadcrumbs", "faqs", "testimonials"],
+  alerts: ["email-templates", "sms-templates", "email-reminders"],
+  seo: ["seo-global", "sitemaps", "metatags", "robots", "redirects", "image-alt", "product-seo", "category-seo", "category-group-seo", "page-category-seo", "content-seo", "asset-seo"],
+  config: ["site-settings", "languages", "currency", "country-states", "web-optimization", "site-access", "payments", "shipping", "tax-settings", "external-services", "admin-text"],
+  api: ["export-api-orders", "api-webhooks"],
+  imposition: ["sheet-sizes", "schemas", "impose-job", "product-schema-settings"],
+  studio: ["studio-settings", "studio-language", "studio-images", "studio-image-categories", "studio-fonts"],
+  reports: ["sales-reports", "production-reports", "inventory-reports", "system-log"],
+  admin: ["admin-users", "roles"],
+};
+
+function familyFor(page) {
+  return Object.entries(pageFamilies).find(([, pages]) => pages.includes(page))?.[0] || "general";
+}
+
 function flattenMenu(group) {
   const items = [];
   const visit = item => {
@@ -317,9 +383,17 @@ function topbar() {
   return `
     <header class="top">
       <a class="brand" data-page="dashboard">
-        <span class="fa-stack fa-md pr-2 d-inline-block" title="Admin">
-          <i class="fa-regular fa-house fa-stack-2x"></i>
-          <i class="fa-regular fa-circle-user fa-stack-1x"></i>
+        <span class="ops-home-stack" title="Admin">
+          <svg class="ops-home-house" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M4 15.5 16 5l12 10.5" />
+            <path d="M8 14.5V28h16V14.5" />
+            <path d="M12 28v-7h8v7" />
+          </svg>
+          <svg class="ops-home-user" viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="12" />
+            <circle cx="16" cy="12.5" r="4" />
+            <path d="M8.5 24c1.8-4.1 5-6.1 7.5-6.1s5.7 2 7.5 6.1" />
+          </svg>
         </span>
         <strong>Visual Graphx, LLC.</strong>
       </a>
@@ -410,12 +484,23 @@ function labelForPage(page) {
 
 function content() {
   if (OPS.page === "dashboard") return dashboard();
-  if (OPS.page === "orders") return ordersPage();
-  if (OPS.page === "quotes") return quotesPage();
-  if (OPS.page === "print-products" || OPS.page === "ready-products" || OPS.page === "product-catalog") return productPage();
-  if (OPS.page === "stores") return storesPage();
-  if (OPS.page === "export-api-orders" || OPS.page === "api-webhooks") return apiPage();
-  if (OPS.page === "cms-pages" || OPS.page === "media-gallery" || OPS.page === "help-media") return contentPage();
+  const family = familyFor(OPS.page);
+  if (family === "orders") return ordersPage();
+  if (family === "quotes") return quotesPage();
+  if (family === "vendor") return vendorPage();
+  if (family === "customer") return customerPage();
+  if (family === "store") return storesPage();
+  if (family === "product") return productPage();
+  if (family === "template") return templatePage();
+  if (family === "builder") return siteBuilderPage();
+  if (family === "alerts") return alertsPage();
+  if (family === "seo") return seoPage();
+  if (family === "config") return configPage();
+  if (family === "api") return apiPage();
+  if (family === "imposition") return impositionPage();
+  if (family === "studio") return studioPage();
+  if (family === "reports") return reportsPage();
+  if (family === "admin") return adminPage();
   return genericPage(pageTitle());
 }
 
@@ -506,29 +591,48 @@ function chart() {
 }
 
 function ordersPage() {
-  return `<section class="page">${pageHead("List Orders", ["Payment Request", "Job Board", "Order Shipment"])}${filters(["Search:", "Company Name", "Order Date", "From", "To", "13 Selected"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Order Details</th><th>Customer</th><th>Products</th><th>Status</th><th>Action</th></tr></thead><tbody>${orders.map(o => `<tr><td><a>${o[0]}</a></td><td><b>${o[1]}</b><br>${o[3]}<br><small>${o[4]}</small></td><td><a>${o[5]}</a><br><small>${o[6]}</small></td><td>${o[7].join("<br>")}</td><td><span class="toggle off"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div></section>`;
+  const proposed = OPS.mode === "proposed";
+  const title = proposed ? pageTitle() : pageTitle() || "List Orders";
+  const fast = proposed ? fastFilters(["Open", "Unpaid", "Payment Requested", "Paid", "Archived", "Overdue", "Store", "Customer"]) : "";
+  const stateCols = proposed ? "<th>Invoice</th><th>Payment</th><th>Archive</th>" : "";
+  const stateCells = proposed ? "<td><span class=\"badge muted\">Invoice Ready</span></td><td><span class=\"badge warn\">Requested</span></td><td><span class=\"badge muted\">No</span></td>" : "";
+  return `<section class="page">${pageHead(title, proposed ? ["Add New Order", "Saved Views", "Job Board"] : ["Payment Request", "Job Board", "Order Shipment"])}${fast}${filters(proposed ? ["Search:", "Company Name", "Store", "Order Status", "Product Status", "Date From", "Date To"] : ["Search:", "Company Name", "Order Date", "From", "To", "13 Selected"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Order Details</th><th>Customer</th><th>Products</th>${stateCols}<th>Status</th><th>Action</th></tr></thead><tbody>${orders.map(o => `<tr><td><a>${o[0]}</a></td><td><b>${o[1]}</b><br>${o[3]}<br><small>${o[4]}</small></td><td><a>${o[5]}</a><br><small>${o[6]}</small></td><td>${o[7].join("<br>")}</td>${stateCells}<td><span class="toggle ${o[0] === "3052" ? "on" : "off"}"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Orders now contains unpaid, payment request, and archive states as filters/actions instead of separate navigation fragments.") : originalNote("Original Orders splits List Orders, Payment Request, Unpaid Orders, Archive Orders, Export/API Orders, and status utilities across separate menu entries.")}</section>`;
 }
 
 function quotesPage() {
-  return `<section class="page">${pageHead("Quotes", ["Add", "Import"])}${filters(["Search", "Quote Status", "Date"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Quote Details</th><th>Customer</th><th>Products</th><th>Status</th><th>Action</th></tr></thead><tbody>${quotes.map(q => `<tr><td><a>${q[0]}</a></td><td>${q[2]}<br><small>${q[3]}</small></td><td><a>${q[4]}</a><br><small>${q[5]}</small></td><td>${q[6].join("<br>")}</td><td><span class="badge">${q[1]}</span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div></section>`;
+  return `<section class="page">${pageHead(pageTitle(), ["Add New Quote", "Quote Status"])}${filters(["Search", "Quote Status", "Customer", "Date"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Quote Details</th><th>Customer</th><th>Products</th><th>Status</th><th>Action</th></tr></thead><tbody>${quotes.map(q => `<tr><td><a>${q[0]}</a></td><td>${q[2]}<br><small>${q[3]}</small></td><td><a>${q[4]}</a><br><small>${q[5]}</small></td><td>${q[6].join("<br>")}</td><td><span class="badge">${q[1]}</span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div>${OPS.mode === "proposed" ? changeNote("Quotes is reserved for customer quote workflows. Vendor quotes move to Vendors & Partners.") : originalNote("Original Quote Management mixes customer quotes with printer/vendor quote screens.")}</section>`;
 }
 
 function productPage() {
-  return `<section class="page">${pageHead(OPS.mode === "proposed" ? "Product Catalog" : pageTitle(), ["Add", "Import Products", "Related Product", "Manage Stock", "Publish"])}${filters(["Search", "Product Category", "Select Store", "Price Category"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Images</th><th>Product Details</th><th>Configuration</th><th>Sort</th><th>Status</th><th>Action</th></tr></thead><tbody>${products.map(p => `<tr><td><a>${p[0]}</a></td><td><div class="thumb"></div></td><td><a>${p[1]}</a><br><small>${p[2]}</small></td><td>${p[3]}<br>Price Category : ${p[4]}</td><td>0</td><td><span class="toggle ${p[5] === "On" ? "on" : "off"}"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div></section>`;
+  if (OPS.mode === "proposed" && OPS.page === "markup-master") return markupMasterPage();
+  const proposed = OPS.mode === "proposed";
+  const actions = proposed ? ["Add Print Product", "Add Ready To Buy", "Add Kit Product", "Add Related Product", "Manage Stock"] : ["Add", "Import Products", "Related Product", "Manage Stock", "Publish"];
+  const tagCols = proposed ? "<th>Product Type</th><th>System Tags</th>" : "";
+  const tagCells = proposed ? "<td><span class=\"badge muted\">Print Product</span></td><td><span class=\"pill\">Fixed System</span><span class=\"pill\">Store Scope</span></td>" : "";
+  return `<section class="page">${pageHead(proposed && OPS.page === "product-catalog" ? "Product Catalog" : pageTitle(), actions)}${proposed ? fastFilters(["Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled", "Store Scope", "Status"]) : ""}${filters(["Search", "Product Category", "Select Store", "Price Category"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Images</th><th>Product Details</th>${tagCols}<th>Configuration</th><th>Sort</th><th>Status</th><th>Action</th></tr></thead><tbody>${products.map(p => `<tr><td><a>${p[0]}</a></td><td><div class="thumb"></div></td><td><a>${p[1]}</a><br><small>${p[2]}</small></td>${tagCells}<td>${p[3]}<br>Price Category : ${p[4]}</td><td>0</td><td><span class="toggle ${p[5] === "On" ? "on" : "off"}"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Print Products and Ready To Buy Products are represented as one catalog list with product type and fixed system tags. Focused edit pages stay intact.") : originalNote("Original Products separates Print Products and Ready To Buy Products into different lists, with related tools scattered below the menu.")}</section>`;
 }
 
 function storesPage() {
+  if (OPS.mode === "proposed" && OPS.page === "store-workspace") return storeWorkspacePage();
+  if (OPS.mode === "proposed" && OPS.page === "duplicate-store-data") return duplicateStorePage();
   const rows = [["1", "Demo Store", "johnDoe@graphxcpi.com"], ["2", "Konala", "rdickson@alphagraphics.com"], ["3", "Socure", "rdickson+socure@alphagraphics.com"]];
-  return `<section class="page">${pageHead("Stores", ["Add", "Import Department", "Duplicate Store Data", "Markup Master", "Store Settings Templates"])}${filters(["Search"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Logo</th><th>Store Details</th><th>Settings</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><div class="thumb logo"></div></td><td><a>${r[1]}</a><br>${r[2]}<br>Username : ${r[2]}</td><td>Department : No<br>Quick Checkout : No<br>Show Price To Customer : Yes</td><td><span class="toggle on"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div></section>`;
+  const proposed = OPS.mode === "proposed";
+  return `<section class="page">${pageHead(pageTitle(), proposed ? ["Add", "Duplicate Store Data", "Open Store Workspace", "Store Settings Templates"] : ["Add", "Import Department", "Duplicate Store Data", "Markup Master", "Store Settings Templates"])}${filters(["Search"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Logo</th><th>Store Details</th><th>Settings</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><div class="thumb logo"></div></td><td><a>${r[1]}</a><br>${r[2]}<br>Username : ${r[2]}</td><td>Department : No<br>Quick Checkout : No<br>Show Price To Customer : Yes</td><td><span class="toggle on"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Store Management keeps the store list and store-specific assignment workflows. B2B Store Theme remains here because it is only for B2B stores.") : originalNote("Original Stores page includes broad controls like Markup Master even when the system is not store-only.")}</section>`;
 }
 
 function apiPage() {
-  return `<section class="page">${pageHead(OPS.mode === "proposed" ? "Export, API & Webhooks" : "Export/API Orders", ["Export", "Manual Transfer", "Export/API Settings"])}<div class="grid two"><div>${filters(["Order Range", "Date Range", "Order Status"])}${panel("Order Exports", "<p>Export style, export format, hot folder, and manual transfer controls live here.</p>")}</div><div>${panel("API & Webhooks", "<p>Global API credentials, webhook event options, and future context-aware API questions for B2C, B2B, and franchise/reseller stores.</p>")}</div></div></section>`;
+  const proposed = OPS.mode === "proposed";
+  const tabs = proposed ? tabStrip(["Order Exports", "API & Webhooks"]) : tabStrip(["Export/API Settings", "Hot Folder Settings", "Advanced API", "Webhook"]);
+  const apiText = proposed ? "Global-only API credentials, webhook events, and the open question for context-aware B2C, B2B, franchise, and reseller automation." : "Current Export/API Orders lives under Orders and mixes export execution with export/API settings.";
+  return `<section class="page">${pageHead(proposed ? "Export & API" : "Export/API Orders", proposed ? ["Save", "Test Connection"] : ["Export", "Manual Transfer", "Export/API Settings"])}${tabs}<div class="grid two"><div>${filters(["Order Range", "Date Range", "Order Status"])}${panel("Order Exports", "<p>Export style, file naming, hot folder, order status selection, manual transfer, and connection controls.</p>")}</div><div>${panel("API & Webhooks", `<p>${apiText}</p>${formRows(["Client Id", "Client Secret", "Endpoint URL", "Webhook URL", "Event Type"])}`)}</div></div>${proposed ? changeNote("Export/API Orders is removed from Orders and becomes a global Export & API section with two areas: Order Exports and API & Webhooks.") : originalNote("Original export/API controls are reached through the Orders menu.")}</section>`;
 }
 
-function contentPage() {
-  const media = OPS.page === "help-media" || OPS.page === "media-gallery";
-  return `<section class="page">${pageHead(media ? (OPS.mode === "proposed" ? "Help Media" : "Media Gallery") : "Contents", ["Add", "Upload", "New Folder"])}<div class="grid two"><div>${panel(media ? "Image Manager" : "CMS Pages", media ? mediaGrid() : "<p>Homepage & Fixed Content, Dynamic Pages, Category pages, FAQs, banners, and testimonials.</p>")}</div><div>${panel("Improvements", "<p>Folder organization, external media links, audio/video references, image tagging, and content-context ownership.</p>")}</div></div></section>`;
+function siteBuilderPage() {
+  const media = ["help-media", "media-gallery", "asset-manager"].includes(OPS.page);
+  const title = OPS.mode === "proposed" ? pageTitle() : pageTitle();
+  if (media) return assetManagerPage();
+  const proposed = OPS.mode === "proposed";
+  return `<section class="page">${pageHead(title, ["Add", "Save", "Preview"])}${proposed ? siteBuilderTabs() : tabStrip(["Homepage & Fixed Content", "Dynamic Pages", "Category"])}<div class="grid two"><div>${panel(pageTitle(), formRows(["Page Category", "Key", "Page Heading", "Sort", "Status"]))}</div><div>${panel(proposed ? "Context Ownership" : "SEO", proposed ? "<p>Global Site Builder owns broad site pages, menus, themes, account pages, content groups, and asset references. Store-level Site Builder locks the selected store.</p>" : formRows(["Page Title", "Meta Description", "Canonical Reference"]))}</div></div>${proposed ? changeNote("Content Management and Store Personalization are reorganized as Site Builder, with the same page primitives available globally and in store context.") : originalNote("Original CMS and Store Personalization split page, theme, menu, sidebar, and asset tools across different areas.")}</section>`;
 }
 
 function mediaGrid() {
@@ -536,7 +640,124 @@ function mediaGrid() {
 }
 
 function genericPage(title) {
-  return `<section class="page">${pageHead(title, ["Add", "Save", "Reset"])}${filters(["Search", "Status", "Store"])}<div class="grid two"><div>${panel(`${title} Details`, formRows(["Name", "Type", "Status", "Sort", "Description"]))}</div><div>${panel("Current OPS Reference", "<p>This simulator page is rebuilt locally from the OPS admin structure. It is not loading PHP, captured HTML, or live async widgets.</p>")}</div></div></section>`;
+  return `<section class="page">${pageHead(title, ["Add", "Save", "Reset"])}${filters(["Search", "Status", "Store"])}<div class="grid two"><div>${panel(`${title} Details`, formRows(["Name", "Type", "Status", "Sort", "Description"]))}</div><div>${panel(`${OPS.mode === "proposed" ? "Proposed" : "Current OPS"} Layout`, `<p>${routeSummary()}</p>`)}</div></div></section>`;
+}
+
+function vendorPage() {
+  const proposed = OPS.mode === "proposed";
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Export"])}${filters(["Search", "Status", "Type"])}${dataTable(["Sr#", proposed ? "Vendor / Partner" : "Business Partner", "Email", "Role", "Status", "Action"], [
+    ["1", proposed ? "Arizona Trade Printer" : "Printer", "vendor@example.com", proposed ? "Vendor" : "Printer", "Active", "Action"],
+    ["2", "CPI Sales Channel", "partner@example.com", proposed ? "Sales Agent & Partner" : "Sales Agent", "Active", "Action"],
+  ])}${proposed ? changeNote("Vendor Quotes, Vendors, and Sales Agents & Partners move out of Quote Management into Vendors & Partners.") : originalNote("Original partner/vendor screens are split between Business Partners and Quote Management.")}</section>`;
+}
+
+function customerPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Export"])}${filters(["Search", "Customer Group", "Store", "Status"])}${dataTable(["Sr#", "Customer", "Email", "Store Scope", "Status", "Action"], [
+    ["1", "Alex Loudenslager", "info@thelabna.com", "Visual Graphx", "Active", "Action"],
+    ["2", "Drew Neverett", "drew.neverett@positionsports.com", "All Stores", "Active", "Action"],
+  ])}${OPS.mode === "proposed" ? changeNote("Customer becomes Customer Accounts and owns account users, store admins, user groups, and account access context.") : originalNote("Original Customer label is broad and repeats in the sidebar.")}</section>`;
+}
+
+function templatePage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Duplicate"])}${filters(["Search", "Template Category", "Status"])}${dataTable(["Sr#", "Template", "Category", "Last Updated", "Status", "Action"], [
+    ["1", "Business Card", "Print", "07-03-2026", "Active", "Action"],
+    ["2", "Window Perf", "Vehicle Graphics", "07-02-2026", "Active", "Action"],
+  ])}${routeNote()}</section>`;
+}
+
+function alertsPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save", "Preview"])}${tabStrip(["Email Templates", "SMS Templates", "Alert Automations"])}${filters(["Search", "Trigger", "Store", "Status"])}${dataTable(["Sr#", "Template / Automation", "Trigger", "Scope", "Status", "Action"], [
+    ["1", "Order Status Update", "Order Updated", OPS.mode === "proposed" ? "Global or Store Locked" : "Global", "Active", "Action"],
+    ["2", "Payment Request Reminder", "Scheduled", OPS.mode === "proposed" ? "Global or Store Locked" : "Global", "Active", "Action"],
+  ])}${OPS.mode === "proposed" ? changeNote("Email/SMS and reminders are grouped as Alerts & Notifications, with matching store-context pages that lock the selected store.") : originalNote("Original Email/SMS is nested inside Content Management.")}</section>`;
+}
+
+function seoPage() {
+  const proposed = OPS.mode === "proposed";
+  return `<section class="page">${pageHead(pageTitle(), ["Save", "Reset"])}${filters(["Search", "Object Type", "Store", "Status"])}<div class="grid two"><div>${panel("SEO Fields", formRows(["Page Title", "Meta Description", "Canonical Reference", "Additional Schema Mark-up", "Exclude In Sitemap"]))}</div><div>${panel(proposed ? "Contextual SEO Ownership" : "Global SEO Utility", proposed ? "<p>Object-specific SEO belongs on pages, products, product categories, category groups, page categories, and assets. Central SEO remains for global defaults, sitemap, robots, redirects, and technical controls.</p>" : "<p>Original SEO menu centralizes page title, metatags, robots, URL redirects, and image alt text.</p>")}</div></div>${routeNote()}</section>`;
+}
+
+function configPage() {
+  const adminText = OPS.page === "admin-text" ? "<p><b>Target link:</b> https://{siteurl}/admin/admin_constants.php</p>" : "";
+  return `<section class="page">${pageHead(pageTitle(), ["Save", "Reset"])}${tabStrip(["Site Settings", "Languages", "Payments", "Shipping", "Admin Panel Text References"])}<div class="grid two"><div>${panel("Configuration Settings", formRows(["Setting", "Default", "Custom", "Status"]))}</div><div>${panel("Reference", `${adminText}<p>Store Configuration contains setup utilities and site-wide configuration records.</p>`)}</div></div>${routeNote()}</section>`;
+}
+
+function impositionPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save", "Reset"])}${filters(["Search", "Schema", "Product", "Status"])}${dataTable(["Sr#", "Schema / Sheet", "Product Scope", "Updated", "Status", "Action"], [
+    ["1", "24 x 36 Sheet", "All Print Products", "07-03-2026", "Active", "Action"],
+    ["2", "Vehicle Wrap Panel", "Vehicle Graphics", "07-02-2026", "Active", "Action"],
+  ])}${OPS.mode === "proposed" ? changeNote("Imposition Beta is renamed Product Imposition to match product terminology.") : originalNote("Original sidebar label is Imposition Beta.")}</section>`;
+}
+
+function studioPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save"])}${filters(["Search", "Category", "Status"])}${dataTable(["Sr#", "Studio Resource", "Type", "Updated", "Status", "Action"], [
+    ["1", "Default Font Pack", "Fonts", "07-01-2026", "Active", "Action"],
+    ["2", "Language Text", "Text Reference", "06-30-2026", "Active", "Action"],
+  ])}${routeNote()}</section>`;
+}
+
+function reportsPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Export", "Refresh"])}${filters(["Search", "Report Type", "Date From", "Date To"])}${dataTable(["Sr#", "Report / Log", "Category", "Last Run", "Status", "Action"], [
+    ["1", "Sales Report", "Sales", "07-03-2026", "Ready", "View"],
+    ["2", "Email Error Log", "System Log", "07-03-2026", "Ready", "View"],
+  ])}${OPS.mode === "proposed" ? changeNote("Reports is renamed Reports & System Logs to make audit/error/export/email logs easier to find.") : originalNote("Original Reports label hides log visibility.")}</section>`;
+}
+
+function adminPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add User", "Save"])}${filters(["Search", "Role", "Status"])}${dataTable(["Sr#", "Admin User", "Email", "Role", "Status", "Action"], [
+    ["1", "Christian De Ramos", "christian@visualgraphx.com", "Admin", "Active", "Action"],
+    ["2", "Developer", "dev@example.com", "Limited", "Active", "Action"],
+  ])}${OPS.mode === "proposed" ? changeNote("Admin is renamed Admin Users for clearer staff-user ownership.") : originalNote("Original Admin label is terse and mixes users and roles.")}</section>`;
+}
+
+function storeWorkspacePage() {
+  return `<section class="page">${pageHead("Store Workspace » Konala", ["Save", "Save & Back", "Back"])}${tabStrip(["View", "Edit", "Customers", "Products", "Markup", "Addresses", "Credit Summary", "Site Builder", "Alerts & Notifications", "Store Fields"])}<div class="grid two"><div>${panel("Store Details", formRows(["Store Name", "User", "URL Type", "Directory Name", "Status"]))}${panel("Store-Level Site Builder", "<p>Pages, Links & Menus, Sidebar Management, Themes, Account Pages, Product Layout Builder, Product Showcase, Asset Manager, Help Media, SEO, FAQs, and Testimonials are locked to this store.</p>")}</div><div>${panel("Settings", formRows(["Markup Type", "Markup Master", "Department", "Quick Checkout", "Allowed Domains"]))}${panel("Store-Level Alerts", "<p>Email Templates, SMS Templates, and Alert Automations use the selected store context and do not require hunting through global menus.</p>")}</div></div>${changeNote("Store context keeps focused tools beside the selected store while broad/global tools stay in their global areas.")}</section>`;
+}
+
+function duplicateStorePage() {
+  return `<section class="page">${pageHead("Duplicate Store Data", ["Submit", "Cancel"])}<div class="grid two"><div>${panel("Open From Store List", formRows(["Source Store", "Destination Store", "Sections to Duplicate", "Override Existing Content"]))}</div><div>${panel("Store Context Version", "<p>When launched inside a store workspace, the source store is locked to the active store. The user only chooses the destination and sections.</p>")}</div></div>${changeNote("Duplicate Store Data has two entry points: broad from Stores and focused from a selected store context.")}</section>`;
+}
+
+function markupMasterPage() {
+  return `<section class="page">${pageHead("Markup Master", ["Save", "Reset"])}<div class="grid two"><div>${panel("Template Builder", formRows(["Markup Title", "Markup Type", "Fixed Markup", "Applied On", "Status"]))}</div><div>${panel("Assignment Context", "<p>Markup Master is the global markup template list and builder under Product Catalog/Pricing. Store-level markup assignment remains in Edit Store because it assigns one of these templates to a store.</p>")}</div></div>${changeNote("Markup Master moves out of Store Management because markup templates can apply beyond a single store, including users and user groups.")}</section>`;
+}
+
+function assetManagerPage() {
+  const title = OPS.mode === "proposed" ? pageTitle() : pageTitle();
+  return `<section class="page">${pageHead(title, ["New Folder", "Upload", "Add External Link"])}${filters(["Find", "Folder", "Tag", "Asset Type"])}<div class="grid two"><div>${panel(OPS.mode === "proposed" ? "Asset Manager" : "Image Manager", mediaGrid())}</div><div>${panel("Asset Metadata", formRows(["Folder", "Tags", "Alt Text", "External URL", "Owner Context"]))}</div></div>${OPS.mode === "proposed" ? changeNote("Hidden CMS Image Manager is brought forward as Asset Manager; Media Gallery is renamed Help Media and remains distinct.") : originalNote("Original Browse Server/Image Manager is hidden behind CMS editor image controls, and Media Gallery is separate.")}</section>`;
+}
+
+function siteBuilderTabs() {
+  return tabStrip(["Pages", "Links & Menus", "Sidebar", "Themes", "Account Pages", "Product Layout Builder", "Content Management"]);
+}
+
+function fastFilters(items) {
+  return `<div class="fast-filters">${items.map(item => `<button>${h(item)}</button>`).join("")}</div>`;
+}
+
+function tabStrip(items) {
+  return `<div class="subtabs">${items.map((item, index) => `<button class="${index === 0 ? "active" : ""}">${h(item)}</button>`).join("")}</div>`;
+}
+
+function dataTable(headers, rows) {
+  return `<div class="table-card"><table><thead><tr>${headers.map(head => `<th>${h(head)}</th>`).join("")}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+
+function routeSummary() {
+  const mode = OPS.mode === "proposed" ? "Proposed" : "Current OPS";
+  return `${mode} route for ${h(pageTitle())}. This subpage is locally rendered from the simulator route registry and does not depend on live OPS, PHP, sanitized captures, or iframe content.`;
+}
+
+function routeNote() {
+  return OPS.mode === "proposed" ? changeNote(routeSummary()) : originalNote(routeSummary());
+}
+
+function changeNote(text) {
+  return `<div class="note proposed-note"><b>Proposed change:</b> ${text}</div>`;
+}
+
+function originalNote(text) {
+  return `<div class="note current-note"><b>Current OPS:</b> ${text}</div>`;
 }
 
 function proposedDashboard() {
@@ -544,8 +765,10 @@ function proposedDashboard() {
     ["Print Products + Ready To Buy Products", "Product Catalog", "One list with product type tags and directed Add buttons"],
     ["List Orders + Payment Request + Unpaid + Archive", "Orders", "One master list with fast filters"],
     ["Business Partners + Quote Management vendor screens", "Vendors & Partners", "Vendor Quotes, Vendors, and Sales Agents belong together"],
-    ["Media Gallery + hidden CMS image manager", "Content & Help Media", "Asset folders, links, and tags"],
-    ["Export/API Orders", "Export, API & Webhooks", "Global system settings should not live under Orders only"],
+    ["Content Management + Store Personalization", "Site Builder", "Pages, menus, themes, account pages, content groups, and asset references belong together"],
+    ["Media Gallery + hidden CMS image manager", "Asset Manager / Help Media", "Asset folders, external links, tags, and help media are separated clearly"],
+    ["Email/SMS + Email Reminders", "Alerts & Notifications", "Templates and automations move into one notification area"],
+    ["Export/API Orders", "Export & API", "Global system settings should not live under Orders only"],
     ["Imposition Beta", "Product Imposition", "Use current product terminology"],
   ];
   return `<section class="page">${pageHead("Dashboard", ["Review Email log", "Mark as Resolved"])}<div class="cards"><div class="metric"><b>116</b><span>baseline screens</span></div><div class="metric"><b>6</b><span>major IA revisions</span></div><div class="metric"><b>3</b><span>store-context systems</span></div><div class="metric"><b>0</b><span>backend writes</span></div></div>${panel("Revision Map", `<table><thead><tr><th>Current area</th><th>Proposed area</th><th>Reason</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table>`)}</section>`;
