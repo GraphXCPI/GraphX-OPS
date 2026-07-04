@@ -618,6 +618,64 @@ tr:nth-child(even) td { background: #fbfdff; }
   text-align: center;
 }
 .logo::after { content: "K"; color: #333; }
+.category-thumb {
+  width: 86px;
+  height: 86px;
+}
+.tiny-action {
+  min-height: 20px !important;
+  padding: 0 6px;
+  margin-top: 4px;
+  border-color: #b9d9ba !important;
+  color: #4b8d4f !important;
+  background: #f4fff4 !important;
+  font-size: 11px;
+}
+.icon-btn {
+  width: 28px;
+  min-width: 28px;
+  min-height: 28px !important;
+  padding: 0;
+  margin-right: 5px;
+  color: #4b8fbf !important;
+  background: #fff !important;
+}
+.icon-btn.danger {
+  color: #e05f51 !important;
+  border-color: #f1c4bf !important;
+}
+.info-box {
+  border: 1px solid #bfe9ef;
+  background: #d7f3f6;
+  color: #54626b;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.info-box p {
+  margin: 0 0 9px;
+}
+.info-box p:last-child {
+  margin-bottom: 0;
+  color: #ee5548;
+}
+.section-title {
+  color: #2b87d0;
+  font-size: 22px;
+  font-weight: 400;
+  margin: 18px 0 12px;
+}
+.status-chip {
+  display: inline-block;
+  border-radius: 2px;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.status-chip.unset {
+  color: #fff;
+  background: #e66b5b;
+}
 .cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

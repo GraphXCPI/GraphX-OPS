@@ -208,13 +208,10 @@ const proposedMenu = [
     { label: "Products", page: "product-catalog" },
     { label: "Product Options", page: "product-options" },
     { label: "Product Categories", page: "product-categories" },
-    { label: "Category Groups", page: "category-groups" },
-    { label: "Page Categories", page: "page-categories" },
-    { label: "Product Weight/Days/SKU", page: "product-weight" },
+    { label: "Stock & Settings", page: "stock-settings" },
     { label: "Product Tax/VAT Settings", page: "product-tax" },
     { label: "Pricing", page: "product-price" },
     { label: "Markup Master", page: "markup-master" },
-    { label: "Manage Stock", page: "manage-stock" },
   ] },
   { id: "templates", label: "Templates", icon: icon.templates, children: [
     { label: "Product Templates", page: "templates" },
@@ -328,7 +325,7 @@ const pageFamilies = {
   vendor: ["vendor-quotes", "vendors", "sales-agents"],
   customer: ["customers", "newsletter", "design-proofs", "b2b-account-users", "store-admins", "user-groups"],
   store: ["stores", "store-fields", "store-workspace", "duplicate-store-data", "b2b-store-theme"],
-  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "page-categories", "product-weight", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
+  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "page-categories", "product-weight", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
   template: ["templates", "pdf-blocks", "art-layouts", "template-categories"],
   builder: ["cms-pages", "site-content", "links", "sidebar-management", "sidebar-widget", "themes", "account-pages", "product-page-layout", "product-showcase", "website-logos", "language-text", "banners", "asset-manager", "help-media", "media-gallery", "form-management", "breadcrumbs", "faqs", "testimonials"],
   alerts: ["email-templates", "sms-templates", "email-reminders"],
@@ -505,7 +502,6 @@ function content() {
 }
 
 function dashboard() {
-  if (OPS.mode === "proposed") return proposedDashboard();
   return `
     <section class="dashboard">
       <div class="tiles">
@@ -536,7 +532,17 @@ function dashboard() {
 }
 
 function tile(label, ico, tone) {
-  return `<button class="tile ${tone}" data-page="${label === "Orders" ? "orders" : label === "Quotes" ? "quotes" : label === "Products" ? "print-products" : "dashboard"}"><span class="fa fa-${ico}"></span><span>${label}</span></button>`;
+  const targets = {
+    Orders: "orders",
+    Quotes: "quotes",
+    Customers: "customers",
+    Products: OPS.mode === "proposed" ? "product-catalog" : "print-products",
+    Templates: "templates",
+    "Site Settings": "site-settings",
+    "Studio Settings": "studio-settings",
+    Stores: "stores",
+  };
+  return `<button class="tile ${tone}" data-page="${targets[label] || "dashboard"}"><span class="fa fa-${ico}"></span><span>${label}</span></button>`;
 }
 
 function panel(title, body) {
@@ -605,11 +611,50 @@ function quotesPage() {
 
 function productPage() {
   if (OPS.mode === "proposed" && OPS.page === "markup-master") return markupMasterPage();
+  if (OPS.page === "product-categories" || OPS.page === "category-groups") return productCategoriesPage();
+  if (["product-weight", "stock-settings", "manage-stock"].includes(OPS.page)) return stockSettingsPage();
   const proposed = OPS.mode === "proposed";
-  const actions = proposed ? ["Add Print Product", "Add Ready To Buy", "Add Kit Product", "Add Related Product", "Manage Stock"] : ["Add", "Import Products", "Related Product", "Manage Stock", "Publish"];
+  const actions = proposed ? ["Add Print Product", "Add Ready To Buy", "Add Kit Product", "Add Related Product"] : ["Add", "Import Products", "Related Product", "Manage Stock", "Publish"];
   const tagCols = proposed ? "<th>Product Type</th><th>System Tags</th>" : "";
   const tagCells = proposed ? "<td><span class=\"badge muted\">Print Product</span></td><td><span class=\"pill\">Fixed System</span><span class=\"pill\">Store Scope</span></td>" : "";
   return `<section class="page">${pageHead(proposed && OPS.page === "product-catalog" ? "Product Catalog" : pageTitle(), actions)}${proposed ? fastFilters(["Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled", "Store Scope", "Status"]) : ""}${filters(["Search", "Product Category", "Select Store", "Price Category"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Images</th><th>Product Details</th>${tagCols}<th>Configuration</th><th>Sort</th><th>Status</th><th>Action</th></tr></thead><tbody>${products.map(p => `<tr><td><a>${p[0]}</a></td><td><div class="thumb"></div></td><td><a>${p[1]}</a><br><small>${p[2]}</small></td>${tagCells}<td>${p[3]}<br>Price Category : ${p[4]}</td><td>0</td><td><span class="toggle ${p[5] === "On" ? "on" : "off"}"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Print Products and Ready To Buy Products are represented as one catalog list with product type and fixed system tags. Focused edit pages stay intact.") : originalNote("Original Products separates Print Products and Ready To Buy Products into different lists, with related tools scattered below the menu.")}</section>`;
+}
+
+function productCategoriesPage() {
+  const rows = [
+    ["1", "All [ featured ]", "Featured", "-10", "on"],
+    ["2", "Yellowstone Landscape", "Custom", "-1", "on"],
+    ["3", "Vehicle Kits", "Custom", "-1", "on"],
+    ["4", "Vehicle Kit Parts", "Custom", "-1", "on"],
+    ["5", "ER2", "Custom", "-1", "on"],
+    ["6", "RCS", "Custom", "-1", "on"],
+    ["7", "Town of Queen Creek", "Custom", "-1", "on"],
+    ["13", "Decals", "Decals", "0", "on"],
+    ["14", "Architectural Signage", "by-use-case", "0", "on"],
+    ["15", "Commercial Advertising", "by-use-case", "0", "on"],
+    ["16", "Construction & Industrial", "by-industry", "0", "on"],
+    ["17", "Job Site & Safety Signage", "by-use-case", "0", "on"],
+  ];
+  return `<section class="page">${pageHead("Product Categories", ["Add Product Category", "Add Category Group"])}${tabStrip(["Product Category", "Category group"])}${filters(["Search:"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Category Image</th><th>Category Title</th><th>Category group</th><th>Sort</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><div class="thumb category-thumb"></div></td><td><b>${h(r[1])}</b><br><button class="tiny-action">Add to cart</button></td><td>${h(r[2])}</td><td>${h(r[3])}</td><td><span class="toggle on"></span></td><td><button class="icon-btn fa fa-pencil"></button><button class="icon-btn danger fa fa-trash"></button></td></tr>`).join("")}</tbody></table></div>${OPS.mode === "proposed" ? changeNote("Product Categories and Category Groups remain in one Product Categories screen as tabbed contexts. The sidebar should not split Category Groups into its own Product Catalog link.") : originalNote("Original OPS keeps Product Category and Category group together under the Product Categories link.")}</section>`;
+}
+
+function stockSettingsPage() {
+  const proposed = OPS.mode === "proposed";
+  const title = proposed ? "Stock & Settings" : "Product Weight";
+  const actions = proposed ? ["Import Product Weight", "Import Stock", "Save"] : ["Import Product Weight"];
+  const tabs = tabStrip(["Product Weight", "Production Days", "Products SKU", "Stock"]);
+  const rows = [
+    ["1", "Decals", "Only Size", "Warning - KHF Inside C...  Not set<br>Exit - 37.5&quot; W x 9.5&quot; H : <span class=\"status-chip unset\">Not set</span>", "12 in stock"],
+    ["2", "Ticket Number Decals", "Only Size", "2 : <span class=\"status-chip unset\">Not set</span><br>7 : <span class=\"status-chip unset\">Not set</span><br>12 : <span class=\"status-chip unset\">Not set</span>", "0 stock"],
+    ["6", "H-Stakes 10\" x 30\"", "Only Size", "None : 0.050000", "31 in stock"],
+    ["10", "Signicade Deluxe", "Only Size", "White : 21.000000<br>Black : 21.000000", "5 in stock"],
+    ["18", "Retractable Banner Stand", "Only Size", "33&quot; Double Sided - Stan... 21.000000", "8 in stock"],
+    ["21", "T-Shirt OPS", "Only Size", "T-Shirt : <span class=\"status-chip unset\">Not set</span>", "0 stock"],
+    ["24", "Adhesive Products", "Only Size", "Custom Size : <span class=\"status-chip unset\">Not set</span>", "17 in stock"],
+  ];
+  const stockCol = proposed ? "<th>Stock</th>" : "";
+  const stockCell = row => proposed ? `<td>${row[4]}</td>` : "";
+  return `<section class="page">${pageHead(title, actions)}${tabs}<div class="info-box"><p>You can set up product weight based on product sizes, product options, or product option combinations. Production days, SKU, and stock now share this same product-setting context.</p><p><b>Weight is always defined for only 1 quantity/unit of the product.</b></p></div>${filters(["Search", "Product Weight", "Both"])}<h2 class="section-title">${proposed ? "Stock & Settings Summary" : "Product Weight Summary"}</h2><div class="table-card"><table><thead><tr><th>Sr#</th><th>Product Details</th><th>Setting Type</th><th>Product Weight</th>${stockCol}<th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><b>${h(r[1])}</b></td><td>${h(r[2])}</td><td>${r[3]}</td>${stockCell(r)}<td><button class="icon-btn fa fa-pencil"></button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Product Weight / Days / SKU and Manage Stock are combined into Stock & Settings. Stock is a tab in the same product-setting workflow instead of a separate sidebar link.") : changeNote("The original Product Weight/Days/SKU screen gains a Stock tab so stock can be managed without leaving the product-setting context.")}</section>`;
 }
 
 function storesPage() {
