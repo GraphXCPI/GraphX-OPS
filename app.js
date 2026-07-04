@@ -141,7 +141,7 @@ function routeLink(slug) {
 }
 
 function appShell(content) {
-  if (state.mode === "baseline") return baselineShell();
+  if (state.mode === "baseline") return currentOpsShell();
   const menu = state.mode === "baseline" ? currentMenu : revisedMenu;
   return `
     <div class="app">
@@ -163,37 +163,368 @@ function appShell(content) {
   `;
 }
 
-function baselineShell() {
-  const current = page(state.currentPage) || capture.pages[0];
-  const refs = liveReferences[current.slug] || [];
+const opsOrders = [
+  { id: "3052", status: "New Order", items: "2 Items", amount: "$519.33", age: "6 hr 11 min ago", customer: "Alex Loudenslager", email: "info@thelabna.com", products: ["Arlon V9700 - Vehicle Wrap Film (1 Qty)", "Window Perf (1 Qty)"] },
+  { id: "3051", status: "New Order", items: "4 Items", amount: "$686.00", age: "23 hr 27 min ago", customer: "Drew Neverett", email: "drew.neverett@positionsports.com", products: ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "+2"] },
+  { id: "3050", status: "New Order", items: "4 Items", amount: "$686.00", age: "23 hr 29 min ago", customer: "Drew Neverett", email: "drew.neverett@positionsports.com", products: ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "+2"] },
+  { id: "3049", status: "New Order", items: "4 Items", amount: "$692.35", age: "23 hr 31 min ago", customer: "Drew Neverett", email: "drew.neverett@positionsports.com", products: ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "More"] }
+];
+
+const opsQuotes = [
+  { id: "2285", status: "Active Quote", title: "Pair of Vehicle ...", date: "07-02-2026", customer: "Misty Galica", email: "Misty@Azsmithpainting.com", products: ["Magnets"] },
+  { id: "2284", status: "Active Quote", title: "Decals/ Floor- ...", date: "07-02-2026", customer: "Gerald Sherrill", email: "gerald@commandlink.com", products: ["Wraps - Walls", "Decals - Floor,", "+1"] },
+  { id: "2283", status: "Draft", title: "Decals - Cut Vinyl", date: "07-02-2026", customer: "Derek Petrucci", email: "derek.petrucci@hotmail.com", products: ["Decals - Cut Vinyl"] },
+  { id: "2282", status: "Active Quote", title: "1/2 MDO Direct...", date: "07-01-2026", customer: "Jake Kungl", email: "jake@kungljunglesigns.com", products: ["1/2 MDO Direct Print 8' x 4'", "+1"] },
+  { id: "2281", status: "Active Quote", title: "RCS VARIOUS SI...", date: "07-01-2026", customer: "Clarissa Gouws", email: "", products: ["Decals - Cut Vinyl"] }
+];
+
+const orderBoard = [
+  { label: "Watch list", className: "watch", chips: ["2664", "2570", "2215"] },
+  { label: "New Order", className: "new", chips: ["3052", "3051", "3050", "3049", "3048", "3044", "3043", "3042", "3040", "3039", "3001", "2979"], overdue: ["2979"] },
+  { label: "Order Review", className: "review", chips: ["3030", "2978"], overdue: ["2978"] },
+  { label: "In Production", className: "production", chips: ["3047", "3046", "3045", "3041", "3035", "3034", "3029", "3022", "3021", "2998", "2988"], overdue: ["3022", "2998"] },
+  { label: "Ready for Fulfillment", className: "ready", chips: ["3023", "3017"], overdue: ["3023", "3017"] }
+];
+
+const productBoardRows = [
+  { label: "Watch list", className: "watch", chips: ["2664", "2570", "2215"] },
+  { label: "", className: "muted", chips: ["3052-9587", "3052-9586", "3051-9585", "3051-9584", "3051-9583", "3051-9582", "3050-9581", "3050-9580", "3050-9579", "3050-9578", "3049-9576", "3049-9575", "3049-9574", "3049-9577", "3048-9563", "3048-9572", "3048-9558", "3048-9567", "3048-9562", "3048-9571", "3048-9557"] },
+  { label: "Awaiting Artwork", className: "muted", chips: ["3048-9566", "3048-9561", "3048-9570", "3048-9556", "3048-9565", "3048-9560", "3048-9569", "3048-9555", "3048-9564", "3048-9559", "3048-9568", "3044-9540", "3044-9544", "3044-9539", "3044-9543", "3044-9538", "3044-9542", "3044-9537", "3044-9541", "3044-9536", "3044-9545"] },
+  { label: "", className: "muted", chips: ["3043-9534", "3042-9531", "3042-9530", "3042-9529", "3042-9528", "3042-9532", "3039-9515", "3039-9510", "3039-9514", "3039-9509", "3039-9513", "3039-9508", "3039-9511", "3039-9512", "3039-9516", "3039-9511", "3035-9503", "3035-9504", "3001-9406", "3001-9410", "3001-9405"] }
+];
+
+function currentOpsShell() {
   return `
-    <div class="baseline-app">
-      <header class="baseline-control">
-        <div>
-          <strong>OPS Admin Simulator</strong>
-          <span>Current OPS captured page fidelity</span>
-        </div>
-        <div class="mode-switch">
-          <button data-mode="baseline" class="active">Current OPS</button>
-          <button data-mode="revised">Proposed</button>
-        </div>
-      </header>
-      <div class="baseline-layout">
-        <aside class="baseline-nav">
-          <div class="baseline-nav-head">Captured OPS Pages</div>
-          ${currentMenu.map(renderBaselineMenuGroup).join("")}
-        </aside>
-        <section class="baseline-frame-wrap">
-          <div class="baseline-frame-title">
-            <div>
-              <strong>${esc(pageLabel(current))}</strong>
-              <span>${esc(pathName(current.href))}</span>
-            </div>
-            <a class="btn light" href="${routeLink(current.slug)}" target="_blank" rel="noopener">Open captured HTML</a>
-          </div>
-          ${refs.length ? renderLiveReferences(refs, current) : `<iframe class="baseline-frame" title="Current OPS captured ${esc(pageLabel(current))}" src="${routeLink(current.slug)}"></iframe>`}
+    <div class="ops-app">
+      ${currentOpsTopbar()}
+      <div class="ops-layout">
+        ${currentOpsSidebar()}
+        <section class="ops-content">
+          ${currentOpsAdminBar()}
+          ${currentOpsDashboard()}
         </section>
       </div>
+      <div class="review-switch" aria-label="review mode">
+        <button data-mode="baseline" class="active">Current OPS</button>
+        <button data-mode="revised">Proposed</button>
+      </div>
+    </div>
+  `;
+}
+
+function currentOpsTopbar() {
+  return `
+    <header class="ops-topbar">
+      <div class="ops-brand"><span class="ops-home-icon"><i class="fa-solid fa-house"></i><i class="fa-solid fa-user"></i></span><span>Visual Graphx, LLC.</span></div>
+      <div class="ops-search"><input value="${esc(state.search)}" data-action="search" placeholder="Search here....."><button><i class="fa-solid fa-magnifying-glass"></i></button><button><i class="fa-regular fa-bookmark"></i></button></div>
+      <div class="ops-utilities">
+        <div class="ops-cache">Cache <span>YES</span><b><i class="fa-solid fa-bars"></i></b><em><i class="fa-regular fa-trash-can"></i></em></div>
+        <button class="ops-utility-button"><i class="fa-solid fa-chevron-down"></i></button>
+        <button class="ops-monitor"><i class="fa-solid fa-desktop"></i></button>
+        <button class="ops-chat"><i class="fa-regular fa-comments"></i></button>
+        <div class="ops-user"><i class="fa-solid fa-user"></i><strong>Welcome,<br>cderamos</strong> <i class="fa-solid fa-caret-down"></i></div>
+      </div>
+    </header>
+  `;
+}
+
+function currentOpsSidebar() {
+  const groups = [
+    ["Dashboard", "fa-solid fa-gauge-high", true],
+    ["Orders", "fa-solid fa-cart-shopping"],
+    ["Quote Management", "fa-regular fa-file-lines"],
+    ["Customer", "fa-regular fa-user"],
+    ["Store Management", "fa-solid fa-store"],
+    ["Products", "fa-solid fa-tags"],
+    ["Customer", "fa-regular fa-user"],
+    ["Store Management", "fa-solid fa-store"],
+    ["Products", "fa-solid fa-tags"],
+    ["Templates", "fa-solid fa-table-columns"],
+    ["Content Management", "fa-regular fa-file-lines"],
+    ["Store Personalization", "fa-solid fa-gear"],
+    ["SEO", "fa-solid fa-globe"],
+    ["Business Partners", "fa-regular fa-handshake"],
+    ["Store Configuration", "fa-solid fa-gears"],
+    ["Imposition Beta", "fa-solid fa-table-cells-large"],
+    ["Designer Studio", "fa-regular fa-pen-to-square"],
+    ["Reports", "fa-solid fa-chart-bar"],
+    ["Admin", "fa-regular fa-user"]
+  ];
+  return `
+    <aside class="ops-sidebar">
+      <div class="ops-quick-buttons">
+        <button class="cart"><i class="fa-solid fa-cart-shopping"></i></button><button class="person"><i class="fa-regular fa-user"></i></button><button class="tag"><i class="fa-solid fa-tags"></i></button><button class="file"><i class="fa-regular fa-file-pdf"></i></button><button class="gear"><i class="fa-solid fa-gears"></i></button>
+      </div>
+      <nav>
+        ${groups.map(([label, icon, active]) => `
+          <button class="ops-nav-item ${active ? "active" : ""}">
+            <span><i class="${icon}"></i>${esc(label)}</span><b><i class="fa-solid fa-angle-down"></i></b>
+          </button>
+        `).join("")}
+      </nav>
+      <button class="ops-collapse"><i class="fa-solid fa-angle-left"></i></button>
+    </aside>
+  `;
+}
+
+function currentOpsAdminBar() {
+  return `
+    <div class="ops-breadcrumb">
+      <div><strong><i class="fa-solid fa-house"></i></strong><span>Home</span><b>›</b><span>Dashboard</span></div>
+      <div class="ops-admin-tools">
+        <button class="ops-workflow"><i class="fa-solid fa-rotate"></i> Workflow</button>
+        <label><span></span>Filter by Store</label>
+        <label><span class="checked"></span>Login As</label>
+        <select><option>cderamos</option></select>
+        <button><i class="fa-solid fa-expand"></i></button>
+      </div>
+    </div>
+  `;
+}
+
+function currentOpsDashboard() {
+  return `
+    <main class="ops-dashboard">
+      ${quickCards()}
+      <div class="ops-dashboard-grid">
+        ${opsPanel("Recent Orders", orderSearchTools(), recentOrdersTable(), "orders")}
+        ${opsPanel("Job Board - Summary [Order Wise]", boardTools(), jobBoard(orderBoard), "job-board")}
+        ${opsPanel("Recent", recentTabs(), recentMiniList(), "recent")}
+        ${opsPanel("Sales Statistics", refreshTool(), salesStats(), "stats")}
+        ${opsPanel("Sales Orders <small>(Last 12 months)</small>", salesHeaderToggle(), salesChart(), "chart")}
+        ${opsPanel("Recent Quotes", quoteSearchTools(), recentQuotesTable(), "quotes")}
+        ${opsPanel("Job Board - Summary [Order Product Wise]", boardTools(), productJobBoard(), "product-board")}
+      </div>
+      <footer class="ops-footer"><span>07-03-2026 14:15</span><b>|</b><a>OnPrintShop Updates</a><b>|</b><a>Add on Plugins/Services</a><span>Copyright ©2026. All rights reserved.</span></footer>
+    </main>
+  `;
+}
+
+function quickCards() {
+  const cards = [
+    ["fa-solid fa-cart-shopping", "Orders", "blue"],
+    ["fa-regular fa-file-lines", "Quotes", "green"],
+    ["fa-solid fa-user", "Customers", "brown"],
+    ["fa-solid fa-tags", "Products", "orange"],
+    ["fa-solid fa-table-columns", "Templates", "cyan"],
+    ["fa-solid fa-gear", "Site Settings", "gray"],
+    ["fa-solid fa-gears", "Studio Settings", "pink"],
+    ["fa-solid fa-store", "Stores", "purple"]
+  ];
+  return `<div class="ops-quick-cards">${cards.map(([icon, label, color]) => `<button class="${color}"><i class="${icon}"></i><span>${label}</span></button>`).join("")}</div>`;
+}
+
+function opsPanel(title, tools, body, className = "") {
+  const icons = {
+    orders: "fa-solid fa-cart-shopping",
+    "job-board": "fa-regular fa-note-sticky",
+    recent: "fa-regular fa-note-sticky",
+    stats: "fa-solid fa-dollar-sign",
+    chart: "fa-solid fa-chart-line",
+    quotes: "fa-regular fa-file-lines",
+    "product-board": "fa-regular fa-note-sticky"
+  };
+  return `
+    <section class="ops-panel ${className}">
+      <header><h2><i class="${icons[className] || "fa-regular fa-square"}"></i>${title}</h2><div>${tools || ""}</div></header>
+      <div class="ops-panel-body">${body}</div>
+    </section>
+  `;
+}
+
+function orderSearchTools() {
+  return `<div class="ops-panel-tools"><input placeholder="Order No."><button><i class="fa-solid fa-magnifying-glass"></i></button><a>View All</a><button><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
+}
+
+function quoteSearchTools() {
+  return `<div class="ops-panel-tools"><input placeholder="Recent Quotes"><button><i class="fa-solid fa-magnifying-glass"></i></button><a>View All</a><button><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
+}
+
+function boardTools() {
+  return `<div class="ops-panel-tools"><a>View All</a><button><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
+}
+
+function refreshTool() {
+  return `<div class="ops-panel-tools"><button><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
+}
+
+function salesHeaderToggle() {
+  return `<div class="ops-sales-toggle"><span>This Month :</span><b>NO</b><button><i class="fa-solid fa-chevron-up"></i></button></div>`;
+}
+
+function recentTabs() {
+  return `<div class="ops-recent-tabs"><button class="active">Orders</button><button>Customers</button><button>Quotes</button></div><button class="ops-refresh"><i class="fa-solid fa-arrows-rotate"></i></button>`;
+}
+
+function recentOrdersTable() {
+  return `
+    <div class="ops-order-table">
+      ${opsOrders.map(order => `
+        <div class="ops-order-row">
+          <div class="order-id"><a>${order.id}</a><span>${order.status}</span></div>
+          <div><b class="item-pill">${order.items}</b><strong>${order.amount}</strong><small>${order.age}</small></div>
+          <div><a>${order.customer}</a><small>${order.email}</small></div>
+          <div class="product-list">${order.products.map(p => `<p>${esc(p)}</p>`).join("")}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function jobBoard(rows) {
+  return `
+    <div class="ops-board">
+      ${rows.map(row => `
+        <div class="ops-board-row">
+          <span class="board-label ${row.className}">${row.label}</span>
+          <div>${row.chips.map(chip => `<button class="${row.overdue?.includes(chip) ? "overdue" : ""}">${chip}</button>`).join("")}</div>
+        </div>
+      `).join("")}
+      <div class="ops-legend"><span class="red"></span>Overdue <span class="orange"></span>Delivery Today <span class="yellow"></span>Delivery Tomorrow</div>
+    </div>
+  `;
+}
+
+function productJobBoard() {
+  return `
+    <div class="ops-board product">
+      ${productBoardRows.map(row => `
+        <div class="ops-board-row">
+          <span class="board-label ${row.className}">${row.label}</span>
+          <div>${row.chips.map(chip => `<button>${chip}</button>`).join("")}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function recentMiniList() {
+  return `<div class="ops-mini-list">${opsOrders.map(o => `<div><a>${o.id}</a><span>${o.amount}<small>${o.age}</small></span><b>${o.customer}<small>${o.email}</small></b></div>`).join("")}</div>`;
+}
+
+function salesStats() {
+  const rows = [
+    ["Today", "Yesterday", "$519.33<br><small>(1 Orders)</small>", "$75,244.30<br><small>(7 Orders)</small>"],
+    ["This Week", "Last Week", "$83,144.93<br><small>(21 Orders)</small>", "$13,275.50<br><small>(14 Orders)</small>"],
+    ["This Month", "Last Month", "$79,439.62<br><small>(13 Orders)</small>", "$87,449.45<br><small>(64 Orders)</small>"],
+    ["This Year", "Last Year", "", ""]
+  ];
+  return `<div class="ops-stat-table">${rows.map(r => `<div class="stat-head">${r[0]}</div><div class="stat-head">${r[1]}</div><div>${r[2]}</div><div>${r[3]}</div>`).join("")}</div>`;
+}
+
+function salesChart() {
+  const months = ["07 2025", "08 2025", "09 2025", "10 2025", "11 2025", "12 2025", "01 2026", "02 2026", "03 2026", "04 2026", "05 2026", "06 2026", "07 2026"];
+  const amountLabels = ["200623.15", "66131.79", "98858.76", "105663.58", "149163.11", "133490.53", "53183.11", "158142.54", "222032.74", "166490.26", "128324.72", "87449.45", "78920.29"];
+  const orderLabels = ["96", "82", "104", "104", "87", "59", "80", "111", "117", "107", "104", "64", "12"];
+  return `
+    <div id="sales_graph" class="ord_grph jqplot-target ops-jqplot-chart">
+      <canvas class="jqplot-base-canvas"></canvas>
+      <div class="jqplot-title"></div>
+      <div class="jqplot-axis jqplot-xaxis">${months.map((month, index) => `<span class="jqplot-xaxis-tick" style="left:${9 + index * 7.05}%">${month}</span>`).join("")}</div>
+      <div class="jqplot-axis jqplot-yaxis">
+        ${["0.00", "", "50000.00", "", "100000.00", "", "150000.00", "", "200000.00", "", "250000.00"].map((tick, index) => `<span class="jqplot-yaxis-tick" style="bottom:${index * 9.3}%">${tick}</span>`).join("")}
+      </div>
+      <div class="jqplot-axis jqplot-y2axis">${["0", "30", "60", "90", "120", "150"].map((tick, index) => `<span class="jqplot-y2axis-tick" style="bottom:${index * 18.6}%">${tick}</span>`).join("")}</div>
+      <canvas class="jqplot-grid-canvas"></canvas>
+      <canvas class="jqplot-series-shadowCanvas"></canvas>
+      <canvas class="jqplot-series-shadowCanvas"></canvas>
+      <canvas class="jqplot-series-canvas ops-amount-series"></canvas>
+      <canvas class="jqplot-series-canvas ops-orders-series"></canvas>
+      ${amountLabels.map((label, index) => `<div class="jqplot-point-label jqplot-series-0 jqplot-point-${index}">${label}</div>`).join("")}
+      ${orderLabels.map((label, index) => `<div class="jqplot-point-label jqplot-series-1 jqplot-point-${index}">${label}</div>`).join("")}
+      <table class="jqplot-table-legend">
+        <tr class="jqplot-table-legend"><td class="jqplot-table-legend jqplot-table-legend-swatch"><div class="jqplot-table-legend-swatch-outline"><div class="jqplot-table-legend-swatch total"></div></div></td><td class="jqplot-table-legend jqplot-table-legend-label">Total Amount</td></tr>
+        <tr class="jqplot-table-legend"><td class="jqplot-table-legend jqplot-table-legend-swatch"><div class="jqplot-table-legend-swatch-outline"><div class="jqplot-table-legend-swatch orders"></div></div></td><td class="jqplot-table-legend jqplot-table-legend-label">Orders</td></tr>
+      </table>
+      <canvas class="jqplot-highlight-canvas"></canvas>
+      <div class="jqplot-highlighter-tooltip"></div>
+      <canvas class="jqplot-lineRenderer-highlight-canvas"></canvas>
+      <canvas class="jqplot-event-canvas"></canvas>
+    </div>
+  `;
+}
+
+function drawOpsJqPlotChart() {
+  const chart = document.getElementById("sales_graph");
+  if (!chart) return;
+  const amount = [200623.15, 66131.79, 98858.76, 105663.58, 149163.11, 133490.53, 53183.11, 158142.54, 222032.74, 166490.26, 128324.72, 87449.45, 78920.29];
+  const orders = [96, 82, 104, 104, 87, 59, 80, 111, 117, 107, 104, 64, 12];
+  const width = Math.max(520, chart.clientWidth);
+  const height = Math.max(238, chart.clientHeight);
+  const plot = { left: 58, top: 10, width: width - 95, height: height - 42 };
+  const maxAmount = 250000;
+  const maxOrders = 150;
+  const x = index => plot.left + (plot.width * index / (amount.length - 1));
+  const amountY = value => plot.top + plot.height - (value / maxAmount * plot.height);
+  const ordersY = value => plot.top + plot.height - (value / maxOrders * plot.height);
+  const setup = canvas => {
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    return canvas.getContext("2d");
+  };
+  const grid = setup(chart.querySelector(".jqplot-grid-canvas"));
+  grid.clearRect(0, 0, width, height);
+  grid.strokeStyle = "#b8b8b8";
+  grid.lineWidth = 1;
+  for (let i = 0; i <= 10; i++) {
+    const y = plot.top + (plot.height * i / 10);
+    grid.beginPath(); grid.moveTo(plot.left, y); grid.lineTo(plot.left + plot.width, y); grid.stroke();
+  }
+  for (let i = 0; i < amount.length; i++) {
+    const px = x(i);
+    grid.beginPath(); grid.moveTo(px, plot.top); grid.lineTo(px, plot.top + plot.height); grid.stroke();
+  }
+  drawSeries(setup(chart.querySelector(".ops-amount-series")), amount, x, amountY, "#d53f40", true);
+  drawSeries(setup(chart.querySelector(".ops-orders-series")), orders, x, ordersY, "#ffc657", false);
+  chart.querySelectorAll(".jqplot-series-0").forEach((label, index) => {
+    label.style.left = `${x(index) - 4}px`;
+    label.style.top = `${amountY(amount[index]) - 23}px`;
+  });
+  chart.querySelectorAll(".jqplot-series-1").forEach((label, index) => {
+    label.style.left = `${x(index) + 8}px`;
+    label.style.top = `${ordersY(orders[index]) - 19}px`;
+  });
+}
+
+function drawSeries(ctx, data, x, y, color, fillMarkers) {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  data.forEach((value, index) => {
+    const px = x(index);
+    const py = y(value);
+    if (index === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  data.forEach((value, index) => {
+    const px = x(index);
+    const py = y(value);
+    ctx.beginPath();
+    ctx.arc(px, py, 5, 0, Math.PI * 2);
+    if (fillMarkers) ctx.fill();
+    else {
+      ctx.fillStyle = "#ffc657";
+      ctx.fill();
+    }
+  });
+}
+
+function recentQuotesTable() {
+  return `
+    <div class="ops-order-table quote-table">
+      ${opsQuotes.map(quote => `
+        <div class="ops-order-row">
+          <div class="order-id"><a>${quote.id}</a><span class="${quote.status === "Draft" ? "draft" : ""}">${quote.status}</span></div>
+          <div><strong>${quote.title}</strong><small>${quote.date}</small></div>
+          <div><a>${quote.customer}</a><small>${quote.email}</small></div>
+          <div class="product-list">${quote.products.map(p => `<p>${esc(p)}</p>`).join("")}</div>
+        </div>
+      `).join("")}
     </div>
   `;
 }
@@ -580,8 +911,9 @@ function genericRevised(title, tabLabels, slugs, note = "") {
 }
 
 function render() {
-  const content = state.mode === "baseline" ? baselinePage() : revisedPage();
+  const content = state.mode === "baseline" ? "" : revisedPage();
   document.getElementById("app").innerHTML = appShell(content);
+  drawOpsJqPlotChart();
 }
 
 window.__opsSimulator = {
