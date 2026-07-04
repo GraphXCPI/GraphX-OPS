@@ -552,7 +552,7 @@ function currentOpsShell() {
 function currentOpsTopbar() {
   return `
     <header class="ops-topbar">
-      <div class="ops-brand"><span class="fa-stack ops-home-icon" title="Admin"><i class="fa-regular fa-house fa-stack-2x"></i><i class="fa-solid fa-user fa-stack-1x"></i></span><span>Visual Graphx, LLC.</span></div>
+      <div class="ops-brand"><span class="fa-stack ops-home-icon" title="Admin"><i class="fa-solid fa-house fa-stack-2x"></i><i class="fa-solid fa-user fa-stack-1x fa-lg"></i></span><span>Visual Graphx, LLC.</span></div>
       <div class="ops-search"><input value="${esc(state.search)}" data-action="search" placeholder="Search here....."><button><i class="fa-solid fa-magnifying-glass"></i></button><button><i class="fa-regular fa-bookmark"></i></button></div>
       <div class="ops-utilities">
         <div class="ops-cache">Cache <span>YES</span><b><i class="fa-solid fa-bars"></i></b><em><i class="fa-regular fa-trash-can"></i></em></div>
@@ -624,7 +624,7 @@ function currentOpsSidebar() {
   return `
     <aside class="ops-sidebar">
       <div class="ops-quick-buttons">
-        <button class="cart"><i class="fa-solid fa-cart-shopping"></i></button><button class="person"><i class="fa-regular fa-user"></i></button><button class="tag"><i class="fa-solid fa-tags"></i></button><button class="file"><i class="fa-regular fa-file-pdf"></i></button><button class="gear"><i class="fa-solid fa-gears"></i></button>
+        <button class="cart"><i class="fa-solid fa-cart-shopping"></i></button><button class="person"><i class="fa-regular fa-user"></i></button><button class="tag"><i class="fa-solid fa-tag"></i></button><button class="file"><i class="fa-regular fa-file-pdf"></i></button><button class="gear"><i class="fa-solid fa-link"></i></button>
       </div>
       <nav>
         ${groups.map((group, index) => renderOpsMenuGroup(group, index)).join("")}
@@ -681,7 +681,7 @@ function currentOpsAdminBar() {
     : pageLabel(page(state.currentPage) || page("115-welcome"));
   return `
     <div class="ops-breadcrumb">
-      <div><strong><i class="fa-solid fa-house"></i></strong><span>Home</span><b>›</b><span>${esc(title)}</span></div>
+      <div><strong><i class="fa-solid fa-house"></i></strong><span>Home</span><i class="fa-solid fa-angle-right ops-breadcrumb-divider"></i><span>${esc(title)}</span></div>
       <div class="ops-admin-tools">
         <button class="ops-workflow"><i class="fa-solid fa-rotate"></i> Workflow</button>
         <label><span></span>Filter by Store</label>
