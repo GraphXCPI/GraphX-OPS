@@ -1546,8 +1546,39 @@ function genericRevised(title, tabLabels, slugs, note = "") {
 }
 
 function render() {
-  const content = state.mode === "baseline" ? "" : revisedPage();
-  document.getElementById("app").innerHTML = appShell(content);
+  const container = document.getElementById("app");
+  if (!document.querySelector(".ops-app")) {
+    container.innerHTML = `
+      <div class="ops-app">
+        <div id="ops-topbar-mount">${currentOpsTopbar()}</div>
+        <div class="ops-layout">
+          <aside class="ops-sidebar" id="ops-sidebar-mount">${currentOpsSidebar()}</aside>
+          <section class="ops-content">
+            <div id="ops-breadcrumb-mount">${currentOpsAdminBar()}</div>
+            <div id="ops-content-pane-mount" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+              ${currentOpsMainContent()}
+            </div>
+          </section>
+        </div>
+        <div class="review-switch" aria-label="review mode">
+          <button data-mode="baseline" class="${state.mode === "baseline" ? "active" : ""}">Current OPS</button>
+          <button data-mode="revised" class="${state.mode === "revised" ? "active" : ""}">Proposed</button>
+        </div>
+      </div>
+    `;
+  } else {
+    document.getElementById("ops-sidebar-mount").innerHTML = currentOpsSidebar();
+    document.getElementById("ops-breadcrumb-mount").innerHTML = currentOpsAdminBar();
+    document.getElementById("ops-content-pane-mount").innerHTML = currentOpsMainContent();
+    const buttons = document.querySelectorAll(".review-switch button");
+    buttons.forEach(btn => {
+      if (btn.dataset.mode === state.mode) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
   drawOpsJqPlotChart();
   hydrateCapturedPage();
 }
