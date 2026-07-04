@@ -102,6 +102,134 @@ const state = {
   opsOpen: {}
 };
 
+const currentOpsPageMap = {
+  "Dashboard": "115-welcome",
+  "List Orders": "046-order_listing",
+  "Payment Request": "047-order_payment_request",
+  "Add New Order": "016-create_order_user",
+  "Export/API Orders": "025-export_orders",
+  "Order Status": "053-process_status_listing",
+  "Coupons / Discount": "015-coupon_listing",
+  "Store Credit": "090-reward_point_listing",
+  "Unpaid Orders": "048-order_pending_listing",
+  "Archive Orders": "045-order_archive_listing",
+  "Quotes": "065-quote_listing",
+  "Add New Quote": "065-quote_listing",
+  "Vendor Quotes": "066-quote_product_printer_listing",
+  "Vendors": "052-printer_listing",
+  "Sales Agents & Partners": "092-sales_agent_listing",
+  "Customers": "114-user_listing",
+  "Customer Groups": "114-user_listing",
+  "Import Customers": "114-user_listing",
+  "Stores": "012-corporate_listing",
+  "Store Fields": "013-corporate_store_profile_listing",
+  "Print Products": "056-product_listing",
+  "Ready To Buy Products": "049-predefined_product_listing",
+  "Product Options": "057-product_master_option_listing",
+  "Product Categories": "054-product_category_listing",
+  "Product Weight/Days/SKU": "062-product_weight",
+  "Products Tax/VAT Settings": "061-product_tax_setting",
+  "Product Price": "058-product_price_all",
+  "Product Price - Bulk": "060-product_price_bulk_update",
+  "Product Option Price - Bulk": "059-product_price_bulk_option_update",
+  "Product Price - Excel": "044-modify_products_price",
+  "Percentage (+/-)": "005-all_products_price_bulk_update",
+  "Product Templates": "040-master_template_manager",
+  "PDF Blocks": "106-template_manager",
+  "Art Layouts": "018-design_layout_listing",
+  "Template Categories": "105-template_category_listing",
+  "Contents": "007-cms_listing",
+  "FAQs": "026-faq_listing",
+  "Testimonials": "109-testimonial_listing",
+  "Banners": "111-top_banner_listing",
+  "Email Templates": "023-emailtemplate_listing",
+  "SMS Templates": "098-sms_notification_listing",
+  "Email Reminders": "024-emailtemplate_reminder_listing",
+  "Help Media": "041-media_gallery_listing",
+  "Page title, Keyword setting": "093-seo_all",
+  "Sitemaps": "097-sitemap_xml",
+  "Metatags Settings": "043-metatag",
+  "Robots": "091-robot_creation",
+  "Manage URL Redirection": "112-url_redirection_listing",
+  "Image Alt Text": "094-seo_image_alt_text",
+  "Site Settings": "010-configuration_settings",
+  "Languages": "036-language_listing",
+  "Currency": "017-currency_listing",
+  "Country / States": "014-country_listing",
+  "Web Optimization": "038-manage_image_optimization",
+  "Manage Site Access": "006-block_ip_action",
+  "Admin Panel Text References": "002-admin_constants",
+  "Product Imposition": "031-imposition_sheet_size_listing",
+  "Studio Settings": "100-studio_configuration_setting-c54df0",
+  "Studio Events": "064-promotional_listing",
+  "Mask Image": "051-preview_image_settings",
+  "Reports": "084-report_sales_order_summary",
+  "System Logs": "068-report_audit_log",
+  "Admin Users": "004-admin_listing",
+  "Roles": "003-admin_group",
+  "Permissions": "003-admin_group"
+};
+
+const proposedOpsPageMap = {
+  "Dashboard": "dashboard",
+  "Master Orders": "orders",
+  "Payment Requests": "orders",
+  "Job Board": "orders",
+  "Status & Filters": "orders",
+  "Customer Quotes": "quotes",
+  "Quote Status": "quotes",
+  "Customers": "customers",
+  "Newsletter": "customers",
+  "Design Proofs": "customers",
+  "Stores": "stores",
+  "Store Fields": "stores",
+  "Store Workspace": "stores",
+  "Products": "catalog",
+  "Product Options": "catalog",
+  "Categories": "catalog",
+  "Category Groups": "catalog",
+  "Page Categories": "catalog",
+  "Pricing": "catalog",
+  "Product Templates": "templates",
+  "PDF Blocks": "templates",
+  "Art Layouts": "templates",
+  "Template Categories": "templates",
+  "CMS Pages": "content",
+  "Help Media": "content",
+  "FAQs": "content",
+  "Banners": "content",
+  "Email/SMS": "content",
+  "Global SEO": "seo",
+  "Product SEO": "seo",
+  "Category SEO": "seo",
+  "Content SEO": "seo",
+  "Redirects": "seo",
+  "Vendor Quotes": "partners",
+  "Vendors": "partners",
+  "Sales Agents & Partners": "partners",
+  "Order Exports": "api",
+  "API & Webhooks": "api",
+  "Site Settings": "config",
+  "Languages": "config",
+  "Payments": "config",
+  "Shipping": "config",
+  "Admin Panel Text References": "config",
+  "Sheet Sizes": "imposition",
+  "Schemas": "imposition",
+  "Impose Job": "imposition",
+  "Product Schema Settings": "imposition",
+  "Studio Settings": "studio",
+  "Language Text": "studio",
+  "Images": "studio",
+  "Fonts": "studio",
+  "Sales Reports": "reports",
+  "Production Reports": "reports",
+  "Inventory Reports": "reports",
+  "System Logs": "reports",
+  "Users": "admin",
+  "Roles": "admin"
+};
+
 function page(slug) {
   return capture.pages.find(p => p.slug === slug) || capture.key[slug];
 }
@@ -144,7 +272,7 @@ function routeLink(slug) {
 }
 
 function appShell(content) {
-  if (state.mode === "baseline") return currentOpsShell();
+  if (state.mode === "baseline" || state.mode === "revised") return currentOpsShell();
   const menu = state.mode === "baseline" ? currentMenu : revisedMenu;
   return `
     <div class="app">
@@ -204,7 +332,7 @@ function currentOpsShell() {
         ${currentOpsSidebar()}
         <section class="ops-content">
           ${currentOpsAdminBar()}
-          ${currentOpsDashboard()}
+          ${currentOpsMainContent()}
         </section>
       </div>
       <div class="review-switch" aria-label="review mode">
@@ -218,7 +346,7 @@ function currentOpsShell() {
 function currentOpsTopbar() {
   return `
     <header class="ops-topbar">
-      <div class="ops-brand"><span class="ops-home-icon"><i class="fa-solid fa-house"></i><i class="fa-solid fa-user"></i></span><span>Visual Graphx, LLC.</span></div>
+      <div class="ops-brand"><span class="fa-stack fa-md pr-2 d-inline-block ops-home-icon" title="Admin"><i class="far fa-home fa-stack-2x"></i><i class="fas fa-user-alt fa-stack-1x fa-lg"></i></span><span>Visual Graphx, LLC.</span></div>
       <div class="ops-search"><input value="${esc(state.search)}" data-action="search" placeholder="Search here....."><button><i class="fa-solid fa-magnifying-glass"></i></button><button><i class="fa-regular fa-bookmark"></i></button></div>
       <div class="ops-utilities">
         <div class="ops-cache">Cache <span>YES</span><b><i class="fa-solid fa-bars"></i></b><em><i class="fa-regular fa-trash-can"></i></em></div>
@@ -232,7 +360,7 @@ function currentOpsTopbar() {
 }
 
 function currentOpsSidebar() {
-  const groups = [
+  const currentGroups = [
     { label: "Dashboard", icon: "fa-solid fa-gauge-high" },
     { label: "Orders", icon: "fa-solid fa-cart-shopping", children: [
       { label: "List Orders", children: ["List Orders", "Payment Request"] },
@@ -266,6 +394,12 @@ function currentOpsSidebar() {
     { label: "Reports", icon: "fa-solid fa-chart-bar", children: ["Reports", "System Logs"] },
     { label: "Admin", icon: "fa-regular fa-user", children: ["Admin Users", "Roles", "Permissions"] }
   ];
+  const proposedGroups = revisedMenu.map(group => ({
+    label: group.label,
+    icon: opsIconFor(group.label),
+    children: group.children
+  }));
+  const groups = state.mode === "revised" ? proposedGroups : currentGroups;
   return `
     <aside class="ops-sidebar">
       <div class="ops-quick-buttons">
@@ -288,9 +422,10 @@ function renderOpsMenuGroup(group, index) {
   const isDashboard = group.label === "Dashboard";
   const isOpen = !isDashboard && !!state.opsOpen[menuKey];
   const active = state.activeOpsMenu === menuKey || (isDashboard && state.activeOpsMenu === "Dashboard");
+  const pageSlug = state.mode === "baseline" ? currentOpsPageMap[group.label] : proposedOpsPageMap[group.label];
   return `
     <div class="ops-nav-group ${isOpen ? "open" : ""}">
-      <button class="ops-nav-item ${active ? "active" : ""}" data-ops-menu="${esc(menuKey)}">
+      <button class="ops-nav-item ${active ? "active" : ""}" data-ops-menu="${esc(menuKey)}" ${pageSlug ? `data-ops-page="${esc(pageSlug)}"` : ""}>
         <span><i class="${group.icon}"></i>${esc(group.label)}</span>
         ${group.children ? `<b><i class="fa-solid fa-angle-${isOpen ? "up" : "down"}"></i></b>` : ""}
       </button>
@@ -305,9 +440,10 @@ function renderOpsChild(child, parentKey, depth) {
   const hasChildren = !!item.children?.length;
   const isOpen = !!state.opsOpen[childKey];
   const active = state.activeOpsChild === childKey;
+  const target = state.mode === "baseline" ? currentOpsPageMap[item.label] : proposedOpsPageMap[item.label];
   return `
     <div class="ops-subnav-group ${isOpen ? "open" : ""}">
-      <button class="ops-subnav-item depth-${depth} ${active ? "active" : ""}" data-ops-child="${esc(childKey)}" ${hasChildren ? `data-ops-menu="${esc(childKey)}"` : ""}>
+      <button class="ops-subnav-item depth-${depth} ${active ? "active" : ""}" data-ops-child="${esc(childKey)}" ${hasChildren ? `data-ops-menu="${esc(childKey)}"` : ""} ${target ? `data-ops-page="${esc(target)}"` : ""}>
         <span>${esc(item.label)}</span>${hasChildren ? `<b><i class="fa-solid fa-angle-${isOpen ? "up" : "down"}"></i></b>` : ""}
       </button>
       ${hasChildren && isOpen ? `<div class="ops-subnav nested">${item.children.map(grandchild => renderOpsChild(grandchild, childKey, depth + 1)).join("")}</div>` : ""}
@@ -316,9 +452,12 @@ function renderOpsChild(child, parentKey, depth) {
 }
 
 function currentOpsAdminBar() {
+  const title = state.mode === "revised"
+    ? (revisedMenu.find(menu => menu.view === state.currentView)?.label || "Dashboard")
+    : pageLabel(page(state.currentPage) || page("115-welcome"));
   return `
     <div class="ops-breadcrumb">
-      <div><strong><i class="fa-solid fa-house"></i></strong><span>Home</span><b>›</b><span>Dashboard</span></div>
+      <div><strong><i class="fa-solid fa-house"></i></strong><span>Home</span><b>›</b><span>${esc(title)}</span></div>
       <div class="ops-admin-tools">
         <button class="ops-workflow"><i class="fa-solid fa-rotate"></i> Workflow</button>
         <label><span></span>Filter by Store</label>
@@ -328,6 +467,43 @@ function currentOpsAdminBar() {
       </div>
     </div>
   `;
+}
+
+function currentOpsMainContent() {
+  if (state.mode === "revised") return revisedPage();
+  if (state.currentPage === "115-welcome") return currentOpsDashboard();
+  return currentOpsCapturedPage();
+}
+
+function currentOpsCapturedPage() {
+  const current = page(state.currentPage) || page("115-welcome");
+  return `
+    <main class="ops-captured-page">
+      <iframe class="ops-captured-frame" title="${esc(pageLabel(current))}" src="${routeLink(current.slug)}" sandbox=""></iframe>
+    </main>
+  `;
+}
+
+function opsIconFor(label) {
+  const map = {
+    "Dashboard": "fa-solid fa-gauge-high",
+    "Orders": "fa-solid fa-cart-shopping",
+    "Quotes": "fa-regular fa-file-lines",
+    "Customer Accounts": "fa-regular fa-user",
+    "Store Management": "fa-solid fa-store",
+    "Product Catalog": "fa-solid fa-tags",
+    "Templates": "fa-solid fa-table-columns",
+    "Content & Help Media": "fa-regular fa-file-lines",
+    "SEO": "fa-solid fa-globe",
+    "Vendors & Partners": "fa-regular fa-handshake",
+    "Export, API & Webhooks": "fa-solid fa-right-left",
+    "Store Configuration": "fa-solid fa-gears",
+    "Product Imposition": "fa-solid fa-table-cells-large",
+    "Designer Studio": "fa-regular fa-pen-to-square",
+    "Reports & System Logs": "fa-solid fa-chart-bar",
+    "Admin Users": "fa-regular fa-user"
+  };
+  return map[label] || "fa-regular fa-square";
 }
 
 function currentOpsDashboard() {
@@ -591,7 +767,7 @@ function renderLiveReferences(refs, current) {
       `).join("")}
       <details class="captured-html-details">
         <summary>Show sanitized captured HTML for ${esc(pageLabel(current))}</summary>
-        <iframe class="baseline-frame embedded" title="Captured HTML ${esc(pageLabel(current))}" src="${routeLink(current.slug)}"></iframe>
+        <iframe class="baseline-frame embedded" title="Captured HTML ${esc(pageLabel(current))}" src="${routeLink(current.slug)}" sandbox=""></iframe>
       </details>
     </div>
   `;
@@ -975,14 +1151,19 @@ window.__opsSimulator = {
 document.addEventListener("click", event => {
   const opsMenu = event.target.closest("[data-ops-menu]")?.dataset.opsMenu;
   if (opsMenu) {
-    if (opsMenu === "Dashboard") {
+    if (opsMenu.startsWith("Dashboard-")) {
       state.activeOpsMenu = "Dashboard";
       state.activeOpsChild = "";
-    } else {
+      state.opsOpen = {};
+      if (state.mode === "baseline") state.currentPage = "115-welcome";
+      else state.currentView = "dashboard";
+    } else if (opsMenu.includes(":")) {
       state.opsOpen[opsMenu] = !state.opsOpen[opsMenu];
-      if (!opsMenu.includes(":")) {
-        state.activeOpsMenu = opsMenu;
-      }
+    } else {
+      const shouldOpen = !state.opsOpen[opsMenu];
+      state.opsOpen = shouldOpen ? { [opsMenu]: true } : {};
+      state.activeOpsMenu = shouldOpen ? opsMenu : "Dashboard";
+      if (!shouldOpen || !state.activeOpsChild.startsWith(`${opsMenu}:`)) state.activeOpsChild = "";
     }
     render();
     return;
@@ -992,12 +1173,20 @@ document.addEventListener("click", event => {
     state.activeOpsChild = opsChild;
     const menuKey = opsChild.split(":")[0];
     state.activeOpsMenu = menuKey;
+    const target = event.target.closest("[data-ops-page]")?.dataset.opsPage;
+    if (target && state.mode === "baseline") state.currentPage = target;
+    if (target && state.mode === "revised") state.currentView = target;
     render();
     return;
   }
   const mode = event.target.closest("[data-mode]")?.dataset.mode;
   if (mode) {
     state.mode = mode;
+    state.activeOpsMenu = "Dashboard";
+    state.activeOpsChild = "";
+    state.opsOpen = {};
+    if (mode === "baseline") state.currentPage = "115-welcome";
+    if (mode === "revised") state.currentView = "dashboard";
     render();
     return;
   }
