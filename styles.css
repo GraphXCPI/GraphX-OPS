@@ -810,6 +810,57 @@ tr:nth-child(even) td { background: #fbfdff; }
   border-left: 3px solid #4597d1;
   padding-left: 7px;
 }
+.ops-nav-group.open > .ops-nav-item {
+  color: #1f78be;
+}
+.ops-subnav {
+  border-bottom: 1px solid #d9dee5;
+  background: #f7f8fa;
+}
+.ops-subnav.nested {
+  border-bottom: 0;
+  background: #fff;
+}
+.ops-subnav-group {
+  display: block;
+}
+.ops-subnav-item {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  background: transparent;
+  color: #555b63;
+  padding: 0 13px 0 27px;
+  text-align: left;
+  font-size: 13px;
+}
+.ops-subnav-item.depth-2 {
+  padding-left: 40px;
+  font-size: 12.5px;
+}
+.ops-subnav-item:hover,
+.ops-subnav-item.active {
+  color: #1f78be;
+  background: #e8f3fb;
+}
+.ops-subnav-item.active {
+  border-left: 3px solid #4597d1;
+  padding-left: 24px;
+}
+.ops-subnav-item.depth-2.active {
+  padding-left: 37px;
+}
+.ops-subnav-item b {
+  color: #59616a;
+  font-weight: 400;
+}
+.ops-subnav-item b i {
+  width: auto;
+  font-size: 10px;
+}
 .ops-collapse {
   position: absolute;
   left: 104px;

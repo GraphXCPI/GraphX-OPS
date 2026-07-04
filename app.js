@@ -96,7 +96,10 @@ const state = {
   selectedStore: "All Store",
   activeStoreTab: "Overview",
   activeApiTab: "Order Exports",
-  activeCatalogFilter: "All"
+  activeCatalogFilter: "All",
+  activeOpsMenu: "Dashboard",
+  activeOpsChild: "",
+  opsOpen: {}
 };
 
 function page(slug) {
@@ -230,25 +233,38 @@ function currentOpsTopbar() {
 
 function currentOpsSidebar() {
   const groups = [
-    ["Dashboard", "fa-solid fa-gauge-high", true],
-    ["Orders", "fa-solid fa-cart-shopping"],
-    ["Quote Management", "fa-regular fa-file-lines"],
-    ["Customer", "fa-regular fa-user"],
-    ["Store Management", "fa-solid fa-store"],
-    ["Products", "fa-solid fa-tags"],
-    ["Customer", "fa-regular fa-user"],
-    ["Store Management", "fa-solid fa-store"],
-    ["Products", "fa-solid fa-tags"],
-    ["Templates", "fa-solid fa-table-columns"],
-    ["Content Management", "fa-regular fa-file-lines"],
-    ["Store Personalization", "fa-solid fa-gear"],
-    ["SEO", "fa-solid fa-globe"],
-    ["Business Partners", "fa-regular fa-handshake"],
-    ["Store Configuration", "fa-solid fa-gears"],
-    ["Imposition Beta", "fa-solid fa-table-cells-large"],
-    ["Designer Studio", "fa-regular fa-pen-to-square"],
-    ["Reports", "fa-solid fa-chart-bar"],
-    ["Admin", "fa-regular fa-user"]
+    { label: "Dashboard", icon: "fa-solid fa-gauge-high" },
+    { label: "Orders", icon: "fa-solid fa-cart-shopping", children: [
+      { label: "List Orders", children: ["List Orders", "Payment Request"] },
+      "Add New Order", "Export/API Orders", "Order Status", "Coupons / Discount", "Store Credit", "Unpaid Orders", "Archive Orders"
+    ] },
+    { label: "Quote Management", icon: "fa-regular fa-file-lines", children: ["Quotes", "Add New Quote", "Vendor Quotes", "Vendors", "Sales Agents & Partners"] },
+    { label: "Customer", icon: "fa-regular fa-user", children: ["Customers", "Customer Groups", "Import Customers"] },
+    { label: "Store Management", icon: "fa-solid fa-store", children: ["Stores", "Store Fields"] },
+    { label: "Products", icon: "fa-solid fa-tags", children: [
+      "Print Products", "Ready To Buy Products", "Product Options", "Product Categories", "Product Weight/Days/SKU", "Products Tax/VAT Settings",
+      { label: "Product Price", children: ["Product Price", "Product Price - Bulk", "Product Option Price - Bulk", "Product Price - Excel", "Percentage (+/-)"] }
+    ] },
+    { label: "Customer", icon: "fa-regular fa-user", duplicate: true, children: ["Customers", "Customer Groups", "Import Customers"] },
+    { label: "Store Management", icon: "fa-solid fa-store", duplicate: true, children: ["Stores", "Store Fields"] },
+    { label: "Products", icon: "fa-solid fa-tags", duplicate: true, children: [
+      "Print Products", "Ready To Buy Products", "Product Options", "Product Categories", "Product Weight/Days/SKU", "Products Tax/VAT Settings",
+      { label: "Product Price", children: ["Product Price", "Product Price - Bulk", "Product Option Price - Bulk", "Product Price - Excel", "Percentage (+/-)"] }
+    ] },
+    { label: "Templates", icon: "fa-solid fa-table-columns", children: ["Product Templates", "PDF Blocks", "Art Layouts", "Template Categories"] },
+    { label: "Content Management", icon: "fa-regular fa-file-lines", children: [
+      "Contents", "FAQs", "Testimonials", "Banners", { label: "Email/SMS", children: ["Email Templates", "SMS Templates", "Email Reminders"] }, "Help Media"
+    ] },
+    { label: "Store Personalization", icon: "fa-solid fa-gear", children: [
+      "Product Page Layout", "Language Text References", "Links - Header / Footer", { label: "Sidebar Management", children: ["Sidebar Management", "Sidebar Widget"] }, "Website Themes"
+    ] },
+    { label: "SEO", icon: "fa-solid fa-globe", children: ["Page title, Keyword setting", "Sitemaps", "Metatags Settings", "Robots", "Manage URL Redirection", "Image Alt Text"] },
+    { label: "Business Partners", icon: "fa-regular fa-handshake", children: ["Vendors", "Vendor Quotes", "Sales Agents & Partners"] },
+    { label: "Store Configuration", icon: "fa-solid fa-gears", children: ["Site Settings", "Languages", "Currency", "Country / States", "Web Optimization", "Manage Site Access", "Admin Panel Text References"] },
+    { label: "Imposition Beta", icon: "fa-solid fa-table-cells-large", children: ["Product Imposition"] },
+    { label: "Designer Studio", icon: "fa-regular fa-pen-to-square", children: ["Studio Settings", "Studio Events", "Mask Image"] },
+    { label: "Reports", icon: "fa-solid fa-chart-bar", children: ["Reports", "System Logs"] },
+    { label: "Admin", icon: "fa-regular fa-user", children: ["Admin Users", "Roles", "Permissions"] }
   ];
   return `
     <aside class="ops-sidebar">
@@ -256,14 +272,46 @@ function currentOpsSidebar() {
         <button class="cart"><i class="fa-solid fa-cart-shopping"></i></button><button class="person"><i class="fa-regular fa-user"></i></button><button class="tag"><i class="fa-solid fa-tags"></i></button><button class="file"><i class="fa-regular fa-file-pdf"></i></button><button class="gear"><i class="fa-solid fa-gears"></i></button>
       </div>
       <nav>
-        ${groups.map(([label, icon, active]) => `
-          <button class="ops-nav-item ${active ? "active" : ""}">
-            <span><i class="${icon}"></i>${esc(label)}</span><b><i class="fa-solid fa-angle-down"></i></b>
-          </button>
-        `).join("")}
+        ${groups.map((group, index) => renderOpsMenuGroup(group, index)).join("")}
       </nav>
       <button class="ops-collapse"><i class="fa-solid fa-angle-left"></i></button>
     </aside>
+  `;
+}
+
+function opsMenuKey(group, index) {
+  return `${group.label}-${index}`;
+}
+
+function renderOpsMenuGroup(group, index) {
+  const menuKey = opsMenuKey(group, index);
+  const isDashboard = group.label === "Dashboard";
+  const isOpen = !isDashboard && !!state.opsOpen[menuKey];
+  const active = state.activeOpsMenu === menuKey || (isDashboard && state.activeOpsMenu === "Dashboard");
+  return `
+    <div class="ops-nav-group ${isOpen ? "open" : ""}">
+      <button class="ops-nav-item ${active ? "active" : ""}" data-ops-menu="${esc(menuKey)}">
+        <span><i class="${group.icon}"></i>${esc(group.label)}</span>
+        ${group.children ? `<b><i class="fa-solid fa-angle-${isOpen ? "up" : "down"}"></i></b>` : ""}
+      </button>
+      ${group.children && isOpen ? `<div class="ops-subnav">${group.children.map(child => renderOpsChild(child, menuKey, 1)).join("")}</div>` : ""}
+    </div>
+  `;
+}
+
+function renderOpsChild(child, parentKey, depth) {
+  const item = typeof child === "string" ? { label: child } : child;
+  const childKey = `${parentKey}:${item.label}`;
+  const hasChildren = !!item.children?.length;
+  const isOpen = !!state.opsOpen[childKey];
+  const active = state.activeOpsChild === childKey;
+  return `
+    <div class="ops-subnav-group ${isOpen ? "open" : ""}">
+      <button class="ops-subnav-item depth-${depth} ${active ? "active" : ""}" data-ops-child="${esc(childKey)}" ${hasChildren ? `data-ops-menu="${esc(childKey)}"` : ""}>
+        <span>${esc(item.label)}</span>${hasChildren ? `<b><i class="fa-solid fa-angle-${isOpen ? "up" : "down"}"></i></b>` : ""}
+      </button>
+      ${hasChildren && isOpen ? `<div class="ops-subnav nested">${item.children.map(grandchild => renderOpsChild(grandchild, childKey, depth + 1)).join("")}</div>` : ""}
+    </div>
   `;
 }
 
@@ -925,6 +973,28 @@ window.__opsSimulator = {
 };
 
 document.addEventListener("click", event => {
+  const opsMenu = event.target.closest("[data-ops-menu]")?.dataset.opsMenu;
+  if (opsMenu) {
+    if (opsMenu === "Dashboard") {
+      state.activeOpsMenu = "Dashboard";
+      state.activeOpsChild = "";
+    } else {
+      state.opsOpen[opsMenu] = !state.opsOpen[opsMenu];
+      if (!opsMenu.includes(":")) {
+        state.activeOpsMenu = opsMenu;
+      }
+    }
+    render();
+    return;
+  }
+  const opsChild = event.target.closest("[data-ops-child]")?.dataset.opsChild;
+  if (opsChild) {
+    state.activeOpsChild = opsChild;
+    const menuKey = opsChild.split(":")[0];
+    state.activeOpsMenu = menuKey;
+    render();
+    return;
+  }
   const mode = event.target.closest("[data-mode]")?.dataset.mode;
   if (mode) {
     state.mode = mode;
