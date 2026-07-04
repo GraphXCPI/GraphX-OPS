@@ -1,19 +1,30 @@
 # GraphX OPS Admin Simulator
 
-Static simulator for reviewing the current OPS admin baseline and proposed GraphX OPS information architecture.
+Static, self-contained simulator for reviewing the current OPS admin baseline and proposed GraphX OPS information architecture.
 
 ## Live Modes
 
-- **Current OPS** renders a code-native reconstruction of the live OPS dashboard so layout, tables, job boards, Font Awesome controls, and the jqPlot-style sales chart can be tested interactively.
+- **Current OPS** renders a code-native reconstruction of the live OPS dashboard so layout, tables, job boards, Font Awesome-style controls, and the jqPlot-style sales chart can be tested interactively.
 - **Proposed** renders the revised navigation and workflow model for review with the dev team.
 
 ## Scope
 
-This is a front-end review artifact. It uses rendered HTML/DOM reference data and does not include hidden PHP source or production backend logic.
+This is a front-end review artifact. It does not include hidden PHP source or production backend logic.
 
-The simulator preserves business labels, menus, forms, table structure, representative rows, and workflow placement. Secret-like values, API keys, CSRF tokens, emails, and phone numbers were masked during capture.
+The simulator is intentionally closed from OPS systems:
 
-The July 3 captured HTML remains useful for page structure, live CSS classes, Font Awesome usage, jqPlot chart markup, and field/table references. The Current OPS dashboard is rebuilt as HTML/CSS/JS rather than displayed as a static screenshot, so it can be evolved into the requested revisions.
+- `index.html`
+- `simulator.css`
+- `simulator.js`
+
+It does not load captured HTML, live OPS pages, iframes, `capture-data.js`, PHP, backend data, or live admin endpoints. All representative workflow data used by the simulator is local inside `simulator.js`.
+
+The only external runtime assets are public presentation dependencies:
+
+- Google Fonts for typography
+- Font Awesome for maintained icon rendering
+
+Raw extraction material remains outside this published simulator as source-reference material only. The simulator itself is rebuilt as HTML/CSS/JS so it can be evolved into the requested revisions without coupling to OPS or any extraction artifact.
 
 ## Key Review Areas
 
