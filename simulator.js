@@ -6,6 +6,8 @@ const OPS = {
   loginAs: "cderamos",
 };
 
+window.OPS = OPS;
+
 const icon = {
   dashboard: "gauge-high",
   orders: "cart-shopping",
@@ -260,7 +262,7 @@ const proposedMenu = [
     { label: "Admin Panel Text References", page: "admin-text" },
   ] },
   { id: "api", label: "Export & API", icon: icon.api, children: [
-    { label: "Order Exports", page: "export-api-orders" },
+    { label: "Order Exports", page: "order-exports" },
     { label: "API & Webhooks", page: "api-webhooks" },
   ] },
   { id: "seo", label: "SEO", icon: icon.seo, children: [
@@ -325,13 +327,13 @@ const pageFamilies = {
   vendor: ["vendor-quotes", "vendors", "sales-agents"],
   customer: ["customers", "newsletter", "design-proofs", "b2b-account-users", "store-admins", "user-groups"],
   store: ["stores", "store-fields", "store-workspace", "duplicate-store-data", "b2b-store-theme"],
-  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "page-categories", "product-weight", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
+  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "product-weight", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
   template: ["templates", "pdf-blocks", "art-layouts", "template-categories"],
-  builder: ["cms-pages", "site-content", "links", "sidebar-management", "sidebar-widget", "themes", "account-pages", "product-page-layout", "product-showcase", "website-logos", "language-text", "banners", "asset-manager", "help-media", "media-gallery", "form-management", "breadcrumbs", "faqs", "testimonials"],
+  builder: ["cms-pages", "site-content", "page-categories", "links", "sidebar-management", "sidebar-widget", "themes", "account-pages", "product-page-layout", "product-showcase", "website-logos", "language-text", "banners", "asset-manager", "help-media", "media-gallery", "form-management", "breadcrumbs", "faqs", "testimonials"],
   alerts: ["email-templates", "sms-templates", "email-reminders"],
   seo: ["seo-global", "sitemaps", "metatags", "robots", "redirects", "image-alt", "product-seo", "category-seo", "category-group-seo", "page-category-seo", "content-seo", "asset-seo"],
   config: ["site-settings", "languages", "currency", "country-states", "web-optimization", "site-access", "payments", "shipping", "tax-settings", "external-services", "admin-text"],
-  api: ["export-api-orders", "api-webhooks"],
+  api: ["export-api-orders", "order-exports", "api-webhooks"],
   imposition: ["sheet-sizes", "schemas", "impose-job", "product-schema-settings"],
   studio: ["studio-settings", "studio-language", "studio-images", "studio-image-categories", "studio-fonts"],
   reports: ["sales-reports", "production-reports", "inventory-reports", "system-log"],
@@ -613,11 +615,39 @@ function productPage() {
   if (OPS.mode === "proposed" && OPS.page === "markup-master") return markupMasterPage();
   if (OPS.page === "product-categories" || OPS.page === "category-groups") return productCategoriesPage();
   if (["product-weight", "stock-settings", "manage-stock"].includes(OPS.page)) return stockSettingsPage();
+  if (OPS.page === "product-options") return productOptionsPage();
+  if (OPS.page === "product-tax") return productTaxPage();
+  if (OPS.page.startsWith("product-price")) return productPricingPage();
   const proposed = OPS.mode === "proposed";
   const actions = proposed ? ["Add Print Product", "Add Ready To Buy", "Add Kit Product", "Add Related Product"] : ["Add", "Import Products", "Related Product", "Manage Stock", "Publish"];
   const tagCols = proposed ? "<th>Product Type</th><th>System Tags</th>" : "";
   const tagCells = proposed ? "<td><span class=\"badge muted\">Print Product</span></td><td><span class=\"pill\">Fixed System</span><span class=\"pill\">Store Scope</span></td>" : "";
   return `<section class="page">${pageHead(proposed && OPS.page === "product-catalog" ? "Product Catalog" : pageTitle(), actions)}${proposed ? fastFilters(["Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled", "Store Scope", "Status"]) : ""}${filters(["Search", "Product Category", "Select Store", "Price Category"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Images</th><th>Product Details</th>${tagCols}<th>Configuration</th><th>Sort</th><th>Status</th><th>Action</th></tr></thead><tbody>${products.map(p => `<tr><td><a>${p[0]}</a></td><td><div class="thumb"></div></td><td><a>${p[1]}</a><br><small>${p[2]}</small></td>${tagCells}<td>${p[3]}<br>Price Category : ${p[4]}</td><td>0</td><td><span class="toggle ${p[5] === "On" ? "on" : "off"}"></span></td><td><button>Action</button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Print Products and Ready To Buy Products are represented as one catalog list with product type and fixed system tags. Focused edit pages stay intact.") : originalNote("Original Products separates Print Products and Ready To Buy Products into different lists, with related tools scattered below the menu.")}</section>`;
+}
+
+function productOptionsPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add Product Option", "Import", "Export"])}${filters(["Search", "Option Type", "Status"])}${dataTable(["Sr#", "Product Option", "Display Type", "Values", "Required", "Status", "Action"], [
+    ["1", "Size", "Dropdown", "Small, Medium, Large, Custom Size", "Yes", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+    ["2", "Material", "Dropdown", "PolyBoard, Vinyl, Coroplast", "Yes", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+    ["3", "Finishing", "Checkbox", "Grommets, Lamination, Rounded Corners", "No", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+  ])}${OPS.mode === "proposed" ? changeNote("Product Options remains a Product Catalog subpage. It is not the product list, category list, or stock page.") : originalNote("Original Product Options is a distinct Products menu page.")}</section>`;
+}
+
+function productTaxPage() {
+  return `<section class="page">${pageHead(pageTitle(), ["Add Tax/VAT Rule", "Save", "Reset"])}${filters(["Search", "Tax Type", "Store", "Status"])}${dataTable(["Sr#", "Rule Name", "Applies To", "Rate", "Store Scope", "Status", "Action"], [
+    ["1", "Arizona Retail Tax", "Products", "8.60%", "All Stores", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+    ["2", "Tax Exempt Products", "Selected Categories", "0.00%", "B2B Stores", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+  ])}${routeNote()}</section>`;
+}
+
+function productPricingPage() {
+  const proposed = OPS.mode === "proposed";
+  const tabs = tabStrip(["Product Price", "Bulk Price", "Option Price", "Excel Import", "Percentage (+/-)"]);
+  return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
+    ["1", "NOW HIRING DECAL", "Fixed Quantity & Price", "Fixed", "$25.00", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+    ["2", "T-Shirt OPS", "Range Based With Multiplication", "Range", "$12.00", "<span class=\"toggle off\"></span>", "<button>Action</button>"],
+    ["3", "DTF Prints", "Size based Price", "Dynamic Size", "$0.00", "<span class=\"toggle off\"></span>", "<button>Action</button>"],
+  ])}${proposed ? changeNote("Pricing is a Product Catalog subpage that groups the existing Product Price tabs under one label.") : originalNote("Original Product Price exposes Product Price, Bulk, Option Bulk, Excel, and Percentage as nested links.")}</section>`;
 }
 
 function productCategoriesPage() {
@@ -667,17 +697,27 @@ function storesPage() {
 
 function apiPage() {
   const proposed = OPS.mode === "proposed";
+  const title = OPS.page === "api-webhooks" ? "API & Webhooks" : (OPS.page === "order-exports" ? "Order Exports" : pageTitle());
   const tabs = proposed ? tabStrip(["Order Exports", "API & Webhooks"]) : tabStrip(["Export/API Settings", "Hot Folder Settings", "Advanced API", "Webhook"]);
   const apiText = proposed ? "Global-only API credentials, webhook events, and the open question for context-aware B2C, B2B, franchise, and reseller automation." : "Current Export/API Orders lives under Orders and mixes export execution with export/API settings.";
-  return `<section class="page">${pageHead(proposed ? "Export & API" : "Export/API Orders", proposed ? ["Save", "Test Connection"] : ["Export", "Manual Transfer", "Export/API Settings"])}${tabs}<div class="grid two"><div>${filters(["Order Range", "Date Range", "Order Status"])}${panel("Order Exports", "<p>Export style, file naming, hot folder, order status selection, manual transfer, and connection controls.</p>")}</div><div>${panel("API & Webhooks", `<p>${apiText}</p>${formRows(["Client Id", "Client Secret", "Endpoint URL", "Webhook URL", "Event Type"])}`)}</div></div>${proposed ? changeNote("Export/API Orders is removed from Orders and becomes a global Export & API section with two areas: Order Exports and API & Webhooks.") : originalNote("Original export/API controls are reached through the Orders menu.")}</section>`;
+  return `<section class="page">${pageHead(title, proposed ? ["Save", "Test Connection"] : ["Export", "Manual Transfer", "Export/API Settings"])}${tabs}<div class="grid two"><div>${filters(["Order Range", "Date Range", "Order Status"])}${panel("Order Exports", "<p>Export style, file naming, hot folder, order status selection, manual transfer, and connection controls.</p>")}</div><div>${panel("API & Webhooks", `<p>${apiText}</p>${formRows(["Client Id", "Client Secret", "Endpoint URL", "Webhook URL", "Event Type"])}`)}</div></div>${proposed ? changeNote("Export/API Orders is removed from Orders and becomes a global Export & API section with two areas: Order Exports and API & Webhooks.") : originalNote("Original export/API controls are reached through the Orders menu.")}</section>`;
 }
 
 function siteBuilderPage() {
   const media = ["help-media", "media-gallery", "asset-manager"].includes(OPS.page);
   const title = OPS.mode === "proposed" ? pageTitle() : pageTitle();
+  if (OPS.page === "page-categories") return sitePageCategoriesPage();
   if (media) return assetManagerPage();
   const proposed = OPS.mode === "proposed";
   return `<section class="page">${pageHead(title, ["Add", "Save", "Preview"])}${proposed ? siteBuilderTabs() : tabStrip(["Homepage & Fixed Content", "Dynamic Pages", "Category"])}<div class="grid two"><div>${panel(pageTitle(), formRows(["Page Category", "Key", "Page Heading", "Sort", "Status"]))}</div><div>${panel(proposed ? "Context Ownership" : "SEO", proposed ? "<p>Global Site Builder owns broad site pages, menus, themes, account pages, content groups, and asset references. Store-level Site Builder locks the selected store.</p>" : formRows(["Page Title", "Meta Description", "Canonical Reference"]))}</div></div>${proposed ? changeNote("Content Management and Store Personalization are reorganized as Site Builder, with the same page primitives available globally and in store context.") : originalNote("Original CMS and Store Personalization split page, theme, menu, sidebar, and asset tools across different areas.")}</section>`;
+}
+
+function sitePageCategoriesPage() {
+  return `<section class="page">${pageHead("Page Categories", ["Add Page Category", "Save", "Reset"])}${tabStrip(["Page Categories", "Assigned Pages", "SEO"])}${filters(["Search", "Status"])}${dataTable(["Sr#", "Page Category", "Internal Key", "Assigned Pages", "Sort", "Status", "Action"], [
+    ["1", "About", "about", "About Us, Team", "0", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+    ["2", "Support", "support", "FAQs, Help Center", "1", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+    ["3", "Marketing", "marketing", "Landing Pages", "2", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
+  ])}${changeNote("Page Categories belongs in Site Builder, not Product Catalog. Product Categories keeps only Product Category and Category group tabs.")}</section>`;
 }
 
 function mediaGrid() {
