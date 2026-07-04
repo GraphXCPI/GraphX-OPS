@@ -326,8 +326,8 @@ const pageFamilies = {
   quotes: ["quotes", "add-quote", "quote-status"],
   vendor: ["vendor-quotes", "vendors", "sales-agents"],
   customer: ["customers", "newsletter", "design-proofs", "b2b-account-users", "store-admins", "user-groups"],
-  store: ["stores", "store-fields", "store-workspace", "duplicate-store-data", "b2b-store-theme"],
-  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "product-weight", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
+  store: ["stores", "store-fields", "store-workspace", "store-workspace-edit", "store-workspace-customers", "store-workspace-products", "store-workspace-markup", "store-workspace-addresses", "store-workspace-credit", "store-workspace-builder", "store-workspace-alerts", "store-workspace-fields", "duplicate-store-data", "b2b-store-theme"],
+  product: ["print-products", "ready-products", "product-catalog", "product-options", "product-categories", "category-groups", "product-weight", "production-days", "products-sku", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-percent", "markup-master", "manage-stock"],
   template: ["templates", "pdf-blocks", "art-layouts", "template-categories"],
   builder: ["cms-pages", "site-content", "page-categories", "links", "sidebar-management", "sidebar-widget", "themes", "account-pages", "product-page-layout", "product-showcase", "website-logos", "language-text", "banners", "asset-manager", "help-media", "media-gallery", "form-management", "breadcrumbs", "faqs", "testimonials"],
   alerts: ["email-templates", "sms-templates", "email-reminders"],
@@ -338,6 +338,25 @@ const pageFamilies = {
   studio: ["studio-settings", "studio-language", "studio-images", "studio-image-categories", "studio-fonts"],
   reports: ["sales-reports", "production-reports", "inventory-reports", "system-log"],
   admin: ["admin-users", "roles"],
+};
+
+const pageAliases = {
+  "store-workspace-edit": "Edit Store",
+  "store-workspace-customers": "Store Customers",
+  "store-workspace-products": "Store Products",
+  "store-workspace-markup": "Store Markup",
+  "store-workspace-addresses": "Store Addresses",
+  "store-workspace-credit": "Credit Summary",
+  "store-workspace-builder": "Store Site Builder",
+  "store-workspace-alerts": "Store Alerts & Notifications",
+  "store-workspace-fields": "Store Fields",
+  "category-groups": "Category group",
+  "production-days": "Production Days",
+  "products-sku": "Products SKU",
+  "product-price-bulk": "Product Price - Bulk",
+  "product-option-price-bulk": "Product Option Price - Bulk",
+  "product-price-excel": "Product Price - Excel",
+  "product-price-percent": "Percentage (+/-)",
 };
 
 function familyFor(page) {
@@ -478,7 +497,7 @@ function pageTitle() {
 
 function labelForPage(page) {
   const menu = OPS.mode === "current" ? currentMenu : proposedMenu;
-  return menu.flatMap(flattenMenu).find(item => item.page === page)?.label;
+  return menu.flatMap(flattenMenu).find(item => item.page === page)?.label || pageAliases[page];
 }
 
 function content() {
@@ -614,7 +633,7 @@ function quotesPage() {
 function productPage() {
   if (OPS.mode === "proposed" && OPS.page === "markup-master") return markupMasterPage();
   if (OPS.page === "product-categories" || OPS.page === "category-groups") return productCategoriesPage();
-  if (["product-weight", "stock-settings", "manage-stock"].includes(OPS.page)) return stockSettingsPage();
+  if (["product-weight", "production-days", "products-sku", "stock-settings", "manage-stock"].includes(OPS.page)) return stockSettingsPage();
   if (OPS.page === "product-options") return productOptionsPage();
   if (OPS.page === "product-tax") return productTaxPage();
   if (OPS.page.startsWith("product-price")) return productPricingPage();
@@ -642,7 +661,13 @@ function productTaxPage() {
 
 function productPricingPage() {
   const proposed = OPS.mode === "proposed";
-  const tabs = tabStrip(["Product Price", "Bulk Price", "Option Price", "Excel Import", "Percentage (+/-)"]);
+  const tabs = tabStrip([
+    { label: "Product Price", page: "product-price" },
+    { label: "Bulk Price", page: "product-price-bulk" },
+    { label: "Option Price", page: "product-option-price-bulk" },
+    { label: "Excel Import", page: "product-price-excel" },
+    { label: "Percentage (+/-)", page: "product-price-percent" },
+  ]);
   return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
     ["1", "NOW HIRING DECAL", "Fixed Quantity & Price", "Fixed", "$25.00", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
     ["2", "T-Shirt OPS", "Range Based With Multiplication", "Range", "$12.00", "<span class=\"toggle off\"></span>", "<button>Action</button>"],
@@ -651,7 +676,14 @@ function productPricingPage() {
 }
 
 function productCategoriesPage() {
-  const rows = [
+  const groupView = OPS.page === "category-groups";
+  const rows = groupView ? [
+    ["1", "Featured", "featured", "All [ featured ], Decals", "-10", "on"],
+    ["2", "Decals", "decals", "Decals, Vehicle Kits", "0", "on"],
+    ["3", "By Use Case", "by-use-case", "Architectural Signage, Job Site & Safety Signage", "0", "on"],
+    ["4", "By Industry", "by-industry", "Construction & Industrial, Education & Schools", "0", "on"],
+    ["5", "Custom", "custom", "Yellowstone Landscape, Vehicle Kits, ER2", "-1", "on"],
+  ] : [
     ["1", "All [ featured ]", "Featured", "-10", "on"],
     ["2", "Yellowstone Landscape", "Custom", "-1", "on"],
     ["3", "Vehicle Kits", "Custom", "-1", "on"],
@@ -665,14 +697,26 @@ function productCategoriesPage() {
     ["16", "Construction & Industrial", "by-industry", "0", "on"],
     ["17", "Job Site & Safety Signage", "by-use-case", "0", "on"],
   ];
-  return `<section class="page">${pageHead("Product Categories", ["Add Product Category", "Add Category Group"])}${tabStrip(["Product Category", "Category group"])}${filters(["Search:"])}<div class="table-card"><table><thead><tr><th>Sr#</th><th>Category Image</th><th>Category Title</th><th>Category group</th><th>Sort</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><div class="thumb category-thumb"></div></td><td><b>${h(r[1])}</b><br><button class="tiny-action">Add to cart</button></td><td>${h(r[2])}</td><td>${h(r[3])}</td><td><span class="toggle on"></span></td><td><button class="icon-btn fa fa-pencil"></button><button class="icon-btn danger fa fa-trash"></button></td></tr>`).join("")}</tbody></table></div>${OPS.mode === "proposed" ? changeNote("Product Categories and Category Groups remain in one Product Categories screen as tabbed contexts. The sidebar should not split Category Groups into its own Product Catalog link.") : originalNote("Original OPS keeps Product Category and Category group together under the Product Categories link.")}</section>`;
+  const headers = groupView
+    ? ["Sr#", "Category Group", "Internal Key", "Assigned Categories", "Sort", "Status", "Action"]
+    : ["Sr#", "Category Image", "Category Title", "Category group", "Sort", "Status", "Action"];
+  const body = groupView
+    ? rows.map(r => `<tr><td>${r[0]}</td><td><b>${h(r[1])}</b></td><td>${h(r[2])}</td><td>${h(r[3])}</td><td>${h(r[4])}</td><td><span class="toggle on"></span></td><td><button class="icon-btn fa fa-pencil"></button><button class="icon-btn danger fa fa-trash"></button></td></tr>`).join("")
+    : rows.map(r => `<tr><td>${r[0]}</td><td><div class="thumb category-thumb"></div></td><td><b>${h(r[1])}</b><br><button class="tiny-action">Add to cart</button></td><td>${h(r[2])}</td><td>${h(r[3])}</td><td><span class="toggle on"></span></td><td><button class="icon-btn fa fa-pencil"></button><button class="icon-btn danger fa fa-trash"></button></td></tr>`).join("");
+  return `<section class="page">${pageHead("Product Categories", ["Add Product Category", "Add Category Group"])}${tabStrip([{ label: "Product Category", page: "product-categories" }, { label: "Category group", page: "category-groups" }])}${filters(["Search:"])}<div class="table-card"><table><thead><tr>${headers.map(head => `<th>${h(head)}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>${OPS.mode === "proposed" ? changeNote("Product Categories and Category Groups remain in one Product Categories screen as tabbed contexts. The sidebar should not split Category Groups into its own Product Catalog link.") : originalNote("Original OPS keeps Product Category and Category group together under the Product Categories link.")}</section>`;
 }
 
 function stockSettingsPage() {
   const proposed = OPS.mode === "proposed";
   const title = proposed ? "Stock & Settings" : "Product Weight";
   const actions = proposed ? ["Import Product Weight", "Import Stock", "Save"] : ["Import Product Weight"];
-  const tabs = tabStrip(["Product Weight", "Production Days", "Products SKU", "Stock"]);
+  const tabs = tabStrip([
+    { label: "Product Weight", page: "product-weight" },
+    { label: "Production Days", page: "production-days" },
+    { label: "Products SKU", page: "products-sku" },
+    { label: "Stock", page: "stock-settings" },
+  ]);
+  const active = OPS.page === "production-days" ? "Production Days" : OPS.page === "products-sku" ? "Products SKU" : OPS.page === "stock-settings" || OPS.page === "manage-stock" ? "Stock" : "Product Weight";
   const rows = [
     ["1", "Decals", "Only Size", "Warning - KHF Inside C...  Not set<br>Exit - 37.5&quot; W x 9.5&quot; H : <span class=\"status-chip unset\">Not set</span>", "12 in stock"],
     ["2", "Ticket Number Decals", "Only Size", "2 : <span class=\"status-chip unset\">Not set</span><br>7 : <span class=\"status-chip unset\">Not set</span><br>12 : <span class=\"status-chip unset\">Not set</span>", "0 stock"],
@@ -682,13 +726,18 @@ function stockSettingsPage() {
     ["21", "T-Shirt OPS", "Only Size", "T-Shirt : <span class=\"status-chip unset\">Not set</span>", "0 stock"],
     ["24", "Adhesive Products", "Only Size", "Custom Size : <span class=\"status-chip unset\">Not set</span>", "17 in stock"],
   ];
-  const stockCol = proposed ? "<th>Stock</th>" : "";
-  const stockCell = row => proposed ? `<td>${row[4]}</td>` : "";
-  return `<section class="page">${pageHead(title, actions)}${tabs}<div class="info-box"><p>You can set up product weight based on product sizes, product options, or product option combinations. Production days, SKU, and stock now share this same product-setting context.</p><p><b>Weight is always defined for only 1 quantity/unit of the product.</b></p></div>${filters(["Search", "Product Weight", "Both"])}<h2 class="section-title">${proposed ? "Stock & Settings Summary" : "Product Weight Summary"}</h2><div class="table-card"><table><thead><tr><th>Sr#</th><th>Product Details</th><th>Setting Type</th><th>Product Weight</th>${stockCol}<th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><b>${h(r[1])}</b></td><td>${h(r[2])}</td><td>${r[3]}</td>${stockCell(r)}<td><button class="icon-btn fa fa-pencil"></button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Product Weight / Days / SKU and Manage Stock are combined into Stock & Settings. Stock is a tab in the same product-setting workflow instead of a separate sidebar link.") : changeNote("The original Product Weight/Days/SKU screen gains a Stock tab so stock can be managed without leaving the product-setting context.")}</section>`;
+  const detailHeader = active === "Production Days" ? "Production Days" : active === "Products SKU" ? "Products SKU" : active === "Stock" ? "Current Stock" : "Product Weight";
+  const detailValue = row => {
+    if (active === "Production Days") return row[0] === "1" ? "3 days production, 1 day rush" : row[0] === "10" ? "5 days production" : "<span class=\"status-chip unset\">Not set</span>";
+    if (active === "Products SKU") return `SKU-${String(row[0]).padStart(4, "0")}`;
+    if (active === "Stock") return row[4];
+    return row[3];
+  };
+  return `<section class="page">${pageHead(title, actions)}${tabs}<div class="info-box"><p>You can set up product weight based on product sizes, product options, or product option combinations. Production days, SKU, and stock now share this same product-setting context.</p><p><b>Weight is always defined for only 1 quantity/unit of the product.</b></p></div>${filters(["Search", active, "Both"])}<h2 class="section-title">${active} Summary</h2><div class="table-card"><table><thead><tr><th>Sr#</th><th>Product Details</th><th>Setting Type</th><th>${h(detailHeader)}</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><b>${h(r[1])}</b></td><td>${h(r[2])}</td><td>${detailValue(r)}</td><td><button class="icon-btn fa fa-pencil"></button></td></tr>`).join("")}</tbody></table></div>${proposed ? changeNote("Product Weight / Days / SKU and Manage Stock are combined into Stock & Settings. Stock is a tab in the same product-setting workflow instead of a separate sidebar link.") : changeNote("The original Product Weight/Days/SKU screen gains a Stock tab so stock can be managed without leaving the product-setting context.")}</section>`;
 }
 
 function storesPage() {
-  if (OPS.mode === "proposed" && OPS.page === "store-workspace") return storeWorkspacePage();
+  if (OPS.mode === "proposed" && OPS.page.startsWith("store-workspace")) return storeWorkspacePage();
   if (OPS.mode === "proposed" && OPS.page === "duplicate-store-data") return duplicateStorePage();
   const rows = [["1", "Demo Store", "johnDoe@graphxcpi.com"], ["2", "Konala", "rdickson@alphagraphics.com"], ["3", "Socure", "rdickson+socure@alphagraphics.com"]];
   const proposed = OPS.mode === "proposed";
@@ -698,9 +747,12 @@ function storesPage() {
 function apiPage() {
   const proposed = OPS.mode === "proposed";
   const title = OPS.page === "api-webhooks" ? "API & Webhooks" : (OPS.page === "order-exports" ? "Order Exports" : pageTitle());
-  const tabs = proposed ? tabStrip(["Order Exports", "API & Webhooks"]) : tabStrip(["Export/API Settings", "Hot Folder Settings", "Advanced API", "Webhook"]);
+  const tabs = proposed ? tabStrip([{ label: "Order Exports", page: "order-exports" }, { label: "API & Webhooks", page: "api-webhooks" }]) : tabStrip(["Export/API Settings", "Hot Folder Settings", "Advanced API", "Webhook"]);
   const apiText = proposed ? "Global-only API credentials, webhook events, and the open question for context-aware B2C, B2B, franchise, and reseller automation." : "Current Export/API Orders lives under Orders and mixes export execution with export/API settings.";
-  return `<section class="page">${pageHead(title, proposed ? ["Save", "Test Connection"] : ["Export", "Manual Transfer", "Export/API Settings"])}${tabs}<div class="grid two"><div>${filters(["Order Range", "Date Range", "Order Status"])}${panel("Order Exports", "<p>Export style, file naming, hot folder, order status selection, manual transfer, and connection controls.</p>")}</div><div>${panel("API & Webhooks", `<p>${apiText}</p>${formRows(["Client Id", "Client Secret", "Endpoint URL", "Webhook URL", "Event Type"])}`)}</div></div>${proposed ? changeNote("Export/API Orders is removed from Orders and becomes a global Export & API section with two areas: Order Exports and API & Webhooks.") : originalNote("Original export/API controls are reached through the Orders menu.")}</section>`;
+  const body = OPS.page === "api-webhooks"
+    ? `<div class="grid two"><div>${panel("API Auth Settings", formRows(["Client Id", "Client Secret", "Endpoint URL", "Max Count", "IP Addresses"]))}</div><div>${panel("Webhook Events", `<p>${apiText}</p>${dataTable(["Event", "Created", "Updated", "Deleted"], [["Orders", "Yes", "Yes", "Yes"], ["Quote", "Yes", "Yes", "Yes"], ["Customer", "Yes", "Yes", "Yes"], ["Product", "Yes", "Yes", "Yes"]])}`)}</div></div>`
+    : `<div class="grid two"><div>${filters(["Order Range", "Date Range", "Order Status"])}${panel("Order Exports", "<p>Export style, file naming, hot folder, order status selection, manual transfer, and connection controls.</p>")}</div><div>${panel("Current Export Order Settings", formRows(["Export Style", "Export Format", "Export File Name Format", "Hot Folder Settings", "Folder Location", "Folder Structure"]))}</div></div>`;
+  return `<section class="page">${pageHead(title, proposed ? ["Save", "Test Connection"] : ["Export", "Manual Transfer", "Export/API Settings"])}${tabs}${body}${proposed ? changeNote("Export/API Orders is removed from Orders and becomes a global Export & API section with two areas: Order Exports and API & Webhooks.") : originalNote("Original export/API controls are reached through the Orders menu.")}</section>`;
 }
 
 function siteBuilderPage() {
@@ -709,15 +761,28 @@ function siteBuilderPage() {
   if (OPS.page === "page-categories") return sitePageCategoriesPage();
   if (media) return assetManagerPage();
   const proposed = OPS.mode === "proposed";
+  if (proposed) {
+    if (OPS.page === "links") return siteBuilderSubpage("Links & Menus", "Navigation Groups", ["Header Menu", "Footer Menu", "Account Links", "Storefront Links"], "Menus are built beside the page and store-context tools instead of buried under Store Personalization.");
+    if (OPS.page === "sidebar-management" || OPS.page === "sidebar-widget") return siteBuilderSubpage(pageTitle(), "Sidebar Configuration", ["Sidebar Management", "Sidebar Widget", "Store Locked Widgets", "Display Rules"], "Sidebar tools stay under Site Builder and are also available from Store Workspace when locked to a store.");
+    if (OPS.page === "themes") return siteBuilderSubpage("Themes", "Theme Configuration", ["Website Theme", "Custom CSS", "Custom JS", "Theme Assets"], "Theme tools move into Site Builder where page, menu, and asset context already lives.");
+    if (OPS.page === "account-pages") return siteBuilderSubpage("Account Pages", "Account Page Controls", ["My Account Links", "Customer Dashboard", "Checkout Help", "Profile Pages"], "Account pages are Site Builder content, with store-focused overrides available in Store Workspace.");
+    if (OPS.page === "product-page-layout") return siteBuilderSubpage("Product Layout Builder", "Product Layout Controls", ["Product Page Layout", "Additional Info Page", "Visual Price Calculator", "Product Showcase"], "Product layout controls remain in Site Builder while product data stays in Product Catalog.");
+    if (OPS.page === "product-showcase") return siteBuilderSubpage("Product Showcase", "Showcase Settings", ["Product Showcase Settings", "Featured Products", "Store-Specific Rules"], "Product Showcase stays with Site Builder because it controls storefront presentation, not catalog data.");
+    if (["site-content", "website-logos", "language-text", "banners", "form-management", "breadcrumbs", "faqs", "testimonials"].includes(OPS.page)) return siteBuilderSubpage(pageTitle(), "Content Management", ["Website Logos", "Storefront Text References", "Banners", "Forms", "Breadcrumbs", "FAQs", "Testimonials"], "Content Management keeps CMS content primitives together and links to Asset Manager / Help Media when media is needed.");
+  }
   return `<section class="page">${pageHead(title, ["Add", "Save", "Preview"])}${proposed ? siteBuilderTabs() : tabStrip(["Homepage & Fixed Content", "Dynamic Pages", "Category"])}<div class="grid two"><div>${panel(pageTitle(), formRows(["Page Category", "Key", "Page Heading", "Sort", "Status"]))}</div><div>${panel(proposed ? "Context Ownership" : "SEO", proposed ? "<p>Global Site Builder owns broad site pages, menus, themes, account pages, content groups, and asset references. Store-level Site Builder locks the selected store.</p>" : formRows(["Page Title", "Meta Description", "Canonical Reference"]))}</div></div>${proposed ? changeNote("Content Management and Store Personalization are reorganized as Site Builder, with the same page primitives available globally and in store context.") : originalNote("Original CMS and Store Personalization split page, theme, menu, sidebar, and asset tools across different areas.")}</section>`;
 }
 
 function sitePageCategoriesPage() {
-  return `<section class="page">${pageHead("Page Categories", ["Add Page Category", "Save", "Reset"])}${tabStrip(["Page Categories", "Assigned Pages", "SEO"])}${filters(["Search", "Status"])}${dataTable(["Sr#", "Page Category", "Internal Key", "Assigned Pages", "Sort", "Status", "Action"], [
+  return `<section class="page">${pageHead("Page Categories", ["Add Page Category", "Save", "Reset"])}${OPS.mode === "proposed" ? siteBuilderTabs() : ""}${tabStrip(["Page Categories", "Assigned Pages", "SEO"])}${filters(["Search", "Status"])}${dataTable(["Sr#", "Page Category", "Internal Key", "Assigned Pages", "Sort", "Status", "Action"], [
     ["1", "About", "about", "About Us, Team", "0", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
     ["2", "Support", "support", "FAQs, Help Center", "1", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
     ["3", "Marketing", "marketing", "Landing Pages", "2", "<span class=\"toggle on\"></span>", "<button>Action</button>"],
   ])}${changeNote("Page Categories belongs in Site Builder, not Product Catalog. Product Categories keeps only Product Category and Category group tabs.")}</section>`;
+}
+
+function siteBuilderSubpage(title, panelTitle, items, note) {
+  return `<section class="page">${pageHead(title, ["Add", "Save", "Preview"])}${siteBuilderTabs()}<div class="grid two"><div>${panel(panelTitle, dataTable(["Item", "Scope", "Status", "Action"], items.map(item => [item, "Global + Store Override", "<span class=\"toggle on\"></span>", "<button>Action</button>"])))}</div><div>${panel("Context Ownership", `<p>${note}</p>${formRows(["Default Scope", "Store Override", "Status"])}`)}</div></div>${changeNote("This proposed subpage is now route-backed in the simulator so the tab and sidebar entry render the same destination.")}</section>`;
 }
 
 function mediaGrid() {
@@ -751,7 +816,7 @@ function templatePage() {
 }
 
 function alertsPage() {
-  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save", "Preview"])}${tabStrip(["Email Templates", "SMS Templates", "Alert Automations"])}${filters(["Search", "Trigger", "Store", "Status"])}${dataTable(["Sr#", "Template / Automation", "Trigger", "Scope", "Status", "Action"], [
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save", "Preview"])}${tabStrip([{ label: "Email Templates", page: "email-templates" }, { label: "SMS Templates", page: "sms-templates" }, { label: "Alert Automations", page: "email-reminders" }])}${filters(["Search", "Trigger", "Store", "Status"])}${dataTable(["Sr#", "Template / Automation", "Trigger", "Scope", "Status", "Action"], [
     ["1", "Order Status Update", "Order Updated", OPS.mode === "proposed" ? "Global or Store Locked" : "Global", "Active", "Action"],
     ["2", "Payment Request Reminder", "Scheduled", OPS.mode === "proposed" ? "Global or Store Locked" : "Global", "Active", "Action"],
   ])}${OPS.mode === "proposed" ? changeNote("Email/SMS and reminders are grouped as Alerts & Notifications, with matching store-context pages that lock the selected store.") : originalNote("Original Email/SMS is nested inside Content Management.")}</section>`;
@@ -764,7 +829,7 @@ function seoPage() {
 
 function configPage() {
   const adminText = OPS.page === "admin-text" ? "<p><b>Target link:</b> https://{siteurl}/admin/admin_constants.php</p>" : "";
-  return `<section class="page">${pageHead(pageTitle(), ["Save", "Reset"])}${tabStrip(["Site Settings", "Languages", "Payments", "Shipping", "Admin Panel Text References"])}<div class="grid two"><div>${panel("Configuration Settings", formRows(["Setting", "Default", "Custom", "Status"]))}</div><div>${panel("Reference", `${adminText}<p>Store Configuration contains setup utilities and site-wide configuration records.</p>`)}</div></div>${routeNote()}</section>`;
+  return `<section class="page">${pageHead(pageTitle(), ["Save", "Reset"])}${tabStrip([{ label: "Site Settings", page: "site-settings" }, { label: "Languages", page: "languages" }, { label: "Payments", page: "payments" }, { label: "Shipping", page: "shipping" }, { label: "Admin Panel Text References", page: "admin-text" }])}<div class="grid two"><div>${panel("Configuration Settings", formRows(["Setting", "Default", "Custom", "Status"]))}</div><div>${panel("Reference", `${adminText}<p>Store Configuration contains setup utilities and site-wide configuration records.</p>`)}</div></div>${routeNote()}</section>`;
 }
 
 function impositionPage() {
@@ -796,7 +861,40 @@ function adminPage() {
 }
 
 function storeWorkspacePage() {
-  return `<section class="page">${pageHead("Store Workspace » Konala", ["Save", "Save & Back", "Back"])}${tabStrip(["View", "Edit", "Customers", "Products", "Markup", "Addresses", "Credit Summary", "Site Builder", "Alerts & Notifications", "Store Fields"])}<div class="grid two"><div>${panel("Store Details", formRows(["Store Name", "User", "URL Type", "Directory Name", "Status"]))}${panel("Store-Level Site Builder", "<p>Pages, Links & Menus, Sidebar Management, Themes, Account Pages, Product Layout Builder, Product Showcase, Asset Manager, Help Media, SEO, FAQs, and Testimonials are locked to this store.</p>")}</div><div>${panel("Settings", formRows(["Markup Type", "Markup Master", "Department", "Quick Checkout", "Allowed Domains"]))}${panel("Store-Level Alerts", "<p>Email Templates, SMS Templates, and Alert Automations use the selected store context and do not require hunting through global menus.</p>")}</div></div>${changeNote("Store context keeps focused tools beside the selected store while broad/global tools stay in their global areas.")}</section>`;
+  return `<section class="page">${pageHead("Store Workspace » Konala", ["Save", "Save & Back", "Back"])}${storeWorkspaceTabs()}${storeWorkspaceBody()}${changeNote("Store context keeps focused tools beside the selected store while broad/global tools stay in their global areas.")}</section>`;
+}
+
+function storeWorkspaceTabs() {
+  return tabStrip([
+    { label: "View", page: "store-workspace" },
+    { label: "Edit", page: "store-workspace-edit" },
+    { label: "Customers", page: "store-workspace-customers" },
+    { label: "Products", page: "store-workspace-products" },
+    { label: "Markup", page: "store-workspace-markup" },
+    { label: "Addresses", page: "store-workspace-addresses" },
+    { label: "Credit Summary", page: "store-workspace-credit" },
+    { label: "Site Builder", page: "store-workspace-builder" },
+    { label: "Alerts & Notifications", page: "store-workspace-alerts" },
+    { label: "Store Fields", page: "store-workspace-fields" },
+  ]);
+}
+
+function storeWorkspaceBody() {
+  const key = OPS.page === "store-workspace" ? "store-workspace-view" : OPS.page;
+  const screens = {
+    "store-workspace-view": ["Store Snapshot", ["Store Name", "Status", "Directory", "Default User"], "Store Details"],
+    "store-workspace-edit": ["Edit Store", ["Store Name", "User", "URL Type", "Directory Name", "Allowed Domains"], "Settings"],
+    "store-workspace-customers": ["Store Customers", ["Store Customers", "Store Admins", "User Groups", "B2B Account Users"], "Customer Access"],
+    "store-workspace-products": ["Store Products", ["Assigned Products", "Product Categories", "Category Groups", "Pricing Scope"], "Product Assignment"],
+    "store-workspace-markup": ["Store Markup", ["Markup Type", "Markup Master", "Flat Markup", "User Group Overrides"], "Markup Assignment"],
+    "store-workspace-addresses": ["Store Addresses", ["Billing Addresses", "Shipping Addresses", "Pickup Locations"], "Address Context"],
+    "store-workspace-credit": ["Credit Summary", ["Store Credit Mode", "Credit Limit", "Open Invoices", "Payment Requests"], "Credit Summary"],
+    "store-workspace-builder": ["Store Site Builder", ["Pages", "Links & Menus", "Sidebar", "Themes", "Account Pages", "Help Media", "SEO"], "Store-Locked Site Builder"],
+    "store-workspace-alerts": ["Store Alerts & Notifications", ["Email Templates", "SMS Templates", "Alert Automations", "Reminder Rules"], "Store-Locked Alerts"],
+    "store-workspace-fields": ["Store Fields", ["Field Rules", "Required Customer Fields", "Checkout Fields"], "Store Field Rules"],
+  };
+  const [title, rows, sideTitle] = screens[key] || screens["store-workspace-view"];
+  return `<div class="grid two"><div>${panel(title, dataTable(["Area", "Scope", "Status", "Action"], rows.map(row => [row, "Konala store", "<span class=\"toggle on\"></span>", "<button>Open</button>"])))}</div><div>${panel(sideTitle, formRows(["Default", "Custom", "Store Override", "Status"]))}${panel("Focused Context", `<p>${title} is locked to the selected store. Global versions of these systems remain in their own broad menu sections.</p>`)}</div></div>`;
 }
 
 function duplicateStorePage() {
@@ -813,15 +911,30 @@ function assetManagerPage() {
 }
 
 function siteBuilderTabs() {
-  return tabStrip(["Pages", "Links & Menus", "Sidebar", "Themes", "Account Pages", "Product Layout Builder", "Content Management"]);
+  return tabStrip([
+    { label: "Pages", page: "cms-pages" },
+    { label: "Page Categories", page: "page-categories" },
+    { label: "Links & Menus", page: "links" },
+    { label: "Sidebar", page: "sidebar-management" },
+    { label: "Themes", page: "themes" },
+    { label: "Account Pages", page: "account-pages" },
+    { label: "Product Layout Builder", page: "product-page-layout" },
+    { label: "Content Management", page: "site-content" },
+  ]);
 }
 
 function fastFilters(items) {
   return `<div class="fast-filters">${items.map(item => `<button>${h(item)}</button>`).join("")}</div>`;
 }
 
-function tabStrip(items) {
-  return `<div class="subtabs">${items.map((item, index) => `<button class="${index === 0 ? "active" : ""}">${h(item)}</button>`).join("")}</div>`;
+function tabStrip(items, activePage = OPS.page) {
+  const normalized = items.map(item => typeof item === "string" ? { label: item } : item);
+  const activeIndex = normalized.findIndex(item => item.page === activePage);
+  return `<div class="subtabs">${normalized.map((item, index) => {
+    const isActive = item.page ? item.page === activePage : (activeIndex === -1 && index === 0);
+    const dataPage = item.page ? ` data-page="${h(item.page)}"` : "";
+    return `<button${dataPage} class="${isActive ? "active" : ""}">${h(item.label)}</button>`;
+  }).join("")}</div>`;
 }
 
 function dataTable(headers, rows) {
