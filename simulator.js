@@ -318,8 +318,8 @@ function topbar() {
     <header class="top">
       <a class="brand" data-page="dashboard">
         <span class="fa-stack fa-md pr-2 d-inline-block" title="Admin">
-          <span class="ops-home-line fa-stack-2x"></span>
-          <i class="fas fa-user-alt fa-stack-1x fa-lg"></i>
+          <i class="fa-regular fa-house fa-stack-2x"></i>
+          <i class="fa-regular fa-circle-user fa-stack-1x"></i>
         </span>
         <strong>Visual Graphx, LLC.</strong>
       </a>
