@@ -695,6 +695,8 @@ function currentOpsAdminBar() {
 
 function currentOpsMainContent() {
   if (state.mode === "revised") return revisedPage();
+  if (state.currentPage === "115-welcome") return currentOpsDashboard();
+  if (state.currentPage === "046-order_listing") return currentOpsListOrdersPage();
   return currentOpsCapturedPage();
 }
 
@@ -815,7 +817,7 @@ async function hydrateCapturedPage() {
 
 function extractCapturedContent(html, slug) {
   const doc = new DOMParser().parseFromString(html, "text/html");
-  doc.querySelectorAll("script, noscript, #navbar, #sidebar, .sidebar, .navbar, .body-container > .navbar").forEach(node => node.remove());
+  doc.querySelectorAll("script, noscript, link[rel='stylesheet'], style, #navbar, #sidebar, .sidebar, .navbar, .body-container > .navbar").forEach(node => node.remove());
   const source = doc.querySelector(".main-content .page-content") ||
     doc.querySelector(".main-content") ||
     doc.querySelector("body");
