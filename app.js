@@ -21,17 +21,21 @@ const currentMenu = [
 
 const revisedMenu = [
   { label: "Dashboard", icon: "▣", view: "dashboard" },
-  { label: "Orders", icon: "□", view: "orders", children: ["Master Orders", "Payment Requests", "Job Board", "Status & Filters"] },
-  { label: "Quotes", icon: "◇", view: "quotes", children: ["Customer Quotes", "Quote Status"] },
-  { label: "Customer Accounts", icon: "○", view: "customers", children: ["Customers", "Newsletter", "Design Proofs"] },
-  { label: "Store Management", icon: "▤", view: "stores", children: ["Stores", "Store Fields", "Store Workspace"] },
-  { label: "Product Catalog", icon: "◇", view: "catalog", children: ["Products", "Product Options", "Categories", "Category Groups", "Page Categories", "Pricing"] },
-  { label: "Templates", icon: "▥", view: "templates", children: ["Product Templates", "PDF Blocks", "Art Layouts", "Template Categories"] },
-  { label: "Content & Help Media", icon: "▧", view: "content", children: ["CMS Pages", "Help Media", "FAQs", "Banners", "Email/SMS"] },
-  { label: "SEO", icon: "◎", view: "seo", children: ["Global SEO", "Product SEO", "Category SEO", "Content SEO", "Redirects"] },
+  { label: "Orders", icon: "□", view: "orders", children: ["Orders", "Add New Order", "Order Status", "Coupons / Discount", "Store Credit"] },
+  { label: "Quotes", icon: "◇", view: "quotes", children: ["Customer Quotes", "Add New Quote", "Quote Status"] },
   { label: "Vendors & Partners", icon: "✥", view: "partners", children: ["Vendor Quotes", "Vendors", "Sales Agents & Partners"] },
-  { label: "Export, API & Webhooks", icon: "⇄", view: "api", children: ["Order Exports", "API & Webhooks"] },
-  { label: "Store Configuration", icon: "⚙", view: "config", children: ["Site Settings", "Languages", "Payments", "Shipping", "Admin Panel Text References"] },
+  { label: "Customer Accounts", icon: "○", view: "customers", children: ["Customers", "B2B Account Users", "Store Admins", "User Groups", "Access & Permissions", "Newsletter", "Design Proofs"] },
+  { label: "Site Builder", icon: "▧", view: "siteBuilder", children: [
+    "Pages", "Links & Menus", "Sidebar Management", "Themes", "Account Pages", "Product Layout Builder", "Product Showcase",
+    { label: "Content Management", children: ["Website Logos", "Storefront Text References", "Banners", "Asset Manager", "Help Media", "Form Management", "Breadcrumbs", "FAQs", "Testimonials"] }
+  ] },
+  { label: "Alerts & Notifications", icon: "!", view: "alerts", children: ["Email Templates", "SMS Templates", "Alert Automations"] },
+  { label: "Store Configuration", icon: "⚙", view: "config", children: ["Site Settings", "Languages", "Currency", "Country / States", "Payments", "Shipping", "Web Optimization", "Manage Site Access", "Manage Web Storage", "External Service Settings", "Admin Panel Text References"] },
+  { label: "Store Management", icon: "▤", view: "stores", children: ["Stores", "B2B Store Theme", "Store Fields", "Duplicate Store Data", "Store Workspace"] },
+  { label: "Product Catalog", icon: "◇", view: "catalog", children: ["Products", "Product Options", "Product Categories", "Category Groups", "Page Categories", "Product Weight/Days/SKU", "Products Tax/VAT Settings", "Pricing", "Manage Stock", "Markup Master", "Product Imposition"] },
+  { label: "Templates", icon: "▥", view: "templates", children: ["Product Templates", "PDF Blocks", "Art Layouts", "Template Categories"] },
+  { label: "SEO", icon: "◎", view: "seo", children: ["Global SEO", "Sitemaps", "Robots", "Redirects", "Image Alt Text"] },
+  { label: "Export & API", icon: "⇄", view: "api", children: ["Order Exports", "API & Webhooks"] },
   { label: "Product Imposition", icon: "▦", view: "imposition", children: ["Sheet Sizes", "Schemas", "Impose Job", "Product Schema Settings"] },
   { label: "Designer Studio", icon: "✎", view: "studio", children: ["Studio Settings", "Language Text", "Images", "Fonts"] },
   { label: "Reports & System Logs", icon: "☰", view: "reports", children: ["Sales Reports", "Production Reports", "Inventory Reports", "System Logs"] },
@@ -102,10 +106,30 @@ const state = {
   opsOpen: {}
 };
 
+const capturedPageCache = {};
+const validSlugs = new Set(capture.pages.map(p => p.slug));
+
+function cleanFilename(hrefOrPath) {
+  if (!hrefOrPath) return "";
+  try {
+    const url = new URL(hrefOrPath);
+    return url.pathname.split("/").pop().split("?")[0].split("#")[0];
+  } catch {
+    const pathOnly = hrefOrPath.split("?")[0].split("#")[0];
+    return pathOnly.split("/").pop();
+  }
+}
+
+const capturedPathToSlug = new Map(
+  capture.pages
+    .filter(p => p.href && p.slug)
+    .map(p => [cleanFilename(p.href), p.slug])
+);
+
 const currentOpsPageMap = {
   "Dashboard": "115-welcome",
-  "List Orders": "046-order_listing",
-  "Payment Request": "047-order_payment_request",
+  "Orders:List Orders:List Orders": "046-order_listing",
+  "Orders:List Orders:Payment Request": "047-order_payment_request",
   "Add New Order": "016-create_order_user",
   "Export/API Orders": "025-export_orders",
   "Order Status": "053-process_status_listing",
@@ -113,14 +137,13 @@ const currentOpsPageMap = {
   "Store Credit": "090-reward_point_listing",
   "Unpaid Orders": "048-order_pending_listing",
   "Archive Orders": "045-order_archive_listing",
-  "Quotes": "065-quote_listing",
-  "Add New Quote": "065-quote_listing",
-  "Vendor Quotes": "066-quote_product_printer_listing",
-  "Vendors": "052-printer_listing",
-  "Sales Agents & Partners": "092-sales_agent_listing",
-  "Customers": "114-user_listing",
-  "Customer Groups": "114-user_listing",
-  "Import Customers": "114-user_listing",
+  "View Quotes": "065-quote_listing",
+  "Printer Quotes": "066-quote_product_printer_listing",
+  "Quote Status": "067-quote_status_listing",
+  "Website Customers": "114-user_listing",
+  "Newsletter Subscribers": "103-subscriber_listing",
+  "Customer Templates": "113-user_designs",
+  "Design Proofs": "019-design_proofs_listing",
   "Stores": "012-corporate_listing",
   "Store Fields": "013-corporate_store_profile_listing",
   "Print Products": "056-product_listing",
@@ -129,15 +152,27 @@ const currentOpsPageMap = {
   "Product Categories": "054-product_category_listing",
   "Product Weight/Days/SKU": "062-product_weight",
   "Products Tax/VAT Settings": "061-product_tax_setting",
+  "Products:Product Price:Product Price": "058-product_price_all",
+  "Products:Product Price:Product Price - Bulk": "060-product_price_bulk_update",
+  "Products:Product Price:Product Option Price - Bulk": "059-product_price_bulk_option_update",
+  "Products:Product Price:Product Price - Excel": "044-modify_products_price",
+  "Products:Product Price:Percentage (+/-)": "005-all_products_price_bulk_update",
   "Product Price": "058-product_price_all",
   "Product Price - Bulk": "060-product_price_bulk_update",
   "Product Option Price - Bulk": "059-product_price_bulk_option_update",
   "Product Price - Excel": "044-modify_products_price",
   "Percentage (+/-)": "005-all_products_price_bulk_update",
-  "Product Templates": "040-master_template_manager",
-  "PDF Blocks": "106-template_manager",
+  "Product Page Layout": "055-product_info_layout_listing",
+  "Language Text References": "037-language_constant_action",
+  "Links - Header / Footer": "042-menulink_listing",
+  "Website Themes": "110-theme_listing",
+  "Product Templates": "106-template_manager",
+  "PDF Block Templates": "107-template_manager-717761",
   "Art Layouts": "018-design_layout_listing",
+  "Product Master Templates": "040-master_template_manager",
+  "Template Properties Master": "108-template_properties_master",
   "Template Categories": "105-template_category_listing",
+  "Duplicate Templates": "106-template_manager",
   "Contents": "007-cms_listing",
   "FAQs": "026-faq_listing",
   "Testimonials": "109-testimonial_listing",
@@ -145,75 +180,149 @@ const currentOpsPageMap = {
   "Email Templates": "023-emailtemplate_listing",
   "SMS Templates": "098-sms_notification_listing",
   "Email Reminders": "024-emailtemplate_reminder_listing",
-  "Help Media": "041-media_gallery_listing",
+  "Media Gallery": "041-media_gallery_listing",
   "Page title, Keyword setting": "093-seo_all",
   "Sitemaps": "097-sitemap_xml",
   "Metatags Settings": "043-metatag",
   "Robots": "091-robot_creation",
   "Manage URL Redirection": "112-url_redirection_listing",
   "Image Alt Text": "094-seo_image_alt_text",
+  "Printer": "052-printer_listing",
+  "Sales Agent": "092-sales_agent_listing",
   "Site Settings": "010-configuration_settings",
   "Languages": "036-language_listing",
   "Currency": "017-currency_listing",
   "Country / States": "014-country_listing",
   "Web Optimization": "038-manage_image_optimization",
   "Manage Site Access": "006-block_ip_action",
+  "Manage Web Storage": "039-manage_web_storage",
+  "Manage Forms": "037-manage_form_listing",
+  "Payments Method": "009-configuration_payment_listing",
+  "Shipping Method": "011-configuration_shipping_listing",
+  "Tax / Vat Settings": "104-tax_listing",
+  "External Service Settings": "008-configuration_external_service_listing",
   "Admin Panel Text References": "002-admin_constants",
-  "Product Imposition": "031-imposition_sheet_size_listing",
+  "Sheet Size Management": "031-imposition_sheet_size_listing",
+  "Schema Manager": "030-imposition_schema_listing",
+  "Impose Job": "028-imposition_impose_job",
+  "Marks Management": "032-imposition_symbol_listing",
+  "Product Schema Settings": "029-imposition_products_schema_setting",
   "Studio Settings": "100-studio_configuration_setting-c54df0",
-  "Studio Events": "064-promotional_listing",
-  "Mask Image": "051-preview_image_settings",
-  "Reports": "084-report_sales_order_summary",
-  "System Logs": "068-report_audit_log",
-  "Admin Users": "004-admin_listing",
-  "Roles": "003-admin_group",
-  "Permissions": "003-admin_group"
+  "Language Text References": "102-studio_language_constant_action",
+  "Color Settings": "099-studio_color_setting_listing",
+  "Custom CSS Setting": "101-studio_css_setting_action",
+  "Predefined Text": "050-predefined_quote_listing",
+  "Real Preview": "063-products_studio_models_listing",
+  "Preview image settings": "051-preview_image_settings",
+  "Images": "020-designer_image_gallery_listing",
+  "Image Categories": "021-designer_imagecategory_listing",
+  "Studio Fonts": "022-designer_studio_font_listing",
+  "Reports:Sales:Order Summary": "084-report_sales_order_summary",
+  "Reports:Sales:Order Detail": "085-report_sales_orderdetails",
+  "Reports:Sales:Order Product Detail": "083-report_sales_order_product_details",
+  "Reports:Sales:Payment Request": "074-report_payment_request",
+  "Reports:Sales:Shipping Summary": "087-report_shipping_summary",
+  "Reports:Sales:Tax Summary": "088-report_tax_summary",
+  "Reports:Sales:Coupon Summary": "069-report_coupon_summary",
+  "Reports:Sales:Quote Summary": "086-report_sales_quote_summary",
+  "Reports:Sales:Order Delivery": "079-report_production_day_summary",
+  "Reports:Product:Product Sales": "081-report_products_sales",
+  "Reports:Product:Template Sales": "089-report_templates_sales",
+  "Reports:Product:Inventory Request": "072-report_inventory_request",
+  "Reports:Product:Inventory Report": "073-report_inventory",
+  "Reports:Product:Stock Summary": "078-report_product_stock_summary",
+  "Reports:Customers:Customer Order Summary": "071-report_customer_order_summary",
+  "Reports:Customers:Payon Account": "075-report_payon_account",
+  "Reports:Customers:Customer Details": "070-report_customer_details",
+  "Reports:Customers:Download Print File": "070-report_customer_details",
+  "Reports:Partners:Sales Agent Commission": "082-report_sales_agent_commission",
+  "Reports:Partners:Printer Order Summary": "077-report_printer_order_summary",
+  "Reports:Partners:Printer/Vendor Commission": "076-report_printer_commission",
+  "Reports:Production Time Spent": "080-report_production_time_spent",
+  "Reports:Log": "068-report_audit_log",
+  "Admin": "004-admin_listing",
+  "Workflow Admin": "116-workflow_admin_listing",
+  "Admin Group / Role": "003-admin_group"
 };
 
 const proposedOpsPageMap = {
   "Dashboard": "dashboard",
-  "Master Orders": "orders",
-  "Payment Requests": "orders",
-  "Job Board": "orders",
-  "Status & Filters": "orders",
+  "Orders": "orders",
+  "Add New Order": "orders",
+  "Order Status": "orders",
+  "Coupons / Discount": "orders",
+  "Store Credit": "orders",
   "Customer Quotes": "quotes",
+  "Add New Quote": "quotes",
   "Quote Status": "quotes",
+  "Vendor Quotes": "partners",
+  "Vendors": "partners",
+  "Sales Agents & Partners": "partners",
   "Customers": "customers",
+  "B2B Account Users": "customers",
+  "Store Admins": "customers",
+  "User Groups": "customers",
+  "Access & Permissions": "customers",
   "Newsletter": "customers",
   "Design Proofs": "customers",
+  "Pages": "siteBuilder",
+  "Links & Menus": "siteBuilder",
+  "Sidebar Management": "siteBuilder",
+  "Themes": "siteBuilder",
+  "Account Pages": "siteBuilder",
+  "Product Layout Builder": "siteBuilder",
+  "Product Showcase": "siteBuilder",
+  "Content Management": "siteBuilder",
+  "Website Logos": "siteBuilder",
+  "Storefront Text References": "siteBuilder",
+  "Banners": "siteBuilder",
+  "Asset Manager": "siteBuilder",
+  "Help Media": "siteBuilder",
+  "Form Management": "siteBuilder",
+  "Breadcrumbs": "siteBuilder",
+  "FAQs": "siteBuilder",
+  "Testimonials": "siteBuilder",
+  "Email Templates": "alerts",
+  "SMS Templates": "alerts",
+  "Alert Automations": "alerts",
+  "Site Settings": "config",
+  "Languages": "config",
+  "Currency": "config",
+  "Country / States": "config",
+  "Payments": "config",
+  "Shipping": "config",
+  "Web Optimization": "config",
+  "Manage Site Access": "config",
+  "Manage Web Storage": "config",
+  "External Service Settings": "config",
+  "Admin Panel Text References": "config",
   "Stores": "stores",
+  "B2B Store Theme": "stores",
   "Store Fields": "stores",
+  "Duplicate Store Data": "stores",
   "Store Workspace": "stores",
   "Products": "catalog",
   "Product Options": "catalog",
-  "Categories": "catalog",
+  "Product Categories": "catalog",
   "Category Groups": "catalog",
   "Page Categories": "catalog",
+  "Product Weight/Days/SKU": "catalog",
+  "Products Tax/VAT Settings": "catalog",
   "Pricing": "catalog",
+  "Manage Stock": "catalog",
+  "Markup Master": "catalog",
+  "Product Imposition": "imposition",
   "Product Templates": "templates",
   "PDF Blocks": "templates",
   "Art Layouts": "templates",
   "Template Categories": "templates",
-  "CMS Pages": "content",
-  "Help Media": "content",
-  "FAQs": "content",
-  "Banners": "content",
-  "Email/SMS": "content",
   "Global SEO": "seo",
-  "Product SEO": "seo",
-  "Category SEO": "seo",
-  "Content SEO": "seo",
+  "Sitemaps": "seo",
+  "Robots": "seo",
   "Redirects": "seo",
-  "Vendor Quotes": "partners",
-  "Vendors": "partners",
-  "Sales Agents & Partners": "partners",
+  "Image Alt Text": "seo",
   "Order Exports": "api",
   "API & Webhooks": "api",
-  "Site Settings": "config",
-  "Languages": "config",
-  "Payments": "config",
-  "Shipping": "config",
-  "Admin Panel Text References": "config",
   "Sheet Sizes": "imposition",
   "Schemas": "imposition",
   "Impose Job": "imposition",
@@ -228,6 +337,87 @@ const proposedOpsPageMap = {
   "System Logs": "reports",
   "Users": "admin",
   "Roles": "admin"
+};
+
+const currentPageMenuHints = {
+  "046-order_listing": "Orders-1",
+  "047-order_payment_request": "Orders-1",
+  "016-create_order_user": "Orders-1",
+  "025-export_orders": "Orders-1",
+  "053-process_status_listing": "Orders-1",
+  "015-coupon_listing": "Orders-1",
+  "090-reward_point_listing": "Orders-1",
+  "048-order_pending_listing": "Orders-1",
+  "045-order_archive_listing": "Orders-1",
+  "065-quote_listing": "Quote Management-2",
+  "066-quote_product_printer_listing": "Quote Management-2",
+  "067-quote_status_listing": "Quote Management-2",
+  "114-user_listing": "Customer-3",
+  "103-subscriber_listing": "Customer-3",
+  "113-user_designs": "Customer-3",
+  "019-design_proofs_listing": "Customer-3",
+  "012-corporate_listing": "Store Management-4",
+  "013-corporate_store_profile_listing": "Store Management-4",
+  "056-product_listing": "Products-5",
+  "049-predefined_product_listing": "Products-5",
+  "057-product_master_option_listing": "Products-5",
+  "054-product_category_listing": "Products-5",
+  "062-product_weight": "Products-5",
+  "061-product_tax_setting": "Products-5",
+  "058-product_price_all": "Products-5",
+  "060-product_price_bulk_update": "Products-5",
+  "059-product_price_bulk_option_update": "Products-5",
+  "044-modify_products_price": "Products-5",
+  "005-all_products_price_bulk_update": "Products-5",
+  "106-template_manager": "Templates-8",
+  "107-template_manager-717761": "Templates-8",
+  "018-design_layout_listing": "Templates-8",
+  "040-master_template_manager": "Templates-8",
+  "108-template_properties_master": "Templates-8",
+  "105-template_category_listing": "Templates-8",
+  "007-cms_listing": "Content Management-9",
+  "026-faq_listing": "Content Management-9",
+  "109-testimonial_listing": "Content Management-9",
+  "111-top_banner_listing": "Content Management-9",
+  "023-emailtemplate_listing": "Content Management-9",
+  "098-sms_notification_listing": "Content Management-9",
+  "024-emailtemplate_reminder_listing": "Content Management-9",
+  "041-media_gallery_listing": "Content Management-9",
+  "055-product_info_layout_listing": "Store Personalization-10",
+  "037-language_constant_action": "Store Personalization-10",
+  "042-menulink_listing": "Store Personalization-10",
+  "095-sidebar_management": "Store Personalization-10",
+  "096-sidebar_widget": "Store Personalization-10",
+  "064-promotional_listing": "Store Personalization-10",
+  "110-theme_listing": "Store Personalization-10",
+  "093-seo_all": "SEO-11",
+  "097-sitemap_xml": "SEO-11",
+  "043-metatag": "SEO-11",
+  "091-robot_creation": "SEO-11",
+  "112-url_redirection_listing": "SEO-11",
+  "094-seo_image_alt_text": "SEO-11",
+  "052-printer_listing": "Business Partners-12",
+  "092-sales_agent_listing": "Business Partners-12",
+  "010-configuration_settings": "Store Configuration-13",
+  "036-language_listing": "Store Configuration-13",
+  "017-currency_listing": "Store Configuration-13",
+  "014-country_listing": "Store Configuration-13",
+  "038-manage_image_optimization": "Store Configuration-13",
+  "006-block_ip_action": "Store Configuration-13",
+  "039-manage_web_storage": "Store Configuration-13",
+  "037-manage_form_listing": "Store Configuration-13",
+  "009-configuration_payment_listing": "Store Configuration-13",
+  "011-configuration_shipping_listing": "Store Configuration-13",
+  "104-tax_listing": "Store Configuration-13",
+  "008-configuration_external_service_listing": "Store Configuration-13",
+  "002-admin_constants": "Store Configuration-13",
+  "031-imposition_sheet_size_listing": "Imposition Beta-14",
+  "030-imposition_schema_listing": "Imposition Beta-14",
+  "028-imposition_impose_job": "Imposition Beta-14",
+  "032-imposition_symbol_listing": "Imposition Beta-14",
+  "029-imposition_products_schema_setting": "Imposition Beta-14",
+  "004-admin_listing": "Admin-17",
+  "003-admin_group": "Admin-17"
 };
 
 function page(slug) {
@@ -336,8 +526,8 @@ function currentOpsShell() {
         </section>
       </div>
       <div class="review-switch" aria-label="review mode">
-        <button data-mode="baseline" class="active">Current OPS</button>
-        <button data-mode="revised">Proposed</button>
+        <button data-mode="baseline" class="${state.mode === "baseline" ? "active" : ""}">Current OPS</button>
+        <button data-mode="revised" class="${state.mode === "revised" ? "active" : ""}">Proposed</button>
       </div>
     </div>
   `;
@@ -346,7 +536,7 @@ function currentOpsShell() {
 function currentOpsTopbar() {
   return `
     <header class="ops-topbar">
-      <div class="ops-brand"><span class="fa-stack fa-md pr-2 d-inline-block ops-home-icon" title="Admin"><i class="far fa-home fa-stack-2x"></i><i class="fas fa-user-alt fa-stack-1x fa-lg"></i></span><span>Visual Graphx, LLC.</span></div>
+      <div class="ops-brand"><span class="fa-stack ops-home-icon" title="Admin"><i class="fa-regular fa-house fa-stack-2x"></i><i class="fa-solid fa-user fa-stack-1x"></i></span><span>Visual Graphx, LLC.</span></div>
       <div class="ops-search"><input value="${esc(state.search)}" data-action="search" placeholder="Search here....."><button><i class="fa-solid fa-magnifying-glass"></i></button><button><i class="fa-regular fa-bookmark"></i></button></div>
       <div class="ops-utilities">
         <div class="ops-cache">Cache <span>YES</span><b><i class="fa-solid fa-bars"></i></b><em><i class="fa-regular fa-trash-can"></i></em></div>
@@ -366,33 +556,48 @@ function currentOpsSidebar() {
       { label: "List Orders", children: ["List Orders", "Payment Request"] },
       "Add New Order", "Export/API Orders", "Order Status", "Coupons / Discount", "Store Credit", "Unpaid Orders", "Archive Orders"
     ] },
-    { label: "Quote Management", icon: "fa-regular fa-file-lines", children: ["Quotes", "Add New Quote", "Vendor Quotes", "Vendors", "Sales Agents & Partners"] },
-    { label: "Customer", icon: "fa-regular fa-user", children: ["Customers", "Customer Groups", "Import Customers"] },
+    { label: "Quote Management", icon: "fa-regular fa-file-lines", children: ["View Quotes", "Printer Quotes", "Quote Status"] },
+    { label: "Customer", icon: "fa-regular fa-user", children: ["Website Customers", "Newsletter Subscribers", "Customer Templates", "Design Proofs"] },
     { label: "Store Management", icon: "fa-solid fa-store", children: ["Stores", "Store Fields"] },
     { label: "Products", icon: "fa-solid fa-tags", children: [
       "Print Products", "Ready To Buy Products", "Product Options", "Product Categories", "Product Weight/Days/SKU", "Products Tax/VAT Settings",
       { label: "Product Price", children: ["Product Price", "Product Price - Bulk", "Product Option Price - Bulk", "Product Price - Excel", "Percentage (+/-)"] }
     ] },
-    { label: "Customer", icon: "fa-regular fa-user", duplicate: true, children: ["Customers", "Customer Groups", "Import Customers"] },
+    { label: "Customer", icon: "fa-regular fa-user", duplicate: true, children: ["Website Customers", "Newsletter Subscribers", "Customer Templates", "Design Proofs"] },
     { label: "Store Management", icon: "fa-solid fa-store", duplicate: true, children: ["Stores", "Store Fields"] },
     { label: "Products", icon: "fa-solid fa-tags", duplicate: true, children: [
       "Print Products", "Ready To Buy Products", "Product Options", "Product Categories", "Product Weight/Days/SKU", "Products Tax/VAT Settings",
       { label: "Product Price", children: ["Product Price", "Product Price - Bulk", "Product Option Price - Bulk", "Product Price - Excel", "Percentage (+/-)"] }
     ] },
-    { label: "Templates", icon: "fa-solid fa-table-columns", children: ["Product Templates", "PDF Blocks", "Art Layouts", "Template Categories"] },
+    { label: "Templates", icon: "fa-solid fa-table-columns", children: [
+      { label: "Product Templates", children: ["Product Templates", "PDF Block Templates", "Art Layouts"] },
+      "Product Master Templates", "Template Properties Master", "Template Categories", "Duplicate Templates"
+    ] },
     { label: "Content Management", icon: "fa-regular fa-file-lines", children: [
-      "Contents", "FAQs", "Testimonials", "Banners", { label: "Email/SMS", children: ["Email Templates", "SMS Templates", "Email Reminders"] }, "Help Media"
+      "Contents", "FAQs", "Testimonials", "Banners", { label: "Email/SMS", children: ["Email Templates", "SMS Templates", "Email Reminders"] }, "Media Gallery"
     ] },
     { label: "Store Personalization", icon: "fa-solid fa-gear", children: [
-      "Product Page Layout", "Language Text References", "Links - Header / Footer", { label: "Sidebar Management", children: ["Sidebar Management", "Sidebar Widget"] }, "Website Themes"
+      "Product Page Layout", "Language Text References", "Links - Header / Footer", { label: "Sidebar Management", children: ["Sidebar Management", "Sidebar Widget"] }, "Promotional Message", "Website Themes"
     ] },
     { label: "SEO", icon: "fa-solid fa-globe", children: ["Page title, Keyword setting", "Sitemaps", "Metatags Settings", "Robots", "Manage URL Redirection", "Image Alt Text"] },
-    { label: "Business Partners", icon: "fa-regular fa-handshake", children: ["Vendors", "Vendor Quotes", "Sales Agents & Partners"] },
-    { label: "Store Configuration", icon: "fa-solid fa-gears", children: ["Site Settings", "Languages", "Currency", "Country / States", "Web Optimization", "Manage Site Access", "Admin Panel Text References"] },
-    { label: "Imposition Beta", icon: "fa-solid fa-table-cells-large", children: ["Product Imposition"] },
-    { label: "Designer Studio", icon: "fa-regular fa-pen-to-square", children: ["Studio Settings", "Studio Events", "Mask Image"] },
-    { label: "Reports", icon: "fa-solid fa-chart-bar", children: ["Reports", "System Logs"] },
-    { label: "Admin", icon: "fa-regular fa-user", children: ["Admin Users", "Roles", "Permissions"] }
+    { label: "Business Partners", icon: "fa-regular fa-handshake", children: ["Printer", "Sales Agent"] },
+    { label: "Store Configuration", icon: "fa-solid fa-gears", children: [
+      { label: "Site Settings", children: ["Site Settings", "Languages", "Currency", "Country / States", "Web Optimization", "Manage Site Access"] },
+      "Manage Web Storage", "Manage Forms", "Payments Method", "Shipping Method", "Tax / Vat Settings", "External Service Settings"
+    ] },
+    { label: "Imposition Beta", icon: "fa-solid fa-table-cells-large", children: ["Sheet Size Management", "Schema Manager", "Impose Job", "Marks Management", "Product Schema Settings"] },
+    { label: "Designer Studio", icon: "fa-regular fa-pen-to-square", children: [
+      { label: "Studio Settings", children: ["Studio Settings", "Language Text References", "Color Settings", "Custom CSS Setting", "Predefined Text", "Real Preview", "Preview image settings"] },
+      "Images", "Image Categories", "Studio Fonts"
+    ] },
+    { label: "Reports", icon: "fa-solid fa-chart-bar", children: [
+      { label: "Sales", children: ["Order Summary", "Order Detail", "Order Product Detail", "Payment Request", "Shipping Summary", "Tax Summary", "Coupon Summary", "Quote Summary", "Order Delivery"] },
+      { label: "Product", children: ["Product Sales", "Template Sales", "Inventory Request", "Inventory Report", "Stock Summary"] },
+      { label: "Customers", children: ["Customer Order Summary", "Payon Account", "Customer Details", "Download Print File"] },
+      { label: "Partners", children: ["Sales Agent Commission", "Printer Order Summary", "Printer/Vendor Commission"] },
+      "Production Time Spent", "Log"
+    ] },
+    { label: "Admin", icon: "fa-regular fa-user", children: ["Admin", "Workflow Admin", "Admin Group / Role"] }
   ];
   const proposedGroups = revisedMenu.map(group => ({
     label: group.label,
@@ -440,7 +645,10 @@ function renderOpsChild(child, parentKey, depth) {
   const hasChildren = !!item.children?.length;
   const isOpen = !!state.opsOpen[childKey];
   const active = state.activeOpsChild === childKey;
-  const target = state.mode === "baseline" ? currentOpsPageMap[item.label] : proposedOpsPageMap[item.label];
+  const hierarchyKey = childKey.replace(/-\d+(?=:|$)/g, "");
+  const target = state.mode === "baseline" 
+    ? (currentOpsPageMap[hierarchyKey] || currentOpsPageMap[item.label]) 
+    : (proposedOpsPageMap[hierarchyKey] || proposedOpsPageMap[item.label]);
   return `
     <div class="ops-subnav-group ${isOpen ? "open" : ""}">
       <button class="ops-subnav-item depth-${depth} ${active ? "active" : ""}" data-ops-child="${esc(childKey)}" ${hasChildren ? `data-ops-menu="${esc(childKey)}"` : ""} ${target ? `data-ops-page="${esc(target)}"` : ""}>
@@ -472,16 +680,167 @@ function currentOpsAdminBar() {
 function currentOpsMainContent() {
   if (state.mode === "revised") return revisedPage();
   if (state.currentPage === "115-welcome") return currentOpsDashboard();
+  if (state.currentPage === "046-order_listing") return currentOpsListOrdersPage();
   return currentOpsCapturedPage();
+}
+
+function currentOpsListOrdersPage() {
+  return `
+    <main class="ops-list-page">
+      <div class="ops-list-title-row">
+        <h1>List Orders</h1>
+        <div class="ops-list-actions">
+          <button class="btn-grey"><i class="fa-solid fa-credit-card"></i> Payment Request</button>
+          <button class="btn-info"><i class="fa-regular fa-eye"></i> Job Board</button>
+          <button class="btn-grey"><i class="fa-solid fa-truck"></i> Order Shipment</button>
+          <button class="btn-primary"><i class="fa-solid fa-ellipsis"></i></button>
+        </div>
+      </div>
+      <div class="ops-order-filters">
+        <div class="ops-filter-left">
+          <input placeholder="Search:">
+          <input placeholder="Company Name">
+          <label>Order Date</label>
+          <select><option>Select</option><option>Today</option><option>This Week</option></select>
+          <input placeholder="From">
+          <span>-</span>
+          <input placeholder="To">
+          <button class="multi">13 Selected <i class="fa-solid fa-angle-down"></i></button>
+          <button class="search"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+          <button class="reset">Reset</button>
+        </div>
+        <div class="ops-filter-right">
+          <button><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By</button>
+          <button><i class="fa-solid fa-sliders"></i> Filter</button>
+        </div>
+      </div>
+      <div class="ops-secondary-filter">
+        <button>Order Product Status <i class="fa-solid fa-angle-down"></i></button>
+      </div>
+      <section class="ops-live-list-table">
+        <table>
+          <thead>
+            <tr>
+              <th class="id-col">ID</th>
+              <th>Order Details</th>
+              <th>Order Date & Amount</th>
+              <th>Order Due Date</th>
+              <th>Notify Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${opsOrders.map((order, index) => `
+              <tr>
+                <td class="order-id-cell"><a>${order.id}</a></td>
+                <td>
+                  <strong>Order Name : ${index === 0 ? "Prime Concrete - Ram ProMaster" : index === 1 ? "Junior League Baseball - Taylor, MI" : index === 2 ? "Intermediate League Baseball - Livermore, CA" : "Senior League Baseball - Easley, SC"}</strong>
+                  <span>${order.customer} ( ${index === 0 ? "The Lab North America Inc." : "Position Sports"} )</span>
+                  <small>[email] ${order.items.split(" ")[0]}</small>
+                </td>
+                <td>
+                  <strong>${index === 0 ? "07-03-2026 08:03" : `07-02-2026 14:${47 - index * 2}`}</strong>
+                  <span>${order.amount}</span>
+                  <em>Unpaid</em>
+                </td>
+                <td>
+                  <p>Order: ${index === 0 ? "07-13-2026" : "07-10-2026"}</p>
+                  <p>Production: ${index === 0 ? "07-08-2026" : "07-07-2026"}</p>
+                </td>
+                <td class="status-text">
+                  <span>New Order</span><span>Quote</span><span>Reprint Order</span><span>Pending</span><span>In Design</span><span>Order Processing</span><span>Order Review</span><span>ERROR</span><span>In Production</span><span>Ready for Fulfillment</span><span>Fulfilled</span><span>Order Completed</span><span>Cancellation Request</span><span>Cancelled</span><span>Refunded</span>
+                </td>
+                <td class="action-cell">
+                  <button>Action <i class="fa-solid fa-caret-down"></i></button>
+                </td>
+              </tr>
+              <tr class="detail-row">
+                <td colspan="6">
+                  <span>Payment: Term payments</span>
+                  <span>Shipping: ${index === 0 ? "Fedex Ground" : "Will Call"}</span>
+                  <span>Admin: ${index === 0 ? "" : "jeet"}</span>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </section>
+    </main>
+  `;
 }
 
 function currentOpsCapturedPage() {
   const current = page(state.currentPage) || page("115-welcome");
   return `
-    <main class="ops-captured-page">
-      <iframe class="ops-captured-frame" title="${esc(pageLabel(current))}" src="${routeLink(current.slug)}" sandbox=""></iframe>
+    <main class="ops-captured-page" data-captured-page="${esc(current.slug)}">
+      <div class="ops-captured-loading">Loading ${esc(pageLabel(current))}...</div>
     </main>
   `;
+}
+
+async function hydrateCapturedPage() {
+  const mount = document.querySelector("[data-captured-page]");
+  if (!mount) return;
+  const slug = mount.dataset.capturedPage;
+  if (!slug || !validSlugs.has(slug)) {
+    mount.innerHTML = `<div class="ops-captured-error">Unable to load captured page. Slug is invalid or not captured.</div>`;
+    return;
+  }
+  try {
+    if (!capturedPageCache[slug]) {
+      const response = await fetch(routeLink(slug));
+      capturedPageCache[slug] = await response.text();
+    }
+    if (!document.querySelector(`[data-captured-page="${CSS.escape(slug)}"]`)) return;
+    mount.innerHTML = extractCapturedContent(capturedPageCache[slug], slug);
+    wireCapturedLinks(mount);
+  } catch (error) {
+    mount.innerHTML = `<div class="ops-captured-error">Unable to load captured page. <a href="${routeLink(slug)}" target="_blank" rel="noreferrer">Open source HTML</a></div>`;
+  }
+}
+
+function extractCapturedContent(html, slug) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  doc.querySelectorAll("script, noscript, link[rel='stylesheet'], style, #navbar, #sidebar, .sidebar, .navbar, .body-container > .navbar").forEach(node => node.remove());
+  const source = doc.querySelector(".main-content .page-content") ||
+    doc.querySelector(".main-content") ||
+    doc.querySelector("body");
+  const clone = source.cloneNode(true);
+  clone.querySelectorAll(".breadcrumb, .breadcrumbs, .pin_icon_data, .ajax_loader, .footer, footer, #footer").forEach(node => node.remove());
+  clone.querySelectorAll("[style]").forEach(node => {
+    const style = node.getAttribute("style") || "";
+    const cleaned = style
+      .replace(/position:\s*fixed;?/gi, "")
+      .replace(/top:\s*[^;]+;?/gi, "")
+      .replace(/left:\s*[^;]+;?/gi, "");
+    if (cleaned.trim()) node.setAttribute("style", cleaned);
+    else node.removeAttribute("style");
+  });
+  const table = firstTable(slug);
+  const hasRenderedRows = clone.querySelectorAll("tbody tr, .ops-order-row, .data-row").length > 0;
+  const fallback = !hasRenderedRows && table.headers.length
+    ? `<section class="ops-model-fallback"><header><span>Captured Table Reference</span></header>${dataTable(table.headers, table.sampleRows || [], { limit: 25 })}</section>`
+    : "";
+  return `<div class="ops-page-source" data-source-slug="${esc(slug)}">${clone.innerHTML}${fallback}</div>`;
+}
+
+function wireCapturedLinks(mount) {
+  mount.querySelectorAll("a[href]").forEach(anchor => {
+    const href = anchor.getAttribute("href") || "";
+    const file = cleanFilename(href);
+    const slug = capturedPathToSlug.get(file);
+    if (!slug) {
+      anchor.setAttribute("target", "_blank");
+      anchor.setAttribute("rel", "noreferrer");
+      return;
+    }
+    anchor.setAttribute("href", "#");
+    anchor.dataset.capturedNav = slug;
+  });
+}
+
+function findCurrentMenuKeyForPage(slug) {
+  return currentPageMenuHints[slug] || null;
 }
 
 function opsIconFor(label) {
@@ -493,10 +852,11 @@ function opsIconFor(label) {
     "Store Management": "fa-solid fa-store",
     "Product Catalog": "fa-solid fa-tags",
     "Templates": "fa-solid fa-table-columns",
-    "Content & Help Media": "fa-regular fa-file-lines",
+    "Site Builder": "fa-regular fa-file-lines",
+    "Alerts & Notifications": "fa-regular fa-bell",
     "SEO": "fa-solid fa-globe",
     "Vendors & Partners": "fa-regular fa-handshake",
-    "Export, API & Webhooks": "fa-solid fa-right-left",
+    "Export & API": "fa-solid fa-right-left",
     "Store Configuration": "fa-solid fa-gears",
     "Product Imposition": "fa-solid fa-table-cells-large",
     "Designer Studio": "fa-regular fa-pen-to-square",
@@ -918,7 +1278,8 @@ function revisedPage() {
   if (view === "orders") return revisedOrders();
   if (view === "catalog") return revisedCatalog();
   if (view === "stores") return revisedStores();
-  if (view === "content") return revisedContent();
+  if (view === "siteBuilder") return revisedSiteBuilder();
+  if (view === "alerts") return revisedAlerts();
   if (view === "api") return revisedApi();
   if (view === "partners") return revisedPartners();
   if (view === "quotes") return revisedQuotes();
@@ -952,9 +1313,13 @@ function revisedDashboard() {
         ["Print Products + Ready To Buy Products", "Product Catalog", "One list with product type tags and directed Add buttons"],
         ["List Orders + Payment Request + Unpaid + Archive", "Orders", "One master list with fast filters instead of fragmented order context"],
         ["Business Partners + Quote Management vendor screens", "Vendors & Partners", "Vendor Quotes, Vendors, and Sales Agents & Partners belong together"],
-        ["Media Gallery + hidden CMS image manager", "Content & Help Media", "Rename and improve asset management with folders, external links, and tagging"],
-        ["Export/API Orders", "Export, API & Webhooks", "Global system settings should not live under Orders only"],
-        ["Imposition Beta", "Product Imposition", "Use current product terminology"]
+        ["Content Management + Store Personalization", "Site Builder", "Pages, menus, themes, layouts, account pages, and content primitives live together"],
+        ["Email/SMS + Email Reminders", "Alerts & Notifications", "Templates and alert automation become a focused notification area"],
+        ["Media Gallery + hidden CMS image manager", "Site Builder / Asset Manager", "Rename and improve asset management with folders, external links, and tagging"],
+        ["Export/API Orders", "Export & API", "Global system settings should not live under Orders only"],
+        ["Imposition Beta", "Product Imposition", "Use current product terminology"],
+        ["Reports", "Reports & System Logs", "Expose reports and logs without burying system evidence"],
+        ["Admin", "Admin Users", "Clarify that this is user/role administration"]
       ]))}
     </main>
   `;
@@ -998,7 +1363,7 @@ function revisedCatalog() {
   return `
     <main class="page">
       ${pageHeader("Product Catalog", [{label:"Add Print Product", kind:"green"}, {label:"Add Ready To Buy", kind:"green"}, {label:"Add Product Option", kind:"gray"}, {label:"Add Category", kind:"purple"}])}
-      ${tabs(["Products", "Product Options", "Categories", "Category Groups", "Page Categories", "Pricing"], "Products")}
+      ${tabs(["Products", "Product Options", "Product Categories", "Category Groups", "Page Categories", "Pricing", "Manage Stock", "Markup Master", "Product Imposition"], "Products")}
       <div class="info">Combines split product types into one list, adds type tags, and keeps directed add actions so users land on the proper existing workflow.</div>
       ${filters([{label:"Search products"}, {label:"Product Type", type:"select"}, {label:"Category", type:"select"}, {label:"Store Availability", type:"select"}, {label:"Status", type:"select"}])}
       ${panel("Unified Product Catalog", dataTable(["Type", "ID", "Name / Details", "Configuration", "Context", "Status"], rows, {limit: 14}))}
@@ -1038,15 +1403,17 @@ function revisedStores() {
   return `
     <main class="page">
       ${pageHeader("Store Management", [{label:"Add Store", kind:"green"}, {label:"Duplicate Store Data", kind:"gray"}, {label:"Markup Master", kind:"purple"}])}
-      ${tabs(["Overview", "Edit", "Customers", "Products", "Markup", "Addresses", "Credit Summary", "Configuration", "Store Fields", "Help Media", "SEO"], state.activeStoreTab, "store-tab")}
-      <div class="info">Markup Master remains globally accessible while store-specific Markup assignment is locked into Store context. CMS/help media and SEO are also exposed where the user is already working.</div>
+      ${tabs(["Overview", "Edit", "Customers", "Products", "Markup", "Addresses", "Credit Summary", "Configuration", "Store Fields", "Site Builder", "Alerts & Notifications", "SEO"], state.activeStoreTab, "store-tab")}
+      <div class="info">Stores owns the focused B2B store context. Duplicate Store Data stays available from the list, and store-scoped Site Builder, Alerts, and SEO are exposed inside the selected store so users do not hunt through global menus.</div>
       <div class="split">
         <div>${panel("Stores", dataTable(table.headers, table.sampleRows, {limit: 8}))}</div>
         <aside class="drawer">
           <h3>Store Context Workspace</h3>
           <div class="mini-list">
+            <div><strong>B2B Store Theme</strong><br>Theme controls are B2B-only and belong under Store Management, not global storefront content.</div>
             <div><strong>Markup</strong><br>Assign a markup template to this store. Markup Master opens the global template list/builder.</div>
-            <div><strong>Help Media</strong><br>Store-scoped help assets, folders, external media links, and tagging.</div>
+            <div><strong>Site Builder</strong><br>Store-locked Pages, Links & Menus, Sidebar Management, Themes, Account Pages, Product Layout Builder, Product Showcase, Content Management, Asset Manager, Help Media, and SEO.</div>
+            <div><strong>Alerts & Notifications</strong><br>Store-locked Email Templates, SMS Templates, and Alert Automations.</div>
             <div><strong>SEO</strong><br>Store-level SEO plus links into product/category/content SEO.</div>
             <div><strong>Future addendum</strong><br>Additional B2B store pages can be promoted in a later request.</div>
           </div>
@@ -1056,18 +1423,48 @@ function revisedStores() {
   `;
 }
 
-function revisedContent() {
+function revisedSiteBuilder() {
   const cms = firstTable("007-cms_listing");
   const media = firstTable("041-media_gallery_listing");
   return `
     <main class="page">
-      ${pageHeader("Content & Help Media", [{label:"Add CMS Page", kind:"green"}, {label:"Add Media", kind:"green"}, {label:"New Folder", kind:"gray"}])}
-      ${tabs(["CMS Pages", "Help Media", "FAQs", "Banners", "Email/SMS"], "Help Media")}
-      <div class="info">Media Gallery is renamed Help Media and expanded into asset management: folders, external audio/video links, image tagging, and contextual attachment to stores, products, categories, and content pages.</div>
+      ${pageHeader("Site Builder", [{label:"Add Page", kind:"green"}, {label:"New Asset Folder", kind:"gray"}, {label:"Preview Storefront", kind:"purple"}])}
+      ${tabs(["Pages", "Links & Menus", "Sidebar Management", "Themes", "Account Pages", "Product Layout Builder", "Product Showcase", "Content Management"], "Pages")}
+      <div class="info">Site Builder combines the current Content Management and Store Personalization primitives. The same controls also appear inside Store context when they must be locked to a B2B store.</div>
+      <div class="workflow-grid">
+        ${[
+          ["Pages", "Homepage & Fixed Content, Dynamic Pages, and Page Categories with focused SEO."],
+          ["Links & Menus", "Renamed Links - Header / Footer so menu ownership is clear."],
+          ["Sidebar Management", "Current Sidebar Management and Sidebar Widget grouped together."],
+          ["Themes", "Current Website Themes, plus B2B Store Theme when in store context."],
+          ["Account Pages", "Current Pages Personalization focused on B2B account pages. B2C login, registration, and reset password are included now; richer account pages are future addendum."],
+          ["Asset Manager", "Hidden CMS Browse Server/Image Manager brought forward with folders, tags, metadata, and external audio/video/hosted links."],
+          ["Help Media", "Renamed Media Gallery for reusable help/reference assets."],
+          ["Content Management", "Website Logos, Storefront Text References, Banners, Form Management, Breadcrumbs, FAQs, and Testimonials."]
+        ].map(([title, body]) => `<div class="flow-card"><h3>${esc(title)}</h3><p>${esc(body)}</p></div>`).join("")}
+      </div>
       <div class="split">
         ${panel("CMS Pages", dataTable(cms.headers, cms.sampleRows, {limit: 7}))}
-        ${panel("Help Media Assets", dataTable(media.headers, media.sampleRows, {limit: 7}))}
+        ${panel("Asset Manager / Help Media", dataTable(media.headers, media.sampleRows, {limit: 7}))}
       </div>
+    </main>
+  `;
+}
+
+function revisedAlerts() {
+  return `
+    <main class="page">
+      ${pageHeader("Alerts & Notifications", [{label:"Add Template", kind:"green"}, {label:"Add Automation", kind:"gray"}])}
+      ${tabs(["Email Templates", "SMS Templates", "Alert Automations"], "Email Templates")}
+      <div class="info">Email Templates, SMS Templates, and Email Reminders are repositioned into one notification area. Store-scoped versions appear inside Store Management when the selected store owns the message context.</div>
+      <div class="workflow-grid">
+        ${[
+          ["Email Templates", "Current system email template management."],
+          ["SMS Templates", "Current SMS template management."],
+          ["Alert Automations", "Email Reminders renamed in human terms and prepared for future automation logic."]
+        ].map(([title, body]) => `<div class="flow-card"><h3>${esc(title)}</h3><p>${esc(body)}</p></div>`).join("")}
+      </div>
+      ${panel("Template Reference", dataTable(firstTable("023-emailtemplate_listing").headers, firstTable("023-emailtemplate_listing").sampleRows, {limit: 8}))}
     </main>
   `;
 }
@@ -1075,7 +1472,7 @@ function revisedContent() {
 function revisedApi() {
   return `
     <main class="page">
-      ${pageHeader("Export, API & Webhooks", [{label:"Save", kind:"green"}, {label:"Test Connection", kind:"gray"}])}
+      ${pageHeader("Export & API", [{label:"Save", kind:"green"}, {label:"Test Connection", kind:"gray"}])}
       ${tabs(["Order Exports", "API & Webhooks"], state.activeApiTab, "api-tab")}
       <div class="info">This area is global today. The spec should ask the team to evaluate context-aware API and webhook behavior for B2C, B2B, and Franchise/Reseller stores.</div>
       <div class="split">
@@ -1109,11 +1506,11 @@ function revisedQuotes() {
 }
 
 function revisedConfig() {
-  return genericRevised("Store Configuration", ["Site Settings", "Languages", "Payments", "Shipping", "Admin Panel Text References"], ["010-configuration_settings", "036-language_listing", "009-configuration_payment_listing", "011-configuration_shipping_listing", "002-admin_constants"]);
+  return genericRevised("Store Configuration", ["Site Settings", "Languages", "Currency", "Country / States", "Payments", "Shipping", "Web Optimization", "Manage Site Access", "Manage Web Storage", "External Service Settings", "Admin Panel Text References"], ["010-configuration_settings", "036-language_listing", "017-currency_listing", "014-country_listing", "009-configuration_payment_listing", "011-configuration_shipping_listing", "038-manage_image_optimization", "006-block_ip_action", "039-manage_web_storage", "008-configuration_external_service_listing", "002-admin_constants"]);
 }
 
 function revisedSeo() {
-  return genericRevised("SEO", ["Global SEO", "Product SEO", "Category SEO", "Content SEO", "Redirects"], ["091-seo_all", "056-product_listing", "054-product_category_listing", "007-cms_listing", "112-url_redirection_listing"], "Each content page/category and product/category owns SEO in its own context, while global SEO remains available for broad system management.");
+  return genericRevised("SEO", ["Global SEO", "Sitemaps", "Robots", "Redirects", "Image Alt Text"], ["093-seo_all", "097-sitemap_xml", "091-robot_creation", "112-url_redirection_listing", "094-seo_image_alt_text"], "Central SEO keeps global defaults, sitemaps, robots, redirects, and technical controls. Focused SEO fields move into pages, page categories, products, product categories, category groups, and assets.");
 }
 
 function genericRevised(title, tabLabels, slugs, note = "") {
@@ -1138,6 +1535,7 @@ function render() {
   const content = state.mode === "baseline" ? "" : revisedPage();
   document.getElementById("app").innerHTML = appShell(content);
   drawOpsJqPlotChart();
+  hydrateCapturedPage();
 }
 
 window.__opsSimulator = {
@@ -1158,7 +1556,25 @@ document.addEventListener("click", event => {
       if (state.mode === "baseline") state.currentPage = "115-welcome";
       else state.currentView = "dashboard";
     } else if (opsMenu.includes(":")) {
-      state.opsOpen[opsMenu] = !state.opsOpen[opsMenu];
+      const menuButton = event.target.closest("[data-ops-menu]");
+      const target = menuButton?.dataset.opsPage;
+      state.activeOpsChild = menuButton?.dataset.opsChild || state.activeOpsChild;
+      
+      const parts = opsMenu.split(":");
+      const parent = parts[0];
+      const shouldOpen = !state.opsOpen[opsMenu];
+      
+      // Close all submenus under the same parent menu
+      for (const k in state.opsOpen) {
+        if (k.startsWith(parent + ":")) {
+          delete state.opsOpen[k];
+        }
+      }
+      if (shouldOpen) {
+        state.opsOpen[opsMenu] = true;
+      }
+      if (target && state.mode === "baseline") state.currentPage = target;
+      if (target && state.mode === "revised") state.currentView = target;
     } else {
       const shouldOpen = !state.opsOpen[opsMenu];
       state.opsOpen = shouldOpen ? { [opsMenu]: true } : {};
@@ -1187,6 +1603,17 @@ document.addEventListener("click", event => {
     state.opsOpen = {};
     if (mode === "baseline") state.currentPage = "115-welcome";
     if (mode === "revised") state.currentView = "dashboard";
+    render();
+    return;
+  }
+  const capturedNav = event.target.closest("[data-captured-nav]")?.dataset.capturedNav;
+  if (capturedNav) {
+    event.preventDefault();
+    state.mode = "baseline";
+    state.currentPage = capturedNav;
+    state.activeOpsMenu = findCurrentMenuKeyForPage(capturedNav) || state.activeOpsMenu;
+    state.activeOpsChild = "";
+    state.opsOpen = state.activeOpsMenu && state.activeOpsMenu !== "Dashboard" ? { [state.activeOpsMenu]: true } : {};
     render();
     return;
   }
