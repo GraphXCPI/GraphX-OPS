@@ -1212,10 +1212,6 @@ function proposedProductCatalogPage() {
       <a href="#" class="btn btn-secondary btn-sm rounded"><i class="fa fa-boxes pr-1"></i> Manage Stock</a>
       <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-search pr-1"></i> Publish</a>`;
   }
-  const pageHeader = heading?.closest(".page-header, .page-head");
-  if (pageHeader) {
-    pageHeader.insertAdjacentHTML("afterend", productCatalogTabs());
-  }
   const filterTabs = proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"]);
   const table = root.querySelector("table");
   const tableBlock = table?.closest(".table-responsive, .dataTables_wrapper, .card, .row") || table;
@@ -1250,12 +1246,12 @@ function proposedProductCatalogFallbackPage() {
     `<span class="toggle ${p[5] === "On" ? "on" : "off"}"></span>`,
     actionButton("Action"),
   ]);
-  return `<section class="page">${pageHead("Product Catalog", actions)}${productCatalogTabs()}${proposalMarkup("product-catalog")}${proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"])}${filters(["Search", "Product Category", "Select Store", "Price Category"])}${proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.")}${dataTable(headers, rows, "ops-products-table")}</section>`;
+  return `<section class="page">${pageHead("Product Catalog", actions)}${proposalMarkup("product-catalog")}${proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"])}${filters(["Search", "Product Category", "Select Store", "Price Category"])}${proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.")}${dataTable(headers, rows, "ops-products-table")}</section>`;
 }
 
 function productOptionsPage() {
   const proposed = OPS.mode === "proposed";
-  return `<section class="page">${pageHead(pageTitle(), ["Add Product Option", "Import", "Export"])}${proposed ? productCatalogTabs() : ""}${proposed ? proposalMarkup("product-catalog") : ""}${filters(["Search", "Option Type", "Status"])}${dataTable(["Sr#", "Product Option", "Display Type", "Values", "Required", "Status", "Action"], [
+  return `<section class="page">${pageHead(pageTitle(), ["Add Product Option", "Import", "Export"])}${proposed ? proposalMarkup("product-catalog") : ""}${filters(["Search", "Option Type", "Status"])}${dataTable(["Sr#", "Product Option", "Display Type", "Values", "Required", "Status", "Action"], [
     ["1", "Size", "Dropdown", "Small, Medium, Large, Custom Size", "Yes", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["2", "Material", "Dropdown", "PolyBoard, Vinyl, Coroplast", "Yes", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["3", "Finishing", "Checkbox", "Grommets, Lamination, Rounded Corners", "No", "<span class=\"toggle on\"></span>", actionButton("Action")],
@@ -1279,7 +1275,7 @@ function productPricingPage() {
     { label: "Excel Import", page: "product-price-excel" },
     { label: "Percentage (+/-)", page: "product-price-percent" },
   ]);
-  return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${proposed ? productCatalogTabs() : ""}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
+  return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
     ["1", "NOW HIRING DECAL", "Fixed Quantity & Price", "Fixed", "$25.00", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["2", "T-Shirt OPS", "Range Based With Multiplication", "Range", "$12.00", "<span class=\"toggle off\"></span>", actionButton("Action")],
     ["3", "DTF Prints", "Size based Price", "Dynamic Size", "$0.00", "<span class=\"toggle off\"></span>", actionButton("Action")],
@@ -1382,7 +1378,6 @@ function productCategoriesPage() {
     ? `<ul class="pagination"><li class="paginate_button page-item previous disabled"><a class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a class="page-link">1</a></li><li class="paginate_button page-item next disabled"><a class="page-link"><i class="fa fa-angle-right"></i></a></li></ul>`
     : `<ul class="pagination"><li class="paginate_button page-item previous disabled"><a class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a class="page-link">1</a></li><li class="paginate_button page-item"><a class="page-link">2</a></li><li class="paginate_button page-item"><a class="page-link">3</a></li><li class="paginate_button page-item"><a class="page-link">4</a></li><li class="paginate_button page-item"><a class="page-link">5</a></li><li class="paginate_button page-item disabled"><a class="page-link">...</a></li><li class="paginate_button page-item"><a class="page-link">10</a></li><li class="paginate_button page-item next"><a class="page-link"><i class="fa fa-angle-right"></i></a></li></ul>`;
   return `<section class="page ops-product-category-page">
-    ${OPS.mode === "proposed" ? productCatalogTabs() : ""}
     <div class="row" id="product_category_listing_content">
       <div class="col-12">
         <div class="page-header">
@@ -1590,7 +1585,6 @@ function stockSettingsPage() {
       <h2 class="sim-section-title">${h(active)} Summary</h2>
       <div class="ops-static-datatable sim-weight-table"><table class="table table-striped table-bordered table-hover dataTable no-footer"><thead><tr><th>Sr#</th><th>Product Details</th><th>Setting Type</th><th>${h(detailHeader)}</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><b>${h(r[1])}</b></td><td>${h(r[2])}</td><td>${detailValue(r)}</td><td><a class="sim-edit-action"><i class="fa fa-pencil"></i></a></td></tr>`).join("")}</tbody></table></div>`;
   return `<section class="page ops-stock-settings-page">
-    ${proposed ? productCatalogTabs() : ""}
     <div class="row">
       <div class="col-12">
         <div class="tabs-above ops-context-tabs">
@@ -2027,7 +2021,7 @@ function duplicateStorePage() {
 }
 
 function markupMasterPage() {
-  return `<section class="page">${pageHead("Markup Master", ["Save", "Reset"])}${OPS.mode === "proposed" ? productCatalogTabs() : ""}${proposalMarkup("markup-master")}<div class="grid two"><div>${panel("Template Builder", formRows(["Markup Title", "Markup Type", "Fixed Markup", "Applied On", "Status"]))}</div><div>${panel("Assignment Context", "<p>Markup Master is the global markup template list and builder under Product Catalog/Pricing. Store-level markup assignment remains in Edit Store because it assigns one of these templates to a store.</p>")}</div></div>${changeNote("Markup Master moves out of Store Management because markup templates can apply beyond a single store, including users and user groups.")}</section>`;
+  return `<section class="page">${pageHead("Markup Master", ["Save", "Reset"])}${proposalMarkup("markup-master")}<div class="grid two"><div>${panel("Template Builder", formRows(["Markup Title", "Markup Type", "Fixed Markup", "Applied On", "Status"]))}</div><div>${panel("Assignment Context", "<p>Markup Master is the global markup template list and builder under Product Catalog/Pricing. Store-level markup assignment remains in Edit Store because it assigns one of these templates to a store.</p>")}</div></div>${changeNote("Markup Master moves out of Store Management because markup templates can apply beyond a single store, including users and user groups.")}</section>`;
 }
 
 function assetManagerPage() {
@@ -2066,35 +2060,6 @@ function tabStrip(items, activePage = OPS.page) {
     const dataPage = item.page ? ` data-page="${h(item.page)}" href="#${OPS.mode}/${h(item.page)}"` : ` href="#"`;
     return `<li class="nav-item"><a${dataPage} class="nav-link ${isActive ? "active" : ""}">${h(item.label)}</a></li>`;
   }).join("")}</ul>`;
-}
-
-function productCatalogTabs() {
-  if (OPS.mode !== "proposed") return "";
-  const tabs = [
-    ["Products", "product-catalog", "fa fa-tags"],
-    ["Product Options", "product-options", "fa fa-list-ul"],
-    ["Product Categories", "product-categories", "fa fa-folder-open"],
-    ["Stock & Settings", "stock-settings", "fa fa-barcode"],
-    ["Pricing", "product-price", "fa fa-dollar-sign"],
-    ["Markup Master", "markup-master", "fa fa-percent"],
-  ];
-  const pricePages = new Set(["product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-modify", "product-price-percent"]);
-  const stockPages = new Set(["stock-settings", "product-weight", "production-days", "products-sku", "product-tax", "manage-stock"]);
-  const categoryPages = new Set(["product-categories", "category-groups", "product-category-edit", "category-group-edit"]);
-  const activePage = pricePages.has(OPS.page)
-    ? "product-price"
-    : stockPages.has(OPS.page)
-      ? "stock-settings"
-      : categoryPages.has(OPS.page)
-        ? "product-categories"
-        : OPS.page;
-  return `<div class="row">
-    <div class="col-12">
-      <div class="tabs-above ops-context-tabs ops-product-tabs">
-        <ul class="nav nav-tabs">${tabs.map(([label, page, iconClass]) => `<li class="nav-item"><a href="#${OPS.mode}/${page}" data-page="${page}" class="nav-link ${activePage === page ? "active" : ""}"><i class="${iconClass}"></i><br>${h(label)}</a></li>`).join("")}</ul>
-      </div>
-    </div>
-  </div>`;
 }
 
 function dataTable(headers, rows, id = "") {
