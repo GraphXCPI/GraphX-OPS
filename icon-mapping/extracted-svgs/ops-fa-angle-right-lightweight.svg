@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="100" height="100" fill="currentColor">
+  <g transform="scale(1, -1) translate(0, -448)">
+    <path d="M235 203C242 197 242 187 235 181L75 21C69 14 59 14 53 21C47 27 47 37 53 43L201 192L53 341C47 347 47 357 53 363C59 369 69 369 75 363L235 203Z" />
+  </g>
+</svg>

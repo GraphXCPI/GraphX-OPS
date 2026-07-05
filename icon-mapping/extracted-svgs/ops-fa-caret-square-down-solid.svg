@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="100" height="100" fill="currentColor">
+  <g transform="scale(1, -1) translate(0, -448)">
+    <path d="M384 -32C419 -32 448 -3 448 32V352C448 387 419 416 384 416H64C29 416 0 387 0 352V32C0 -3 29 -32 64 -32H384ZM224 96C217 96 211 99 206 104L102 216C96 223 94 233 98 242C102 250 111 256 120 256H328C338 256 346 250 350 242C354 233 352 223 346 216L242 104C237 99 231 96 224 96Z" />
+  </g>
+</svg>

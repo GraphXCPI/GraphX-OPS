@@ -1,0 +1,233 @@
+
+
+#order_data .profile-info-value, #cust_data .profile-info-value, #quote_data .profile-info-value {
+	line-height: 18px;
+	border-right:1px solid #dcebf7;
+	border-bottom:1px solid #dcebf7;
+	height:50px;
+}
+
+#order_data .profile-user-info, #cust_data .profile-user-info, #quote_data .profile-user-info {
+	height:250px;
+}
+
+#order_data .profile-user-info-striped, #cust_data .profile-user-info-striped,  #quote_data .profile-user-info-striped ,  #job_board .profile-user-info-striped {
+	border:none;
+}
+
+#sales_stat .profile-user-info-striped {
+	width:50%;
+	float:left;
+	height:270px;
+}
+
+#sales_stat .profile-info-name {
+	width:45%;
+}
+
+#order_data .profile-info-name {
+	text-align:center;
+}
+
+#job_board .badge.label-white {
+	background-color: #fff;
+}
+
+#cust_data .profile-info-name, #quote_data .profile-info-name {
+	width:auto;
+	text-align:right;
+	line-height: 18px;
+}
+
+#job_board .badge.label-white {
+	border-width: 1px 1px 1px 1px;  
+}
+#job_board .order-status {
+	height: 12px;
+}
+
+/* Start Store statitics css */
+
+#store_stat .infobox {
+	width:192px;
+}
+.infobox-container {
+	text-align:left;
+}
+/* End Store statitics css */
+
+
+/* Extra CSS  */
+
+.itemdiv.dialogdiv::before {
+	border-width:0px !important;
+	width:0px !important;
+}
+
+.itemdiv > .body {
+	margin-left: 12px;
+}
+
+.itemdiv > .body > .text {
+	color: #555;
+    font-size: 0.9em;
+    line-height: 18px;
+}
+
+.widget-box-overlay {
+    background-color: rgba(255, 255, 255, 0.3);
+    bottom: -1px;
+    left: -1px;
+    min-height: 100%;
+    position: absolute;
+    right: -1px;
+    text-align: center;
+    top: -1px;
+    z-index: 999;
+}
+
+
+#recent-box .widget-box-overlay i, #sales_stat .widget-box-overlay i , #job_board .widget-box-overlay i  {
+	color:orange !important;
+	font-size:5em;
+}
+
+.border-dotted {
+	border-bottom: dotted 1px #585858;
+}
+.scroll-content {
+	overflow-y: auto;
+}
+.widget-main.no-padding .tab-pane .table {
+	border-width: 1px;
+}
+.widget-main.no-padding .tab-pane .table {
+	border-top-width: 0px;
+}
+.tab-pane > .table-bordered > tbody > tr:first-child td {
+	border-top-width: 0;
+}
+.transparent > .widget-body .widget-main .table-bordered > tbody > tr:last-child > td, .widget-main.no-padding .table-bordered > tbody > tr:last-child > td {
+	border-bottom-width: 1px !important;
+}
+	
+.order-status span {
+	height: 6px;
+}
+.widget-body td {
+	line-height: 1.4 !important;
+}
+.tab-content {
+	border: 0px;
+}
+
+/* #quote_data .quote-content {
+	padding : 0px 1px 0px 4px;
+} */
+.widget-header h3{
+	color: #337ab7 !important;
+}
+#sales_stat td {
+	line-height: 4.3 !important;
+}
+
+.search select.input-sm, .search select.input-medium, .search input.input-sm, .search input.input-small, .search input.input-medium{
+	height:34px;
+	font-size:100%;
+	}
+.listing {
+	color: #999999;
+	font-size: 13px;
+	position: relative;
+	padding-left: 15px;
+	margin-bottom: 10px;
+}
+.listing .comment {
+	font-family: 'open_sanssemibold';
+}
+.listing .listing-updates:before {
+	content: "\f054";
+	display: inline-block;
+	font: normal normal normal 12px/1 FontAwesome;
+	color: #999999;
+	position: absolute;
+	left: 0;
+	color: #848484;
+	top: 2px;
+}
+.infobox > .infobox-data{
+	font-size:12px;	
+}
+/* End Extra CSS  */
+
+
+/*................End Dashboard Page css..................*/
+@media only screen and (min-width: 1191px) and (max-width: 1800px){
+	#sales_stat .profile-user-info-striped .profile-info-name {
+		float: none;
+		width: auto !important;
+		text-align: left;
+		padding: 6px 4px 6px 10px;
+		display: block;
+		height:auto !important;
+	}
+	#sales_stat .profile-user-info-striped .profile-info-value{
+		display:block !important;
+		width: auto !important;
+	}
+	#recent-box .card-header .tabs-above {order: 3;}
+	#recent-box #order_data .profile-info-value .table-customer-name ~ small {white-space: nowrap;}
+}
+
+.dashboard-recent-search {
+    border-color: #dcebf7;
+    border-width: 1px;
+    border-style: solid;
+    padding:6px;
+}
+
+@media only screen and (max-width: 480px) {
+#cust_data .profile-info-name, #quote_data .profile-info-name, #sales_stat .profile-info-name{
+	width: auto;		
+    height:auto; 	
+}	
+}
+.jqplot-xaxis-tick {
+	text-overflow: ellipsis;
+	max-width: 60px;
+	overflow: hidden;
+}
+.jqplot-highlighter-tooltip {
+	background-color: #333333;
+    border-radius: 0;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 9px;
+    text-shadow: 1px 1px 0 rgba(42, 45, 50, 0.5);
+    border: none;
+    z-index: 10;
+}
+.jqplot-series-0 {
+    background: none repeat scroll 0 0 #00749f;
+    color: white;
+    opacity: 1;
+    padding: 1px 3px;
+}
+.jqplot-series-1 {
+    background: none repeat scroll 0 0 #73c774;
+    color: black;
+    opacity: 1;
+    padding: 1px 3px;
+}
+.DragableDiv .card-header{
+	min-height: 47px;
+}
+span.table-customer-name {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 150px;
+    text-overflow: ellipsis;
+    display: block;
+}
+.dashboard-mockup .dropdown-menu {display: block;visibility: hidden;opacity:0;transition:.5s ease all;}
+.dashboard-mockup .dropdown-menu.show {display: block;visibility: visible;opacity:1; transition:.5s ease all; will-change: auto !important;}
