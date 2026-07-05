@@ -667,6 +667,56 @@ tr:nth-child(even) td { background: #fbfdff; }
   border-color: #d8e3ed;
   background: #fbfdff;
 }
+.ops-proposal-markup {
+  margin: 0 0 12px;
+  border: 1px solid #cfe0ee;
+  background: #f8fbfd;
+  padding: 9px 11px;
+  color: #4f5b66;
+}
+.ops-proposal-markup-title {
+  color: #2b87d0;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.ops-proposal-markup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 7px;
+}
+.ops-proposal-pin {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1px solid #e1edf6;
+  background: #fff;
+  padding: 7px 8px;
+}
+.ops-proposal-pin > span {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #2b87d0;
+  color: #fff;
+  font-size: 11px;
+  line-height: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+.ops-proposal-pin b {
+  display: block;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ops-proposal-pin p {
+  margin: 2px 0 0;
+  color: #555;
+  font-size: 12px;
+  line-height: 1.35;
+}
 .media-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
