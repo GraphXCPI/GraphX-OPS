@@ -8,6 +8,8 @@ const OPS = {
   proposalWindowOpen: false,
   proposalWindowPosition: null,
   proposalContext: { keys: [], messages: [] },
+  orderView: "all",
+  orderCollapse: {},
 };
 
 window.OPS = OPS;
@@ -1172,6 +1174,7 @@ function chart() {
 
 function ordersPage() {
   const proposed = OPS.mode === "proposed";
+  if (proposed && OPS.page === "orders") return proposedOrdersPage();
   const title = proposed ? pageTitle() : pageTitle() || "List Orders";
   const fast = proposed ? proposedFilterTabs(["All Orders", "Open", "Fulfilled & Unpaid", "Closed & Archived"]) : "";
   const headers = ["Sr#", "Order Details", "Customer", "Products", ...(proposed ? ["Invoice", "Payment", "Archive"] : []), "Status", "Action"];
@@ -1198,6 +1201,312 @@ function ordersPage() {
   ];
   });
   return `<section class="page">${pageHead(title, proposed ? ["Add New Order", "Saved Views", "Job Board"] : ["Payment Request", "Job Board", "Order Shipment"])}${proposalMarkup("orders")}${fast}${filters(proposed ? ["Search:", "Company Name", "Store", "Order Group", "Product Status", "Date From", "Date To"] : ["Search:", "Company Name", "Order Date", "From", "To", "13 Selected"])}${dataTable(headers, rows, "ops-orders-table")}${proposed ? changeNote("Orders remains one list. The quick filters group orders by workflow state: open work, fulfilled but still unpaid work, and closed or archived work where the order is fulfilled and paid or cancelled.") : originalNote("Original Orders splits List Orders, Payment Request, Unpaid Orders, Archive Orders, Export/API Orders, and status utilities across separate menu entries.")}</section>`;
+}
+
+function proposedOrdersPage() {
+  proposalMarkup("orders");
+  const activeView = validOrderView(OPS.orderView);
+  OPS.orderView = activeView;
+  const tabs = proposedOrderTabs(activeView);
+  addProposalMessage("All Orders, Active, Unpaid, and Closed are same-page OPS tabs over the order list. The route remains #proposed/orders while the table state changes.", "Orders tab behavior");
+  return `<section class="page ops-proposed-orders-page">
+    ${pageHead("Orders", ["Add New Order", "Job Board", "Order Shipment"])}
+    ${tabs}
+    ${proposedOrderSearchForm()}
+    ${proposedOrderDataTable(activeView)}
+    ${changeNote("Orders keeps the OPS list layout and DataTables treatment. The proposed IA consolidates List Orders, Payment Request/Unpaid Orders, and Archive Orders into All Orders, Active, Unpaid, and Closed tabs without changing the route.")}
+  </section>`;
+}
+
+function proposedOrderTabItems() {
+  return [
+    { label: "All Orders", view: "all", icon: "fa fa-shopping-cart" },
+    { label: "Active", view: "open", icon: "fa fa-clock" },
+    { label: "Unpaid", view: "fulfilled-unpaid", icon: "fa fa-dollar-sign" },
+    { label: "Closed", view: "closed-archived", icon: "fa fa-archive" },
+  ];
+}
+
+function validOrderView(view) {
+  return proposedOrderTabItems().some(item => item.view === view) ? view : "all";
+}
+
+function proposedOrderTabs(activeView) {
+  const records = proposedOrderRecords();
+  return `<div class="row">
+    <div class="col-12">
+      <div class="tabs-above ops-context-tabs" role="tablist">
+        <ul class="nav nav-tabs">${proposedOrderTabItems().map(item => {
+          const active = item.view === activeView;
+          const count = proposedOrderTabCountLabel(item.view, records);
+          return `<li class="nav-item text-md-center"><a href="javascript:void(0)" class="nav-link ${active ? "active" : ""}" data-toggle="tab" data-order-view="${h(item.view)}" aria-selected="${active ? "true" : "false"}"><i class="${h(item.icon)}"></i><span class="menu-text">${h(item.label)}</span><span class="badge badge-light border ml-1">${h(count)}</span></a></li>`;
+        }).join("")}</ul>
+      </div>
+    </div>
+  </div>`;
+}
+
+function proposedOrderTabCountLabel(view, records = proposedOrderRecords()) {
+  const count = proposedOrderTabCount(view, records);
+  return String(count);
+}
+
+function proposedOrderTabCount(view, records = proposedOrderRecords()) {
+  if (view === "all") return records.length;
+  return records.filter(record => record.view === view).length;
+}
+
+function proposedOrderRecords() {
+  const workflow = [
+    { view: "open", orderStatus: "New Order", statusClass: "badge-primary", amount: "$519.33", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-03-2026 08:03", due: "Order: 07-13-2026<br>Production: 07-08-2026", notify: "New Order", notifyClass: "badge-primary", productStatus: ["In Design", "Order Processing", "Order Review"], action: "Action", company: "The Lab North America Inc.", shipping: "Fedex Ground" },
+    { view: "open", orderStatus: "Order Review", statusClass: "badge-danger", amount: "$686.00", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-02-2026 14:47", due: "Order: 07-10-2026<br>Production: 07-07-2026", notify: "Order Review", notifyClass: "badge-warning text-dark", productStatus: ["Pending", "Order Processing", "Proof Required"], action: "Action", company: "Position Sports", shipping: "Will Call" },
+    { view: "fulfilled-unpaid", orderStatus: "Fulfilled", statusClass: "badge-info", amount: "$686.00", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-02-2026 14:45", due: "Order: 07-10-2026<br>Production: 07-07-2026", notify: "Payment Request", notifyClass: "badge-info", productStatus: ["Ready for Fulfillment", "Fulfilled", "Invoice Pending"], action: "Payment Request", company: "Position Sports", shipping: "Fedex Ground" },
+    { view: "closed-archived", orderStatus: "Order Completed", statusClass: "badge-success", amount: "$692.35", payment: "Paid", paymentClass: "badge-success", ordered: "07-02-2026 14:43", due: "Order: 07-10-2026<br>Archived: 07-05-2026", notify: "Archived", notifyClass: "badge-secondary", productStatus: ["Fulfilled", "Order Completed", "Paid"], action: "Archive", company: "Position Sports", shipping: "Fedex Ground" },
+  ];
+  return orders.map((order, index) => ({ order, ...workflow[index % workflow.length] }));
+}
+
+function proposedOrderSearchForm() {
+  return `<div class="row">
+    <div class="col-12 col-md-12">
+      <div class="mb-md-3 border-bottom pb-md-2 orde-listing-desktop-view mb-md-4">
+        <form id="frmordsearch" name="frmordsearch" action="javascript:void(0)" method="get">
+          <div class="form-row align-items-center">
+            <div class="form-group col-md-2 mb-2"><input type="text" name="search" class="form-control form-control-sm" placeholder="Search"></div>
+            <div class="form-group col-md-2 mb-2"><select name="store" class="form-control form-control-sm"><option>Select Store</option></select></div>
+            <div class="form-group col-md-2 mb-2"><select name="status" class="form-control form-control-sm"><option>Status</option></select></div>
+            <div class="form-group col-md-4 mb-2"><button type="button" class="btn btn-info btn-sm"><i class="far fa-search pr-1"></i>Search</button><a href="javascript:void(0)" class="btn btn-link btn-sm px-2">Reset</a></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+
+function proposedOrderDataTable(activeView) {
+  const records = proposedOrderRecords();
+  const visibleRecords = records.filter(record => activeView === "all" || record.view === activeView);
+  const tableBody = activeView === "all"
+    ? proposedOrderAllOrdersBody(records)
+    : visibleRecords.map((record, index) => proposedOrderTableGroup(record, index)).join("");
+  const total = visibleRecords.length;
+  const descriptor = "entries";
+  return `<div id="ops-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+    ${proposedOrderTableToolbar()}
+    <div class="table-responsive">
+      <table id="ops-table" class="table table-striped order_listing_view table-bordered table-hover no-footer table-sm dataTable DTTT_selectable" aria-describedby="ops-table_info">
+        <thead>${proposedOrderTableHead()}</thead>
+        <tbody>${tableBody}</tbody>
+      </table>
+    </div>
+    ${proposedOrderTableFooter(total, descriptor)}
+  </div>`;
+}
+
+function proposedOrderAllOrdersBody(records) {
+  return proposedOrderAllOrderGroups(records).map(group => {
+    const rows = group.records.map((record, index) => proposedOrderTableGroup(record, index)).join("");
+    return `${proposedOrderGroupHeader(group)}${rows}`;
+  }).join("");
+}
+
+function proposedOrderAllOrderGroups(records) {
+  return [
+    { view: "open", label: "Active Orders", description: "Orders still moving through intake, proof, design, and production review.", badge: "Active", badgeClass: "badge-primary", records: records.filter(record => record.view === "open") },
+    { view: "fulfilled-unpaid", label: "Unpaid Orders", description: "Fulfilled orders that still need payment, invoice, or collection follow-up.", badge: "Unpaid", badgeClass: "badge-info", records: records.filter(record => record.view === "fulfilled-unpaid") },
+    { view: "closed-archived", label: "Closed Orders", description: "Completed or archived orders kept in the combined view for quick reference.", badge: "Closed", badgeClass: "badge-secondary", records: records.filter(record => record.view === "closed-archived") },
+  ].filter(group => group.records.length);
+}
+
+function proposedOrderGroupHeader(group) {
+  return `<tr class="notselected order-group-row" data-order-group="${h(group.view)}"><td colspan="7" class="bg-light border-left">
+    <div class="d-flex align-items-center justify-content-between">
+      <div><span class="font-weight-bold text-primary">${h(group.label)}</span><span class="text-muted ml-2">${h(group.description)}</span></div>
+      <div class="text-nowrap"><span class="badge ${h(group.badgeClass)} mr-1">${h(group.badge)}</span><span class="badge badge-light border">${group.records.length} ${group.records.length === 1 ? "Order" : "Orders"}</span></div>
+    </div>
+  </td></tr>`;
+}
+
+function proposedOrderTableToolbar() {
+  return `<div class="form-row search_row mb-1">
+    <div class="col-md-10 col-9 search-container">
+      <div class="white-bg-btn tbllist_action_btn d-md-inline-block" id="tbllist_action_btn">
+        <div class="form-group">
+          <div class="input-group">
+            <select name="ord_common_action" id="ord_common_action" class="form-control ">
+              <option title="Action" value="">Action</option>
+              <option title="Download Order" value="downloadorder">Download Order</option>
+              <option title="Download Invoice" value="combinedinvoicepdf">Download Invoice</option>
+              <option title="Archive Orders" value="archive_order">Archive Orders</option>
+              <option title="Download Job Ticket" value="download_job_ticket">Download Job Ticket</option>
+              <option title="Package Manager" value="download_label">Package Manager</option>
+              <option title="Add to watch list" value="watchlist">Add to watch list</option>
+            </select>
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-primary ml-2 rounded-0" value="Submit" id="btnactionsubmit" name="btnactionsubmit" type="button">Submit</button>
+              <button class="btn btn-sm btn-success ml-2 rounded-0" value="Export Report" id="btnexportreport" name="btnexportreport" type="button">Export Report</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-3 tableTools-container text-right"><div class="btn-group btn-overlap"><a class="DTTT_button btn btn-outline-primary btn-sm" id="ToolTables_ops-table_0" title="Print" tabindex="0" aria-controls="ops-table"><span><i class="far fa-print text-110 text-grey"></i></span></a></div></div>
+    <div id="ops-table_processing" class="dataTables_processing col-12 alert alert-info" style="display: none;">Processing...<br><i class="fa fa-spinner fa-spin bigger-250"></i><div><div></div><div></div><div></div><div></div></div></div>
+  </div>`;
+}
+
+function proposedOrderTableHead() {
+  return `<tr>
+    <th data-data="chk_field" data-class="ord_chk_col d-none d-md-table-cell text-center order-td-column" class="ord_chk_col d-none d-md-table-cell text-center order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
+    <th data-data="order_id_type" data-class="d-none d-md-table-cell visibleonly-print order-td-column" class="d-none d-md-table-cell text-center visibleonly-print order-td-column sorting_disabled sorting_desc" rowspan="1" colspan="1" aria-label="ID">ID</th>
+    <th data-data="col_order_details" data-class="visibleonly-print col_order_details order-td-column" class="visibleonly-print col_order_details order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Details">Order Details</th>
+    <th data-data="col_order_date" data-class="d-none d-md-table-cell visibleonly-print order-td-column" class="d-none d-md-table-cell text-left visibleonly-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Date & Amount">Order Date &amp; Amount</th>
+    <th data-data="col_order_due_date" data-class="d-none d-md-table-cell text-left visibleonly-print order-td-column" class="d-none d-md-table-cell text-left visibleonly-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Due Date">Order Due Date</th>
+    <th data-data="col_status" data-class="ord_status d-none d-md-table-cell text-left visibleonly-print order-td-column table-text-wrap" class="text-left ord_status d-none d-md-table-cell visibleonly-print order-td-column table-text-wrap sorting_disabled" rowspan="1" colspan="1" aria-label="Notify Status">Notify <span></span><br>Status</th>
+    <th data-data="Action" data-orderable="false" data-searchable="false" data-class-name="ord_status no-print d-none d-md-table-cell order-td-column" class="d-none d-md-table-cell ord_status no-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Action">Action</th>
+  </tr>`;
+}
+
+function proposedOrderTableGroup(record, index) {
+  return `${proposedOrderTableRow(record, index)}${proposedOrderProductsRow(record)}${proposedOrderPaymentRow(record)}<tr class="notselected" height="10"></tr>`;
+}
+
+function proposedOrderTableRow(record, index) {
+  const rowClass = index % 2 ? "even" : "odd";
+  const orderId = h(record.order[0]);
+  const expanded = isProposedOrderExpanded(record.order[0]);
+  return `<tr id="oid:${orderId}" class="${rowClass}">
+    <td class="ord_chk_col d-none d-md-table-cell text-center order-td-column">${proposedOrderCheckbox(orderId, expanded)}</td>
+    <td class="d-none d-md-table-cell visibleonly-print order-td-column sorting_1">${proposedOrderIdCell(record)}</td>
+    <td class="visibleonly-print col_order_details order-td-column">${proposedOrderDetailsCell(record)}</td>
+    <td class="d-none d-md-table-cell visibleonly-print order-td-column">${proposedOrderAmountCell(record)}</td>
+    <td class="d-none d-md-table-cell text-left visibleonly-print order-td-column">${proposedOrderDueCell(record)}</td>
+    <td class="ord_status d-none d-md-table-cell text-left visibleonly-print order-td-column table-text-wrap">${proposedOrderStatusCell(record)}</td>
+    <td class="ord_status no-print d-none d-md-table-cell order-td-column">${proposedOrderActionCell(record)}</td>
+  </tr>`;
+}
+
+function isProposedOrderExpanded(orderId) {
+  return OPS.orderCollapse[String(orderId)] !== false;
+}
+
+function proposedOrderCheckbox(orderId, expanded) {
+  const iconClass = expanded ? "ops-order-collapse-icon-minus" : "ops-order-collapse-icon-plus";
+  const label = expanded ? "Collapse order products" : "Expand order products";
+  return `<div class="custom_checkBox d-flex align-items-center justify-content-center no-print"><div class="expand-op mr-2 ${expanded ? "open" : ""}"><button type="button" data-target="#collapse_${orderId}" aria-controls="collapse_${orderId}" data-toggle="collapse" aria-expanded="${expanded ? "true" : "false"}" aria-label="${label}" class="btn text-secondary p-0 no-print" id="expand_order_product_${orderId}" data-order_id="${orderId}" data-order-collapse="${orderId}"><span class="ops-order-collapse-icon ${iconClass}" aria-hidden="true"></span></button></div><label class="checkbox d-block "><input type="checkbox" name="order_check[]" id="checkbox_${orderId}" value="${orderId}" class="ace"><span class="lbl"></span></label></div>`;
+}
+
+function proposedOrderIdCell(record) {
+  const orderId = h(record.order[0]);
+  return `<div class="order_id_type"><a class="order_id d-block text-center" href="javascript:void(0)" data-tab-target="proposed/order-action" data-page="order-action">${orderId}</a><div class="order-icons d-flex align-items-center justify-content-center"><div class="watchlist" title="Add watch list" value="1" data-id="${orderId}"><i class="far fa-eye-slash watchInactive text-85 text-secondary"></i></div><div class="trait-list d-flex"></div></div></div>`;
+}
+
+function proposedOrderDetailsCell(record) {
+  const orderId = h(record.order[0]);
+  return `<label>Order Name :</label> ${h(proposedOrderName(record))}<br><span class="table-customer-name"><span class="d-block"><a data-container="body" class="popover-ajaxinfo mr-1" data-placement="top" data-id="user-${orderId}" href="javascript:void(0)">${h(record.order[5])}</a> (${h(record.company)})</span><span class="word-break cust_email_address">${h(record.order[6])}</span></span>`;
+}
+
+function proposedOrderName(record) {
+  const names = {
+    3052: "Prime Concrete - Ram ProMaster",
+    3051: "Junior League Baseball - Taylor, MI",
+    3050: "Intermediate League Baseball - Livermore, CA",
+    3049: "Senior League Baseball - Easley, SC",
+  };
+  return names[record.order[0]] || record.order[7][0].replace(/\s*\(.*$/, "");
+}
+
+function proposedOrderAmountCell(record) {
+  return `<div class="order-dates custom_date text-nowrap"><div class="d-block">${h(record.ordered)}</div><span class="order-total-amt text-primary">${h(record.amount)}</span><span class="badge ${h(record.paymentClass)} ml-2">${h(record.payment)}</span></div>`;
+}
+
+function proposedOrderDueCell(record) {
+  return `<div class="d-block">${record.due}</div>`;
+}
+
+function proposedOrderStatusCell(record) {
+  return `<div class="status_action"><span class="badge ${h(record.statusClass)}">${h(record.orderStatus)}</span></div>`;
+}
+
+function proposedOrderActionCell(record) {
+  const paymentRequest = record.view === "fulfilled-unpaid" ? `<span class="mr-1 my-1 d-inline-block align-middle status-toolbar no-print"><a href="javascript:void(0)" class="btn btn-outline-light btn-sm btn-square" data-original-title="Payment Request"><i class="fak fa-payment-request text-info"></i></a></span>` : "";
+  const archive = record.view === "closed-archived" ? `<span class="mr-1 my-1 d-inline-block align-middle status-toolbar no-print"><a href="javascript:void(0)" class="btn btn-outline-light btn-sm btn-square" data-original-title="Archive"><i class="far fa-archive text-secondary"></i></a></span>` : "";
+  return `<div class="d-flex flex-wrap"><div class="ord-actions align-item-center justify-content-start d-flex flex-wrap"><div class="order_action_btn d-flex"><span class="mr-1 my-1 d-inline-block align-middle status-toolbar no-print"><a href="javascript:void(0)" class="btn_ord_update btn btn-outline-light btn-sm btn-square" data-placement="top" data-toggle="tooltip" data-original-title="Update Order"><i class="far fa-pencil text-primary"></i></a></span><span class="mr-1 my-1 d-inline-block align-middle status-toolbar no-print"><a href="javascript:void(0)" class="btn btn-outline-light btn-sm btn-square" data-original-title="Shipment"><i class="far fa-truck text-info"></i></a></span>${paymentRequest}${archive}<span class="mr-1 my-1 d-inline-block align-middle status-toolbar no-print"><a href="javascript:void(0)" class="btn btn-outline-light btn-sm btn-square" data-original-title="${h(record.action)}"><i class="far fa-ellipsis-h text-secondary"></i></a></span></div></div></div>`;
+}
+
+function proposedOrderProductsRow(record) {
+  const orderId = h(record.order[0]);
+  const expanded = isProposedOrderExpanded(record.order[0]);
+  const rows = proposedOrderProductItems(record).map(item => proposedOrderProductRow(record, item)).join("");
+  return `<tr class="row-table order-product-view"><td class="border-left" colspan="7"><div class="collapse ${expanded ? "show" : ""}" id="collapse_oid:${orderId}"><div class="table center-block m-auto"><table class="table no-footer table-bordered subtable" align="right"><colgroup><col width="5%"><col width="7%"><col width="22%"><col width="8%"><col width="8%"><col width="20%"><col width="16%"><col width="17%"></colgroup><tbody>${rows}</tbody></table></div></div></td></tr>`;
+}
+
+function proposedOrderProductItems(record) {
+  const ids = {
+    3052: [9586, 9587],
+    3051: [9582, 9583, 9584, 9585],
+    3050: [9580, 9581, 9582, 9583],
+    3049: [9574, 9575, 9576, 9577],
+  }[record.order[0]] || [];
+  const productNames = record.order[7].filter(item => !/^\+\d+$|^more$/i.test(item)).map(item => item.replace(/\s*\(\d+\s*Qty\)\s*$/i, ""));
+  const targetCount = Math.max(productNames.length, Number(String(record.order[2]).match(/\d+/)?.[0] || productNames.length));
+  const fallback = ["Production Labor", "Installation - Labor", "Packaging", "Shipping Label"];
+  while (productNames.length < targetCount) productNames.push(fallback[productNames.length % fallback.length]);
+  return productNames.map((name, index) => ({
+    id: ids[index] || Number(`${record.order[0]}${index + 1}`),
+    name,
+    qty: 1,
+    amount: index === 0 ? record.amount : "$0.00",
+    due: String(record.due).match(/Production:\s*([0-9-]+)/)?.[1] || "07-08-2026",
+    status: record.view === "closed-archived" ? "Fulfilled" : index === 0 ? "Awaiting Artwork" : "Order Processing",
+  }));
+}
+
+function proposedOrderNoImage() {
+  return `<div class="ord-img"><div style="display:table;margin:0 auto;"><div style="height: 50px; width: 75px;" class="badge badge-white noimage"><div class="fa-stack fa-2x"><i class="fa fa-camera-retro fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x"></i></div></div></div></div>`;
+}
+
+function proposedOrderProductRow(record, item) {
+  return `<tr>
+    <td class="text-center">${h(item.id)}</td>
+    <td class="text-center">${proposedOrderNoImage()}</td>
+    <td>${proposedOrderProductDetails(record, item)}</td>
+    <td class="text-left">${h(item.qty)} Qty</td>
+    <td class="text-left">${h(item.amount)}</td>
+    <td><span class="production_due_date text-nowrap"><span class="text-muted">Production: </span>${h(item.due)}</span><span class="ord_prd_stat d-block"><span class="badge badge-light arrowed">${h(item.status)}</span></span></td>
+    <td class="text-center wadmin_${h(item.id)}"><div class="workflow-admin d-flex align-items-center"><div class="form-group wadmin-form m-0 w-100 wform_${h(item.id)}"><select name="wadmin[${h(item.id)}]" id="wadmin_${h(item.id)}" class="form-control form-control-sm workflowAdmin-select"><option title="hhoWA" value="9" selected="selected">hhoWA</option></select></div><span class="no-border status-toolbar pr0 no-print uwtools_${h(item.id)}"><i data-original-title="Save" data-toggle="tooltip" data-placement="top" class="ace-icon far fa-floppy-disk fa-lg text-primary pl-2 pr-1 cursor-pointer update_wadmin" id="update_wadmin_${h(item.id)}"></i></span><br></div></td>
+    <td class="text-left no-print ordproductstats"><div class="mr-1 d-inline-block align-middle no-border status-toolbar no-print"><span><a href="javascript:void(0)" data-tab-target="proposed/order-action" data-page="order-action" class="btn_ordproduct_update btn btn-outline-light btn-sm btn-square" data-oid="${h(record.order[0])}" data-id="${h(item.id)}" data-placement="top" data-toggle="tooltip" data-original-title="Update Order Product"><i class="far fa-pencil text-grey-m1"></i></a></span></div><span class="mr-1 d-inline-block align-middle"><a class="upload_proof btn btn-outline-light btn-sm btn-square" data-toggle="tooltip" data-original-title="Artwork" href="javascript:void(0)"><i class="far fa-upload text-info"></i></a></span><span class="mr-1 d-inline-block align-middle"><a class="btn btn-outline-light btn-sm btn-square" data-toggle="tooltip" data-original-title="Download File" href="javascript:void(0)"><i class="far fa-download text-primary"></i></a></span></td>
+  </tr>`;
+}
+
+function proposedOrderProductDetails(record, item) {
+  const detail = proposedOrderProductDetail(record, item);
+  return `<div class="d-block"><span class="product_details_custom" id="ptextid_${h(item.id)}"><a href="javascript:void(0)" data-tab-target="proposed/product-popover" data-page="product-popover" class="product_details_popover text-primary" data-id="${h(item.id)}" data-original-title="${h(item.name)}" data-placement="top">${h(item.name)}</a><span class="product-type text-nowrap ml-auto"><a data-container="body" data-placement="bottom" data-toggle="popover" class="help-button cursor-pointer ml-1" data-original-title="Additional Details"><i class="far fa-circle-info text-110 text-info"></i></a><div class="helpcontenthtml" style="display:none;"><dl class="dl-horizontal mb-0 additional_details_op"><dt class="text-muted font-normal">Width (Inch): </dt><dd>${h(detail.width)}</dd><dt class="text-muted font-normal">Height (Inch): </dt><dd>${h(detail.height)}</dd><dt class="text-muted font-normal">Print Sides: </dt><dd>Single Side</dd><dt class="text-muted font-normal">Ink Type: </dt><dd>CMYK</dd><dt class="text-muted font-normal">Proof: </dt><dd>No Proof Required</dd></dl></div></span></span></div><div class="d-block"><span class="text-muted text-85">Size: </span><span class="text-85">${h(detail.width)} Width x ${h(detail.height)} Height (Inch)</span></div><div class="d-block">(<span class="text-muted text-85">Name: </span><span class="product-name text-85">${h(detail.name)}</span>)</div>`;
+}
+
+function proposedOrderProductDetail(record, item) {
+  const currentLikeDetails = {
+    9586: { width: "154.0109", height: "48.3239", name: "Prime-Concrete_Ram-ProMaster_Side Decal" },
+    9587: { width: "59.2363", height: "23.8115", name: "Prime-Concrete_Ram-ProMaster_Rear Window Perf" },
+  };
+  return currentLikeDetails[item.id] || {
+    width: "12",
+    height: "12",
+    name: `${proposedOrderName(record)} - ${item.name}`,
+  };
+}
+
+function proposedOrderPaymentRow(record) {
+  return `<tr class="paymentRow notselected"><td></td><td class="pl-2" colspan="6"><div class="d-inline-flex align-middle trait-list d-flex" id="trait_oid_${h(record.order[0])}"><span class="btn btn-outline-light p-0 border-none bg-transparent d-flex align-items-center justify-content-center"><i class="ops-newRepeatedCustomer text-140 border brc-purple-tp1 text-purple btn-square-sm cursor-pointer mr-2 text-primary" data-original-title="Repeated Customer" data-toggle="tooltip" data-placement="top"></i></span><span class="btn btn-outline-light p-0 border-none bg-transparent d-flex align-items-center justify-content-center"><a href="javascript:void(0)" data-tab-target="proposed/payment-request" data-page="payment-request" class="lnk_ord_printer"><span class="badge badge-dark total-payment radius-round no-copy cursor-pointer align-top mr-2" data-original-title="Payment Request" data-toggle="tooltip" data-placement="top">${record.view === "fulfilled-unpaid" ? "1" : ""}</span></a></span></div><span class="order-payment-method text-nowrap" data-toggle="tooltip" data-placement="top" data-original-title="Term payments"><span class="text-muted">Payment: </span>Term payments</span><span class="order-shipping-method text-nowrap" data-toggle="tooltip" data-placement="top" data-original-title="Shipping"><span class="text-muted">Shipping: </span>${h(record.shipping)}</span></td></tr>`;
+}
+
+function proposedOrderTableFooter(total, descriptor = "entries") {
+  const final = Math.max(total, 1);
+  return `<div class="row border-right border-left align-items-center footer_row">
+    <div class="col-xl-4 table_pagination order-2 py-1"><div class="dataTables_paginate paging_simple_numbers" id="ops-table_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="ops-table_previous"><a href="#" aria-controls="ops-table" data-dt-idx="0" tabindex="0" class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a href="#" aria-controls="ops-table" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="ops-table_next"><a href="#" aria-controls="ops-table" data-dt-idx="2" tabindex="0" class="page-link"><i class="fa fa-angle-right"></i></a></li></ul></div></div>
+    <div class="col-xl-4 py-1 col-md-6"><div class="dataTables_info" id="ops-table_info" role="status" aria-live="polite">Showing 1 to ${final} of ${final} ${h(descriptor)} </div></div>
+    <div class="col-xl-4 py-1 col-md-6 text-xl-center text-right"><div class="dataTables_length" id="ops-table_length"><label>Show <select name="ops-table_length" aria-controls="ops-table" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select> records</label></div></div>
+  </div>`;
 }
 
 function quotesPage() {
@@ -2512,6 +2821,23 @@ function applyHash() {
 }
 
 document.addEventListener("click", event => {
+  const orderCollapseAction = event.target.closest(".ops-proposed-orders-page [data-order-collapse]");
+  if (orderCollapseAction) {
+    event.preventDefault();
+    const orderId = orderCollapseAction.dataset.orderCollapse;
+    OPS.orderCollapse[orderId] = !isProposedOrderExpanded(orderId);
+    render();
+    return;
+  }
+
+  const orderViewAction = event.target.closest("[data-order-view]");
+  if (orderViewAction) {
+    event.preventDefault();
+    OPS.orderView = validOrderView(orderViewAction.dataset.orderView);
+    render();
+    return;
+  }
+
   const tabAction = event.target.closest("[data-tab-target]");
   if (tabAction && !tabAction.dataset.page) {
     event.preventDefault();

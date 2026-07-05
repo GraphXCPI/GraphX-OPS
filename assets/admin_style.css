@@ -722,3 +722,8 @@
 .gx-sim .fa-store{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-store.svg");}
 .gx-sim .fa-templates{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-templates.svg");}
 .gx-sim .fa-boxes{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-boxes.svg");}
+
+.gx-sim .ops-proposed-orders-page [data-order-collapse]{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;line-height:1;}
+.gx-sim .ops-proposed-orders-page .ops-order-collapse-icon{display:inline-block;width:12px;height:12px;background-color:currentColor;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;}
+.gx-sim .ops-proposed-orders-page .ops-order-collapse-icon-plus{-webkit-mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-plus.svg");mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-plus.svg");}
+.gx-sim .ops-proposed-orders-page .ops-order-collapse-icon-minus{-webkit-mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-minus.svg");mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-minus.svg");}
