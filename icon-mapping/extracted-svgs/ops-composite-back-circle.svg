@@ -1,12 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100" height="100" fill="currentColor">
-  <defs>
-    <mask id="chevron-cutout-mask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
-      <circle cx="256" cy="256" r="230" fill="white" />
-      <g transform="translate(168, 133) scale(0.55) scale(1, -1) translate(0, -448)" fill="black">
-        <path d="M9 215C-3 202 -3 182 9 169L169 9C182 -3 202 -3 215 9C227 22 227 42 215 55L77 192L215 329C227 342 227 362 215 375C202 387 182 387 169 375L9 215Z" />
-      </g>
-    </mask>
-  </defs>
-  <circle cx="256" cy="256" r="230" fill="currentColor" mask="url(#chevron-cutout-mask)" />
+  <path fill-rule="evenodd" d="M 256, 26 A 230,230 0 1,0 256,486 A 230,230 0 1,0 256,26 Z M 172.95 261.15 C 169.65 268.3 169.65 279.3 172.95 286.45 L 260.95 374.45 C 268.1 377.75 279.1 377.75 286.25 374.45 C 292.85 367.3 292.85 356.3 286.25 349.15 L 210.35 273.8 L 286.25 198.45 C 292.85 191.3 292.85 180.3 286.25 173.15 C 279.1 166.55 268.1 166.55 260.95 173.15 L 172.95 261.15 Z" />
 </svg>

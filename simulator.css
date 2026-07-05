@@ -12,124 +12,8 @@
   --purple: #8b70bd;
 }
 
-@font-face {
-  font-family: "Font Awesome 6 Free";
-  font-style: normal;
-  font-weight: 900;
-  font-display: block;
-  src: url("./thirdparty/css/fonts/fa-solid-900.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Font Awesome 6 Free";
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url("./thirdparty/css/fonts/fa-regular-400.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Font Awesome 6 Brands";
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url("./thirdparty/css/fonts/fa-brands-400.woff2") format("woff2");
-}
-
-.fa,
-.fas,
-.fa-solid {
-  font-family: "Font Awesome 6 Free" !important;
-  font-weight: 900;
-}
-
-.far,
-.fa-regular,
-.fal {
-  font-family: "Font Awesome 6 Free" !important;
-  font-weight: 400;
-}
-
-.fab,
-.fa-brands {
-  font-family: "Font Awesome 6 Brands" !important;
-  font-weight: 400;
-}
-
-.fa-home::before,
-.fa-house::before { content: "\f015"; }
-.fa-circle-user::before { content: "\f2bd"; }
-.fa-user-alt::before { content: "\f406"; }
-.fa-user::before { content: "\f007"; }
-.fa-user-shield::before { content: "\f505"; }
-.fa-search::before,
-.fa-magnifying-glass::before { content: "\f002"; }
-.fa-bookmark::before { content: "\f02e"; }
-.fa-trash-alt::before,
-.fa-trash-can::before,
-.fa-trash::before { content: "\f2ed"; }
-.fa-shopping-cart::before,
-.fa-cart-shopping::before { content: "\f07a"; }
-.fa-tags::before { content: "\f02c"; }
-.fa-file-alt::before,
-.fa-file-lines::before { content: "\f15c"; }
-.fa-file-pdf::before { content: "\f1c1"; }
-.fa-file-code::before { content: "\f1c9"; }
-.fa-file-signature::before { content: "\f573"; }
-.fa-columns::before,
-.fa-table-columns::before { content: "\f0db"; }
-.fa-cog::before,
-.fa-gear::before { content: "\f013"; }
-.fa-cogs::before,
-.fa-gears::before { content: "\f085"; }
-.fa-store::before { content: "\f54e"; }
-.fa-handshake::before { content: "\f2b5"; }
-.fa-globe::before { content: "\f0ac"; }
-.fa-bell::before { content: "\f0f3"; }
-.fa-sync::before,
-.fa-sync-alt::before,
-.fa-arrows-rotate::before { content: "\f2f1"; }
-.fa-tachometer-alt::before,
-.fa-gauge-high::before { content: "\f3fd"; }
-.fa-table-cells-large::before,
-.fa-th-large::before { content: "\f009"; }
-.fa-edit::before,
-.fa-pencil-alt::before,
-.fa-pen-to-square::before { content: "\f044"; }
-.fa-chart-bar::before { content: "\f080"; }
-.fa-chart-line::before { content: "\f201"; }
-.fa-sitemap::before { content: "\f0e8"; }
-.fa-images::before { content: "\f302"; }
-.fa-desktop::before { content: "\f108"; }
-.fa-display::before { content: "\f108"; }
-.fa-comments::before { content: "\f086"; }
-.fa-chevron-down::before { content: "\f078"; }
-.fa-caret-down::before { content: "\f0d7"; }
-.fa-angle-down::before { content: "\f107"; }
-.fa-angle-up::before { content: "\f106"; }
-.fa-angle-left::before { content: "\f104"; }
-.fa-angle-double-up::before { content: "\f102"; }
-.fa-angle-double-down::before { content: "\f103"; }
-.fa-expand::before { content: "\f065"; }
-.fa-question-square::before,
-.fa-circle-question::before,
-.fa-question-circle::before { content: "\f059"; }
-.fa-question::before { content: "\3f"; }
-.fa-thumbtack::before { content: "\f08d"; }
-.fa-spinner::before { content: "\f110"; }
-.fa-bars::before { content: "\f0c9"; }
-.fa-plus-circle::before,
-.fa-circle-plus::before { content: "\f055"; }
-.fa-print::before { content: "\f02f"; }
-.fa-upload::before { content: "\f093"; }
-.fa-calendar::before { content: "\f133"; }
-.fa-pencil::before { content: "\f303"; }
-.fa-angle-right::before { content: "\f105"; }
-.fa-boxes::before,
-.fa-boxes-stacked::before { content: "\f468"; }
-.fa-balance-scale::before,
-.fa-scale-balanced::before { content: "\f24e"; }
-.fa-barcode::before { content: "\f02a"; }
+/* Font Awesome font fallback removed. The simulator renders OPS icon classes with
+   local extracted SVG masks in assets/admin_style.css. */
 
 .gx-sim { min-width: 1180px; }
 
@@ -943,14 +827,15 @@ tr:nth-child(even) td { background: #fbfdff; }
   position: relative;
 }
 .sim-cat-thumb.empty::after {
-  content: "\f05e";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  color: #c2c9cf;
-  font-size: 46px;
+  content: "";
   position: absolute;
-  inset: 24px 0 auto;
-  text-align: center;
+  left: 27px;
+  top: 24px;
+  width: 46px;
+  height: 46px;
+  background: #c2c9cf;
+  -webkit-mask: url("./icon-mapping/extracted-svgs/ops-fa-ban.svg") center/contain no-repeat;
+  mask: url("./icon-mapping/extracted-svgs/ops-fa-ban.svg") center/contain no-repeat;
 }
 .sim-cat-thumb.pattern {
   background:
@@ -1022,14 +907,15 @@ tr:nth-child(even) td { background: #fbfdff; }
   vertical-align: middle;
 }
 .sim-toggle::before {
-  content: "\f00c";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  color: #fff;
-  font-size: 12px;
+  content: "";
   position: absolute;
   left: 8px;
-  top: 4px;
+  top: 5px;
+  width: 11px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 0 2px 2px;
+  transform: rotate(-45deg);
 }
 .sim-toggle::after {
   content: "";

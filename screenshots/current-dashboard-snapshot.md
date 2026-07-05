@@ -1,0 +1,47 @@
+- generic [ref=e3] [box=0,0,1703,1305]:
+  - generic [ref=e4] [box=0,0,1703,45]:
+    - generic [ref=e5] [box=0,0,230,45]:
+      - link "  Visual Graphx, LLC." [ref=e6] [cursor=pointer] [box=4,0,198,45]:
+        - /url: "#"
+        - generic [ref=e7] [box=4,9,40,27]
+        - generic [ref=e11] [box=52,0,150,45]: Visual Graphx, LLC.
+      - text: 
+    - text:  
+    - generic [ref=e14] [box=495,6,553,34]:
+      - textbox "Text input with dropdown button" [ref=e15] [box=503,6,450,34]:
+        - /placeholder: Search here....
+      - button "" [ref=e17] [cursor=pointer] [box=952,6,40,34]:
+        - generic [ref=e18] [box=966,17,13,13]: 
+      - button "" [ref=e20] [cursor=pointer] [box=1000,6,40,34]:
+        - generic [ref=e21] [box=1016,17,9,12]: 
+    - navigation [ref=e22] [box=1314,0,389,45]:
+      - list [ref=e24] [box=1314,0,389,45]:
+        - listitem [ref=e25] [box=1314,0,140,45]
+        - listitem [ref=e30] [box=1453,0,37,45]
+        - listitem [ref=e33] [box=1490,0,39,45]
+        - listitem [ref=e36] [box=1529,0,48,45]
+        - listitem [ref=e39] [box=1577,0,126,45]
+  - generic [ref=e45] [box=0,45,1703,1260]:
+    - generic [ref=e46] [box=0,45,230,1260]:
+      - generic [ref=e47] [box=0,45,230,1203]:
+        - generic [ref=e50] [box=7,53,208,34]
+        - list [ref=e61] [box=-1,95,230,579]
+      - button "" [ref=e141] [cursor=pointer] [box=105,1267,20,20]:
+        - generic [ref=e142] [box=111,1270,7,14]: 
+    - generic [ref=e143] [box=230,45,1473,1260]:
+      - generic [ref=e144] [box=230,45,1703,41]:
+        - list [ref=e145] [box=230,47,183,35]
+        - text: 
+        - generic [ref=e150] [box=1206,50,482,30]
+      - generic [ref=e171] [box=0,61,1706,1109]:
+        - generic [ref=e172] [box=-15,61,1736,72]
+        - generic [ref=e204] [box=-15,153,1736,1017]
+      - generic [ref=e645] [box=230,1276,1473,29]:
+        - generic [ref=e646] [box=797,1282,130,18]
+        - generic [ref=e648] [box=926,1282,210,18]: Copyright ©2026. All rights reserved.
+      - link "" [ref=e650] [cursor=pointer] [box=1659,1267,36,30]:
+        - /url: "#"
+        - generic [ref=e651] [box=1672,1276,10,15]: 
+  - generic [ref=e652] [box=1482,1247,201,38]:
+    - button "Current OPS" [ref=e653] [cursor=pointer] [box=1482,1247,108,38]
+    - button "Proposed" [ref=e654] [cursor=pointer] [box=1593,1247,90,38]

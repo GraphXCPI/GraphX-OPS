@@ -2,6 +2,20 @@
 
 Static, self-contained simulator for reviewing the current OPS admin baseline and proposed GraphX OPS information architecture.
 
+## Current Location
+
+This project now lives at:
+
+`/Users/cderamos/Projects/OPS Simulator`
+
+The active simulator is the project root. Historical extraction and handoff material is documented in:
+
+- `docs/HANDOFF.md`
+- `reference/README.md`
+- `reference/handoff/GraphX-OPS-handoff/`
+
+For a fresh session prompt, use `docs/NEXT_SESSION_PROMPT.md`.
+
 ## Live Modes
 
 - **Current OPS** renders a code-native reconstruction of the live OPS dashboard so layout, tables, job boards, Font Awesome-style controls, and the jqPlot-style sales chart can be tested interactively.

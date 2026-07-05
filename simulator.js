@@ -4,32 +4,58 @@ const OPS = {
   openMenu: "dashboard",
   openChild: "",
   loginAs: "cderamos",
+  modeSwitchReturn: null,
+  proposalWindowOpen: false,
+  proposalWindowPosition: null,
+  proposalContext: { keys: [], messages: [] },
 };
 
 window.OPS = OPS;
 
 const icon = {
-  dashboard: "tachometer-alt",
-  orders: "shopping-cart",
-  quotes: "file-alt",
+  dashboard: "dashboard",
+  orders: "orders",
+  quotes: "quote-management",
   customers: "user",
   stores: "store",
   products: "tags",
-  templates: "columns",
+  templates: "templates",
   content: "file-alt",
   personalization: "cog",
   seo: "globe",
-  partners: "handshake",
+  partners: "business-partners",
   config: "cogs",
-  imposition: "th-large",
-  studio: "edit",
+  imposition: "imposition",
+  studio: "designer-studio",
   reports: "chart-line",
-  admin: "user-shield",
+  admin: "admin",
   api: "sync-alt",
   builder: "sitemap",
   alerts: "bell",
   media: "images",
 };
+
+const opsCustomIconNames = new Set([
+  "additional-option-price-bulk-update",
+  "admin",
+  "associate-product",
+  "business-partners",
+  "dashboard",
+  "designer-studio",
+  "import-modified-prices",
+  "imposition",
+  "manage-product-prices",
+  "manage-stock",
+  "options-group",
+  "orders",
+  "payment-request",
+  "percentage",
+  "printer-quotes",
+  "product-price-bulk-update",
+  "quote-management",
+  "rules",
+  "templates",
+]);
 
 const currentMenu = [
   { id: "dashboard", label: "Dashboard", icon: icon.dashboard, page: "dashboard" },
@@ -433,6 +459,19 @@ function pageForModeSwitch(page, nextMode) {
   return "dashboard";
 }
 
+function pageForModeToggle(nextMode) {
+  const remembered = OPS.modeSwitchReturn;
+  if (
+    remembered &&
+    remembered.fromMode === nextMode &&
+    remembered.toMode === OPS.mode &&
+    remembered.toPage === OPS.page
+  ) {
+    return remembered.fromPage;
+  }
+  return pageForModeSwitch(OPS.page, nextMode);
+}
+
 function setOpenMenuForPage() {
   const menuItems = OPS.mode === "current" ? currentMenu : proposedMenu;
   let menu = menuItems.find(group => isActiveGroupForPage(group, OPS.page));
@@ -450,6 +489,8 @@ function h(value) {
 
 function app() {
   const menu = OPS.mode === "current" ? currentMenu : proposedMenu;
+  resetProposalContext();
+  const pageContent = content();
   return `
     <div class="body-container gx-sim">
       ${topbar()}
@@ -458,17 +499,23 @@ function app() {
         <div class="main-content">
           ${subbar()}
           <div class="page-content">
-            ${content()}
+            ${pageContent}
           </div>
           ${footer()}
         </div>
       </div>
-      <div class="mode-switch">
-        <button data-mode="current" class="${OPS.mode === "current" ? "on" : ""}">Current OPS</button>
-        <button data-mode="proposed" class="${OPS.mode === "proposed" ? "on" : ""}">Proposed</button>
-      </div>
+      ${modeSwitch()}
+      ${proposalWindow()}
     </div>
   `;
+}
+
+function modeSwitch() {
+  return `<div class="mode-switch">
+    <button type="button" data-mode="current" class="${OPS.mode === "current" ? "on" : ""}">Current OPS</button>
+    <button type="button" data-mode="proposed" class="${OPS.mode === "proposed" ? "on" : ""}">Proposed</button>
+    ${OPS.mode === "proposed" ? `<button type="button" class="ops-proposal-dock-button" data-proposal-open aria-haspopup="dialog" aria-expanded="${OPS.proposalWindowOpen ? "true" : "false"}" title="Proposal notes"><i class="fa fa-info-circle"></i></button>` : ""}
+  </div>`;
 }
 
 function footer() {
@@ -584,6 +631,7 @@ function topbar() {
 function subbar() {
   const extractedBreadcrumbs = extractedBreadcrumbsForPage();
   if (extractedBreadcrumbs) return extractedBreadcrumbs;
+  const breadcrumbHtml = breadcrumbsForPage();
 
   const dashboardControls = OPS.page === "dashboard" ? `
           <div class="col-auto px-0"><label class="mb-0"><input type="radio" class="ace"> <span class="lbl">Filter by Store</span></label></div>
@@ -593,7 +641,7 @@ function subbar() {
   return `
     <div class="breadcrumbs fixed-top d-flex align-items-center bg-light border-bottom flex-wrap" id="breadcrumbs">
       <ul class="breadcrumb py-2">
-        <li class="breadcrumb-item text-95"><i class="fa fa-home home-icon"></i> <a href="#" data-page="dashboard">Home</a> </li><li class="active breadcrumb-item text-95">${h(pageTitle())} </li>
+        ${breadcrumbHtml}
       </ul>
       <i class="fa fa-spinner fa-spin text-150 ajax_loader" style="display:none;"></i>
       <div class="pin_icon_data d-flex align-items-center store_header">
@@ -611,6 +659,32 @@ ${dashboardControls}
       </div>
     </div>
   `;
+}
+
+function breadcrumbsForPage() {
+  const items = [
+    { label: "Home", page: "dashboard", iconClass: "fa fa-home home-icon" },
+    { label: pageTitle(), active: true },
+  ];
+  if (OPS.mode === "proposed" && proposedProductSettingsPages.has(OPS.page)) {
+    items.splice(1, 1,
+      { label: "Stock & Settings", page: "stock-settings" },
+      { label: productSettingsTabLabel(OPS.page), active: true },
+    );
+  }
+  return items.map(item => {
+    const iconHtml = item.iconClass ? `<i class="${h(item.iconClass)}"></i> ` : "";
+    if (item.active) return `<li class="active breadcrumb-item text-95">${h(item.label)} </li>`;
+    return `<li class="breadcrumb-item text-95">${iconHtml}<a href="#" data-page="${h(item.page)}">${h(item.label)}</a> </li>`;
+  }).join("");
+}
+
+function productSettingsTabLabel(page) {
+  if (page === "production-days") return "Production Days";
+  if (page === "products-sku") return "Products SKU";
+  if (page === "stock-settings" || page === "manage-stock") return "Stock";
+  if (page === "product-tax") return "Product Tax/VAT Settings";
+  return "Product Weight";
 }
 
 function extractedBreadcrumbsForPage() {
@@ -682,34 +756,8 @@ function renderChild(item, parent) {
 }
 
 function opsIconClass(group) {
-  const map = {
-    dashboard: "fa fa-tachometer-alt",
-    orders: "fa fa-shopping-cart",
-    quotes: "fak fa-quote-management",
-    customer: "fa fa-user",
-    customer2: "fa fa-user",
-    customers: "fa fa-user",
-    stores: "fa fa-store",
-    stores2: "fa fa-store",
-    products: "fa fa-tags",
-    products2: "fa fa-tags",
-    catalog: "fa fa-tags",
-    templates: "fa fa-columns",
-    content: "fa fa-file-alt",
-    "site-builder": "fa fa-sitemap",
-    alerts: "fa fa-bell",
-    personalization: "fa fa-cog",
-    seo: "fa fa-globe",
-    partners: "fa fa-handshake",
-    config: "fa fa-cogs",
-    api: "fa fa-sync-alt",
-    imposition: "fa fa-th-large",
-    studio: "fa fa-edit",
-    reports: "fa fa-chart-line",
-    admin: "fa fa-user-shield",
-    "admin-users": "fa fa-user-shield",
-  };
-  return map[group.id] || `fa fa-${group.icon}`;
+  const iconName = group.icon || group.id;
+  return `${opsCustomIconNames.has(iconName) ? "fak" : "fa"} fa-${iconName}`;
 }
 
 function isActiveGroup(group) {
@@ -718,7 +766,7 @@ function isActiveGroup(group) {
 
 function pageTitle() {
   if (OPS.mode === "proposed" && OPS.page === "dashboard") return "Dashboard";
-  if (OPS.mode === "proposed" && OPS.page === "product-tax") return "Stock & Settings";
+  if (OPS.mode === "proposed" && OPS.page === "product-tax") return "Product Tax/VAT Settings";
   return labelForPage(OPS.page) || "Dashboard";
 }
 
@@ -1065,11 +1113,18 @@ function tile(label, ico, tone) {
 }
 
 function panel(title, body) {
-  return `<section class="panel"><header><h2>${title}</h2><div><a>View All</a><button class="fa fa-sync-alt"></button></div></header><div class="panel-body">${body}</div></section>`;
+  const titleHtml = String(title || "").includes("<") ? title : h(title);
+  return `<div class="card bcard mb-3">
+    <div class="card-header">
+      <h3 class="card-title">${titleHtml}</h3>
+      <div class="card-toolbar"><a href="javascript:void(0)" class="card-toolbar-btn"><i class="fa fa-chevron-up text-primary"></i></a></div>
+    </div>
+    <div class="card-body">${body}</div>
+  </div>`;
 }
 
 function searchHead(ph) {
-  return `<div class="mini-search"><input placeholder="${h(ph)}"><button class="fa fa-search"></button></div>`;
+  return `<div class="mini-search input-group input-group-sm justify-content-end"><input class="form-control form-control-sm" placeholder="${h(ph)}"><div class="input-group-append"><a href="javascript:void(0)" class="btn btn-light lineheight-normal search_order"><i class="fa fa-search"></i></a></div></div>`;
 }
 
 function orderRows() {
@@ -1191,7 +1246,7 @@ function productPage() {
     `<span class="toggle ${p[5] === "On" ? "on" : "off"}"></span>`,
     actionButton("Action"),
   ]);
-  return `<section class="page">${pageHead(proposed && OPS.page === "product-catalog" ? "Product Catalog" : pageTitle(), actions)}${proposalMarkup("product-catalog")}${proposed ? fastFilters(["Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled", "Store Scope", "Status"]) : ""}${filters(["Search", "Product Category", "Select Store", "Price Category"])}${dataTable(headers, rows, "ops-products-table")}${proposed ? changeNote("Print Products and Ready To Buy Products are represented as one catalog list with product type and fixed system tags. Focused edit pages stay intact.") : originalNote("Original Products separates Print Products and Ready To Buy Products into different lists, with related tools scattered below the menu.")}</section>`;
+  return `<section class="page">${pageHead(proposed && OPS.page === "product-catalog" ? "Product Catalog" : pageTitle(), actions)}${proposalMarkup("product-catalog")}${proposed ? proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled", "Store Scope", "Status"]) : ""}${filters(["Search", "Product Category", "Select Store", "Price Category"])}${dataTable(headers, rows, "ops-products-table")}${proposed ? changeNote("Print Products and Ready To Buy Products are represented as one catalog list with product type and fixed system tags. Focused edit pages stay intact.") : originalNote("Original Products separates Print Products and Ready To Buy Products into different lists, with related tools scattered below the menu.")}</section>`;
 }
 
 function proposedProductCatalogPage() {
@@ -1203,22 +1258,29 @@ function proposedProductCatalogPage() {
   if (heading) heading.textContent = "Product Catalog";
   const actionArea = root.querySelector(".page-header .action_area, .page-head .action_area, .action_area");
   if (actionArea) {
-    actionArea.innerHTML = `
-      <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-plus-circle pr-1"></i> Add Print Product</a>
-      <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-plus-circle pr-1"></i> Add Ready To Buy</a>
-      <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-plus-circle pr-1"></i> Add Kit Product</a>
-      <a href="#" class="btn btn-secondary btn-sm rounded"><i class="fa fa-link pr-1"></i> Add Related Product</a>
-      <a href="#" class="btn btn-secondary btn-sm rounded"><i class="fa fa-upload pr-1"></i> Import Products</a>
-      <a href="#" class="btn btn-secondary btn-sm rounded"><i class="fa fa-boxes pr-1"></i> Manage Stock</a>
-      <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-search pr-1"></i> Publish</a>`;
+    actionArea.innerHTML = [
+      "Add Print Product",
+      "Add Ready To Buy",
+      "Add Kit Product",
+      { label: "Add Related Product", tone: "purple", icon: "fa-link" },
+      "Import Products",
+      { label: "Manage Stock", tone: "grey", icon: "fak fa-manage-stock" },
+      "Publish",
+    ].map(pageButton).join("");
   }
   const filterTabs = proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"]);
+  const proposalLead = `${proposalMarkup("product-catalog")}${filterTabs}`;
+  const proposalDetail = proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.");
   const table = root.querySelector("table");
   const tableBlock = table?.closest(".table-responsive, .dataTables_wrapper, .card, .row") || table;
+  const searchBlock = root.querySelector(".search")?.closest(".row") || root.querySelector("form#frm")?.closest(".row");
+  if (searchBlock) {
+    searchBlock.insertAdjacentHTML("beforebegin", proposalLead);
+  }
   if (tableBlock) {
-    tableBlock.insertAdjacentHTML("beforebegin", `${proposalMarkup("product-catalog")}${filterTabs}${proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.")}`);
+    tableBlock.insertAdjacentHTML("beforebegin", searchBlock ? proposalDetail : `${proposalLead}${proposalDetail}`);
   } else if (heading) {
-    heading.closest(".page-header, .page-head")?.insertAdjacentHTML("afterend", `${proposalMarkup("product-catalog")}${filterTabs}${proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.")}`);
+    heading.closest(".page-header, .page-head")?.insertAdjacentHTML("afterend", `${proposalLead}${proposalDetail}`);
   }
   const tableBody = root.querySelector("table tbody");
   if (tableBody) {
@@ -1377,7 +1439,11 @@ function productCategoriesPage() {
   const pagination = groupView
     ? `<ul class="pagination"><li class="paginate_button page-item previous disabled"><a class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a class="page-link">1</a></li><li class="paginate_button page-item next disabled"><a class="page-link"><i class="fa fa-angle-right"></i></a></li></ul>`
     : `<ul class="pagination"><li class="paginate_button page-item previous disabled"><a class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a class="page-link">1</a></li><li class="paginate_button page-item"><a class="page-link">2</a></li><li class="paginate_button page-item"><a class="page-link">3</a></li><li class="paginate_button page-item"><a class="page-link">4</a></li><li class="paginate_button page-item"><a class="page-link">5</a></li><li class="paginate_button page-item disabled"><a class="page-link">...</a></li><li class="paginate_button page-item"><a class="page-link">10</a></li><li class="paginate_button page-item next"><a class="page-link"><i class="fa fa-angle-right"></i></a></li></ul>`;
+  const proposalContext = OPS.mode === "proposed"
+    ? `${proposalMarkup("product-catalog")}${changeNote("Product Categories keeps only Product Category and Category group tabs. Page Categories belongs in Site Builder, not Product Catalog.")}`
+    : "";
   return `<section class="page ops-product-category-page">
+    ${proposalContext}
     <div class="row" id="product_category_listing_content">
       <div class="col-12">
         <div class="page-header">
@@ -1538,20 +1604,15 @@ function stockSettingsPage() {
   };
   const isTax = active === "Product Tax/VAT Settings";
   const importLabel = isTax ? "" : active === "Stock" ? "Import Stock" : "Import Product Weight";
+  const headerActions = isTax
+    ? ["Add Tax/VAT Rule", "Save", "Reset"].map(pageButton).join("")
+    : (importLabel ? pageButton(importLabel) : "");
   const taxRows = [
     ["1", "Arizona Retail Tax", "Products", "8.60%", "All Stores", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["2", "Tax Exempt Products", "Selected Categories", "0.00%", "B2B Stores", "<span class=\"toggle on\"></span>", actionButton("Action")],
   ];
   const settingsBody = isTax
-    ? `<div class="page-header sim-inner-header">
-        <h2 class="sim-section-title mb-0">Product Tax/VAT Settings</h2>
-        <div class="float-right action_area">
-          <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-plus-circle pr-1"></i> Add Tax/VAT Rule</a>
-          <a href="#" class="btn btn-info btn-sm rounded"><i class="fa fa-save pr-1"></i> Save</a>
-          <a href="#" class="btn btn-light btn-sm rounded"><i class="fa fa-undo pr-1"></i> Reset</a>
-        </div>
-      </div>
-      <div class="form-inline sim-filter-row">
+    ? `<div class="form-inline sim-filter-row">
         <input class="form-control form-control-sm mr-1" placeholder="Search">
         <select class="form-control form-control-sm mr-1"><option>Tax Type</option></select>
         <select class="form-control form-control-sm mr-1"><option>Store</option></select>
@@ -1595,11 +1656,12 @@ function stockSettingsPage() {
     <div class="page-header">
       <h1>${h(title)}</h1>
       <div class="float-right action_area">
-        ${importLabel ? `<a href="#" class="btn btn-secondary btn-sm rounded"><i class="fa fa-upload pr-1"></i> ${h(importLabel)}</a>` : ""}
+        ${headerActions}
       </div>
     </div>
     ${proposalMarkup("stock-settings")}
     ${proposed ? proposalCallout("Stock & Settings groups Product Weight, Production Days, Products SKU, Stock, and Product Tax/VAT Settings into one product-settings context. Current OPS only has Product Weight, Production Days, and Products SKU on this tab set.") : ""}
+    ${isTax ? `<h2 class="sim-section-title">${h(active)}</h2>` : ""}
     ${settingsBody}
   </section>`;
 }
@@ -2043,23 +2105,50 @@ function siteBuilderTabs() {
 }
 
 function fastFilters(items) {
-  return `<div class="fast-filters">${items.map(item => `<button type="button" class="btn btn-light btn-sm">${h(item)}</button>`).join("")}</div>`;
+  return proposedFilterTabs(items);
 }
 
 function proposedFilterTabs(items) {
-  return `<div class="tabs-above ops-context-tabs ops-filter-tabs" role="tablist">
-    <ul class="nav nav-tabs">${items.map((item, index) => `<li class="nav-item"><button type="button" class="nav-link ${index === 0 ? "active" : ""}">${h(item)}</button></li>`).join("")}</ul>
+  return combinedFilterTabs(items);
+}
+
+function combinedFilterTabs(items) {
+  return `<div class="row">
+    <div class="col-12">
+      <div class="tabs-above ops-context-tabs" role="tablist">
+        <ul class="nav nav-tabs">${items.map((item, index) => {
+          const label = typeof item === "string" ? item : item.label;
+          const iconClass = typeof item === "string" ? combinedTabIcon(item) : (item.icon || combinedTabIcon(label));
+          return `<li class="nav-item text-md-center"><a href="javascript:void(0)" class="nav-link ${index === 0 ? "active" : ""}" data-toggle="tab"><i class="${h(iconClass)}"></i><span class="menu-text">${h(label)}</span></a></li>`;
+        }).join("")}</ul>
+      </div>
+    </div>
   </div>`;
+}
+
+function combinedTabIcon(label) {
+  const normalized = String(label || "").toLowerCase();
+  if (normalized.includes("all orders")) return "fa fa-shopping-cart";
+  if (normalized.includes("open")) return "fa fa-clock";
+  if (normalized.includes("fulfilled") || normalized.includes("unpaid")) return "fa fa-dollar-sign";
+  if (normalized.includes("closed") || normalized.includes("archived")) return "fa fa-archive";
+  if (normalized.includes("all products")) return "fa fa-tags";
+  if (normalized.includes("print")) return "fa fa-print";
+  if (normalized.includes("ready")) return "fa fa-shopping-cart";
+  if (normalized.includes("kit")) return "fa fa-boxes";
+  if (normalized.includes("related")) return "fa fa-link";
+  if (normalized.includes("stock")) return "fa fa-boxes";
+  return "fa fa-list";
 }
 
 function tabStrip(items, activePage = OPS.page) {
   const normalized = items.map(item => typeof item === "string" ? { label: item } : item);
   const activeIndex = normalized.findIndex(item => item.page === activePage);
-  return `<ul class="nav nav-tabs sim-subtabs">${normalized.map((item, index) => {
+  return `<div class="tabs-above"><ul class="nav nav-tabs sim-subtabs">${normalized.map((item, index) => {
     const isActive = item.page ? item.page === activePage : (activeIndex === -1 && index === 0);
     const dataPage = item.page ? ` data-page="${h(item.page)}" href="#${OPS.mode}/${h(item.page)}"` : ` href="#"`;
     return `<li class="nav-item"><a${dataPage} class="nav-link ${isActive ? "active" : ""}">${h(item.label)}</a></li>`;
-  }).join("")}</ul>`;
+  }).join("")}</ul></div>`;
 }
 
 function dataTable(headers, rows, id = "") {
@@ -2152,25 +2241,70 @@ const proposalAnnotations = {
   ],
 };
 
+function resetProposalContext() {
+  OPS.proposalContext = { keys: [], messages: [] };
+}
+
+function addProposalKey(key = OPS.page) {
+  if (OPS.mode !== "proposed") return;
+  const normalized = key || OPS.page;
+  if (!OPS.proposalContext.keys.includes(normalized)) OPS.proposalContext.keys.push(normalized);
+}
+
+function addProposalMessage(text, title = "Proposed change") {
+  if (OPS.mode !== "proposed" || !text) return;
+  const message = String(text);
+  const duplicate = OPS.proposalContext.messages.some(item => item.title === title && item.body === message);
+  if (!duplicate) OPS.proposalContext.messages.push({ title, body: message });
+}
+
 function proposalMarkup(key = OPS.page) {
-  if (OPS.mode !== "proposed") return "";
-  const notes = proposalAnnotations[key] || proposalAnnotations[OPS.page] || [
-    ["Proposed route", "This screen uses the proposed navigation label while preserving the OPS page frame, table treatment, and control density."],
-    ["Needs page-specific review", "If this screen is part of the final proposal, compare it against the live OPS page and replace this generic annotation with screen-specific notes."],
+  addProposalKey(key);
+  return "";
+}
+
+function proposalNotes() {
+  if (OPS.mode !== "proposed") return [];
+  const keys = [...OPS.proposalContext.keys, OPS.page].filter(Boolean);
+  const notes = [];
+  keys.forEach(key => {
+    (proposalAnnotations[key] || []).forEach(([title, body]) => {
+      if (!notes.some(note => note.title === title && note.body === body)) notes.push({ title, body });
+    });
+  });
+  if (notes.length) return notes;
+  return [
+    { title: "Proposed route", body: "This screen uses the proposed navigation label while preserving the OPS page frame, table treatment, and control density." },
+    { title: "Needs page-specific review", body: "If this screen is part of the final proposal, compare it against the live OPS page and replace this generic annotation with screen-specific notes." },
   ];
-  if (!notes?.length) return "";
-  return `<div class="ops-proposal-markup-shell">
-    <button type="button" class="btn btn-info btn-sm ops-proposal-toggle" data-proposal-toggle aria-expanded="false"><i class="fa fa-info-circle pr-1"></i> Show proposal notes</button>
-    <aside class="ops-proposal-markup" aria-label="Proposed screen explanation" data-proposal-overlay hidden>
-      <div class="ops-proposal-markup-title">
-        <span><i class="fa fa-info-circle pr-1"></i>Proposed screen markup</span>
-        <button type="button" class="ops-proposal-close" data-proposal-close aria-label="Hide proposal notes"><i class="fa fa-times"></i></button>
-      </div>
-      <div class="ops-proposal-markup-grid">
-      ${notes.map(([title, body], index) => `<div class="ops-proposal-pin"><span>${index + 1}</span><div><b>${h(title)}</b><p>${h(body)}</p></div></div>`).join("")}
-      </div>
-    </aside>
-  </div>`;
+}
+
+function proposalWindowStyle() {
+  const position = OPS.proposalWindowPosition;
+  if (!position) return "";
+  return ` style="left:${Math.round(position.left)}px;top:${Math.round(position.top)}px"`;
+}
+
+function proposalWindowTitle() {
+  if (OPS.mode === "proposed" && OPS.page === "product-catalog") return "Product Catalog";
+  return pageTitle();
+}
+
+function proposalWindow() {
+  if (OPS.mode !== "proposed") return "";
+  const notes = proposalNotes();
+  const messages = OPS.proposalContext.messages;
+  if (!notes.length && !messages.length) return "";
+  return `<aside class="card bcard ops-proposal-window" data-proposal-window role="dialog" aria-label="Proposal notes" ${OPS.proposalWindowOpen ? "" : "hidden"}${proposalWindowStyle()}>
+    <div class="card-header ops-proposal-window-header" data-proposal-drag-handle>
+      <h3 class="card-title text-120 mb-0"><i class="fa fa-info-circle text-info pr-1"></i>${h(proposalWindowTitle())}</h3>
+      <button type="button" class="btn btn-xs btn-light-lightgrey ops-proposal-close" data-proposal-close aria-label="Close proposal notes"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="card-body ops-proposal-window-body">
+      ${messages.length ? `<div class="ops-proposal-window-section"><h4>Proposed changes</h4>${messages.map(item => `<div class="ops-proposal-window-item"><b>${h(item.title)}</b><p>${h(item.body)}</p></div>`).join("")}</div>` : ""}
+      ${notes.length ? `<div class="ops-proposal-window-section"><h4>Screen notes</h4>${notes.map(item => `<div class="ops-proposal-window-item"><b>${h(item.title)}</b><p>${h(item.body)}</p></div>`).join("")}</div>` : ""}
+    </div>
+  </aside>`;
 }
 
 function routeSummary() {
@@ -2187,6 +2321,35 @@ function routeNote() {
 
 function actionButton(label = "Action") {
   return `<button type="button" class="btn btn-outline-lightgrey btn-sm">${h(label)}</button>`;
+}
+
+function normalizePageAction(action) {
+  return typeof action === "string" ? { label: action } : { ...(action || {}) };
+}
+
+function pageActionTone(label) {
+  const normalized = String(label || "");
+  if (normalized.includes("Add") || normalized.includes("Publish") || normalized.includes("Submit")) return "success";
+  if (normalized.includes("Related") || normalized.includes("Rules")) return "purple";
+  if (normalized.includes("Import") || normalized.includes("Manage") || normalized.includes("Duplicate") || normalized.includes("Saved") || normalized.includes("Reset") || normalized.includes("Back") || normalized.includes("Cancel")) return "grey";
+  if (normalized.includes("Export") || normalized.includes("Search") || normalized.includes("Save") || normalized.includes("Job Board") || normalized.includes("Payment")) return "info";
+  return "success";
+}
+
+function pageActionIcon(label) {
+  const normalized = String(label || "");
+  if (normalized.includes("Add")) return "fa-plus-circle";
+  if (normalized.includes("Save")) return "fa-save";
+  if (normalized.includes("Import")) return "fa-upload";
+  if (normalized.includes("Export")) return "fa-download";
+  if (normalized.includes("Reset")) return "fa-undo";
+  if (normalized.includes("Back") || normalized.includes("Cancel")) return "fa-arrow-left";
+  if (normalized.includes("Search") || normalized.includes("Publish")) return "fa-search";
+  if (normalized.includes("Preview")) return "fa-eye";
+  if (normalized.includes("Related")) return "fa-link";
+  if (normalized.includes("Manage Stock")) return "fak fa-manage-stock";
+  if (normalized.includes("Duplicate")) return "fa-copy";
+  return "";
 }
 
 function proposedCatalogRowsHtml() {
@@ -2208,34 +2371,23 @@ function proposedCatalogRowsHtml() {
   </tr>`).join("");
 }
 
-function pageButton(label) {
-  const normalized = String(label || "");
-  const icon = normalized.includes("Add") ? "fa-plus-circle"
-    : normalized.includes("Save") ? "fa-save"
-      : normalized.includes("Import") ? "fa-upload"
-        : normalized.includes("Export") ? "fa-download"
-          : normalized.includes("Reset") ? "fa-undo"
-            : normalized.includes("Back") ? "fa-arrow-left"
-              : normalized.includes("Search") ? "fa-search"
-                : normalized.includes("Preview") ? "fa-eye"
-                  : normalized.includes("Publish") ? "fa-search"
-                    : "";
-  const cls = normalized.includes("Reset") || normalized.includes("Back") || normalized.includes("Cancel")
-    ? "btn btn-grey btn-sm rounded"
-    : normalized.includes("Import") || normalized.includes("Manage") || normalized.includes("Related") || normalized.includes("Duplicate") || normalized.includes("Saved")
-      ? "btn btn-secondary btn-sm rounded"
-      : normalized.includes("Export") || normalized.includes("Search") || normalized.includes("Save") || normalized.includes("Job Board") || normalized.includes("Payment")
-        ? "btn btn-info btn-sm rounded"
-        : "btn btn-success btn-sm rounded";
-  return `<button type="button" class="${cls}">${icon ? `<i class="fa ${icon} pr-1"></i>` : ""}${h(normalized)}</button>`;
+function pageButton(action) {
+  const item = normalizePageAction(action);
+  const label = String(item.label || "");
+  const tone = item.tone || pageActionTone(label);
+  const icon = item.icon ?? pageActionIcon(label);
+  const iconClass = icon && !icon.includes(" ") ? `fa ${icon}` : icon;
+  return `<a href="javascript:void(0)" class="btn btn-${h(tone)} btn-sm btn-sm ml-1 rounded">${iconClass ? `<i class="${h(iconClass)} pr-1"></i>` : ""}${h(label)}</a>`;
 }
 
 function changeNote(text) {
-  return `<div class="note proposed-note"><b>Proposed change:</b> ${text}</div>`;
+  addProposalMessage(text);
+  return "";
 }
 
 function proposalCallout(text) {
-  return `<div class="alert alert-info ops-proposal-callout"><b>Proposed change:</b> ${h(text)}</div>`;
+  addProposalMessage(text);
+  return "";
 }
 
 function originalNote(text) {
@@ -2243,19 +2395,101 @@ function originalNote(text) {
 }
 
 function pageHead(title, actions) {
-  return `<div class="page-head"><h1 class="page-title">${h(title)}</h1><div class="action_area">${actions.map(a => pageButton(a)).join("")}</div></div>`;
+  return `<div class="page-header"><h1>${h(title)}</h1><div class="float-right action_area">${actions.map(a => pageButton(a)).join("")}</div></div>`;
 }
 
 function filters(items) {
-  return `<div class="filters form-inline">${items.map(i => i.includes("Selected") ? `<button type="button" class="btn btn-light btn-sm">${h(i)} <span class="fa fa-angle-down"></span></button>` : `<input class="form-control form-control-sm" placeholder="${h(i)}">`).join("")}<button type="button" class="btn btn-info btn-sm search-btn"><i class="fa fa-search pr-1"></i>Search</button><button type="button" class="btn btn-link btn-sm link-btn">Reset</button></div>`;
+  return `<div class="form-inline align-items-center mb-3">${items.map(filterControl).join("")}<button type="button" class="btn btn-info btn-sm mr-1 mb-2"><i class="fa fa-search pr-1"></i>Search</button><a href="javascript:void(0)" class="btn btn-link btn-sm px-1 mb-2">Reset</a></div>`;
+}
+
+function filterControl(item) {
+  const label = String(item || "");
+  const cleanLabel = label.replace(/:$/, "");
+  const width = filterControlWidth(cleanLabel);
+  const widthStyle = ` style="min-width:${width}rem"`;
+  if (filterUsesSelect(cleanLabel)) {
+    return `<select class="custom-select custom-select-sm form-control form-control-sm mr-1 mb-2"${widthStyle}><option>${h(cleanLabel)}</option></select>`;
+  }
+  return `<input type="text" class="form-control form-control-sm mr-1 mb-2"${widthStyle} placeholder="${h(label)}">`;
+}
+
+function filterControlWidth(label) {
+  const normalized = String(label || "").toLowerCase();
+  if (normalized.includes("product category") || normalized.includes("payment status")) return 10.5;
+  if (normalized.includes("product status") || normalized.includes("order group")) return 9.25;
+  if (normalized.includes("company") || normalized.includes("date") || normalized.includes("customer")) return 9.75;
+  if (normalized.includes("price category") || normalized.includes("template category")) return 10;
+  if (normalized.includes("selected")) return 6.75;
+  if (normalized.includes("status")) return 6.5;
+  if (normalized.includes("store")) return 7.25;
+  if (normalized.includes("type") || normalized.includes("role") || normalized.includes("scope")) return 8;
+  if (normalized.length > 16) return 10.5;
+  if (normalized.length > 10) return 9;
+  return 8;
+}
+
+function filterUsesSelect(label) {
+  const normalized = String(label || "").toLowerCase();
+  return normalized.includes("selected")
+    || normalized.startsWith("select")
+    || normalized.includes("status")
+    || normalized.includes("category")
+    || normalized.includes("store")
+    || normalized.includes("type")
+    || normalized.includes("scope")
+    || normalized.includes("role")
+    || normalized.includes("group")
+    || normalized.includes("schema")
+    || normalized.includes("product")
+    || normalized.includes("report")
+    || normalized.includes("folder")
+    || normalized.includes("tag")
+    || normalized.includes("trigger");
 }
 
 function formRows(items) {
-  return `<div class="form">${items.map(i => `<label><span>${h(i)}</span><input></label>`).join("")}<label><span>Status</span><span class="toggle on"></span></label></div>`;
+  const rows = items.map(item => currentFormRow(item, formControl(item))).join("");
+  const hasStatus = items.some(item => String(item || "").toLowerCase() === "status");
+  return `<div>${rows}${hasStatus ? "" : currentFormRow("Status", currentStatusToggle(true))}</div>`;
+}
+
+function formControl(item) {
+  const label = String(item || "");
+  const normalized = label.toLowerCase();
+  if (normalized === "status" || normalized.includes("override") || normalized.includes("exclude") || normalized.includes("blog page")) {
+    return currentStatusToggle(!(normalized.includes("override") || normalized.includes("exclude") || normalized.includes("blog page")));
+  }
+  if (normalized.includes("description") || normalized.includes("schema") || normalized.includes("css") || normalized.includes("ip addresses")) {
+    return currentTextarea("", 3);
+  }
+  if (formUsesSelect(normalized)) {
+    return currentSelect([label, "All", "Active"], label);
+  }
+  return currentTextInput("");
+}
+
+function formUsesSelect(normalized) {
+  return normalized.includes("category")
+    || normalized.includes("scope")
+    || normalized.includes("store")
+    || normalized.includes("type")
+    || normalized.includes("format")
+    || normalized.includes("style")
+    || normalized.includes("method")
+    || normalized.includes("folder")
+    || normalized.includes("section")
+    || normalized.includes("role")
+    || normalized.includes("default");
 }
 
 function render() {
   document.getElementById("app").innerHTML = app();
+}
+
+let proposalDrag = null;
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
 }
 
 function syncHash() {
@@ -2285,31 +2519,19 @@ document.addEventListener("click", event => {
     return;
   }
 
-  const proposalToggle = event.target.closest("[data-proposal-toggle]");
-  if (proposalToggle) {
+  const proposalOpen = event.target.closest("[data-proposal-open]");
+  if (proposalOpen) {
     event.preventDefault();
-    const shell = proposalToggle.closest(".ops-proposal-markup-shell");
-    const overlay = shell?.querySelector("[data-proposal-overlay]");
-    if (overlay) {
-      const nextHidden = !overlay.hidden;
-      overlay.hidden = nextHidden;
-      proposalToggle.setAttribute("aria-expanded", String(!nextHidden));
-      proposalToggle.innerHTML = `<i class="fa fa-info-circle pr-1"></i> ${nextHidden ? "Show" : "Hide"} proposal notes`;
-    }
+    OPS.proposalWindowOpen = !OPS.proposalWindowOpen;
+    render();
     return;
   }
 
   const proposalClose = event.target.closest("[data-proposal-close]");
   if (proposalClose) {
     event.preventDefault();
-    const shell = proposalClose.closest(".ops-proposal-markup-shell");
-    const overlay = shell?.querySelector("[data-proposal-overlay]");
-    const toggle = shell?.querySelector("[data-proposal-toggle]");
-    if (overlay) overlay.hidden = true;
-    if (toggle) {
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.innerHTML = `<i class="fa fa-info-circle pr-1"></i> Show proposal notes`;
-    }
+    OPS.proposalWindowOpen = false;
+    render();
     return;
   }
 
@@ -2319,8 +2541,13 @@ document.addEventListener("click", event => {
   const mode = event.target.closest("[data-mode]")?.dataset.mode;
   if (mode) {
     if (mode !== OPS.mode) {
-      OPS.page = pageForModeSwitch(OPS.page, mode);
+      const fromMode = OPS.mode;
+      const fromPage = OPS.page;
+      const nextPage = pageForModeToggle(mode);
+      OPS.modeSwitchReturn = { fromMode, fromPage, toMode: mode, toPage: nextPage };
+      OPS.page = nextPage;
       OPS.mode = mode;
+      if (mode !== "proposed") OPS.proposalWindowOpen = false;
       setOpenMenuForPage();
       syncHash();
       render();
@@ -2333,7 +2560,10 @@ document.addEventListener("click", event => {
     const clicked = [...(OPS.mode === "current" ? currentMenu : proposedMenu)].find(item => item.id === menu);
     OPS.openMenu = OPS.openMenu === menu ? "" : menu;
     OPS.openChild = "";
-    if (clicked?.page) OPS.page = clicked.page;
+    if (clicked?.page) {
+      OPS.modeSwitchReturn = null;
+      OPS.page = clicked.page;
+    }
     syncHash();
     render();
     return;
@@ -2346,12 +2576,54 @@ document.addEventListener("click", event => {
 
   const page = event.target.closest("[data-page]")?.dataset.page;
   if (page) {
+    OPS.modeSwitchReturn = null;
     OPS.page = page;
     const menu = (OPS.mode === "current" ? currentMenu : proposedMenu).find(group => isActiveGroupForPage(group, page));
     if (menu) OPS.openMenu = menu.id;
     syncHash();
   }
   render();
+});
+
+document.addEventListener("pointerdown", event => {
+  const dragHandle = event.target.closest("[data-proposal-drag-handle]");
+  if (!dragHandle) return;
+  const windowEl = dragHandle.closest("[data-proposal-window]");
+  if (!windowEl) return;
+  event.preventDefault();
+  const rect = windowEl.getBoundingClientRect();
+  proposalDrag = {
+    pointerId: event.pointerId,
+    offsetX: event.clientX - rect.left,
+    offsetY: event.clientY - rect.top,
+    width: rect.width,
+    height: rect.height,
+  };
+  windowEl.classList.add("is-dragging");
+  dragHandle.setPointerCapture?.(event.pointerId);
+});
+
+document.addEventListener("pointermove", event => {
+  if (!proposalDrag) return;
+  const windowEl = document.querySelector("[data-proposal-window]");
+  if (!windowEl) return;
+  const maxLeft = Math.max(8, window.innerWidth - proposalDrag.width - 8);
+  const maxTop = Math.max(8, window.innerHeight - proposalDrag.height - 8);
+  const left = clamp(event.clientX - proposalDrag.offsetX, 8, maxLeft);
+  const top = clamp(event.clientY - proposalDrag.offsetY, 8, maxTop);
+  OPS.proposalWindowPosition = { left, top };
+  windowEl.style.left = `${left}px`;
+  windowEl.style.top = `${top}px`;
+  windowEl.style.right = "auto";
+  windowEl.style.bottom = "auto";
+});
+
+document.addEventListener("pointerup", event => {
+  if (!proposalDrag) return;
+  const dragHandle = document.querySelector("[data-proposal-drag-handle]");
+  dragHandle?.releasePointerCapture?.(proposalDrag.pointerId ?? event.pointerId);
+  document.querySelector("[data-proposal-window]")?.classList.remove("is-dragging");
+  proposalDrag = null;
 });
 
 document.addEventListener("submit", event => {
