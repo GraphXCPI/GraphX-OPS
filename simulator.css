@@ -667,23 +667,53 @@ tr:nth-child(even) td { background: #fbfdff; }
   border-color: #d8e3ed;
   background: #fbfdff;
 }
+.ops-proposal-markup-shell {
+  position: relative;
+  margin: 0 0 10px;
+}
+.ops-proposal-toggle {
+  margin: 0 0 8px;
+}
 .ops-proposal-markup {
-  margin: 0 0 12px;
+  position: fixed;
+  right: 24px;
+  top: 96px;
+  width: 430px;
+  max-width: calc(100vw - 280px);
+  max-height: calc(100vh - 130px);
+  overflow: auto;
+  z-index: 1050;
   border: 1px solid #cfe0ee;
-  background: #f8fbfd;
-  padding: 9px 11px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(32, 52, 68, .18);
+  padding: 0;
   color: #4f5b66;
 }
+.ops-proposal-markup[hidden] {
+  display: none !important;
+}
 .ops-proposal-markup-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fbfd;
+  border-bottom: 1px solid #e1edf6;
+  padding: 8px 10px;
   color: #2b87d0;
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 7px;
+}
+.ops-proposal-close {
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  padding: 0;
 }
 .ops-proposal-markup-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  grid-template-columns: 1fr;
   gap: 7px;
+  padding: 10px;
 }
 .ops-proposal-pin {
   display: flex;
@@ -716,6 +746,58 @@ tr:nth-child(even) td { background: #fbfdff; }
   color: #555;
   font-size: 12px;
   line-height: 1.35;
+}
+.ops-context-tabs {
+  border-bottom: 1px solid #b7cde2;
+  margin: 0 0 14px;
+}
+.ops-context-tabs .nav-tabs {
+  border-bottom: 0;
+}
+.ops-context-tabs .nav-item {
+  margin-bottom: 0;
+}
+.ops-context-tabs .nav-link {
+  min-width: 90px;
+  height: 51px;
+  padding: 8px 14px 6px;
+  border: 1px solid #d4dce4;
+  border-bottom: 0;
+  border-radius: 0;
+  background: #f7f8fa;
+  color: #737b84;
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+}
+.ops-context-tabs .nav-link i {
+  color: #737b84;
+  font-size: 16px;
+  line-height: 18px;
+}
+.ops-context-tabs .nav-link.active {
+  position: relative;
+  top: 1px;
+  background: #fff;
+  color: #2b7dbc;
+  border-color: #8ebbe2;
+  border-top: 2px solid #4b9bd0;
+}
+.ops-context-tabs .nav-link.active i {
+  color: #2b7dbc;
+}
+.ops-filter-tabs {
+  border-bottom: 0;
+  margin: 8px 0 10px;
+}
+.ops-filter-tabs .nav-link {
+  height: 31px;
+  min-width: 125px;
+  padding: 6px 14px;
+  line-height: 17px;
+}
+.ops-product-tabs {
+  margin-top: 0;
 }
 .media-grid {
   display: grid;

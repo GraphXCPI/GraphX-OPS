@@ -312,7 +312,9 @@ const proposedMenu = [
   ] },
   { id: "admin", label: "Admin Users", icon: icon.admin, children: [
     { label: "Users", page: "admin-users" },
-    { label: "Roles", page: "roles" },
+    { label: "Groups & Roles", page: "roles" },
+    { label: "Production Users", page: "workflow-admin" },
+    { label: "Production Roles", page: "workflow-roles" },
   ] },
 ];
 
@@ -354,7 +356,7 @@ const pageFamilies = {
   imposition: ["sheet-sizes", "schemas", "imposition-symbols", "impose-job", "product-schema-settings"],
   studio: ["studio-settings", "studio-language", "studio-language-text", "studio-images", "studio-image-categories", "studio-colors", "studio-css", "studio-models", "studio-fonts"],
   reports: ["sales-reports", "production-reports", "inventory-reports", "system-log", "system-logs", "coupon-report", "customer-details-report", "customer-order-summary", "inventory-request-report", "inventory-report", "payment-request-report", "pay-on-account-report", "vendor-commission-report", "vendor-order-summary", "stock-summary-report", "production-day-report", "production-time-report", "product-sales-report", "sales-agent-commission-report", "sales-order-product-details", "sales-order-summary", "sales-order-details", "sales-quote-summary", "shipping-report", "tax-report", "template-sales-report"],
-  admin: ["admin-users", "roles", "workflow-admin"],
+  admin: ["admin-users", "roles", "workflow-admin", "workflow-roles"],
 };
 
 const pageAliases = {
@@ -373,6 +375,8 @@ const pageAliases = {
   "production-days": "Production Days",
   "products-sku": "Products SKU",
   "product-price-bulk": "Product Price - Bulk",
+  "workflow-admin": "Workflow Admin",
+  "workflow-roles": "Workflow Roles",
   "product-option-price-bulk": "Product Option Price - Bulk",
   "product-price-excel": "Product Price - Excel",
   "product-price-percent": "Percentage (+/-)",
@@ -1208,6 +1212,10 @@ function proposedProductCatalogPage() {
       <a href="#" class="btn btn-secondary btn-sm rounded"><i class="fa fa-boxes pr-1"></i> Manage Stock</a>
       <a href="#" class="btn btn-success btn-sm rounded"><i class="fa fa-search pr-1"></i> Publish</a>`;
   }
+  const pageHeader = heading?.closest(".page-header, .page-head");
+  if (pageHeader) {
+    pageHeader.insertAdjacentHTML("afterend", productCatalogTabs());
+  }
   const filterTabs = proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"]);
   const table = root.querySelector("table");
   const tableBlock = table?.closest(".table-responsive, .dataTables_wrapper, .card, .row") || table;
@@ -1242,18 +1250,20 @@ function proposedProductCatalogFallbackPage() {
     `<span class="toggle ${p[5] === "On" ? "on" : "off"}"></span>`,
     actionButton("Action"),
   ]);
-  return `<section class="page">${pageHead("Product Catalog", actions)}${proposalMarkup("product-catalog")}${proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"])}${filters(["Search", "Product Category", "Select Store", "Price Category"])}${proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.")}${dataTable(headers, rows, "ops-products-table")}</section>`;
+  return `<section class="page">${pageHead("Product Catalog", actions)}${productCatalogTabs()}${proposalMarkup("product-catalog")}${proposedFilterTabs(["All Products", "Print Products", "Ready To Buy", "Kit Product", "Related Product", "Stock Enabled"])}${filters(["Search", "Product Category", "Select Store", "Price Category"])}${proposalCallout("Product Catalog is one list across all product types. These controls are quick filters, not separate lists: Print Products, Ready To Buy, Kit Product, Related Product, stock-enabled products, store scope, and status all stay visible as table context.")}${dataTable(headers, rows, "ops-products-table")}</section>`;
 }
 
 function productOptionsPage() {
-  return `<section class="page">${pageHead(pageTitle(), ["Add Product Option", "Import", "Export"])}${filters(["Search", "Option Type", "Status"])}${dataTable(["Sr#", "Product Option", "Display Type", "Values", "Required", "Status", "Action"], [
+  const proposed = OPS.mode === "proposed";
+  return `<section class="page">${pageHead(pageTitle(), ["Add Product Option", "Import", "Export"])}${proposed ? productCatalogTabs() : ""}${proposed ? proposalMarkup("product-catalog") : ""}${filters(["Search", "Option Type", "Status"])}${dataTable(["Sr#", "Product Option", "Display Type", "Values", "Required", "Status", "Action"], [
     ["1", "Size", "Dropdown", "Small, Medium, Large, Custom Size", "Yes", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["2", "Material", "Dropdown", "PolyBoard, Vinyl, Coroplast", "Yes", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["3", "Finishing", "Checkbox", "Grommets, Lamination, Rounded Corners", "No", "<span class=\"toggle on\"></span>", actionButton("Action")],
-  ])}${OPS.mode === "proposed" ? changeNote("Product Options remains a Product Catalog subpage. It is not the product list, category list, or stock page.") : originalNote("Original Product Options is a distinct Products menu page.")}</section>`;
+  ])}${proposed ? proposalCallout("Product Options remains a Product Catalog subpage. It is not the product list, category list, or stock page.") : originalNote("Original Product Options is a distinct Products menu page.")}</section>`;
 }
 
 function productTaxPage() {
+  if (OPS.mode === "proposed") return stockSettingsPage();
   return `<section class="page">${pageHead(pageTitle(), ["Add Tax/VAT Rule", "Save", "Reset"])}${filters(["Search", "Tax Type", "Store", "Status"])}${dataTable(["Sr#", "Rule Name", "Applies To", "Rate", "Store Scope", "Status", "Action"], [
     ["1", "Arizona Retail Tax", "Products", "8.60%", "All Stores", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["2", "Tax Exempt Products", "Selected Categories", "0.00%", "B2B Stores", "<span class=\"toggle on\"></span>", actionButton("Action")],
@@ -1269,7 +1279,7 @@ function productPricingPage() {
     { label: "Excel Import", page: "product-price-excel" },
     { label: "Percentage (+/-)", page: "product-price-percent" },
   ]);
-  return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
+  return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${proposed ? productCatalogTabs() : ""}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
     ["1", "NOW HIRING DECAL", "Fixed Quantity & Price", "Fixed", "$25.00", "<span class=\"toggle on\"></span>", actionButton("Action")],
     ["2", "T-Shirt OPS", "Range Based With Multiplication", "Range", "$12.00", "<span class=\"toggle off\"></span>", actionButton("Action")],
     ["3", "DTF Prints", "Size based Price", "Dynamic Size", "$0.00", "<span class=\"toggle off\"></span>", actionButton("Action")],
@@ -1372,6 +1382,7 @@ function productCategoriesPage() {
     ? `<ul class="pagination"><li class="paginate_button page-item previous disabled"><a class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a class="page-link">1</a></li><li class="paginate_button page-item next disabled"><a class="page-link"><i class="fa fa-angle-right"></i></a></li></ul>`
     : `<ul class="pagination"><li class="paginate_button page-item previous disabled"><a class="page-link"><i class="fa fa-angle-left"></i></a></li><li class="paginate_button page-item active"><a class="page-link">1</a></li><li class="paginate_button page-item"><a class="page-link">2</a></li><li class="paginate_button page-item"><a class="page-link">3</a></li><li class="paginate_button page-item"><a class="page-link">4</a></li><li class="paginate_button page-item"><a class="page-link">5</a></li><li class="paginate_button page-item disabled"><a class="page-link">...</a></li><li class="paginate_button page-item"><a class="page-link">10</a></li><li class="paginate_button page-item next"><a class="page-link"><i class="fa fa-angle-right"></i></a></li></ul>`;
   return `<section class="page ops-product-category-page">
+    ${OPS.mode === "proposed" ? productCatalogTabs() : ""}
     <div class="row" id="product_category_listing_content">
       <div class="col-12">
         <div class="page-header">
@@ -1579,6 +1590,7 @@ function stockSettingsPage() {
       <h2 class="sim-section-title">${h(active)} Summary</h2>
       <div class="ops-static-datatable sim-weight-table"><table class="table table-striped table-bordered table-hover dataTable no-footer"><thead><tr><th>Sr#</th><th>Product Details</th><th>Setting Type</th><th>${h(detailHeader)}</th><th>Action</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td><b>${h(r[1])}</b></td><td>${h(r[2])}</td><td>${detailValue(r)}</td><td><a class="sim-edit-action"><i class="fa fa-pencil"></i></a></td></tr>`).join("")}</tbody></table></div>`;
   return `<section class="page ops-stock-settings-page">
+    ${proposed ? productCatalogTabs() : ""}
     <div class="row">
       <div class="col-12">
         <div class="tabs-above ops-context-tabs">
@@ -1921,10 +1933,56 @@ function reportsPage() {
 }
 
 function adminPage() {
-  return `<section class="page">${pageHead(pageTitle(), ["Add User", "Save"])}${proposalMarkup("admin")}${filters(["Search", "Role", "Status"])}${dataTable(["Sr#", "Admin User", "Email", "Role", "Status", "Action"], [
+  if (OPS.mode === "proposed") {
+    const screens = {
+      "admin-users": {
+        title: "Users",
+        actions: ["Add User", "Save"],
+        filters: ["Search", "Group / Role", "Status"],
+        headers: ["Sr#", "Admin User", "Email", "Group / Role", "Status", "Action"],
+        rows: [
+          ["1", "Christian De Ramos", "christian@visualgraphx.com", "Admin", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["2", "Developer", "dev@example.com", "Limited", "<span class=\"toggle on\"></span>", actionButton("Action")],
+        ],
+      },
+      roles: {
+        title: "Groups & Roles",
+        actions: ["Add Group / Role", "Save"],
+        filters: ["Search", "Role Type", "Status"],
+        headers: ["Sr#", "Group / Role", "Permission Scope", "Users", "Status", "Action"],
+        rows: [
+          ["1", "Admin", "Full admin access", "2", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["2", "Limited", "Selected admin permissions", "4", "<span class=\"toggle on\"></span>", actionButton("Action")],
+        ],
+      },
+      "workflow-admin": {
+        title: "Production Users",
+        actions: ["Add", "Production Roles"],
+        filters: ["Search", "Production Role", "Status"],
+        headers: ["Sr#", "Production User", "Email", "Production Role", "Status", "Action"],
+        rows: [
+          ["1", "Rahul Shekhawat", "rahul@example.com", "Production Admin", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["2", "Priyank Patel", "priyank@example.com", "Production User", "<span class=\"toggle on\"></span>", actionButton("Action")],
+        ],
+      },
+      "workflow-roles": {
+        title: "Production Roles",
+        actions: ["Add"],
+        filters: ["Search", "Production Role", "Status"],
+        headers: ["Sr#", "Production Role", "Workflow Access", "Users", "Status", "Action"],
+        rows: [
+          ["1", "Production Admin", "All workflow queues", "1", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["2", "Production User", "Assigned workflow queues", "3", "<span class=\"toggle on\"></span>", actionButton("Action")],
+        ],
+      },
+    };
+    const screen = screens[OPS.page] || screens["admin-users"];
+    return `<section class="page">${pageHead(screen.title, screen.actions)}${proposalMarkup("admin")}${filters(screen.filters)}${dataTable(screen.headers, screen.rows, `ops-admin-${OPS.page}`)}${proposalCallout("Admin Users separates staff users, groups and roles, production users, and production roles while preserving the existing OPS user-management flows.")}</section>`;
+  }
+  return `<section class="page">${pageHead(pageTitle(), ["Add User", "Save"])}${filters(["Search", "Role", "Status"])}${dataTable(["Sr#", "Admin User", "Email", "Role", "Status", "Action"], [
     ["1", "Christian De Ramos", "christian@visualgraphx.com", "Admin", "Active", actionButton("Action")],
     ["2", "Developer", "dev@example.com", "Limited", "Active", actionButton("Action")],
-  ])}${OPS.mode === "proposed" ? changeNote("Admin is renamed Admin Users for clearer staff-user ownership.") : originalNote("Original Admin label is terse and mixes users and roles.")}</section>`;
+  ])}${originalNote("Original Admin label is terse and mixes users and roles.")}</section>`;
 }
 
 function storeWorkspacePage() {
@@ -1969,7 +2027,7 @@ function duplicateStorePage() {
 }
 
 function markupMasterPage() {
-  return `<section class="page">${pageHead("Markup Master", ["Save", "Reset"])}${proposalMarkup("markup-master")}<div class="grid two"><div>${panel("Template Builder", formRows(["Markup Title", "Markup Type", "Fixed Markup", "Applied On", "Status"]))}</div><div>${panel("Assignment Context", "<p>Markup Master is the global markup template list and builder under Product Catalog/Pricing. Store-level markup assignment remains in Edit Store because it assigns one of these templates to a store.</p>")}</div></div>${changeNote("Markup Master moves out of Store Management because markup templates can apply beyond a single store, including users and user groups.")}</section>`;
+  return `<section class="page">${pageHead("Markup Master", ["Save", "Reset"])}${OPS.mode === "proposed" ? productCatalogTabs() : ""}${proposalMarkup("markup-master")}<div class="grid two"><div>${panel("Template Builder", formRows(["Markup Title", "Markup Type", "Fixed Markup", "Applied On", "Status"]))}</div><div>${panel("Assignment Context", "<p>Markup Master is the global markup template list and builder under Product Catalog/Pricing. Store-level markup assignment remains in Edit Store because it assigns one of these templates to a store.</p>")}</div></div>${changeNote("Markup Master moves out of Store Management because markup templates can apply beyond a single store, including users and user groups.")}</section>`;
 }
 
 function assetManagerPage() {
@@ -1995,7 +2053,9 @@ function fastFilters(items) {
 }
 
 function proposedFilterTabs(items) {
-  return `<div class="ops-proposed-filter-tabs btn-group" role="tablist">${items.map((item, index) => `<button type="button" class="btn btn-sm ${index === 0 ? "btn-primary active" : "btn-light"}">${h(item)}</button>`).join("")}</div>`;
+  return `<div class="tabs-above ops-context-tabs ops-filter-tabs" role="tablist">
+    <ul class="nav nav-tabs">${items.map((item, index) => `<li class="nav-item"><button type="button" class="nav-link ${index === 0 ? "active" : ""}">${h(item)}</button></li>`).join("")}</ul>
+  </div>`;
 }
 
 function tabStrip(items, activePage = OPS.page) {
@@ -2006,6 +2066,35 @@ function tabStrip(items, activePage = OPS.page) {
     const dataPage = item.page ? ` data-page="${h(item.page)}" href="#${OPS.mode}/${h(item.page)}"` : ` href="#"`;
     return `<li class="nav-item"><a${dataPage} class="nav-link ${isActive ? "active" : ""}">${h(item.label)}</a></li>`;
   }).join("")}</ul>`;
+}
+
+function productCatalogTabs() {
+  if (OPS.mode !== "proposed") return "";
+  const tabs = [
+    ["Products", "product-catalog", "fa fa-tags"],
+    ["Product Options", "product-options", "fa fa-list-ul"],
+    ["Product Categories", "product-categories", "fa fa-folder-open"],
+    ["Stock & Settings", "stock-settings", "fa fa-barcode"],
+    ["Pricing", "product-price", "fa fa-dollar-sign"],
+    ["Markup Master", "markup-master", "fa fa-percent"],
+  ];
+  const pricePages = new Set(["product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-modify", "product-price-percent"]);
+  const stockPages = new Set(["stock-settings", "product-weight", "production-days", "products-sku", "product-tax", "manage-stock"]);
+  const categoryPages = new Set(["product-categories", "category-groups", "product-category-edit", "category-group-edit"]);
+  const activePage = pricePages.has(OPS.page)
+    ? "product-price"
+    : stockPages.has(OPS.page)
+      ? "stock-settings"
+      : categoryPages.has(OPS.page)
+        ? "product-categories"
+        : OPS.page;
+  return `<div class="row">
+    <div class="col-12">
+      <div class="tabs-above ops-context-tabs ops-product-tabs">
+        <ul class="nav nav-tabs">${tabs.map(([label, page, iconClass]) => `<li class="nav-item"><a href="#${OPS.mode}/${page}" data-page="${page}" class="nav-link ${activePage === page ? "active" : ""}"><i class="${iconClass}"></i><br>${h(label)}</a></li>`).join("")}</ul>
+      </div>
+    </div>
+  </div>`;
 }
 
 function dataTable(headers, rows, id = "") {
@@ -2087,7 +2176,10 @@ const proposalAnnotations = {
     ["Rename only", "Reports becomes Reports & System Logs so logs are discoverable beside reports."],
   ],
   admin: [
-    ["Rename only", "Admin becomes Admin Users to clarify this menu owns staff users and roles."],
+    ["Users", "Admin becomes Users under Admin Users."],
+    ["Groups & Roles", "Admin Group / Role becomes Groups & Roles."],
+    ["Production users", "Workflow Admin becomes Production Users."],
+    ["Production roles", "Workflow Roles is surfaced as Production Roles instead of hiding behind a page button."],
   ],
   "markup-master": [
     ["Template builder", "Markup Master is the global markup template list and builder."],
@@ -2102,12 +2194,18 @@ function proposalMarkup(key = OPS.page) {
     ["Needs page-specific review", "If this screen is part of the final proposal, compare it against the live OPS page and replace this generic annotation with screen-specific notes."],
   ];
   if (!notes?.length) return "";
-  return `<aside class="ops-proposal-markup" aria-label="Proposed screen explanation">
-    <div class="ops-proposal-markup-title"><i class="fa fa-info-circle pr-1"></i>Proposed screen markup</div>
-    <div class="ops-proposal-markup-grid">
+  return `<div class="ops-proposal-markup-shell">
+    <button type="button" class="btn btn-info btn-sm ops-proposal-toggle" data-proposal-toggle aria-expanded="false"><i class="fa fa-info-circle pr-1"></i> Show proposal notes</button>
+    <aside class="ops-proposal-markup" aria-label="Proposed screen explanation" data-proposal-overlay hidden>
+      <div class="ops-proposal-markup-title">
+        <span><i class="fa fa-info-circle pr-1"></i>Proposed screen markup</span>
+        <button type="button" class="ops-proposal-close" data-proposal-close aria-label="Hide proposal notes"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="ops-proposal-markup-grid">
       ${notes.map(([title, body], index) => `<div class="ops-proposal-pin"><span>${index + 1}</span><div><b>${h(title)}</b><p>${h(body)}</p></div></div>`).join("")}
-    </div>
-  </aside>`;
+      </div>
+    </aside>
+  </div>`;
 }
 
 function routeSummary() {
@@ -2219,6 +2317,34 @@ document.addEventListener("click", event => {
   if (tabAction && !tabAction.dataset.page) {
     event.preventDefault();
     activateExtractedTab(tabAction);
+    return;
+  }
+
+  const proposalToggle = event.target.closest("[data-proposal-toggle]");
+  if (proposalToggle) {
+    event.preventDefault();
+    const shell = proposalToggle.closest(".ops-proposal-markup-shell");
+    const overlay = shell?.querySelector("[data-proposal-overlay]");
+    if (overlay) {
+      const nextHidden = !overlay.hidden;
+      overlay.hidden = nextHidden;
+      proposalToggle.setAttribute("aria-expanded", String(!nextHidden));
+      proposalToggle.innerHTML = `<i class="fa fa-info-circle pr-1"></i> ${nextHidden ? "Show" : "Hide"} proposal notes`;
+    }
+    return;
+  }
+
+  const proposalClose = event.target.closest("[data-proposal-close]");
+  if (proposalClose) {
+    event.preventDefault();
+    const shell = proposalClose.closest(".ops-proposal-markup-shell");
+    const overlay = shell?.querySelector("[data-proposal-overlay]");
+    const toggle = shell?.querySelector("[data-proposal-toggle]");
+    if (overlay) overlay.hidden = true;
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML = `<i class="fa fa-info-circle pr-1"></i> Show proposal notes`;
+    }
     return;
   }
 
