@@ -410,6 +410,78 @@ const pageAliases = {
   "product-price-percent": "Percentage (+/-)",
 };
 
+const proposedExtractedPageAliases = {
+  "store-credit": "reward-points",
+  "country-states": "countries",
+  "web-optimization": "image-optimization",
+  "site-access": "blocked-ips",
+  "order-exports": "export-api-orders",
+  "studio-language": "studio-language-text",
+  "system-log": "system-logs",
+};
+
+const proposedExactExtractedPages = new Set([
+  "add-order",
+  "order-status",
+  "coupons",
+  "quotes",
+  "quote-status",
+  "vendor-quotes",
+  "vendors",
+  "sales-agents",
+  "customers",
+  "newsletter",
+  "design-proofs",
+  "stores",
+  "store-fields",
+  "product-options",
+  "product-price",
+  "templates",
+  "pdf-blocks",
+  "art-layouts",
+  "template-categories",
+  "cms-pages",
+  "links",
+  "sidebar-management",
+  "sidebar-widget",
+  "themes",
+  "product-page-layout",
+  "language-text",
+  "banners",
+  "form-management",
+  "faqs",
+  "testimonials",
+  "email-templates",
+  "sms-templates",
+  "email-reminders",
+  "site-settings",
+  "languages",
+  "currency",
+  "payments",
+  "shipping",
+  "tax-settings",
+  "external-services",
+  "admin-text",
+  "seo-global",
+  "redirects",
+  "sheet-sizes",
+  "schemas",
+  "impose-job",
+  "product-schema-settings",
+  "studio-settings",
+  "studio-images",
+  "studio-fonts",
+  "admin-users",
+  "roles",
+  "workflow-admin",
+]);
+
+function proposedExactExtractedPageFor(page) {
+  if (proposedExtractedPageAliases[page]) return proposedExtractedPageAliases[page];
+  if (proposedExactExtractedPages.has(page)) return page;
+  return "";
+}
+
 function familyFor(page) {
   return Object.entries(pageFamilies).find(([, pages]) => pages.includes(page))?.[0] || "general";
 }
@@ -432,14 +504,26 @@ const modePageMap = {
     "payment-request": "orders",
     "unpaid-orders": "orders",
     "archive-orders": "orders",
+    "reward-points": "store-credit",
     "export-api-orders": "order-exports",
+    "countries": "country-states",
+    "image-optimization": "web-optimization",
+    "blocked-ips": "site-access",
+    "studio-language-text": "studio-language",
+    "system-logs": "system-log",
     "stores": "stores",
   },
   current: {
     "product-catalog": "print-products",
     "stock-settings": "product-weight",
+    "store-credit": "reward-points",
     "order-exports": "export-api-orders",
     "api-webhooks": "export-api-orders",
+    "country-states": "countries",
+    "web-optimization": "image-optimization",
+    "site-access": "blocked-ips",
+    "studio-language": "studio-language-text",
+    "system-log": "system-logs",
     "stores": "stores",
   },
 };
@@ -693,8 +777,12 @@ function extractedBreadcrumbsForPage() {
   if (OPS.page === "dashboard") return "";
   const extracted = extractedPageFor(OPS.page);
   if (OPS.mode === "current") return extracted?.breadcrumbsHtml || "";
-  if (OPS.mode === "proposed" && OPS.page === "order-status") {
-    return rewriteExtractedModeTargetsHtml(extracted?.breadcrumbsHtml || "", "proposed");
+  if (OPS.mode === "proposed") {
+    const proposedSourcePage = proposedExactExtractedPageFor(OPS.page);
+    if (proposedSourcePage) {
+      const proposedExtracted = extractedPageFor(proposedSourcePage);
+      return rewriteExtractedModeTargetsHtml(proposedExtracted?.breadcrumbsHtml || "", "proposed");
+    }
   }
   return "";
 }
@@ -788,6 +876,10 @@ function content() {
     if (extracted) return extractedOpsPage(extracted);
   }
   if (OPS.page === "dashboard") return dashboard();
+  if (OPS.mode === "proposed") {
+    const proposedSourcePage = proposedExactExtractedPageFor(OPS.page);
+    if (proposedSourcePage) return proposedExtractedOpsPage(proposedSourcePage, `ops-proposed-${OPS.page}`);
+  }
   const family = familyFor(OPS.page);
   if (family === "orders") return ordersPage();
   if (family === "quotes") return quotesPage();
