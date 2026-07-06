@@ -76,10 +76,10 @@ All OPS simulator reference material now lives inside this project under `refere
 - Missing action/detail page audit:
   - Path: `expanded-safe-page-capture-2026-07-06`
   - Key index: `indexes/canonical-safe-page-capture-queue.csv`
-  - Status: queue only, not live-captured yet.
+  - Status: canonical queue plus ignored live CDP capture folders for completed safe targets and targeted retries.
   - Counts: 177 canonical safe page/action targets, 7,527 safe uncaptured URL variants, 292 unsafe/mutation-like targets excluded from the safe queue.
-  - Resume script: `node scripts/capture-staging-safe-pages.mjs --start <queueIndex>` uses the front Google Chrome staging session and writes ignored `live-capture-*` folders.
-  - Current blocker: Chrome currently denies `execute javascript` from Apple Events. Enable Chrome `View > Developer > Allow JavaScript from Apple Events`, log in to staging, then rerun the resume script.
+  - Preferred resume script: `node scripts/capture-staging-safe-pages-cdp.mjs --start <queueIndex> --wait-ms 90000 --no-screenshots --new-tab --cdp-timeout-ms 120000 --server-fetch-timeout-ms 8000 --network-quiet-ms 3000 --settle-ms 2500 --stable-polls 6` uses the logged-in Chrome debug-port session and writes ignored `live-capture-cdp-*` folders.
+  - Apple Events resume script: `node scripts/capture-staging-safe-pages.mjs --start <queueIndex>` remains a fallback only when Chrome JavaScript automation is enabled.
 - Use the staging package before changing parity-sensitive simulator screens. Treat source-derived tab screenshots as source reference; local-rendered screenshots may show square placeholder icons where webfonts did not load.
 
 ### Historical Simulator Archive
@@ -122,11 +122,12 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - source-derived tab states are clearly marked in their manifests;
   - `scripts/capture-staging-safe-pages.mjs` was added for resumed safe-page capture once Chrome Apple Events JavaScript permission and staging auth are available.
 - Final generated bundle status from the 2026-07-06 CDP merge:
-  - `ops-extracted-pages.js` generated `288` extracted OPS routes;
-  - safe capture roots loaded `174/178` available safe pages plus `93/93` captured tab states;
+  - `ops-extracted-pages.js` generated `289` extracted OPS routes;
+  - safe capture roots loaded `175/179` available safe pages plus `93/93` captured tab states;
   - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
-  - skipped safe captures remain source-reference only when their content was empty or intentionally invalid (`send_custom_mail_popup`, `template_manage_block_properties_listing`, `user_print_ready_file`; the original errored `quote_request` entry is superseded by the DOM-only retry).
+  - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
+  - four skipped safe queue entries remain in the audit: the original errored `quote_request` and original empty-`dataId` `send_custom_mail_popup` entries are superseded by loaded retry captures, while `template_manage_block_properties_listing` and `user_print_ready_file` still need alternate valid source IDs.
 - Browser verification on 2026-07-06 covered:
   - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
   - `#current/product-categories` tab `Category group`;
@@ -135,6 +136,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `#current/cms-pages` tab `Dynamic Pages`.
   - safe action/detail routes `#current/order-action`, `#current/quote-request`, `#current/product-action`, `#current/theme-css-action`, `#current/user-action`, `#current/workflow-listing`, `#current/product-popover`, `#current/template-manager-design`, and `#current/quote-product-assign-printer`.
   - direct route checks also covered `#current/sales-agents`, `#current/sales-order-details`, `#current/sales-order-product-details`, `#current/sales-order-summary`, `#current/schemas`, and `#current/seo-global`.
+  - targeted retry verification covered `#current/send-custom-mail-popup` and confirmed `#proposed/send-custom-mail-popup` preserves the same OPS route because no proposed delta exists.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
