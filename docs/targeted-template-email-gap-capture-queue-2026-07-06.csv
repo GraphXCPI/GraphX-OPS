@@ -1,0 +1,17 @@
+slug,url,safe,reason,score,count,sourcePages,sources
+emailtemplate_structure_action,https://visualgraphx.com/admin/emailtemplate_structure_action.php?Action=edit&theme_id=4&cid=0,true,targeted_template_email_gap,100,1,emailtemplate_structure_listing,emailtemplate_structure_listing
+emailtemplate_structure_popup,https://visualgraphx.com/admin/emailtemplate_structure_popup.php?theme_dir=store&cid=0,true,targeted_template_email_gap,100,1,emailtemplate_structure_listing,emailtemplate_structure_listing
+product_master_option_attribute_googlesheet_import,https://visualgraphx.com/admin/product_master_option_attribute_googlesheet_import.php,false,live_temporary_down,100,1,product_master_option_listing,product_master_option_listing
+product_template_upload_action,https://visualgraphx.com/admin/product_template_upload_action.php?product_id=288,true,targeted_template_email_gap,100,1,product_template_upload,product_template_upload
+seo_import,https://visualgraphx.com/admin/seo_import.php,true,targeted_template_email_gap,100,1,seo_all,seo_all
+shipping_package_master_action,https://visualgraphx.com/admin/shipping_package_master_action.php,true,targeted_template_email_gap,100,1,shipping_package_master_listing,shipping_package_master_listing
+shipping_zone_action,https://visualgraphx.com/admin/shipping_zone_action.php,true,targeted_template_email_gap,100,1,shipping_zone_listing,shipping_zone_listing
+template_block_dependency_rules,https://visualgraphx.com/admin/template_block_dependency_rules.php?template_id=4&type=site,true,targeted_template_email_gap,100,1,template_properties_assign,template_properties_assign
+template_block_groups,https://visualgraphx.com/admin/template_block_groups.php?template_id=4&type=site,true,targeted_template_email_gap,100,1,template_properties_assign,template_properties_assign
+template_color_action,https://visualgraphx.com/admin/template_color_action.php?selected_temp_id=0,true,targeted_template_email_gap,100,1,template_manager_action,template_manager_action
+template_indesign_upload,https://visualgraphx.com/admin/template_indesign_upload.php?templateid=21&usertype=0&corporates=0,true,targeted_template_email_gap,100,1,template_manager,template_manager
+template_manage_block_properties_action,https://visualgraphx.com/admin/template_manage_block_properties_action.php?template_id=12&block_name=Station%20ID%20-%201&page_no=0&parent_block_name=&ele_type=BlockText&property_name=Format&page_side=Front%20Side&file_type=&category=1&properties=yes,true,targeted_template_email_gap,100,1,template_manage_block_properties_listing,template_manage_block_properties_listing
+template_manage_textarea,https://visualgraphx.com/admin/template_manage_textarea.php?template_id=12&block_name=Station%20ID%20-%201&page_no=0&parent_block_name=&ele_type=BlockText&type=site&page_side=Front%20Side&colorspace=DeviceCMYK,true,targeted_template_email_gap,100,1,template_block_manager,template_block_manager
+template_pdf_block_upload,https://visualgraphx.com/admin/template_pdf_block_upload.php?templateid=8&usertype=2&corporates=13,true,targeted_template_email_gap,100,1,template_manager,template_manager
+template_block_dependency_rules_action,https://visualgraphx.com/admin/template_block_dependency_rules_action.php?template_id=4&type=site,true,targeted_template_email_gap,100,1,template_block_dependency_rules,template_block_dependency_rules
+template_block_groups_action,https://visualgraphx.com/admin/template_block_groups_action.php?template_id=4&type=site,true,targeted_template_email_gap,100,1,template_block_groups,template_block_groups

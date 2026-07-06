@@ -11,6 +11,7 @@ const OPS = {
   proposalContext: { keys: [], messages: [] },
   orderView: "all",
   orderCollapse: {},
+  userMenuOpen: false,
 };
 
 window.OPS = OPS;
@@ -440,7 +441,6 @@ const pageAliases = {
 };
 
 const proposedExtractedPageAliases = {
-  "add-quote": "add-order",
   "store-credit": "reward-points",
   "country-states": "countries",
   "web-optimization": "image-optimization",
@@ -448,6 +448,10 @@ const proposedExtractedPageAliases = {
   "order-exports": "export-api-orders",
   "studio-language": "studio-language-text",
   "system-log": "system-logs",
+};
+
+const extractedPageAliases = {
+  "add-quote": "quote-request",
 };
 
 const proposedExactExtractedPages = new Set([
@@ -598,10 +602,12 @@ function pagesForMode(mode) {
 }
 
 function isKnownPage(page) {
+  page = normalizeRouteToken(page);
   return page === "dashboard" || Boolean(extractedPageFor(page)) || Object.values(pageFamilies).some(pages => pages.includes(page));
 }
 
 function pageForModeSwitch(page, nextMode) {
+  page = normalizeRouteToken(page);
   const mapped = modePageMap[nextMode]?.[page];
   if (mapped) return mapped;
   if (pagesForMode(nextMode).includes(page) || isKnownPage(page)) return page;
@@ -853,10 +859,29 @@ function h(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
 }
 
+function normalizeRouteToken(value) {
+  return String(value || "").trim();
+}
+
+function normalizeModeTarget(value, mode = "") {
+  const target = normalizeRouteToken(value).replace(/^(current|proposed)\/\s+/, "$1/");
+  if (!mode) return target;
+  return target.replace(/^(current|proposed)\//, `${mode}/`);
+}
+
 function app() {
   const menu = OPS.mode === "current" ? currentMenu : proposedMenu;
   resetProposalContext();
   const pageContent = content();
+  if (isShelllessExtractedPage()) {
+    return `
+      <div class="body-container gx-sim gx-shellless-page">
+        ${pageContent}
+        ${modeSwitch()}
+        ${proposalWindow()}
+      </div>
+    `;
+  }
   return `
     <div class="body-container gx-sim${isChangeHighlightActive() ? " ops-highlighting" : ""}">
       ${topbar()}
@@ -874,6 +899,10 @@ function app() {
       ${proposalWindow()}
     </div>
   `;
+}
+
+function isShelllessExtractedPage() {
+  return extractedPageFor(OPS.page)?.displayMode === "shellless";
 }
 
 function modeSwitch() {
@@ -980,12 +1009,33 @@ function topbar() {
               <li class="transparent d-none d-md-flex nav-item opclso align-items-center btn-success" id="lchat">
                 <a href="#" class="px-2 lz_cbl"><i class="fa fa-2x fa-comments text-white"></i></a>
               </li>
-              <li class="nav-item user-dropdown d-flex d-md-block border-right-0">
-                <a href="#" class="dropdown-toggle nav-link">
+              <li class="nav-item dropdown user-dropdown d-flex d-md-block border-right-0 ${OPS.userMenuOpen ? "show" : ""}">
+                <a href="#" data-user-menu-toggle class="dropdown-toggle nav-link" aria-haspopup="true" aria-expanded="${OPS.userMenuOpen ? "true" : "false"}">
                   <i class="fa fa-user mr-2"></i>
                   <span class="user-info"><small>Welcome, </small> ${h(OPS.loginAs)}</span>
                   <i class="ace-icon fa fa-caret-down ml-2 d-none d-lg-inline-block"></i>
                 </a>
+                <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-caret dropdown-close py-0 border-left ${OPS.userMenuOpen ? "show" : ""}">
+                  <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                    <a href="#${OPS.mode}/admin-favourite-link" data-page="admin-favourite-link">
+                      <i class="ace-icon fa fa-star"></i>
+                      <span class="d-none d-md-inline-block">Set favorite links</span>
+                    </a>
+                  </li>
+                  <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                    <a href="#${OPS.mode}/changepassword" data-page="changepassword">
+                      <i class="ace-icon fa fa-user"></i>
+                      <span class="d-none d-md-inline-block">Change Password</span>
+                    </a>
+                  </li>
+                  <li class="dropdown-divider brc-primary-l2 my-0 d-none d-md-block"></li>
+                  <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                    <a href="#" id="logout-btn" data-no-route>
+                      <i class="ace-icon fa fa-power-off"></i>
+                      <span class="d-none d-md-inline-block">Logout</span>
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -1187,7 +1237,7 @@ function labelForPage(page) {
 }
 
 function content() {
-  if (OPS.mode === "current" && OPS.page !== "dashboard") {
+  if (OPS.mode === "current") {
     const extracted = extractedPageFor(OPS.page);
     if (extracted) return extractedOpsPage(extracted);
   }
@@ -1220,31 +1270,42 @@ function content() {
 }
 
 function extractedPageFor(page) {
-  return window.OPS_EXTRACTED_PAGES?.[page];
+  page = normalizeRouteToken(page);
+  const sourcePage = extractedPageAliases[page] || page;
+  const extracted = window.OPS_EXTRACTED_PAGES?.[sourcePage];
+  if (!extracted || sourcePage === page) return extracted;
+  return { ...extracted, route: page, sourceRoute: sourcePage };
 }
 
 function extractedOpsPage(page) {
   const html = page.bodyHtml || `<div class="alert alert-warning">No extracted OPS body was captured for ${h(page.sourceFile || page.slug || page.route)}.</div>`;
-  return `<div class="ops-extracted-page" data-route="${h(page.route || OPS.page)}" data-source-file="${h(page.sourceFile || "")}">${html}</div>`;
+  const displayMode = page.displayMode || "";
+  return `<div class="ops-extracted-page ${displayMode === "shellless" ? "ops-extracted-shellless" : ""}" data-route="${h(page.route || OPS.page)}" data-source-file="${h(page.sourceFile || "")}" data-display-mode="${h(displayMode)}">${html}</div>`;
 }
 
 function rewriteExtractedModeTargetsHtml(html, mode) {
-  return String(html || "").replace(/data-tab-target="(?:current|proposed)\//g, `data-tab-target="${mode}/`);
+  return String(html || "")
+    .replace(/data-tab-target="(?:current|proposed)\/\s*/g, `data-tab-target="${mode}/`)
+    .replace(/data-page="([^"]*)"/g, (_match, value) => `data-page="${h(normalizeRouteToken(value))}"`);
 }
 
 function rewriteExtractedModeTargets(root, mode) {
   root.querySelectorAll("[data-tab-target]").forEach(el => {
-    const target = el.getAttribute("data-tab-target") || "";
+    const target = normalizeModeTarget(el.getAttribute("data-tab-target"), mode);
     if (/^(current|proposed)\//.test(target)) {
-      el.setAttribute("data-tab-target", target.replace(/^(current|proposed)\//, `${mode}/`));
+      el.setAttribute("data-tab-target", target);
     }
+  });
+  root.querySelectorAll("[data-page]").forEach(el => {
+    el.setAttribute("data-page", normalizeRouteToken(el.getAttribute("data-page")));
   });
 }
 
 function proposedExtractedOpsPage(pageName, extraClass = "") {
   const extracted = extractedPageFor(pageName);
   if (!extracted?.bodyHtml) return genericPage(pageTitle());
-  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${h(extraClass)}" data-route="${h(extracted.route || pageName)}" data-source-file="${h(extracted.sourceFile || "")}">${extracted.bodyHtml}</div>`, "text/html");
+  const displayMode = extracted.displayMode || "";
+  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${displayMode === "shellless" ? "ops-extracted-shellless" : ""} ${h(extraClass)}" data-route="${h(extracted.route || pageName)}" data-source-file="${h(extracted.sourceFile || "")}" data-display-mode="${h(displayMode)}">${extracted.bodyHtml}</div>`, "text/html");
   const root = doc.body.firstElementChild;
   rewriteExtractedModeTargets(root, "proposed");
   return root.outerHTML;
@@ -3509,6 +3570,7 @@ function formUsesSelect(normalized) {
 
 function render() {
   document.getElementById("app").innerHTML = app();
+  syncExtractedStaticWidgets();
   syncRenderedOrderCollapseControls();
   applyProposalHighlights();
 }
@@ -3531,9 +3593,9 @@ function applyHash() {
   const [mode, page] = rawHash.split("/");
   if (mode === "current" || mode === "proposed") OPS.mode = mode;
   if (page) {
-    OPS.page = page;
+    OPS.page = normalizeRouteToken(page);
   } else if (rawHash && mode !== "current" && mode !== "proposed") {
-    OPS.page = rawHash;
+    OPS.page = normalizeRouteToken(rawHash);
   }
   setOpenMenuForPage();
 }
@@ -3598,6 +3660,110 @@ function syncRenderedOrderCollapseControls(scope = document) {
   syncOrderExpandAll(scope);
 }
 
+function extractedWizardLinkTarget(link) {
+  return link?.dataset.tabTarget || link?.getAttribute("href")?.replace(/^#/, "") || "";
+}
+
+function normalizeExtractedWizardStep(link) {
+  if (!link || link.querySelector(".step-title-value")) return;
+  const item = link.closest("li");
+  const description = item?.querySelector(":scope > .step-description");
+  const title = description?.textContent?.trim() || link.textContent.trim();
+  const stepNumber = link.querySelector(".step-num, .step-title")?.textContent?.trim() || item?.dataset.step || "";
+  const doneHtml = link.querySelector(".step-title-done")?.innerHTML || '<i class="fa fa-check text-success-m1"></i>';
+
+  link.textContent = "";
+
+  const numberEl = document.createElement("div");
+  numberEl.className = "num step-num";
+  numberEl.textContent = stepNumber;
+
+  const doneEl = document.createElement("div");
+  doneEl.className = "num step-title-done";
+  doneEl.innerHTML = doneHtml;
+
+  const titleEl = document.createElement("div");
+  titleEl.className = "step-title-value";
+  titleEl.textContent = title;
+
+  link.append(numberEl, doneEl, titleEl);
+  description?.remove();
+}
+
+function syncExtractedWizard(wizard) {
+  wizard.classList.remove("d-none");
+  wizard.classList.add("sw", "sw-theme-dots", "sw-justified");
+
+  const steps = wizard.querySelector(".wizard-steps");
+  steps?.classList.add("nav", "nav-progress", "step-anchor");
+
+  const links = Array.from(wizard.querySelectorAll(".wizard-steps a"));
+  links.forEach(link => {
+    normalizeExtractedWizardStep(link);
+    link.classList.add("nav-link", "default");
+    link.closest("li")?.classList.add("nav-item");
+  });
+
+  const target = extractedWizardLinkTarget(
+    wizard.querySelector(".wizard-steps a.active, .wizard-steps li.active a") || links[0]
+  );
+  if (!target) return;
+
+  links.forEach(link => {
+    const active = extractedWizardLinkTarget(link) === target;
+    link.classList.toggle("active", active);
+    link.closest("li")?.classList.toggle("active", active);
+  });
+
+  const content = wizard.querySelector(".wizard-content, .tab-content");
+  if (content) {
+    content.classList.remove("wizard-content", "border-bottom-0");
+    content.classList.add("tab-content", "border-0");
+    content.querySelectorAll(":scope > [id]").forEach(pane => {
+      const active = pane.id === target;
+      pane.classList.add("tab-pane");
+      pane.setAttribute("role", "tabpanel");
+      pane.setAttribute("aria-labelledby", pane.id);
+      pane.classList.toggle("active", active);
+      pane.classList.toggle("show", active);
+      pane.style.display = active ? "block" : "";
+    });
+  }
+
+  const activeIndex = Math.max(0, links.findIndex(link => extractedWizardLinkTarget(link) === target));
+  const card = wizard.closest(".card") || wizard.parentElement;
+  card?.querySelectorAll(".btn-prev").forEach(button => {
+    button.toggleAttribute("disabled", activeIndex <= 0);
+  });
+  card?.querySelectorAll(".btn-next").forEach(button => {
+    button.toggleAttribute("disabled", activeIndex >= links.length - 1);
+  });
+}
+
+function syncExtractedStaticWidgets(scope = document) {
+  scope.querySelectorAll(".ops-extracted-page").forEach(root => rewriteExtractedModeTargets(root, OPS.mode));
+  scope.querySelectorAll(".ops-extracted-page #fuelux-wizard-container").forEach(syncExtractedWizard);
+}
+
+function activateExtractedWizardButton(button) {
+  const card = button.closest(".card");
+  const wizard = card?.querySelector("#fuelux-wizard-container");
+  if (!wizard) return false;
+  const links = Array.from(wizard.querySelectorAll(".wizard-steps a"));
+  if (!links.length) return false;
+  const currentIndex = Math.max(0, links.findIndex(link => link.classList.contains("active")));
+  const nextIndex = button.classList.contains("btn-prev") ? currentIndex - 1 : currentIndex + 1;
+  const nextLink = links[nextIndex];
+  if (!nextLink) return false;
+  links.forEach(link => {
+    const active = link === nextLink;
+    link.classList.toggle("active", active);
+    link.closest("li")?.classList.toggle("active", active);
+  });
+  syncExtractedWizard(wizard);
+  return true;
+}
+
 function toggleOrderCollapse(button) {
   const orderId = orderButtonId(button);
   const collapse = orderProductsCollapse(orderId);
@@ -3645,6 +3811,22 @@ function handleOrderCollapseClick(event) {
 document.addEventListener("click", handleOrderCollapseClick, true);
 
 document.addEventListener("click", event => {
+  const userMenuToggle = event.target.closest("[data-user-menu-toggle]");
+  if (userMenuToggle) {
+    event.preventDefault();
+    OPS.userMenuOpen = !OPS.userMenuOpen;
+    render();
+    return;
+  }
+
+  const inertAction = event.target.closest("[data-no-route]");
+  if (inertAction) {
+    event.preventDefault();
+    OPS.userMenuOpen = false;
+    render();
+    return;
+  }
+
   const orderViewAction = event.target.closest("[data-order-view]");
   if (orderViewAction) {
     event.preventDefault();
@@ -3659,7 +3841,7 @@ document.addEventListener("click", event => {
       event.preventDefault();
       return;
     }
-    if (!tabAction.dataset.page) {
+    if (!normalizeRouteToken(tabAction.dataset.page)) {
       event.preventDefault();
       activateExtractedTab(tabAction);
       return;
@@ -3675,6 +3857,12 @@ document.addEventListener("click", event => {
   }
   if (OPS.newMenuOpen && !event.target.closest(".ops-topbar-new")) {
     OPS.newMenuOpen = false;
+  }
+
+  const wizardAction = event.target.closest(".ops-extracted-page .btn-prev, .ops-extracted-page .btn-next");
+  if (wizardAction && activateExtractedWizardButton(wizardAction)) {
+    event.preventDefault();
+    return;
   }
 
   const proposalOpen = event.target.closest("[data-proposal-open]");
@@ -3706,6 +3894,7 @@ document.addEventListener("click", event => {
       OPS.page = nextPage;
       OPS.mode = mode;
       if (mode !== "proposed") OPS.proposalWindowOpen = false;
+      OPS.userMenuOpen = false;
       setOpenMenuForPage();
       syncHash();
       render();
@@ -3732,10 +3921,11 @@ document.addEventListener("click", event => {
     OPS.openChild = OPS.openChild === child ? "" : child;
   }
 
-  const page = event.target.closest("[data-page]")?.dataset.page;
+  const page = normalizeRouteToken(event.target.closest("[data-page]")?.dataset.page);
   if (page) {
     OPS.modeSwitchReturn = null;
     OPS.newMenuOpen = false;
+    OPS.userMenuOpen = false;
     OPS.page = page;
     const menu = (OPS.mode === "current" ? currentMenu : proposedMenu).find(group => isActiveGroupForPage(group, page));
     if (menu) OPS.openMenu = menu.id;
@@ -3816,7 +4006,7 @@ function capturedTabCandidates(tabAction) {
     capturedTabTargetFromHref(tabAction.getAttribute("href")),
     tabAction.textContent,
   ];
-  const page = tabAction.dataset.page;
+  const page = normalizeRouteToken(tabAction.dataset.page);
   if (page && page === OPS.page) values.push(tabAction.textContent);
   return new Set(values.map(normalizeCapturedTabToken).filter(Boolean));
 }
@@ -3867,7 +4057,7 @@ function markCapturedTabActive(pageRoot, state) {
 function activateCapturedTabState(tabAction) {
   const pageRoot = tabAction.closest(".ops-extracted-page");
   if (!pageRoot) return false;
-  const route = pageRoot.dataset.route || OPS.page;
+  const route = normalizeRouteToken(pageRoot.dataset.route || OPS.page);
   const states = extractedPageFor(route)?.tabStates || [];
   if (!states.length) return false;
 
@@ -3878,16 +4068,38 @@ function activateCapturedTabState(tabAction) {
   pageRoot.innerHTML = rewriteExtractedModeTargetsHtml(state.bodyHtml, OPS.mode);
   pageRoot.dataset.currentTabState = state.key || "";
   pageRoot.dataset.sourceFile = state.sourceFile || pageRoot.dataset.sourceFile || "";
-  pageRoot.dataset.route = state.route || route;
+  pageRoot.dataset.route = normalizeRouteToken(state.route || route);
   rewriteExtractedModeTargets(pageRoot, OPS.mode);
   markCapturedTabActive(pageRoot, state);
+  syncExtractedStaticWidgets(pageRoot);
   syncRenderedOrderCollapseControls(pageRoot);
   return true;
 }
 
+function extractedTabContentRoot(tabAction, panelRoot) {
+  const tabList = tabAction.closest(".nav-tabs, .tabs-above, .tabs-left, .tabs-right");
+  const tabContainer = tabList?.matches(".nav-tabs")
+    ? tabList.closest(".tabbable, .tabable, .tabs-above, .tabs-left, .tabs-right") || tabList.parentElement
+    : tabList;
+  return tabContainer?.querySelector(":scope > .tab-content")
+    || tabContainer?.parentElement?.querySelector(":scope > .tab-content")
+    || panelRoot;
+}
+
+function revealExtractedActivePaneContent(pane) {
+  if (pane.innerText.replace(/\s+/g, " ").trim().length) return;
+  const hiddenContent = Array.from(pane.children).filter(child => {
+    const textLength = child.innerText.replace(/\s+/g, " ").trim().length;
+    return textLength && (child.style.display === "none" || child.classList.contains("d-none"));
+  });
+  if (hiddenContent.length !== 1) return;
+  hiddenContent[0].classList.remove("d-none");
+  hiddenContent[0].style.display = "block";
+}
+
 function activateExtractedTab(tabAction) {
-  const hrefTarget = tabAction.getAttribute("href")?.replace(/^#/, "");
-  const target = tabAction.dataset.tabTarget || hrefTarget;
+  const hrefTarget = normalizeRouteToken(tabAction.getAttribute("href")?.replace(/^#/, ""));
+  const target = normalizeRouteToken(tabAction.dataset.tabTarget) || hrefTarget;
   if (!target) return;
 
   const tabList = tabAction.closest(".nav-tabs, .tabs-above, .tabs-left, .tabs-right") || tabAction.closest("ul");
@@ -3901,9 +4113,23 @@ function activateExtractedTab(tabAction) {
   const parent = tabAction.closest("li");
   if (parent) parent.classList.add("active");
 
-  panelRoot.querySelectorAll(".tab-pane.active, .tab-pane.show").forEach(el => el.classList.remove("active", "show"));
-  const pane = panelRoot.querySelector(`#${CSS.escape(target)}`);
-  if (pane) pane.classList.add("active", "show");
+  const contentRoot = extractedTabContentRoot(tabAction, panelRoot);
+  const panes = Array.from(contentRoot.querySelectorAll(":scope > .tab-pane"));
+  let pane = panelRoot.querySelector(`#${CSS.escape(target)}`);
+  if (!pane && tabList && panes.length) {
+    const links = Array.from(tabList.querySelectorAll("a"));
+    pane = panes[links.indexOf(tabAction)] || null;
+  }
+  panes.forEach(el => {
+    el.classList.remove("active", "show");
+    el.style.display = "";
+  });
+  if (pane) {
+    pane.classList.add("active", "show");
+    pane.style.display = "block";
+    revealExtractedActivePaneContent(pane);
+  }
+  syncExtractedStaticWidgets(panelRoot);
 }
 
 function isActiveGroupForPage(group, page) {

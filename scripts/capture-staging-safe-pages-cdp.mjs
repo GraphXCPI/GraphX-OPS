@@ -12,6 +12,9 @@ const limit = Number(argValue("--limit") || "0");
 const start = Math.max(1, Number(argValue("--start") || "1"));
 const onlySlug = argValue("--slug") || "";
 const overrideUrl = argValue("--override-url") || "";
+const sessionOrigin = normalizeOrigin(argValue("--session-origin") || "https://staging.visualgraphx.com");
+const landingUrl = argValue("--landing-url") || `${sessionOrigin}/admin/welcome.php`;
+const targetOrigin = argValue("--target-origin") ? normalizeOrigin(argValue("--target-origin")) : "";
 const waitMs = Number(argValue("--wait-ms") || "45000");
 const dryRun = process.argv.includes("--dry-run");
 const screenshotsEnabled = !process.argv.includes("--no-screenshots");
@@ -47,6 +50,9 @@ targets = targets.map(target => (
     ? { ...target, url: safeUrlOverrides[target.slug], overrideUrl: true }
     : target
 ));
+if (targetOrigin) {
+  targets = targets.map(target => ({ ...target, url: rewriteAdminUrlOrigin(target.url, targetOrigin) }));
+}
 if (overrideUrl) {
   if (!onlySlug || targets.length !== 1) throw new Error("--override-url requires --slug and exactly one selected target");
   targets = targets.map(target => ({ ...target, url: overrideUrl, overrideUrl: true }));
@@ -57,7 +63,7 @@ const captureManifest = {
   source: `Chrome DevTools Protocol on 127.0.0.1:${cdpPort}`,
   queuePath,
   outputRoot,
-  requested: { start, limit, onlySlug, overrideUrl, waitMs, screenshotsEnabled, dryRun, cdpPort, cdpTimeoutMs, serverFetchTimeoutMs, networkQuietMs, settleMs, stablePolls, forceNewTab, domOnly },
+  requested: { start, limit, onlySlug, overrideUrl, sessionOrigin, landingUrl, targetOrigin, waitMs, screenshotsEnabled, dryRun, cdpPort, cdpTimeoutMs, serverFetchTimeoutMs, networkQuietMs, settleMs, stablePolls, forceNewTab, domOnly },
   totalQueued: queue.length,
   totalSelected: targets.length,
   ok: 0,
@@ -67,7 +73,8 @@ const captureManifest = {
   pages: []
 };
 
-console.log(`Safe staging CDP capture queue: ${targets.length}/${queue.length} selected`);
+console.log(`Safe admin CDP capture queue: ${targets.length}/${queue.length} selected`);
+console.log(`Session origin: ${sessionOrigin}`);
 console.log(`Output: ${outputRoot}`);
 
 if (dryRun) {
@@ -76,7 +83,7 @@ if (dryRun) {
   process.exit(0);
 }
 
-let cdp = await connectToStagingPage(cdpPort);
+let cdp = await connectToAdminPage(cdpPort);
 await prepareCdp(cdp);
 
 try {
@@ -162,7 +169,7 @@ try {
       writeManifest({ ...captureManifest, updatedAt: new Date().toISOString() });
 
       if (loginOrDenied) {
-        console.warn(`Stopped at ${target.slug}: staging returned login/denied screen. Log in to the debug Chrome profile and rerun with --start ${target.queueIndex}.`);
+        console.warn(`Stopped at ${target.slug}: ${sessionOrigin} returned login/denied screen. Log in to the debug Chrome profile and rerun with --start ${target.queueIndex}.`);
         break;
       }
     } catch (error) {
@@ -184,7 +191,7 @@ try {
         } catch {
           // Best-effort cleanup only.
         }
-        cdp = await connectToStagingPage(cdpPort);
+        cdp = await connectToAdminPage(cdpPort);
         await prepareCdp(cdp);
       }
     }
@@ -199,13 +206,13 @@ try {
 
 console.log(`Captured ${captureManifest.ok}/${captureManifest.pages.length} selected pages. loginOrDenied=${captureManifest.loginOrDenied} timedOut=${captureManifest.timedOut} errors=${captureManifest.errors}`);
 
-async function connectToStagingPage(port) {
+async function connectToAdminPage(port) {
   const targets = await getJson(`http://127.0.0.1:${port}/json/list`);
-  let target = targets.find(item => item.type === "page" && item.url?.startsWith("https://staging.visualgraphx.com/admin/"));
+  let target = targets.find(item => item.type === "page" && item.url?.startsWith(`${sessionOrigin}/admin/`));
   if (forceNewTab || !target) {
-    target = await getJson(`http://127.0.0.1:${port}/json/new?${encodeURIComponent("https://staging.visualgraphx.com/admin/welcome.php")}`, { method: "PUT" });
+    target = await getJson(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(landingUrl)}`, { method: "PUT" });
   }
-  if (!target?.webSocketDebuggerUrl) throw new Error(`No debuggable staging page found on 127.0.0.1:${port}`);
+  if (!target?.webSocketDebuggerUrl) throw new Error(`No debuggable ${sessionOrigin}/admin page found on 127.0.0.1:${port}`);
   return new CdpClient(target.webSocketDebuggerUrl, cdpTimeoutMs);
 }
 
@@ -340,6 +347,37 @@ async function collectPageRuntime(cdp) {
     } catch (error) {
       serverHtml = "";
     }
+    const canvasSnapshots = [];
+    document.querySelectorAll("canvas").forEach((canvas, index) => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      try {
+        const dataUrl = canvas.toDataURL("image/png");
+        if (!dataUrl || dataUrl.length < 100) return;
+        canvas.setAttribute("data-ops-canvas-snapshot", dataUrl);
+        canvas.setAttribute("data-ops-canvas-index", String(index));
+        canvas.setAttribute("data-ops-canvas-css-width", String(Math.round(rect.width)));
+        canvas.setAttribute("data-ops-canvas-css-height", String(Math.round(rect.height)));
+        canvasSnapshots.push({
+          index,
+          width: canvas.width,
+          height: canvas.height,
+          cssWidth: Math.round(rect.width),
+          cssHeight: Math.round(rect.height),
+          bytes: dataUrl.length
+        });
+      } catch {
+        canvasSnapshots.push({
+          index,
+          width: canvas.width,
+          height: canvas.height,
+          cssWidth: Math.round(rect.width),
+          cssHeight: Math.round(rect.height),
+          bytes: 0,
+          tainted: true
+        });
+      }
+    });
     const pageContent = document.querySelector(".page-content");
     const breadcrumbs = document.querySelector("#breadcrumbs");
     return {
@@ -380,7 +418,8 @@ async function collectPageRuntime(cdp) {
           stylesheets: document.querySelectorAll('link[rel~="stylesheet"], link[href]').length,
           scripts: document.scripts.length,
           images: document.images.length
-        }
+        },
+        canvasSnapshots
       }
     };
   `);
@@ -548,6 +587,25 @@ function argValue(name) {
   const index = process.argv.indexOf(name);
   if (index === -1 || index + 1 >= process.argv.length) return "";
   return process.argv[index + 1];
+}
+
+function normalizeOrigin(value) {
+  const origin = String(value || "").replace(/\/+$/, "");
+  if (!/^https?:\/\/[^/]+$/i.test(origin)) throw new Error(`Invalid --session-origin: ${value}`);
+  return origin;
+}
+
+function rewriteAdminUrlOrigin(value, origin) {
+  try {
+    const url = new URL(value);
+    const isOpsHost = url.hostname === "visualgraphx.com" || url.hostname === "staging.visualgraphx.com";
+    if (isOpsHost && url.pathname.startsWith("/admin/")) {
+      return `${origin}${url.pathname}${url.search}${url.hash}`;
+    }
+  } catch {
+    // Leave relative or invalid URLs untouched; callers may intentionally capture them.
+  }
+  return value;
 }
 
 function sleep(ms) {

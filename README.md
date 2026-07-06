@@ -29,6 +29,22 @@ Current OPS extracted tabs are generated from the authenticated staging tab-stat
 node scripts/capture-staging-safe-pages-cdp.mjs --start <queueIndex> --wait-ms 90000 --no-screenshots --new-tab --cdp-timeout-ms 120000 --server-fetch-timeout-ms 8000 --network-quiet-ms 3000 --settle-ms 2500 --stable-polls 6
 ```
 
+Template and block management pages are live-only in OPS; staging returns `Temporary Down` for that cluster. For read-only template/block captures, attach to a logged-in live admin tab instead of staging:
+
+```bash
+node scripts/capture-staging-safe-pages-cdp.mjs --session-origin https://visualgraphx.com --landing-url https://visualgraphx.com/admin/welcome.php --queue <live-template-queue.csv> --wait-ms 90000 --no-screenshots --new-tab --cdp-timeout-ms 120000 --server-fetch-timeout-ms 8000 --network-quiet-ms 3000 --settle-ms 2500 --stable-polls 6
+```
+
+`--session-origin` controls which logged-in admin tab CDP attaches to; the queue itself must contain the intended live admin URLs.
+
+The CDP capture script also accepts `--target-origin https://visualgraphx.com` when a reusable queue contains staging URLs but the authenticated session is live. This rewrites `visualgraphx.com/admin` or `staging.visualgraphx.com/admin` queue targets to the requested admin origin before navigation.
+
+Tracked targeted queue manifests from the 2026-07-06 route-gap pass:
+
+- `docs/targeted-product-settings-gap-capture-queue-2026-07-06.csv`
+- `docs/targeted-template-email-gap-capture-queue-2026-07-06.csv`
+- `docs/targeted-current-route-link-gap-capture-queue-2026-07-06.csv`
+
 The older Apple Events capture script is still available if Chrome `View > Developer > Allow JavaScript from Apple Events` is enabled:
 
 ```bash

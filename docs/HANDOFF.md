@@ -69,10 +69,10 @@ All OPS simulator reference material now lives inside this project under `refere
   - Status: 121 OK, 1 login/denied (`changepassword`).
 - Tab-state archive:
   - Path: `interactive-tab-state-capture-2026-07-06`
-  - Contents: 93 tab-state manifests and screenshots.
-  - Status: 93 discovered, 93 captured, 0 remaining.
-  - Capture modes: 56 live-clicked states, 37 source-derived active-tab variants from authenticated staging DOM after Chrome automation timed out.
-  - Runtime status: `ops-extracted-pages.js` now includes these 93 tab states. Current OPS tab clicks swap to captured tab DOM while preserving the current hash route.
+  - Contents: 94 tab-state manifests and screenshots.
+  - Status: 94 discovered, 94 captured, 0 remaining.
+  - Capture modes: 57 live-clicked states, 37 source-derived active-tab variants from authenticated staging DOM after Chrome automation timed out.
+  - Runtime status: `ops-extracted-pages.js` now includes 90 active captured tab states. Current OPS tab clicks swap to captured tab DOM while preserving the current hash route, except `template_manager_duplicate`, whose four older staging tab states are intentionally skipped so the live-only duplicate-template page uses its local live DOM tabs.
 - Missing action/detail page audit:
   - Path: `expanded-safe-page-capture-2026-07-06`
   - Key index: `indexes/canonical-safe-page-capture-queue.csv`
@@ -142,20 +142,36 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `scripts/build-extracted-pages.mjs` supports the full CDP folder names (`server-html`, `page-content-rendered-html`, and rendered breadcrumb captures);
   - Orders collapse controls are synced after render so OPS plus/minus icons, `aria-expanded`, and visible child rows stay aligned.
 - Staging extraction gap pass was expanded on 2026-07-06:
-  - tab states are now fully indexed (`93/93`, zero remaining);
+  - tab states are now fully indexed (`93/93`, zero remaining), with 89 loaded into the generated bundle and 4 intentionally skipped for the live-only duplicate-template screen;
   - generated Current OPS routes now use captured tab-state DOM for OPS tabs, including PHP-query style tab links;
   - missed safe action/detail pages were captured through Chrome DevTools Protocol from a logged-in staging debug-port session (`177` canonical targets; `174` ok, `2` timed-out-captured with usable DOM, `1` retried with DOM-only fallback);
   - `scripts/build-extracted-pages.mjs` can merge completed safe action/detail live-capture folders into the existing `OPS_EXTRACTED_PAGES` bundle via `OPS_SAFE_CAPTURE_ROOTS`;
   - `scripts/capture-staging-safe-pages-cdp.mjs` was added for repeatable safe captures that wait for network quiet, DOM stability, and final settle before saving page content;
   - source-derived tab states are clearly marked in their manifests;
   - `scripts/capture-staging-safe-pages.mjs` was added for resumed safe-page capture once Chrome Apple Events JavaScript permission and staging auth are available.
-- Final generated bundle status from the 2026-07-06 CDP merge:
-  - `ops-extracted-pages.js` generated `289` extracted OPS routes;
-  - safe capture roots loaded `175/179` available safe pages plus `93/93` captured tab states;
+- Final generated bundle status from the latest 2026-07-06 full-source/CDP merge:
+  - `ops-extracted-pages.js` generated `387` extracted OPS routes;
+  - the generator now uses `full-source-cdp-capture-2026-07-06` as the primary extraction root so full-source routes such as `quote-action` are available;
+  - safe capture roots loaded `459/480` available safe pages plus `90/94` captured tab states;
   - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
+  - the Current/Proposed `add-quote` simulator route now renders the captured OPS `quote-request` source page so Add New Quote no longer falls back to the generic quotes screen or the Add Order form;
+  - `quote-action` now renders the full-source `View/Update Quote` page from `068-quote_action.html`;
+  - `studio-models-action` now renders `Add Real Preview Models` from a read-only authenticated staging capture at `300-studio_models_action.html`, while `products-studio-models-action` remains the separate `Assign Real Preview` page;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
-  - four skipped safe queue entries remain in the audit: the original errored `quote_request` and original empty-`dataId` `send_custom_mail_popup` entries are superseded by loaded retry captures, while `template_manage_block_properties_listing` and `user_print_ready_file` still need alternate valid source IDs.
+  - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: the live template cluster now covers `#current/templates`, `#current/template-assign`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-action`, `#current/template-manager-design`, `#current/template-manager-sortorder`, `#current/template-preview-image`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-properties-master-action`, `#current/template-categories`, `#current/template-category-action`, `#current/template-category-metatags`, `#current/template-master`, `#current/store-settings-templates`, and `#current/template-manager-duplicate`;
+  - `scripts/capture-staging-safe-pages-cdp.mjs` now accepts `--session-origin https://visualgraphx.com` and `--landing-url https://visualgraphx.com/admin/welcome.php` so live-only template/block routes can be captured from a logged-in live admin tab while the default capture flow remains staging; the explicit queue must still contain the intended live admin URLs;
+  - `scripts/capture-staging-safe-pages-cdp.mjs` now also accepts `--target-origin https://visualgraphx.com` so a reusable safe queue can be pointed at live when staging is logged out or when the route exists only on live;
+  - targeted product/settings, template/email, and generated route-link gap queues were added at `docs/targeted-product-settings-gap-capture-queue-2026-07-06.csv`, `docs/targeted-template-email-gap-capture-queue-2026-07-06.csv`, and `docs/targeted-current-route-link-gap-capture-queue-2026-07-06.csv`;
+  - product/settings safe GET capture from live loaded 46/46 pages with no login redirects, timeouts, or errors, then the live template/email/action capture loaded 14/14 pages and the final template action retry loaded 2/2 pages;
+  - generated route-link gap capture from live loaded 25/25 pages with no login redirects or errors (`23` ok, `2` timed-out-captured with usable DOM), then the follow-up child-route capture loaded 4/4 pages with no login redirects, timeouts, or errors;
+  - the generated bundle now uses `full-source-cdp-capture-2026-07-06` as the primary extraction root plus explicit safe capture roots so full-source routes such as `#current/quote-action` remain present while newer live captures are merged;
+  - import/helper/download/relogin endpoints such as `admin_constants_import`, `breadcrumbs`, `dashboard_ajax`, `offline_reorder`, `order_action_delete`, `relogin`, and `user_print_ready_file` are intentionally treated as non-navigable generated links instead of simulator pages;
+  - `product_master_option_attribute_googlesheet_import.php` returned OPS `Temporary Down` on live and is intentionally treated as a non-navigable generated link rather than importing the error page into Current OPS;
+  - Current dashboard now renders the captured OPS `welcome` dashboard from `121-welcome.html`; the simulator dashboard remains Proposed-only;
+  - `template_manager_design` is now treated as a shellless live full-document snapshot because the live OPS designer is an Angular workspace outside the normal admin shell; the capture script serializes visible canvas elements, the bundle builder replays them as image snapshots, and shellless CSS maps the live designer kit/regular font glyphs to extracted SVG masks;
+  - `template_manage_block_properties_action` now has a live-only captured tab state for `Default Properties` from `visualgraphx.com/admin`; staging does not expose that dynamic template/block content, and clicking the local tab preserves `#current/template-manage-block-properties-action` while swapping to the captured OPS default property fields;
+  - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
 - Browser verification on 2026-07-06 covered:
   - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
   - `#current/product-categories` tab `Category group`;
@@ -165,23 +181,51 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - safe action/detail routes `#current/order-action`, `#current/quote-request`, `#current/product-action`, `#current/theme-css-action`, `#current/user-action`, `#current/workflow-listing`, `#current/product-popover`, `#current/template-manager-design`, and `#current/quote-product-assign-printer`.
   - direct route checks also covered `#current/sales-agents`, `#current/sales-order-details`, `#current/sales-order-product-details`, `#current/sales-order-summary`, `#current/schemas`, and `#current/seo-global`.
   - targeted retry verification covered `#current/send-custom-mail-popup` and confirmed `#proposed/send-custom-mail-popup` preserves the same OPS route because no proposed delta exists.
+  - Add New Quote verification covered `#current/add-quote` and `#proposed/add-quote`; both render the captured OPS Add New Quote form while preserving the visible `add-quote` route.
+  - Full-source rebuild verification covered `#current/quote-action` and `#current/orders`.
+  - Studio model action verification covered `#current/studio-models-action`; it rendered `Add Real Preview Models` locally from `300-studio_models_action.html` with `0` live admin links.
+  - live-only template/block route verification covered `#current/templates`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-design`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-categories`, `#current/template-master`, and `#current/store-settings-templates`; each route rendered from the live capture bundle locally with `0` live admin links.
+  - shellless template designer verification covered `#current/template-manager-design` at a 1200px viewport: it rendered from `155-template_manager_design.html`, used `displayMode: shellless`, had `0` admin shell wrappers, replayed `4` canvas snapshots, resolved the live designer kit icons via extracted `ops-kit-fa-*.svg` masks, and resolved the Uppy upload/color controls.
+  - `#current/html-help` was verified after the standalone full-document extraction fix: it rendered from `029-htmlhelp.html`, preserved the captured `Html Help` header and tab bar, and clicking the `Tables` tab kept the route at `#current/html-help` with `currentTab` set to `htmlhelp:tables`.
+  - `#proposed/html-help` was verified to preserve the same OPS capture because no Proposed delta exists for this route.
+  - `#current/template-manager-duplicate` was verified from the live-only capture `7923-template_manager_duplicate.html`; clicking `Remove Duplicate Templates` switched the local live tab pane without using the older staging tab-state DOM.
+  - `#proposed/template-manager-duplicate` was verified to preserve the same live OPS capture because no Proposed delta exists for this route.
+  - `#current/dashboard` was verified from the captured OPS dashboard `121-welcome.html`, and `#proposed/dashboard` was verified to remain the simulator Proposed dashboard.
+  - topbar user menu verification covered the real OPS dropdown items `Set favorite links`, `Change Password`, and `Logout`; `Set favorite links` routes locally to `#current/admin-favourite-link` from `003-admin_favourite_link.html`, `Change Password` routes locally to `#current/changepassword` from `008-changepassword.html`, and mode switching preserves Change Password at `#proposed/changepassword`.
+  - focused live-only template/block route verification rechecked all 17 local routes from the live capture bundle: `#current/templates`, `#current/template-assign`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-action`, `#current/template-manager-design`, `#current/template-manager-sortorder`, `#current/template-preview-image`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-properties-master-action`, `#current/template-categories`, `#current/template-category-action`, `#current/template-category-metatags`, `#current/template-master`, `#current/store-settings-templates`, and `#current/template-manager-duplicate`; each preserved its hash route, rendered from a captured live source file, had no `Temporary Down` text, and had `0` live/staging admin links in the local simulator.
+  - targeted route-gap verification covered `#current/product-import`, `#current/product-stock-import`, `#current/master-option-stock-action`, `#current/seo-import`, `#current/shipping-zone-action`, `#current/template-block-dependency-rules`, `#current/template-block-dependency-rules-action`, and `#current/template-pdf-block-upload`; each preserved its hash route, had no `Temporary Down`/placeholder text, and had `0` live admin links locally.
+  - generated route-link gap verification covered `#current/quote-action`, `#current/corporate-configuration-settings`, `#current/corporate-department-listing`, `#current/corporate-department-action`, `#current/export-orders-settings`, `#current/extra-fields-rules-listing`, `#current/form-fields-rules-action`, `#current/workflow-action`, `#current/product-temp-listing`, and `#current/sidebar-widget-action`; each preserved its hash route, rendered from an extracted source file, had no `Temporary Down`/login text, had `0` nested shell wrappers, and had `0` live admin links locally.
+  - extracted OPS wizard replay was verified on `#current/vehicle-action-import-csv`: it renders from `046-vehicle_action_import_csv.html`, normalizes the hidden pre-init wizard to OPS `sw sw-theme-dots sw-justified` markup, shows the `Download File` step, and the local `Prev`/`Next` buttons switch between wizard panes.
+  - mode switching was verified for `quote-action`, `corporate-department-listing`, and `workflow-action` from Current to Proposed and back while preserving the route.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
-  - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
+  - targeted extracted-tab regression verification covered `#current/template-manage-block-properties-action` (`Default Properties` captured tab state), `#current/order-action` (`Impose` route to `#current/imposition-impose-order`), and `#current/seo-shopping-feeds` (`Edit` local tab); each passed with `0` page errors. Report: `output/playwright/current-ops-tab-audit-2026-07-06.json`; screenshot: `output/playwright/qa-current-template-block-default-tab-2026-07-06.png`.
+  - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png` and `output/playwright/qa-current-*-2026-07-06.png`.
+- Product/settings/template linked-route scan on 2026-07-06:
+  - `ops-extracted-pages.js` generated `387` extracted OPS pages after merging the full-source CDP root, the targeted live product/template roots, and the generated route-link gap roots;
+  - product/settings/template/email/shipping/SEO route graph scan found `0` missing linked `data-page` targets across `181` relevant source routes and `211` linked targets;
+  - full generated route-link scan found `0` missing linked targets across `372` local linked targets;
+  - evidence screenshots from this pass: `output/playwright/qa-current-product-import-2026-07-06.png` and `output/playwright/qa-current-template-block-dependency-rules-action-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
-  - `121/121` generated Current OPS routes render locally without missing extracted roots, route mismatches, simulator fallback-body warnings, or thin renders.
+  - latest browser smoke covered `389/389` generated/override Current OPS routes with `0` failures and `0` page errors; report: `output/playwright/current-ops-route-smoke-2026-07-06.json`.
+  - The smoke explicitly checks for missing extracted roots, route mismatches, login/temporary-down leakage, thin renders, and hidden extracted wizard containers. CMS rows containing labels such as `Forgot Password?` and admin/customer forms containing password fields are treated as source-content, not login-page leakage.
+  - latest structure audit is `580` OK, `0` review, `0` reextract.
+  - previous `290/290` generated Current OPS route smoke rendered locally without missing extracted roots, route mismatches, live admin links, or thin renders after the live-only template/block merge.
+  - Two naive fallback-string hits were verified as source-content false positives: `coupons` has a real `Coming Soon` coupon state/filter, and `designer-studio-font-action` includes the Google font name `Coming Soon`.
+  - Earlier smoke before the expanded action/detail capture covered `121/121` generated Current OPS routes.
   - Static generated-bundle scan found `0` full-document bodies/tab states and `0` remaining `staging.visualgraphx.com/admin` or `visualgraphx.com/admin` URL references.
-  - `relogin` is excluded as a non-admin re-login endpoint; `html-help` uses its first captured tab state as the route body because the base page-content fragment was empty.
-- Dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
+  - `relogin` is excluded as a non-admin re-login endpoint; `html-help` now uses the authenticated full-rendered DOM as a standalone fragment because the normal `.page-content` fragment is empty.
+- Proposed dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
 - Sidebar icon/text spacing was corrected.
 - Proposed notes were moved into a bottom dock and draggable modeless note window.
 - Proposed combined-list filters should use OPS tab styling, not standalone button rows.
 
 ## Known Open Work
 
-- Continue authenticated staging capture only for newly discovered routes or the source-reference entries whose `.page-content` fragments were empty.
+- Continue authenticated staging capture only for newly discovered routes or the source-reference entries whose `.page-content` fragments were empty. Do not use staging for Template Manager/block pages; those must be captured read-only from live because the templates and blocks only show on `visualgraphx.com/admin`.
 - For repeat captures, prefer `scripts/capture-staging-safe-pages-cdp.mjs` with Chrome running on debug port `9222`; the Apple Events script remains a fallback only when Chrome JavaScript automation is enabled.
 - Do not claim a page is parity-complete until the generated route is visually checked against staging/current OPS, not just because rendered DOM/source manifests exist.
 - Continue screen-by-screen parity verification.
 - Do not assume a page is done because the route exists.
+- `#current/template-manager-design` is a shellless static replay of the live Angular designer with captured canvas images and extracted SVG icon masks. It is suitable for Current OPS visual parity, but it is not a functional Angular editor.
 - Review Product Catalog, Orders, Stock & Settings, Product Tax/VAT, and dashboard surfaces against live OPS references before changing adjacent pages.
 - Keep legacy handoff docs as context, but prefer the active root simulator over old `03_simulator_repo_snapshot` files.

@@ -764,3 +764,42 @@
 .gx-sim .fa-store{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-store.svg");}
 .gx-sim .fa-templates{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-templates.svg");}
 .gx-sim .fa-boxes{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-boxes.svg");}
+
+/* Shellless live designer snapshots keep the captured OPS studio markup, but render
+   Font Awesome Kit glyphs through locally extracted OPS SVG masks. */
+.gx-sim.gx-shellless-page{min-width:0;min-height:100vh;background:#fff;}
+.gx-sim.gx-shellless-page .ops-extracted-page,
+.gx-sim.gx-shellless-page .ops-shellless-snapshot{min-height:100vh;}
+.gx-sim.gx-shellless-page .ops-template-designer-snapshot{width:100%;height:100vh;overflow:hidden;}
+.gx-sim.gx-shellless-page .mode-switch{z-index:100100;}
+.gx-sim.gx-shellless-page .fa-kit{display:inline-block!important;font-family:inherit!important;font-style:normal!important;font-weight:inherit!important;line-height:1!important;text-rendering:auto!important;}
+.gx-sim.gx-shellless-page .fa-kit:before{content:""!important;display:inline-block!important;width:1em!important;height:1em!important;background-color:currentColor!important;vertical-align:-.125em!important;font-family:inherit!important;font-weight:inherit!important;-webkit-mask:var(--ops-icon-url) center/contain no-repeat!important;mask:var(--ops-icon-url) center/contain no-repeat!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-back{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-back.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-clip-art{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-clip-art.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-continue{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-continue.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-copy{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-copy.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-cut{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-cut.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-delete{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-delete.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-grid{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-grid.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-image{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-image.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-layers{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-layers.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-margin{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-margin.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-paste{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-paste.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-pdf{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-pdf.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-portrait-view-s{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-portrait-view-s.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-redo{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-redo.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-save{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-save.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-snap-to-grid{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-snap-to-grid.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-template{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-template.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-text{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-text.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-un-lock{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-un-lock.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-undo{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-undo.svg")!important;}
+.gx-sim.gx-shellless-page .fa-kit.fa-zoom-in{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-kit-fa-zoom-in.svg")!important;}
+.gx-sim.gx-shellless-page .fa-images{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-images2.svg");}
+.gx-sim.gx-shellless-page .fa-objects-column{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-table-columns.svg");}
+.gx-sim.gx-shellless-page .fa-unlock{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-user-unlock.svg");}
+.gx-sim.gx-shellless-page .fa-magnifying-glass-minus,
+.gx-sim.gx-shellless-page .fa-magnifying-glass-plus{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-magnifying-glass.svg");}
+.gx-sim.gx-shellless-page .fa-chevron-left{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-angle-left.svg");}
+.gx-sim.gx-shellless-page .uppy-Dashboard-AddFiles-title:before{content:""!important;display:block!important;width:32px!important;height:32px!important;margin:0 auto 8px!important;background-color:currentColor!important;-webkit-mask:url("../icon-mapping/extracted-svgs/ops-fa-cloud-arrow-up-regular.svg") center/contain no-repeat!important;mask:url("../icon-mapping/extracted-svgs/ops-fa-cloud-arrow-up-regular.svg") center/contain no-repeat!important;}
+.gx-sim.gx-shellless-page input[rx-colorpicker][colorpickerref]{-webkit-appearance:none!important;appearance:none!important;width:25px!important;height:25px!important;padding:0!important;border:0!important;border-radius:50%!important;background:conic-gradient(rgba(255,34,34,.53) 0 8.33333%,#f06 8.33333% 16.6667%,#63b 16.6667% 25%,#44b 25% 33.3333%,#09f 33.3333% 41.6667%,#0af 41.6667% 50%,#0bd 50% 58.3333%,#098 58.3333% 66.6667%,#0a4 66.6667% 75%,#7c3 75% 83.3333%,#fe0 83.3333% 91.6667%,#fb0 91.6667% 100%)!important;}

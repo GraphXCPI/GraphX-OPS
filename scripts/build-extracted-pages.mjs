@@ -185,6 +185,48 @@ const invalidExtractedSlugs = new Set([
   "template_manager-717761"
 ]);
 
+const validFragmentSlugs = new Set([
+  "product_popover"
+]);
+
+const shelllessFullDocumentSlugs = new Set([
+  "template_manager_design"
+]);
+
+const standaloneFullDocumentSlugs = new Set([
+  "htmlhelp"
+]);
+
+const localTabOnlySlugs = new Set([
+  "template_manager_duplicate"
+]);
+
+const nonNavigableAdminSlugs = new Set([
+  "admin_constants_import",
+  "breadcrumbs",
+  "document_download",
+  "corporate_department_import_csv",
+  "corporate_import_address",
+  "coupon_action_import_csv",
+  "dashboard_ajax",
+  "language_constant_import",
+  "offline_reorder",
+  "order_action_delete",
+  "order_update_import",
+  "product_master_option_attribute_googlesheet_import",
+  "relogin",
+  "report_download_print_file",
+  "seo_image_alt_text_import",
+  "studio_color_palette_import",
+  "studio_language_constant_import",
+  "studio_rgb_cmyk_mapping_import",
+  "url_redirection_import",
+  "user_action_import_address",
+  "user_action_import_csv",
+  "user_import_extra_fields",
+  "user_print_ready_file"
+]);
+
 function stripNumberAndExt(filename) {
   return filename.replace(/^\d+-/, "").replace(/\.html$/, "");
 }
@@ -276,8 +318,11 @@ function extractStandaloneBody(html) {
   return body.trim();
 }
 
-function extractedContentFragment(html) {
+function extractedContentFragment(html, slug = "") {
   if (/<(?:!doctype|html|body)\b/i.test(html)) {
+    if (standaloneFullDocumentSlugs.has(slug)) {
+      return extractStandaloneFullDocumentFragment(html, slug) || extractPageContent(html) || extractStandaloneBody(html) || html;
+    }
     return extractPageContent(html) || extractStandaloneBody(html) || html;
   }
   return html;
@@ -302,8 +347,9 @@ function extractJsonPayloadFragment(content) {
   }
 }
 
-function extractedCaptureFragment(html) {
-  const fragment = extractedContentFragment(html);
+function extractedCaptureFragment(html, slug = "") {
+  const isShelllessFullDocument = shelllessFullDocumentSlugs.has(slug) && /<(?:!doctype|html|body)\b/i.test(html);
+  const fragment = isShelllessFullDocument ? extractShelllessFullDocumentSnapshot(html) : extractedContentFragment(html, slug);
   const payloadFragment = extractJsonPayloadFragment(fragment);
   if (payloadFragment?.html) {
     return {
@@ -315,8 +361,63 @@ function extractedCaptureFragment(html) {
   return {
     rawContent: fragment,
     title: "",
-    payloadType: ""
+    payloadType: isShelllessFullDocument ? "full-document-snapshot" : ""
   };
+}
+
+function extractShelllessFullDocumentSnapshot(html) {
+  const head = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] || "";
+  const body = extractStandaloneBody(html);
+  const headStyles = [
+    ...head.matchAll(/<link\b[^>]*\brel=["']stylesheet["'][^>]*>/gi)
+  ].map(match => rewriteStudioAssetUrls(match[0]).replace(/\s+onload=(["'])[\s\S]*?\1/gi, ""));
+  headStyles.push(...(head.match(/<style\b[\s\S]*?<\/style>/gi) || []));
+  const snapshotBody = replaceCanvasSnapshots(rewriteStudioAssetUrls(body));
+  return `<div class="ops-shellless-snapshot ops-template-designer-snapshot">${headStyles.join("\n")}\n${snapshotBody}</div>`;
+}
+
+function extractStandaloneFullDocumentFragment(html, slug) {
+  if (slug !== "htmlhelp") return "";
+  const body = extractStandaloneBody(html);
+  if (!body) return "";
+  const contentStart = body.search(/<div[^>]*class=["'][^"']*\bcontainer-fluid\b[^"']*["'][^>]*>/i);
+  return (contentStart === -1 ? body : body.slice(contentStart)).trim();
+}
+
+function rewriteStudioAssetUrls(html) {
+  return String(html || "")
+    .replace(/\b(href|src)=["']\/studio\/app\/browser\/([^"']+)["']/gi, '$1="https://visualgraphx.com/studio/app/browser/$2"')
+    .replace(/\b(href|src)=["'](?!https?:|data:|#|javascript:|mailto:|tel:|\/)([^"']+)["']/gi, '$1="https://visualgraphx.com/studio/app/browser/$2"');
+}
+
+function replaceCanvasSnapshots(html) {
+  return String(html || "").replace(/<canvas\b([^>]*)\bdata-ops-canvas-snapshot=(["'])(data:image\/png;base64,[^"']+)\2([^>]*)>[\s\S]*?<\/canvas>/gi, (match, beforeAttrs, quote, dataUrl, afterAttrs) => {
+    const attrs = `${beforeAttrs || ""} ${afterAttrs || ""}`;
+    const className = extractHtmlAttribute(attrs, "class");
+    const style = extractHtmlAttribute(attrs, "style");
+    const cssWidth = extractHtmlAttribute(attrs, "data-ops-canvas-css-width");
+    const cssHeight = extractHtmlAttribute(attrs, "data-ops-canvas-css-height");
+    const index = extractHtmlAttribute(attrs, "data-ops-canvas-index");
+    const sizing = [
+      style,
+      cssWidth ? `width:${cssWidth}px` : "",
+      cssHeight ? `height:${cssHeight}px` : ""
+    ].filter(Boolean).join(";").replace(/;+/g, ";");
+    return `<img class="ops-canvas-snapshot ${escapeHtmlAttribute(className)}" src="${dataUrl}" alt="" data-ops-canvas-index="${escapeHtmlAttribute(index)}"${sizing ? ` style="${escapeHtmlAttribute(sizing)}"` : ""}>`;
+  });
+}
+
+function extractHtmlAttribute(attrs, name) {
+  const pattern = new RegExp(`\\b${name}=([\"'])(.*?)\\1`, "i");
+  return String(attrs || "").match(pattern)?.[2] || "";
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 function readJsonFile(file) {
@@ -520,7 +621,7 @@ function pickSafeCaptureContent(entry) {
       attempts.push({ ...candidate, status: "missing" });
       continue;
     }
-    const fragment = extractedCaptureFragment(fs.readFileSync(contentPath, "utf8"));
+    const fragment = extractedCaptureFragment(fs.readFileSync(contentPath, "utf8"), entry.slug);
     if (candidate.jsonOnly && fragment.payloadType !== "json-html") {
       attempts.push({ ...candidate, status: "not-json" });
       continue;
@@ -589,6 +690,7 @@ function loadSafePages(captureEntries, fileRouteMap) {
       slug,
       sourceFile,
       sourceKind,
+      displayMode: shelllessFullDocumentSlugs.has(slug) ? "shellless" : "",
       breadcrumbsHtml,
       bodyHtml
     });
@@ -624,6 +726,7 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = cleaned.replace(/\b(action|href)=["'](?:https?:\/\/(?:staging\.)?visualgraphx\.com)?\/?admin\/([^"'?#]+)([^"']*)["']/gi, (full, attr, file, suffix) => {
     const base = path.basename(file, ".php");
+    if (attr.toLowerCase() === "href" && nonNavigableAdminSlugs.has(base)) return 'href="javascript:void(0)"';
     const route = fileRouteMap.get(base) || routeForSlug(base);
     if (attr.toLowerCase() === "href") return `href="#current/${route}" data-page="${route}"`;
     return `action="#current/${route}"`;
@@ -636,7 +739,10 @@ function cleanExtractedContent(content, fileRouteMap) {
   });
 
   cleaned = cleaned.replace(/\bhref=["']([^"']+\.php)([^"']*)["']/gi, (full, file) => {
+    if (/^(?:https?:|data:|javascript:|mailto:|tel:|#)/i.test(file)) return full;
+    if (/[{}]/.test(file)) return full;
     const base = path.basename(file, ".php");
+    if (nonNavigableAdminSlugs.has(base)) return 'href="javascript:void(0)"';
     const route = fileRouteMap.get(base) || routeForSlug(base);
     return `href="#current/${route}" data-page="${route}"`;
   });
@@ -723,6 +829,10 @@ function loadTabStates(fileRouteMap) {
     const parentSlug = manifest.parent?.slug || manifest.parentSlug || "";
     if (!parentSlug || invalidExtractedSlugs.has(parentSlug)) continue;
     const route = fileRouteMap.get(parentSlug) || routeAliases[parentSlug] || fallbackRoute(parentSlug);
+    if (localTabOnlySlugs.has(parentSlug)) {
+      audit.push({ file, parentSlug, route, status: "skipped-local-tab-only" });
+      continue;
+    }
     const contentRel = manifest.files?.pageContentRenderedHtml;
     const contentPath = contentRel ? path.join(tabExtractionRoot, contentRel) : "";
     if (!contentPath || !fs.existsSync(contentPath)) {
@@ -730,7 +840,7 @@ function loadTabStates(fileRouteMap) {
       continue;
     }
 
-    const rawContent = extractedContentFragment(fs.readFileSync(contentPath, "utf8"));
+    const rawContent = extractedContentFragment(fs.readFileSync(contentPath, "utf8"), parentSlug);
     const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
     const breadcrumbsRel = manifest.files?.breadcrumbsRenderedHtml;
     const breadcrumbsPath = breadcrumbsRel ? path.join(tabExtractionRoot, breadcrumbsRel) : "";
@@ -791,7 +901,7 @@ function auditPage({ file, slug, route, rawContent, bodyHtml, sourceKind }) {
   const missing = Object.entries(checks).filter(([, ok]) => !ok).map(([key]) => key);
   let status = "ok";
   if (!checks.hasPageContent || !checks.hasVisibleBody) status = "reextract";
-  else if (!checks.hasPageHeader && !checks.hasTable && !checks.hasFormControls && !checks.hasRowsOrPanels) status = "review";
+  else if (!validFragmentSlugs.has(slug) && !checks.hasPageHeader && !checks.hasTable && !checks.hasFormControls && !checks.hasRowsOrPanels) status = "review";
 
   return {
     file,
@@ -840,10 +950,8 @@ for (const file of allFiles) {
   const hasRendered = fs.existsSync(renderedPath);
   const sourcePath = hasRendered ? renderedPath : rawPath;
   if (!fs.existsSync(sourcePath)) continue;
-  const sourceKind = hasRendered ? "rendered" : "raw";
+  let sourceKind = hasRendered ? "rendered" : "raw";
   const html = fs.readFileSync(sourcePath, "utf8");
-  const rawContent = hasRendered ? extractedContentFragment(html) : extractPageContent(html);
-  const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
   const breadcrumbsPath = hasRendered && fs.existsSync(path.join(breadcrumbsDir, file))
     ? path.join(breadcrumbsDir, file)
     : "";
@@ -851,6 +959,15 @@ for (const file of allFiles) {
     ? path.join(renderedFullDir, file)
     : rawPath;
   const fullHtml = fs.existsSync(fullHtmlPath) ? fs.readFileSync(fullHtmlPath, "utf8") : html;
+  let rawContent = hasRendered ? extractedContentFragment(html, slug) : extractPageContent(html);
+  if (standaloneFullDocumentSlugs.has(slug) && !meaningfulPageContent(rawContent)) {
+    const fullDocumentContent = extractedContentFragment(fullHtml, slug);
+    if (meaningfulPageContent(fullDocumentContent)) {
+      rawContent = fullDocumentContent;
+      sourceKind = "rendered-full-document-fragment";
+    }
+  }
+  const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
   const breadcrumbsSource = breadcrumbsPath ? fs.readFileSync(breadcrumbsPath, "utf8") : extractDivById(fullHtml, "breadcrumbs");
   const breadcrumbsHtml = cleanExtractedContent(breadcrumbsSource, fileRouteMap);
   const title = titleFromHtml(rawContent || html, slug);
