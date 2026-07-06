@@ -715,22 +715,22 @@ const proposalHighlightRules = {
     { selector: ".ops-proposed-product-catalog .product-type-chip", kind: "new", note: "Product Type shown on every row", limit: 3 },
   ],
   "product-edit": [
-    { selector: ".ops-product-edit-page .sim-subtabs", kind: "new", note: "Inventory and SEO become product-context tabs" },
+    { selector: ".ops-product-edit-page .ops-context-tabs", kind: "new", note: "Inventory and SEO become product-context tabs" },
   ],
   "stock-settings": [
     { selector: ".ops-stock-settings-page .ops-context-tabs", kind: "changed", note: "Stock and Tax/VAT join Weight, Days, and SKU in one tabset" },
     { selector: ".ops-stock-settings-page .page-header h1", kind: "renamed", note: "Grouped as Stock & Settings" },
   ],
   "store-workspace": [
-    { selector: ".sim-subtabs", kind: "new", note: "Store-locked workspace tabs, including Site Builder and Alerts & Notifications" },
+    { selector: ".ops-context-tabs", kind: "new", note: "Store-locked workspace tabs, including Site Builder and Alerts & Notifications" },
     { selector: ".page-header h1", kind: "new", note: "Focused store context with the store locked" },
   ],
   "order-exports": [
     { selector: ".page-header h1", kind: "moved", note: "Lifted out of Orders into the global Export & API area" },
-    { selector: ".sim-subtabs", kind: "new", note: "Two sections: Order Exports and API & Webhooks" },
+    { selector: ".ops-context-tabs", kind: "new", note: "Two sections: Order Exports and API & Webhooks" },
   ],
   "email-templates": [
-    { selector: ".sim-subtabs", kind: "moved", note: "Email/SMS moves out of Content Management into Alerts & Notifications" },
+    { selector: ".ops-context-tabs", kind: "moved", note: "Email/SMS moves out of Content Management into Alerts & Notifications" },
   ],
   "asset-manager": [
     { selector: ".page-header h1", kind: "new", note: "Hidden CMS Image Manager surfaced as Asset Manager" },
@@ -748,13 +748,13 @@ const proposalHighlightRules = {
   ],
   "statuses-workflow": [
     { selector: ".ops-statuses-workflow .page-header h1", kind: "new", note: "One entry for order, order product, and quote status configuration" },
-    { selector: ".ops-statuses-workflow .sim-subtabs", kind: "changed", note: "Tabs cross-link to the existing status screens" },
+    { selector: ".ops-statuses-workflow .ops-context-tabs", kind: "changed", note: "Tabs cross-link to the existing status screens" },
   ],
   "customer-workspace": [
-    { selector: ".sim-subtabs", kind: "new", note: "Customer Details gains workspace tabs — the screen itself is the unchanged OPS Customer Details page" },
+    { selector: ".ops-context-tabs", kind: "new", note: "Customer Details gains workspace tabs — the screen itself is the unchanged OPS Customer Details page" },
   ],
   "design-tabs": [
-    { selector: ".sim-subtabs", kind: "new", note: "Subpages become tabs so Design & Templates stays one small menu" },
+    { selector: ".ops-context-tabs", kind: "new", note: "Subpages become tabs so Design & Templates stays one small menu" },
   ],
   dashboard: [
     { selector: ".ops-board-chips a", kind: "changed", note: "Chips deep-link into the filtered Orders master list", limit: 4 },
@@ -793,43 +793,50 @@ function proposalHighlightRulesFor(page) {
 // Merged Design & Templates area: the sidebar stays small and each landing page
 // carries an OPS tab row over its subpages (same pattern as Stock & Settings).
 const proposedTemplateTabs = [
-  { label: "Product Templates", page: "templates" },
-  { label: "Master Templates", page: "template-master" },
-  { label: "PDF Blocks", page: "pdf-blocks" },
-  { label: "Art Layouts", page: "art-layouts" },
-  { label: "Template Categories", page: "template-categories" },
+  { label: "Product Templates", page: "templates", icon: "fak fa-templates" },
+  { label: "Master Templates", page: "template-master", icon: "fa fa-copy" },
+  { label: "PDF Blocks", page: "pdf-blocks", icon: "fa fa-file-pdf" },
+  { label: "Art Layouts", page: "art-layouts", icon: "fa fa-image" },
+  { label: "Template Categories", page: "template-categories", icon: "fa fa-folder" },
 ];
 const proposedStudioTabs = [
-  { label: "Studio Settings", page: "studio-settings" },
-  { label: "Language Text", page: "studio-language" },
-  { label: "Images", page: "studio-images" },
-  { label: "Image Categories", page: "studio-image-categories" },
-  { label: "Colors", page: "studio-colors" },
-  { label: "Custom CSS", page: "studio-css" },
-  { label: "Real Preview", page: "studio-models" },
-  { label: "Fonts", page: "studio-fonts" },
+  { label: "Studio Settings", page: "studio-settings", icon: "fa fa-cogs" },
+  { label: "Language Text", page: "studio-language", icon: "fa fa-language" },
+  { label: "Images", page: "studio-images", icon: "fa fa-image" },
+  { label: "Image Categories", page: "studio-image-categories", icon: "fa fa-folder" },
+  { label: "Colors", page: "studio-colors", icon: "fa fa-tint" },
+  { label: "Custom CSS", page: "studio-css", icon: "fa fa-code" },
+  { label: "Real Preview", page: "studio-models", icon: "fa fa-eye" },
+  { label: "Fonts", page: "studio-fonts", icon: "fa fa-text-height" },
 ];
 
 function customerWorkspaceTabs(activePage) {
-  return tabStrip([
-    { label: "View", page: activePage },
-    "Orders",
-    "Quotes",
-    "Payments & Credit",
-    "Design Proofs",
-    "Templates",
-    "Account Users",
-    "Addresses",
+  return contextTabs([
+    { label: "View", page: activePage, icon: "fa fa-eye" },
+    { label: "Orders", icon: "fa fa-shopping-cart" },
+    { label: "Quotes", icon: "fak fa-quote-management" },
+    { label: "Payments & Credit", icon: "fa fa-dollar-sign" },
+    { label: "Design Proofs", icon: "fa fa-image" },
+    { label: "Templates", icon: "fak fa-templates" },
+    { label: "Account Users", icon: "fa fa-users" },
+    { label: "Addresses", icon: "fa fa-map-marker-alt" },
   ], activePage);
 }
 
 function proposedLeadHtmlFor(page) {
   if (OPS.mode !== "proposed") return "";
-  if (proposedTemplateTabs.some(tab => tab.page === page)) return tabStrip(proposedTemplateTabs, page);
-  if (proposedStudioTabs.some(tab => tab.page === page)) return tabStrip(proposedStudioTabs, page);
+  if (proposedTemplateTabs.some(tab => tab.page === page)) return contextTabs(proposedTemplateTabs, page);
+  if (proposedStudioTabs.some(tab => tab.page === page)) return contextTabs(proposedStudioTabs, page);
   if (page === "customer-workspace" || page === "user-view-details") {
     proposalMarkup("customer-workspace");
     return customerWorkspaceTabs(page);
+  }
+  if (page === "order-exports") {
+    proposalMarkup("api");
+    return contextTabs([
+      { label: "Order Exports", page: "order-exports", icon: "fa fa-download" },
+      { label: "API & Webhooks", page: "api-webhooks", icon: "fa fa-sync-alt" },
+    ], page);
   }
   return "";
 }
@@ -2167,13 +2174,13 @@ function proposedProductCatalogPage() {
 
 function productEditPage() {
   const view = OPS.page === "product-edit-seo" ? "seo" : OPS.page === "product-edit-inventory" ? "inventory" : "general";
-  const tabs = tabStrip([
-    { label: "Settings", page: "product-edit" },
-    { label: "Additional Options" },
-    { label: "Designer" },
-    { label: "Price" },
-    { label: "Inventory", page: "product-edit-inventory" },
-    { label: "SEO", page: "product-edit-seo" },
+  const tabs = contextTabs([
+    { label: "Settings", page: "product-edit", icon: "fa fa-cog" },
+    { label: "Additional Options", icon: "fa fa-list" },
+    { label: "Designer", icon: "fak fa-designer-studio" },
+    { label: "Price", icon: "fa fa-dollar-sign" },
+    { label: "Inventory", page: "product-edit-inventory", icon: "fa fa-boxes" },
+    { label: "SEO", page: "product-edit-seo", icon: "fa fa-globe" },
   ], OPS.page === "product-edit" ? "product-edit" : OPS.page);
   let body = "";
   if (view === "inventory") {
@@ -2632,7 +2639,7 @@ function storesPage() {
 function apiPage() {
   const proposed = OPS.mode === "proposed";
   const title = OPS.page === "api-webhooks" ? "API & Webhooks" : (OPS.page === "order-exports" ? "Order Exports" : pageTitle());
-  const tabs = proposed ? tabStrip([{ label: "Order Exports", page: "order-exports" }, { label: "API & Webhooks", page: "api-webhooks" }]) : tabStrip(["Export/API Settings", "Hot Folder Settings", "Advanced API", "Webhook"]);
+  const tabs = proposed ? contextTabs([{ label: "Order Exports", page: "order-exports", icon: "fa fa-download" }, { label: "API & Webhooks", page: "api-webhooks", icon: "fa fa-sync-alt" }]) : tabStrip(["Export/API Settings", "Hot Folder Settings", "Advanced API", "Webhook"]);
   const apiText = proposed ? "Global-only API credentials, webhook events, and the open question for context-aware B2C, B2B, franchise, and reseller automation." : "Current Export/API Orders lives under Orders and mixes export execution with export/API settings.";
   const body = OPS.page === "api-webhooks"
     ? `<div class="grid two"><div>${panel("API Auth Settings", formRows(["Client Id", "Client Secret", "Endpoint URL", "Max Count", "IP Addresses"]))}</div><div>${panel("Webhook Events", `<p>${apiText}</p>${dataTable(["Event", "Created", "Updated", "Deleted"], [["Orders", "Yes", "Yes", "Yes"], ["Quote", "Yes", "Yes", "Yes"], ["Customer", "Yes", "Yes", "Yes"], ["Product", "Yes", "Yes", "Yes"]])}`)}</div></div>`
@@ -2899,7 +2906,7 @@ function templatePage() {
 }
 
 function alertsPage() {
-  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save", "Preview"])}${proposalMarkup("alerts")}${tabStrip([{ label: "Email Templates", page: "email-templates" }, { label: "SMS Templates", page: "sms-templates" }, { label: "Alert Automations", page: "email-reminders" }])}${filters(["Search", "Trigger", "Store", "Status"])}${dataTable(["Sr#", "Template / Automation", "Trigger", "Scope", "Status", "Action"], [
+  return `<section class="page">${pageHead(pageTitle(), ["Add", "Save", "Preview"])}${proposalMarkup("alerts")}${contextTabs([{ label: "Email Templates", page: "email-templates", icon: "fa fa-envelope" }, { label: "SMS Templates", page: "sms-templates", icon: "fa fa-mobile" }, { label: "Alert Automations", page: "email-reminders", icon: "fa fa-bell" }])}${filters(["Search", "Trigger", "Store", "Status"])}${dataTable(["Sr#", "Template / Automation", "Trigger", "Scope", "Status", "Action"], [
     ["1", "Order Status Update", "Order Updated", OPS.mode === "proposed" ? "Global or Store Locked" : "Global", "Active", actionButton("Action")],
     ["2", "Payment Request Reminder", "Scheduled", OPS.mode === "proposed" ? "Global or Store Locked" : "Global", "Active", actionButton("Action")],
   ])}${OPS.mode === "proposed" ? changeNote("Email/SMS and reminders are grouped as Alerts & Notifications, with matching store-context pages that lock the selected store.") : originalNote("Original Email/SMS is nested inside Content Management.")}</section>`;
@@ -3043,10 +3050,10 @@ function statusesWorkflowPage() {
   return `<section class="page ops-statuses-workflow">
     ${pageHead("Statuses & Workflow", ["Save", "Reset"])}
     ${proposalMarkup("production")}
-    ${tabStrip([
-      { label: "Order Status", page: "order-status" },
-      { label: "Quote Status", page: "quote-status" },
-      { label: "Statuses Overview", page: "statuses-workflow" },
+    ${contextTabs([
+      { label: "Statuses Overview", page: "statuses-workflow", icon: "fa fa-list" },
+      { label: "Order Status", page: "order-status", icon: "fa fa-shopping-cart" },
+      { label: "Quote Status", page: "quote-status", icon: "fak fa-quote-management" },
     ])}
     ${currentOpsDataTable(["Status Set", "Applies To", "States", "Action"], rows, "ops-statuses-workflow-table")}
     ${changeNote("Order Status, Order Product Status and rules, and Quote Status are configured from one Statuses & Workflow entry. The originals stay reachable from Orders and Quotes as focused entry points (broad + focused).")}
@@ -3058,17 +3065,17 @@ function storeWorkspacePage() {
 }
 
 function storeWorkspaceTabs() {
-  return tabStrip([
-    { label: "View", page: "store-workspace" },
-    { label: "Edit", page: "store-workspace-edit" },
-    { label: "Customers", page: "store-workspace-customers" },
-    { label: "Products", page: "store-workspace-products" },
-    { label: "Markup", page: "store-workspace-markup" },
-    { label: "Addresses", page: "store-workspace-addresses" },
-    { label: "Credit Summary", page: "store-workspace-credit" },
-    { label: "Site Builder", page: "store-workspace-builder" },
-    { label: "Alerts & Notifications", page: "store-workspace-alerts" },
-    { label: "Store Fields", page: "store-workspace-fields" },
+  return contextTabs([
+    { label: "View", page: "store-workspace", icon: "fa fa-eye" },
+    { label: "Edit", page: "store-workspace-edit", icon: "fa fa-pencil" },
+    { label: "Customers", page: "store-workspace-customers", icon: "fa fa-user" },
+    { label: "Products", page: "store-workspace-products", icon: "fa fa-tags" },
+    { label: "Markup", page: "store-workspace-markup", icon: "fa fa-percent" },
+    { label: "Addresses", page: "store-workspace-addresses", icon: "fa fa-map-marker-alt" },
+    { label: "Credit Summary", page: "store-workspace-credit", icon: "fa fa-dollar-sign" },
+    { label: "Site Builder", page: "store-workspace-builder", icon: "fa fa-sitemap" },
+    { label: "Alerts & Notifications", page: "store-workspace-alerts", icon: "fa fa-bell" },
+    { label: "Store Fields", page: "store-workspace-fields", icon: "fa fa-list" },
   ]);
 }
 
@@ -3121,15 +3128,15 @@ function assetManagerPage() {
 }
 
 function siteBuilderTabs() {
-  return tabStrip([
-    { label: "Pages", page: "cms-pages" },
-    { label: "Page Categories", page: "page-categories" },
-    { label: "Links & Menus", page: "links" },
-    { label: "Sidebar", page: "sidebar-management" },
-    { label: "Themes", page: "themes" },
-    { label: "Account Pages", page: "account-pages" },
-    { label: "Product Layout Builder", page: "product-page-layout" },
-    { label: "Content Management", page: "site-content" },
+  return contextTabs([
+    { label: "Pages", page: "cms-pages", icon: "fa fa-file-alt" },
+    { label: "Page Categories", page: "page-categories", icon: "fa fa-folder" },
+    { label: "Links & Menus", page: "links", icon: "fa fa-link" },
+    { label: "Sidebar", page: "sidebar-management", icon: "fa fa-list-alt" },
+    { label: "Themes", page: "themes", icon: "fa fa-desktop" },
+    { label: "Account Pages", page: "account-pages", icon: "fa fa-user" },
+    { label: "Product Layout Builder", page: "product-page-layout", icon: "fa fa-table-columns" },
+    { label: "Content Management", page: "site-content", icon: "fa fa-file-lines" },
   ]);
 }
 
@@ -3168,6 +3175,29 @@ function combinedTabIcon(label) {
   if (normalized.includes("related")) return "fa fa-link";
   if (normalized.includes("stock")) return "fa fa-boxes";
   return "fa fa-list";
+}
+
+// Primary context-tab row — the big boxed OPS tab system with icons (same
+// component family as the proposed Orders tabs). Use for top-level context
+// switchers; tabStrip below stays the secondary sub-tab row.
+function contextTabs(items, activePage = OPS.page) {
+  const normalized = items.map(item => typeof item === "string" ? { label: item } : item);
+  const hasActive = normalized.some(item => item.page === activePage);
+  return `<div class="row">
+    <div class="col-12">
+      <div class="tabs-above ops-context-tabs" role="tablist">
+        <ul class="nav nav-tabs">${normalized.map((item, index) => {
+          const active = item.page ? item.page === activePage : (!hasActive && index === 0);
+          const rawIcon = item.icon || combinedTabIcon(item.label);
+          const iconClass = rawIcon.includes(" ") ? rawIcon : `fa ${rawIcon}`;
+          const href = item.page ? `#${OPS.mode}/${h(item.page)}` : "javascript:void(0)";
+          const pageAttr = item.page ? ` data-page="${h(item.page)}"` : "";
+          const badge = item.badge != null ? `<span class="badge badge-light border ml-1">${h(item.badge)}</span>` : "";
+          return `<li class="nav-item text-md-center"><a href="${href}"${pageAttr} class="nav-link ${active ? "active" : ""}" aria-selected="${active ? "true" : "false"}"><i class="${h(iconClass)}"></i><span class="menu-text">${h(item.label)}</span>${badge}</a></li>`;
+        }).join("")}</ul>
+      </div>
+    </div>
+  </div>`;
 }
 
 function tabStrip(items, activePage = OPS.page) {
