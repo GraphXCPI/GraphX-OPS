@@ -202,8 +202,29 @@ const localTabOnlySlugs = new Set([
 ]);
 
 const nonNavigableAdminSlugs = new Set([
+  "admin_constants_import",
+  "breadcrumbs",
   "document_download",
-  "product_master_option_attribute_googlesheet_import"
+  "corporate_department_import_csv",
+  "corporate_import_address",
+  "coupon_action_import_csv",
+  "dashboard_ajax",
+  "language_constant_import",
+  "offline_reorder",
+  "order_action_delete",
+  "order_update_import",
+  "product_master_option_attribute_googlesheet_import",
+  "relogin",
+  "report_download_print_file",
+  "seo_image_alt_text_import",
+  "studio_color_palette_import",
+  "studio_language_constant_import",
+  "studio_rgb_cmyk_mapping_import",
+  "url_redirection_import",
+  "user_action_import_address",
+  "user_action_import_csv",
+  "user_import_extra_fields",
+  "user_print_ready_file"
 ]);
 
 function stripNumberAndExt(filename) {

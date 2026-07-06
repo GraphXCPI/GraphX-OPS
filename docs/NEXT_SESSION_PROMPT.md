@@ -33,8 +33,12 @@ Critical rules:
   `/Users/cderamos/Projects/OPS Simulator/reference/extractions/GraphX-OPS-staging-extraction-2026-07-06`
 - The staging tab-state archive is complete: 93 discovered, 93 captured, 0 remaining.
 - Template and block management pages are live-only; capture those read-only from `https://visualgraphx.com/admin`, not staging.
-- The product/settings/template/email/shipping/SEO targeted linked-route gap pass is current as of 2026-07-06:
-  `ops-extracted-pages.js` has 353 extracted pages and the focused route-graph scan has 0 missing linked targets for those clusters.
+- The generated route-link gap pass is current as of 2026-07-06:
+  `ops-extracted-pages.js` has 387 extracted pages, the full generated route-link scan has 0 missing linked targets across 372 local linked targets, and the product/settings/template/email/shipping/SEO focused scan also remains clean.
+- The tracked targeted capture queues are:
+  `docs/targeted-product-settings-gap-capture-queue-2026-07-06.csv`,
+  `docs/targeted-template-email-gap-capture-queue-2026-07-06.csv`, and
+  `docs/targeted-current-route-link-gap-capture-queue-2026-07-06.csv`.
 - For newly discovered action/detail pages, resume from the canonical safe queue or the tracked targeted queues in `docs/`, and do not claim those pages captured until rendered DOM/source manifests and browser verification exist.
 
 Before editing:
