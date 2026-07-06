@@ -142,7 +142,9 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
-  - `121/121` generated Current OPS routes render locally without missing extracted roots, route mismatches, simulator fallback-body warnings, or thin renders.
+  - `290/290` generated Current OPS routes render locally without missing extracted roots, route mismatches, live admin links, or thin renders after the live-only template/block merge.
+  - Two naive fallback-string hits were verified as source-content false positives: `coupons` has a real `Coming Soon` coupon state/filter, and `designer-studio-font-action` includes the Google font name `Coming Soon`.
+  - Earlier smoke before the expanded action/detail capture covered `121/121` generated Current OPS routes.
   - Static generated-bundle scan found `0` full-document bodies/tab states and `0` remaining `staging.visualgraphx.com/admin` or `visualgraphx.com/admin` URL references.
   - `relogin` is excluded as a non-admin re-login endpoint; `html-help` uses its first captured tab state as the route body because the base page-content fragment was empty.
 - Dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
