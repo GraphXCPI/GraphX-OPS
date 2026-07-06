@@ -72,7 +72,7 @@ All OPS simulator reference material now lives inside this project under `refere
   - Contents: 93 tab-state manifests and screenshots.
   - Status: 93 discovered, 93 captured, 0 remaining.
   - Capture modes: 56 live-clicked states, 37 source-derived active-tab variants from authenticated staging DOM after Chrome automation timed out.
-  - Runtime status: `ops-extracted-pages.js` now includes these 93 tab states. Current OPS tab clicks swap to captured tab DOM while preserving the current hash route.
+  - Runtime status: `ops-extracted-pages.js` now includes 89 active captured tab states. Current OPS tab clicks swap to captured tab DOM while preserving the current hash route, except `template_manager_duplicate`, whose four older staging tab states are intentionally skipped so the live-only duplicate-template page uses its local live DOM tabs.
 - Missing action/detail page audit:
   - Path: `expanded-safe-page-capture-2026-07-06`
   - Key index: `indexes/canonical-safe-page-capture-queue.csv`
@@ -114,7 +114,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `scripts/build-extracted-pages.mjs` supports the full CDP folder names (`server-html`, `page-content-rendered-html`, and rendered breadcrumb captures);
   - Orders collapse controls are synced after render so OPS plus/minus icons, `aria-expanded`, and visible child rows stay aligned.
 - Staging extraction gap pass was expanded on 2026-07-06:
-  - tab states are now fully indexed (`93/93`, zero remaining);
+  - tab states are now fully indexed (`93/93`, zero remaining), with 89 loaded into the generated bundle and 4 intentionally skipped for the live-only duplicate-template screen;
   - generated Current OPS routes now use captured tab-state DOM for OPS tabs, including PHP-query style tab links;
   - missed safe action/detail pages were captured through Chrome DevTools Protocol from a logged-in staging debug-port session (`177` canonical targets; `174` ok, `2` timed-out-captured with usable DOM, `1` retried with DOM-only fallback);
   - `scripts/build-extracted-pages.mjs` can merge completed safe action/detail live-capture folders into the existing `OPS_EXTRACTED_PAGES` bundle via `OPS_SAFE_CAPTURE_ROOTS`;
@@ -124,14 +124,14 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 - Final generated bundle status from the latest 2026-07-06 full-source/CDP merge:
   - `ops-extracted-pages.js` generated `297` extracted OPS routes;
   - the generator now uses `full-source-cdp-capture-2026-07-06` as the primary extraction root so full-source routes such as `quote-action` are available;
-  - safe capture roots loaded `195/199` available safe pages plus `93/93` captured tab states;
+  - safe capture roots loaded `197/201` available safe pages plus `89/93` captured tab states;
   - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
   - the Current/Proposed `add-quote` simulator route now renders the captured OPS `quote-request` source page so Add New Quote no longer falls back to the generic quotes screen or the Add Order form;
   - `quote-action` now renders the full-source `View/Update Quote` page from `068-quote_action.html`;
   - `studio-models-action` now renders `Add Real Preview Models` from a read-only authenticated staging capture at `300-studio_models_action.html`, while `products-studio-models-action` remains the separate `Assign Real Preview` page;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
-  - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: the live template cluster now covers `#current/templates`, `#current/template-assign`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-action`, `#current/template-manager-design`, `#current/template-manager-sortorder`, `#current/template-preview-image`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-properties-master-action`, `#current/template-categories`, `#current/template-category-action`, `#current/template-category-metatags`, `#current/template-master`, and `#current/store-settings-templates`;
+  - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: the live template cluster now covers `#current/templates`, `#current/template-assign`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-action`, `#current/template-manager-design`, `#current/template-manager-sortorder`, `#current/template-preview-image`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-properties-master-action`, `#current/template-categories`, `#current/template-category-action`, `#current/template-category-metatags`, `#current/template-master`, `#current/store-settings-templates`, and `#current/template-manager-duplicate`;
   - `template_manager_design` is now treated as a shellless live full-document snapshot because the live OPS designer is an Angular workspace outside the normal admin shell; the capture script serializes visible canvas elements, the bundle builder replays them as image snapshots, and shellless CSS maps the live designer kit/regular font glyphs to extracted SVG masks;
   - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
 - Browser verification on 2026-07-06 covered:
@@ -150,10 +150,12 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - shellless template designer verification covered `#current/template-manager-design` at a 1200px viewport: it rendered from `155-template_manager_design.html`, used `displayMode: shellless`, had `0` admin shell wrappers, replayed `4` canvas snapshots, resolved the live designer kit icons via extracted `ops-kit-fa-*.svg` masks, and resolved the Uppy upload/color controls.
   - `#current/html-help` was verified after the standalone full-document extraction fix: it rendered from `029-htmlhelp.html`, preserved the captured `Html Help` header and tab bar, and clicking the `Tables` tab kept the route at `#current/html-help` with `currentTab` set to `htmlhelp:tables`.
   - `#proposed/html-help` was verified to preserve the same OPS capture because no Proposed delta exists for this route.
+  - `#current/template-manager-duplicate` was verified from the live-only capture `7923-template_manager_duplicate.html`; clicking `Remove Duplicate Templates` switched the local live tab pane without using the older staging tab-state DOM.
+  - `#proposed/template-manager-duplicate` was verified to preserve the same live OPS capture because no Proposed delta exists for this route.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
-  - latest structure audit is `317` OK, `0` review, `0` reextract.
+  - latest structure audit is `318` OK, `0` review, `0` reextract.
   - previous `290/290` generated Current OPS route smoke rendered locally without missing extracted roots, route mismatches, live admin links, or thin renders after the live-only template/block merge.
   - Two naive fallback-string hits were verified as source-content false positives: `coupons` has a real `Coming Soon` coupon state/filter, and `designer-studio-font-action` includes the Google font name `Coming Soon`.
   - Earlier smoke before the expanded action/detail capture covered `121/121` generated Current OPS routes.

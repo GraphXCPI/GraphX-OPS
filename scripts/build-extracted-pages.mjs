@@ -197,6 +197,10 @@ const standaloneFullDocumentSlugs = new Set([
   "htmlhelp"
 ]);
 
+const localTabOnlySlugs = new Set([
+  "template_manager_duplicate"
+]);
+
 function stripNumberAndExt(filename) {
   return filename.replace(/^\d+-/, "").replace(/\.html$/, "");
 }
@@ -795,6 +799,10 @@ function loadTabStates(fileRouteMap) {
     const parentSlug = manifest.parent?.slug || manifest.parentSlug || "";
     if (!parentSlug || invalidExtractedSlugs.has(parentSlug)) continue;
     const route = fileRouteMap.get(parentSlug) || routeAliases[parentSlug] || fallbackRoute(parentSlug);
+    if (localTabOnlySlugs.has(parentSlug)) {
+      audit.push({ file, parentSlug, route, status: "skipped-local-tab-only" });
+      continue;
+    }
     const contentRel = manifest.files?.pageContentRenderedHtml;
     const contentPath = contentRel ? path.join(tabExtractionRoot, contentRel) : "";
     if (!contentPath || !fs.existsSync(contentPath)) {
