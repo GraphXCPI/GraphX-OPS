@@ -1,10 +1,38 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = path.resolve(new URL("..", import.meta.url).pathname);
-const rawDir = path.resolve(root, "../GraphX-OPS-raw-extraction-2026-07-03/raw-source-html");
-const renderedDir = path.resolve(root, "../GraphX-OPS-rendered-extraction-2026-07-04/page-content-html");
-const renderedFullDir = path.resolve(root, "../GraphX-OPS-rendered-extraction-2026-07-04/rendered-source-html");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const extractionRoot = process.env.OPS_EXTRACTION_ROOT
+  ? path.resolve(root, process.env.OPS_EXTRACTION_ROOT)
+  : "";
+function firstExistingPath(paths) {
+  return paths.find(candidate => fs.existsSync(candidate)) || paths[0];
+}
+
+const rawDir = firstExistingPath([
+  ...(extractionRoot ? [path.join(extractionRoot, "raw-source-html")] : [
+    path.resolve(root, "reference/extractions/GraphX-OPS-raw-extraction-2026-07-03/raw-source-html"),
+    path.resolve(root, "../GraphX-OPS-raw-extraction-2026-07-03/raw-source-html")
+  ])
+].filter(Boolean));
+const renderedDir = firstExistingPath([
+  ...(extractionRoot ? [path.join(extractionRoot, "page-content-html")] : [
+    path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/page-content-html"),
+    path.resolve(root, "../GraphX-OPS-rendered-extraction-2026-07-04/page-content-html")
+  ])
+].filter(Boolean));
+const renderedFullDir = firstExistingPath([
+  ...(extractionRoot ? [path.join(extractionRoot, "rendered-source-html")] : [
+    path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/rendered-source-html"),
+    path.resolve(root, "../GraphX-OPS-rendered-extraction-2026-07-04/rendered-source-html")
+  ])
+].filter(Boolean));
+const breadcrumbsDir = firstExistingPath([
+  ...(extractionRoot ? [path.join(extractionRoot, "breadcrumbs-html")] : [
+    path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/breadcrumbs-html")
+  ])
+].filter(Boolean));
 const outputFile = path.join(root, "ops-extracted-pages.js");
 const auditFile = path.join(root, "raw-reference", "extracted-page-structure-audit.json");
 
@@ -13,7 +41,7 @@ const routeAliases = {
   admin_constants: "admin-text",
   admin_group: "roles",
   admin_listing: "admin-users",
-  all_products_price_bulk_update: "product-price-excel",
+  all_products_price_bulk_update: "product-price-percent",
   block_ip_action: "blocked-ips",
   cms_listing: "cms-pages",
   configuration_external_service_listing: "external-services",
@@ -254,11 +282,11 @@ function auditPage({ file, slug, route, rawContent, bodyHtml, sourceKind }) {
   };
 }
 
-if (!fs.existsSync(rawDir)) {
-  throw new Error(`Missing raw extraction directory: ${rawDir}`);
+if (!fs.existsSync(rawDir) && !fs.existsSync(renderedDir)) {
+  throw new Error(`Missing extraction directories: ${rawDir} or ${renderedDir}`);
 }
 
-const files = fs.readdirSync(rawDir).filter(file => file.endsWith(".html")).sort();
+const files = fs.existsSync(rawDir) ? fs.readdirSync(rawDir).filter(file => file.endsWith(".html")).sort() : [];
 const renderedFiles = fs.existsSync(renderedDir)
   ? fs.readdirSync(renderedDir).filter(file => file.endsWith(".html")).sort()
   : [];
@@ -288,11 +316,15 @@ for (const file of allFiles) {
   const html = fs.readFileSync(sourcePath, "utf8");
   const rawContent = hasRendered ? html : extractPageContent(html);
   const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
+  const breadcrumbsPath = hasRendered && fs.existsSync(path.join(breadcrumbsDir, file))
+    ? path.join(breadcrumbsDir, file)
+    : "";
   const fullHtmlPath = hasRendered && fs.existsSync(path.join(renderedFullDir, file))
     ? path.join(renderedFullDir, file)
     : rawPath;
   const fullHtml = fs.existsSync(fullHtmlPath) ? fs.readFileSync(fullHtmlPath, "utf8") : html;
-  const breadcrumbsHtml = cleanExtractedContent(extractDivById(fullHtml, "breadcrumbs"), fileRouteMap);
+  const breadcrumbsSource = breadcrumbsPath ? fs.readFileSync(breadcrumbsPath, "utf8") : extractDivById(fullHtml, "breadcrumbs");
+  const breadcrumbsHtml = cleanExtractedContent(breadcrumbsSource, fileRouteMap);
   const title = titleFromHtml(rawContent || html, slug);
   const page = {
     route,

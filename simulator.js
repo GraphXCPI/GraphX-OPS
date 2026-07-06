@@ -107,8 +107,7 @@ const currentMenu = [
 	      { label: "Product Price", page: "product-price" },
 	      { label: "Product Price - Bulk", page: "product-price-bulk" },
 	      { label: "Product Option Price - Bulk", page: "product-option-price-bulk" },
-	      { label: "Product Price - Excel", page: "product-price-excel" },
-	      { label: "Import Modified Price", page: "product-price-modify" },
+	      { label: "Product Price - Excel", page: "product-price-modify" },
 	      { label: "Percentage (+/-)", page: "product-price-percent" },
 	    ] },
 	  ] },
@@ -411,6 +410,7 @@ const pageAliases = {
 };
 
 const proposedExtractedPageAliases = {
+  "add-quote": "add-order",
   "store-credit": "reward-points",
   "country-states": "countries",
   "web-optimization": "image-optimization",
@@ -1782,7 +1782,7 @@ function productPricingPage() {
     { label: "Product Price", page: "product-price" },
     { label: "Bulk Price", page: "product-price-bulk" },
     { label: "Option Price", page: "product-option-price-bulk" },
-    { label: "Excel Import", page: "product-price-excel" },
+    { label: "Product Price - Excel", page: "product-price-modify" },
     { label: "Percentage (+/-)", page: "product-price-percent" },
   ]);
   return `<section class="page">${pageHead(proposed ? "Pricing" : pageTitle(), ["Save", "Import", "Export"])}${tabs}${filters(["Search", "Product", "Price Category", "Store"])}${dataTable(["Sr#", "Product", "Price Category", "Pricing Mode", "Base Price", "Status", "Action"], [
