@@ -116,15 +116,26 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 - Staging extraction gap pass was expanded on 2026-07-06:
   - tab states are now fully indexed (`93/93`, zero remaining);
   - generated Current OPS routes now use captured tab-state DOM for OPS tabs, including PHP-query style tab links;
-  - missed safe action/detail pages are queued for a resumed authenticated capture (`177` canonical targets);
+  - missed safe action/detail pages were captured through Chrome DevTools Protocol from a logged-in staging debug-port session (`177` canonical targets; `174` ok, `2` timed-out-captured with usable DOM, `1` retried with DOM-only fallback);
+  - `scripts/build-extracted-pages.mjs` can merge completed safe action/detail live-capture folders into the existing `OPS_EXTRACTED_PAGES` bundle via `OPS_SAFE_CAPTURE_ROOTS`;
+  - `scripts/capture-staging-safe-pages-cdp.mjs` was added for repeatable safe captures that wait for network quiet, DOM stability, and final settle before saving page content;
   - source-derived tab states are clearly marked in their manifests;
   - `scripts/capture-staging-safe-pages.mjs` was added for resumed safe-page capture once Chrome Apple Events JavaScript permission and staging auth are available.
+- Final generated bundle status from the 2026-07-06 CDP merge:
+  - `ops-extracted-pages.js` generated `288` extracted OPS routes;
+  - safe capture roots loaded `174/178` available safe pages plus `93/93` captured tab states;
+  - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
+  - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
+  - skipped safe captures remain source-reference only when their content was empty or intentionally invalid (`send_custom_mail_popup`, `template_manage_block_properties_listing`, `user_print_ready_file`; the original errored `quote_request` entry is superseded by the DOM-only retry).
 - Browser verification on 2026-07-06 covered:
   - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
   - `#current/product-categories` tab `Category group`;
   - `#current/site-settings` tab `Product`;
   - `#current/payment-request` tab `Completed`;
   - `#current/cms-pages` tab `Dynamic Pages`.
+  - safe action/detail routes `#current/order-action`, `#current/quote-request`, `#current/product-action`, `#current/theme-css-action`, `#current/user-action`, `#current/workflow-listing`, `#current/product-popover`, `#current/template-manager-design`, and `#current/quote-product-assign-printer`.
+  - direct route checks also covered `#current/sales-agents`, `#current/sales-order-details`, `#current/sales-order-product-details`, `#current/sales-order-summary`, `#current/schemas`, and `#current/seo-global`.
+  - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
   - `121/121` generated Current OPS routes render locally without missing extracted roots, route mismatches, simulator fallback-body warnings, or thin renders.
@@ -137,9 +148,9 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 
 ## Known Open Work
 
-- Resume authenticated staging capture for the 177 canonical safe page/action targets in `expanded-safe-page-capture-2026-07-06/indexes/canonical-safe-page-capture-queue.csv`.
-- Before running the safe-page capture, Chrome must allow JavaScript from Apple Events and the front Chrome window must be logged in to `https://staging.visualgraphx.com/admin`.
-- Do not claim the action/detail page gap is captured until the queue has rendered DOM/source/screenshot manifests, not just target rows.
+- Continue authenticated staging capture only for newly discovered routes or the source-reference entries whose `.page-content` fragments were empty.
+- For repeat captures, prefer `scripts/capture-staging-safe-pages-cdp.mjs` with Chrome running on debug port `9222`; the Apple Events script remains a fallback only when Chrome JavaScript automation is enabled.
+- Do not claim a page is parity-complete until the generated route is visually checked against staging/current OPS, not just because rendered DOM/source manifests exist.
 - Continue screen-by-screen parity verification.
 - Do not assume a page is done because the route exists.
 - Review Product Catalog, Orders, Stock & Settings, Product Tax/VAT, and dashboard surfaces against live OPS references before changing adjacent pages.

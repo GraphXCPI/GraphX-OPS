@@ -56,6 +56,8 @@ const tabExtractionRoot = process.env.OPS_TAB_EXTRACTION_ROOT
     extractionRoot ? path.join(path.dirname(extractionRoot), "interactive-tab-state-capture-2026-07-06") : "",
     path.resolve(root, "reference/extractions/GraphX-OPS-staging-extraction-2026-07-06/interactive-tab-state-capture-2026-07-06")
   ]);
+const defaultSafeCaptureSearchRoot = path.resolve(root, "reference/extractions/GraphX-OPS-staging-extraction-2026-07-06/expanded-safe-page-capture-2026-07-06");
+const safeCaptureRoots = resolveSafeCaptureRoots(process.env.OPS_SAFE_CAPTURE_ROOTS || "");
 const outputFile = path.join(root, "ops-extracted-pages.js");
 const auditFile = path.join(root, "raw-reference", "extracted-page-structure-audit.json");
 
@@ -191,10 +193,33 @@ function fallbackRoute(slug) {
   return slug.replace(/_/g, "-").toLowerCase();
 }
 
+function routeForSlug(slug) {
+  return routeAliases[slug] || fallbackRoute(slug);
+}
+
+function fallbackTitleFromSlug(slug) {
+  return slug.replace(/[-_]/g, " ");
+}
+
+function cleanTitleText(value) {
+  return decodeHtmlEntities(String(value || ""))
+    .replace(/<[^>]+>/g, "")
+    .replace(/^\s*Admin\s*::\s*/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function titleFromHtml(html, slug) {
   const h1 = html.match(/<h1[^>]*>\s*([\s\S]*?)\s*<\/h1>/i)?.[1];
   const title = h1 || html.match(/<title[^>]*>\s*(?:Admin\s*::\s*)?([\s\S]*?)\s*<\/title>/i)?.[1];
-  return (title || slug.replace(/[-_]/g, " ")).replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  return cleanTitleText(title || fallbackTitleFromSlug(slug));
+}
+
+function titleFromSafeCapture(rawContent, entry, slug) {
+  const htmlTitle = titleFromHtml(rawContent, slug);
+  const fallbackTitle = cleanTitleText(fallbackTitleFromSlug(slug));
+  if (htmlTitle && htmlTitle !== fallbackTitle) return htmlTitle;
+  return cleanTitleText(entry.heading || entry.title || htmlTitle || fallbackTitle);
 }
 
 function extractPageContent(html) {
@@ -258,6 +283,338 @@ function extractedContentFragment(html) {
   return html;
 }
 
+function extractJsonPayloadFragment(content) {
+  const trimmed = String(content || "").trim();
+  if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) return null;
+  try {
+    const payload = JSON.parse(trimmed);
+    const html = typeof payload?.html === "string" ? payload.html : "";
+    if (!html) return null;
+    const normalizedHtml = decodeHtmlEntities(html)
+      .replace(/\\\//g, "/")
+      .replace(/\sstyle=(["'])[^"']*display\s*:\s*none;?[^"']*\1/gi, "");
+    return {
+      html: normalizedHtml.trim(),
+      title: cleanTitleText(payload.product_title || payload.title || payload.heading || "")
+    };
+  } catch {
+    return null;
+  }
+}
+
+function extractedCaptureFragment(html) {
+  const fragment = extractedContentFragment(html);
+  const payloadFragment = extractJsonPayloadFragment(fragment);
+  if (payloadFragment?.html) {
+    return {
+      rawContent: payloadFragment.html,
+      title: payloadFragment.title,
+      payloadType: "json-html"
+    };
+  }
+  return {
+    rawContent: fragment,
+    title: "",
+    payloadType: ""
+  };
+}
+
+function readJsonFile(file) {
+  return JSON.parse(fs.readFileSync(file, "utf8"));
+}
+
+function resolveSafeCapturePath(value) {
+  return path.resolve(root, value);
+}
+
+function safeCaptureManifestPath(captureRoot) {
+  return path.join(captureRoot, "safe_page_capture_manifest.json");
+}
+
+function hasSafeCaptureLayout(captureRoot) {
+  return [
+    "page-content-rendered-html",
+    "full-rendered-dom-html",
+    "breadcrumbs-rendered-html",
+    "server-html",
+    "page-manifests"
+  ].every(dir => fs.existsSync(path.join(captureRoot, dir)));
+}
+
+function isAutoDiscoverableSafeCaptureRoot(captureRoot) {
+  const manifestPath = safeCaptureManifestPath(captureRoot);
+  if (!fs.existsSync(manifestPath) || !hasSafeCaptureLayout(captureRoot)) return false;
+  try {
+    const manifest = readJsonFile(manifestPath);
+    return Boolean((manifest.updatedAt || manifest.completedAt) && Array.isArray(manifest.pages));
+  } catch {
+    return false;
+  }
+}
+
+function discoverLatestSafeCaptureRoot() {
+  if (!fs.existsSync(defaultSafeCaptureSearchRoot)) return "";
+  const candidates = fs.readdirSync(defaultSafeCaptureSearchRoot, { withFileTypes: true })
+    .filter(entry => entry.isDirectory() && /^live-capture-cdp-/.test(entry.name))
+    .map(entry => path.join(defaultSafeCaptureSearchRoot, entry.name))
+    .filter(isAutoDiscoverableSafeCaptureRoot)
+    .sort((a, b) => path.basename(a).localeCompare(path.basename(b)));
+  return candidates.at(-1) || "";
+}
+
+function resolveSafeCaptureRoots(value) {
+  const parts = String(value || "")
+    .split(":")
+    .map(part => part.trim())
+    .filter(Boolean);
+  const roots = [];
+  for (const part of parts) {
+    if (part === "auto" || part === "latest") {
+      const latestRoot = discoverLatestSafeCaptureRoot();
+      if (latestRoot) roots.push(latestRoot);
+      continue;
+    }
+    roots.push(resolveSafeCapturePath(part));
+  }
+  return Array.from(new Set(roots));
+}
+
+function safePageCaptureEntriesFromManifest(captureRoot, manifest) {
+  if (Array.isArray(manifest.pages)) {
+    return manifest.pages.map(entry => ({ ...entry, manifestFile: entry.manifestFile || "" }));
+  }
+
+  const manifestDir = path.join(captureRoot, "page-manifests");
+  if (!fs.existsSync(manifestDir)) return [];
+  return fs.readdirSync(manifestDir)
+    .filter(file => file.endsWith(".json"))
+    .sort()
+    .map(file => ({
+      ...readJsonFile(path.join(manifestDir, file)),
+      manifestFile: path.join("page-manifests", file)
+    }));
+}
+
+function slugFromSafeCaptureEntry(entry) {
+  const slug = String(entry.slug || "").trim();
+  if (slug) return slug.replace(/\.php$/i, "");
+  let urlFile = "";
+  if (entry.url) {
+    try {
+      urlFile = path.basename(new URL(entry.url).pathname, ".php");
+    } catch {
+      urlFile = path.basename(String(entry.url).split("?")[0], ".php");
+    }
+  }
+  if (urlFile) return urlFile;
+  const contentFile = entry.files?.pageContentRenderedHtml ? path.basename(entry.files.pageContentRenderedHtml) : "";
+  return contentFile ? stripNumberAndExt(contentFile) : "";
+}
+
+function loadSafePageCaptureEntries(roots) {
+  const entries = [];
+  const rootAudit = [];
+  for (const captureRoot of roots) {
+    const manifestPath = safeCaptureManifestPath(captureRoot);
+    if (!fs.existsSync(manifestPath)) {
+      throw new Error(`Missing safe page capture manifest: ${manifestPath}`);
+    }
+    if (!hasSafeCaptureLayout(captureRoot)) {
+      throw new Error(`Safe page capture root is missing expected folders: ${captureRoot}`);
+    }
+    const manifest = readJsonFile(manifestPath);
+    const rootEntries = safePageCaptureEntriesFromManifest(captureRoot, manifest)
+      .map(entry => ({ ...entry, captureRoot, slug: slugFromSafeCaptureEntry(entry) }))
+      .filter(entry => entry.slug);
+    entries.push(...rootEntries);
+    rootAudit.push({
+      captureRoot,
+      manifestPath,
+      updatedAt: manifest.updatedAt || manifest.completedAt || "",
+      totalSelected: manifest.totalSelected ?? rootEntries.length,
+      pages: rootEntries.length
+    });
+  }
+  return { entries, rootAudit };
+}
+
+function normalizedCaptureStatus(status) {
+  return String(status || "").trim().toLowerCase().replace(/_/g, "-");
+}
+
+function isAcceptedSafeCaptureStatus(status) {
+  const normalized = normalizedCaptureStatus(status);
+  return normalized === "ok" || normalized === "timed-out-captured";
+}
+
+function visibleTextFromHtml(html) {
+  return decodeHtmlEntities(String(html || "")
+    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function meaningfulPageContent(html) {
+  const content = String(html || "").trim();
+  if (content.length < 50) return false;
+  if (content.startsWith("{") || content.startsWith("[")) return false;
+  if (visibleTextFromHtml(content).length < 20) return false;
+  return /<(div|form|table|input|select|textarea|button|h[1-6]|ul|ol|p|a|span)\b/i.test(content);
+}
+
+function looksLikeLoginOrDeniedPage(entry, rawContent) {
+  if (entry.state?.loginForm || entry.idle?.state?.loginForm) return true;
+  const status = normalizedCaptureStatus(entry.status);
+  if (/login|denied|forbidden|unauthorized|not-authorized/.test(status)) return true;
+  const title = visibleTextFromHtml(`${entry.title || ""} ${entry.heading || ""}`);
+  const textStart = visibleTextFromHtml(rawContent).slice(0, 500);
+  return /\b(admin login|login to|sign in|forgot password|access denied|permission denied|forbidden|not authorized|unauthorized)\b/i.test(`${title} ${textStart}`);
+}
+
+function looksLikeErrorPage(entry, rawContent) {
+  const status = normalizedCaptureStatus(entry.status);
+  if (status.includes("error")) return true;
+  const title = visibleTextFromHtml(`${entry.title || ""} ${entry.heading || ""}`);
+  const textStart = visibleTextFromHtml(rawContent).slice(0, 500);
+  return /\b(404 not found|server error|fatal error|uncaught exception|temporary down|temporarily unavailable)\b/i.test(`${title} ${textStart}`);
+}
+
+function resolveCaptureFile(captureRoot, relPath) {
+  return relPath ? path.join(captureRoot, relPath) : "";
+}
+
+function readOptionalCaptureFile(captureRoot, relPath) {
+  const file = resolveCaptureFile(captureRoot, relPath);
+  return file && fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+}
+
+function breadcrumbsForSafeCapture(entry, fileRouteMap) {
+  let breadcrumbsSource = readOptionalCaptureFile(entry.captureRoot, entry.files?.breadcrumbsRenderedHtml);
+  if (!breadcrumbsSource.trim()) {
+    const fullRendered = readOptionalCaptureFile(entry.captureRoot, entry.files?.fullRenderedDomHtml);
+    breadcrumbsSource = extractDivById(fullRendered, "breadcrumbs");
+  }
+  if (!breadcrumbsSource.trim()) {
+    const serverHtml = readOptionalCaptureFile(entry.captureRoot, entry.files?.serverHtml);
+    breadcrumbsSource = extractDivById(serverHtml, "breadcrumbs");
+  }
+  return cleanExtractedContent(breadcrumbsSource, fileRouteMap);
+}
+
+function safeCaptureContentCandidates(entry) {
+  return [
+    { label: "page-content", relPath: entry.files?.pageContentRenderedHtml || "" },
+    { label: "server-json", relPath: entry.files?.serverHtml || "", jsonOnly: true },
+    { label: "full-rendered-dom", relPath: entry.files?.fullRenderedDomHtml || "" },
+    { label: "server-html", relPath: entry.files?.serverHtml || "" }
+  ].filter(candidate => candidate.relPath);
+}
+
+function pickSafeCaptureContent(entry) {
+  const attempts = [];
+  for (const candidate of safeCaptureContentCandidates(entry)) {
+    const contentPath = resolveCaptureFile(entry.captureRoot, candidate.relPath);
+    if (!contentPath || !fs.existsSync(contentPath)) {
+      attempts.push({ ...candidate, status: "missing" });
+      continue;
+    }
+    const fragment = extractedCaptureFragment(fs.readFileSync(contentPath, "utf8"));
+    if (candidate.jsonOnly && fragment.payloadType !== "json-html") {
+      attempts.push({ ...candidate, status: "not-json" });
+      continue;
+    }
+    const visibleTextLength = visibleTextFromHtml(fragment.rawContent).length;
+    const meaningful = meaningfulPageContent(fragment.rawContent);
+    attempts.push({ ...candidate, status: meaningful ? "usable" : "empty", visibleTextLength, payloadType: fragment.payloadType });
+    if (meaningful) {
+      return { ...candidate, rawContent: fragment.rawContent, title: fragment.title, payloadType: fragment.payloadType, visibleTextLength, attempts };
+    }
+  }
+  return { label: "", relPath: "", rawContent: "", title: "", payloadType: "", visibleTextLength: 0, attempts };
+}
+
+function loadSafePages(captureEntries, fileRouteMap) {
+  const pages = [];
+  const audit = [];
+  for (const entry of captureEntries) {
+    const slug = entry.slug;
+    const route = fileRouteMap.get(slug) || routeForSlug(slug);
+    const contentSelection = pickSafeCaptureContent(entry);
+    const auditBase = {
+      captureRoot: entry.captureRoot,
+      manifestFile: entry.manifestFile || "",
+      slug,
+      route,
+      sourceFile: contentSelection.relPath || entry.files?.pageContentRenderedHtml || "",
+      contentAttempts: contentSelection.attempts || []
+    };
+
+    if (invalidExtractedSlugs.has(slug)) {
+      audit.push({ ...auditBase, status: "skipped-invalid-slug" });
+      continue;
+    }
+    if (!isAcceptedSafeCaptureStatus(entry.status)) {
+      audit.push({ ...auditBase, status: "skipped-status", captureStatus: entry.status || "" });
+      continue;
+    }
+    if (!contentSelection.rawContent) {
+      audit.push({ ...auditBase, status: "missing-page-content" });
+      continue;
+    }
+
+    const rawContent = contentSelection.rawContent;
+    if (!meaningfulPageContent(rawContent)) {
+      audit.push({ ...auditBase, status: "skipped-empty-page-content", captureStatus: entry.status || "" });
+      continue;
+    }
+    if (looksLikeLoginOrDeniedPage(entry, rawContent)) {
+      audit.push({ ...auditBase, status: "skipped-login-or-denied", captureStatus: entry.status || "" });
+      continue;
+    }
+    if (looksLikeErrorPage(entry, rawContent)) {
+      audit.push({ ...auditBase, status: "skipped-error-page", captureStatus: entry.status || "" });
+      continue;
+    }
+
+    const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
+    const breadcrumbsHtml = breadcrumbsForSafeCapture(entry, fileRouteMap);
+    const title = contentSelection.title || titleFromSafeCapture(rawContent, entry, slug);
+    const sourceFile = contentSelection.relPath ? path.basename(contentSelection.relPath) : `${slug}.html`;
+    const sourceKind = `safe-page:${normalizedCaptureStatus(entry.status)}`;
+    pages.push({
+      route,
+      title,
+      slug,
+      sourceFile,
+      sourceKind,
+      breadcrumbsHtml,
+      bodyHtml
+    });
+    audit.push({
+      ...auditBase,
+      status: "ok",
+      captureStatus: entry.status || "",
+      sourceKind,
+      contentSource: contentSelection.label,
+      payloadType: contentSelection.payloadType,
+      bodyLength: bodyHtml.length,
+      visibleTextLength: visibleTextFromHtml(bodyHtml).length
+    });
+  }
+  return { pages, audit };
+}
+
+function upsertRouteEntry(routes, routeEntry) {
+  const index = routes.findIndex(existing => existing.route === routeEntry.route);
+  if (index === -1) {
+    routes.push(routeEntry);
+    return;
+  }
+  routes[index] = routeEntry;
+}
+
 function cleanExtractedContent(content, fileRouteMap) {
   let cleaned = content
     .replace(/<script\b[\s\S]*?<\/script>/gi, "")
@@ -267,20 +624,20 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = cleaned.replace(/\b(action|href)=["'](?:https?:\/\/(?:staging\.)?visualgraphx\.com)?\/?admin\/([^"'?#]+)([^"']*)["']/gi, (full, attr, file, suffix) => {
     const base = path.basename(file, ".php");
-    const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
+    const route = fileRouteMap.get(base) || routeForSlug(base);
     if (attr.toLowerCase() === "href") return `href="#current/${route}" data-page="${route}"`;
     return `action="#current/${route}"`;
   });
 
   cleaned = cleaned.replace(/\bdata-link=["']https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/([^"'?#]+)([^"']*)["']/gi, (full, file) => {
     const base = path.basename(file, ".php");
-    const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
+    const route = fileRouteMap.get(base) || routeForSlug(base);
     return `data-link="#current/${route}" data-page="${route}"`;
   });
 
   cleaned = cleaned.replace(/\bhref=["']([^"']+\.php)([^"']*)["']/gi, (full, file) => {
     const base = path.basename(file, ".php");
-    const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
+    const route = fileRouteMap.get(base) || routeForSlug(base);
     return `href="#current/${route}" data-page="${route}"`;
   });
 
@@ -288,13 +645,32 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = cleaned.replace(/\bsrc=["']https?:\/\/(?:staging\.)?visualgraphx\.com\/([^"']+)["']/gi, 'src="https://staging.visualgraphx.com/$1"');
 
+  cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/includes\/images\/[^"'<>\\\s)]+/gi, "");
+
   cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/([^"'<>\\\s]+\.php)([^"'<>\\\s]*)/gi, (full, file) => {
     const base = path.basename(file, ".php");
-    const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
+    const route = fileRouteMap.get(base) || routeForSlug(base);
     return `#current/${route}`;
   });
 
-  return cleaned.trim();
+  return normalizeStandaloneModalContent(cleaned.trim());
+}
+
+function normalizeStandaloneModalContent(html) {
+  const firstModal = html.search(/<[^>]+class=(["'])[^"']*\bfancybox-modal-content\b[^"']*\1/i);
+  if (firstModal === -1) return html;
+  const firstPageHeader = html.search(/<[^>]+class=(["'])[^"']*\bpage-header\b[^"']*\1/i);
+  if (firstPageHeader !== -1 && firstPageHeader < firstModal) return html;
+
+  return html.replace(/(<[^>]+class=(["'])[^"']*\bfancybox-modal-content\b[^"']*\2[^>]*)(>)/i, (full, open, quote, end) => {
+    let updated = open.replace(/\saria-hidden=(["'])true\1/i, ' aria-hidden="false"');
+    if (/\sstyle=(["'])/i.test(updated)) {
+      updated = updated.replace(/\sstyle=(["'])(.*?)\1/i, (styleFull, styleQuote, value) => ` style=${styleQuote}${value};display:block;position:static;visibility:visible;opacity:1;${styleQuote}`);
+    } else {
+      updated += ' style="display:block;position:static;visibility:visible;opacity:1;"';
+    }
+    return `${updated}${end}`;
+  });
 }
 
 function decodeHtmlEntities(value) {
@@ -438,12 +814,17 @@ const renderedFiles = fs.existsSync(renderedDir)
   ? fs.readdirSync(renderedDir).filter(file => file.endsWith(".html")).sort()
   : [];
 const allFiles = Array.from(new Set([...files, ...renderedFiles])).sort();
+const safeCaptureData = loadSafePageCaptureEntries(safeCaptureRoots);
 const fileRouteMap = new Map();
 for (const file of allFiles) {
   const slug = stripNumberAndExt(file);
   if (invalidExtractedSlugs.has(slug)) continue;
-  const route = routeAliases[slug] || fallbackRoute(slug);
+  const route = routeForSlug(slug);
   fileRouteMap.set(slug, route);
+}
+for (const entry of safeCaptureData.entries) {
+  if (invalidExtractedSlugs.has(entry.slug)) continue;
+  fileRouteMap.set(entry.slug, routeForSlug(entry.slug));
 }
 
 const pages = {};
@@ -487,6 +868,26 @@ for (const file of allFiles) {
   audit.push(auditPage({ file, slug, route, rawContent, bodyHtml, sourceKind }));
 }
 
+const safePages = loadSafePages(safeCaptureData.entries, fileRouteMap);
+for (const page of safePages.pages) {
+  pages[page.route] = page;
+  upsertRouteEntry(routes, {
+    route: page.route,
+    title: page.title,
+    slug: page.slug,
+    sourceFile: page.sourceFile,
+    sourceKind: page.sourceKind
+  });
+  audit.push(auditPage({
+    file: page.sourceFile,
+    slug: page.slug,
+    route: page.route,
+    rawContent: page.bodyHtml,
+    bodyHtml: page.bodyHtml,
+    sourceKind: page.sourceKind
+  }));
+}
+
 const tabStates = loadTabStates(fileRouteMap);
 for (const [route, states] of tabStates.byRoute.entries()) {
   if (pages[route]) {
@@ -513,6 +914,11 @@ fs.writeFileSync(auditFile, `${JSON.stringify({
   renderedFullDir,
   renderedAvailable: renderedFiles.length,
   renderedUsed: audit.filter(page => page.sourceKind === "rendered").length,
+  safeCaptureRoots,
+  safeCaptureRootAudit: safeCaptureData.rootAudit,
+  safePagesAvailable: safeCaptureData.entries.length,
+  safePagesLoaded: safePages.pages.length,
+  safePagesSkipped: safePages.audit.filter(page => page.status !== "ok").length,
   tabExtractionRoot,
   tabStatesAvailable: tabStates.total,
   tabStatesLoaded: tabStates.loaded,
@@ -521,8 +927,10 @@ fs.writeFileSync(auditFile, `${JSON.stringify({
   review: audit.filter(page => page.status === "review").length,
   reextract: audit.filter(page => page.status === "reextract").length,
   pages: audit,
+  safePages: safePages.audit,
   tabStates: tabStates.audit
 }, null, 2)}\n`);
 console.log(`Generated ${routes.length} extracted OPS pages at ${outputFile}`);
+console.log(`Loaded ${safePages.pages.length}/${safeCaptureData.entries.length} safe captured OPS pages`);
 console.log(`Loaded ${tabStates.loaded}/${tabStates.total} captured OPS tab states`);
 console.log(`Wrote structure audit at ${auditFile}`);

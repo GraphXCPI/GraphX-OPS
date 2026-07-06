@@ -535,7 +535,7 @@ function pagesForMode(mode) {
 }
 
 function isKnownPage(page) {
-  return page === "dashboard" || Object.values(pageFamilies).some(pages => pages.includes(page));
+  return page === "dashboard" || Boolean(extractedPageFor(page)) || Object.values(pageFamilies).some(pages => pages.includes(page));
 }
 
 function pageForModeSwitch(page, nextMode) {
@@ -879,6 +879,7 @@ function content() {
   if (OPS.mode === "proposed") {
     const proposedSourcePage = proposedExactExtractedPageFor(OPS.page);
     if (proposedSourcePage) return proposedExtractedOpsPage(proposedSourcePage, `ops-proposed-${OPS.page}`);
+    if (extractedPageFor(OPS.page)) return proposedExtractedOpsPage(OPS.page, `ops-proposed-${OPS.page}`);
   }
   const family = familyFor(OPS.page);
   if (family === "orders") return ordersPage();

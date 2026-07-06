@@ -246,7 +246,7 @@ function collectState() {
       tableStats,
       bodyTextLength: bodyText.length,
       bodyTextSample: bodyText.slice(0, 500),
-      loginForm: Boolean(document.querySelector('input[type="password"], input[name="password"], form[action*="login"], form[action*="index.php"] input[name="username"]')),
+      loginForm: /admin\s*::\s*login/i.test(document.title) || Boolean(document.querySelector(".login-container, .login-box, .login-layout")),
       hasPageContent: Boolean(document.querySelector(".page-content")),
       hasDataTableWrapper: Boolean(document.querySelector(".dataTables_wrapper"))
     };
@@ -340,7 +340,7 @@ function collectPage() {
         })),
         bodyTextLength: (document.body?.innerText || "").replace(/\\s+/g, " ").trim().length,
         bodyTextSample: (document.body?.innerText || "").replace(/\\s+/g, " ").trim().slice(0, 500),
-        loginForm: Boolean(document.querySelector('input[type="password"], input[name="password"], form[action*="login"], form[action*="index.php"] input[name="username"]')),
+        loginForm: /admin\s*::\s*login/i.test(document.title) || Boolean(document.querySelector(".login-container, .login-box, .login-layout")),
         hasPageContent: Boolean(document.querySelector(".page-content")),
         hasDataTableWrapper: Boolean(document.querySelector(".dataTables_wrapper")),
         tableCount: document.querySelectorAll("table").length,

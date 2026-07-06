@@ -23,11 +23,25 @@ The newest staging OPS reference package is documented in `docs/HANDOFF.md`. The
 - **Current OPS** renders the local generated OPS extraction bundle so admin routes preserve the live OPS layout, tables, tabs, row structures, icons, and controls without hitting OPS admin endpoints.
 - **Proposed** renders the revised navigation and workflow model for review with the dev team.
 
-Current OPS extracted tabs are generated from the authenticated staging tab-state archive. To resume the remaining safe action/detail-page capture after logging in to staging, enable Chrome `View > Developer > Allow JavaScript from Apple Events` and run:
+Current OPS extracted tabs are generated from the authenticated staging tab-state archive. The preferred safe action/detail-page capture path is Chrome DevTools Protocol against a logged-in Chrome debug port:
+
+```bash
+node scripts/capture-staging-safe-pages-cdp.mjs --start <queueIndex> --wait-ms 90000 --no-screenshots --new-tab --cdp-timeout-ms 120000 --server-fetch-timeout-ms 8000 --network-quiet-ms 3000 --settle-ms 2500 --stable-polls 6
+```
+
+The older Apple Events capture script is still available if Chrome `View > Developer > Allow JavaScript from Apple Events` is enabled:
 
 ```bash
 node scripts/capture-staging-safe-pages.mjs --start <queueIndex>
 ```
+
+To merge completed safe action/detail captures into the generated Current OPS bundle, pass one or more capture roots explicitly:
+
+```bash
+OPS_SAFE_CAPTURE_ROOTS="reference/extractions/GraphX-OPS-staging-extraction-2026-07-06/expanded-safe-page-capture-2026-07-06/live-capture-cdp-YYYY-MM-DDTHH-MM-SS" node scripts/build-extracted-pages.mjs
+```
+
+`OPS_SAFE_CAPTURE_ROOTS` accepts colon-separated relative or absolute folders. The special value `auto` deterministically selects the latest `live-capture-cdp-*` folder under the standard expanded safe-page capture root when its manifest has `updatedAt` or `completedAt`; explicit roots are preferred while capture is still running or when combining a full run with targeted retries.
 
 ## Scope
 
