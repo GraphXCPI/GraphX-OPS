@@ -7,6 +7,7 @@ const OPS = {
   modeSwitchReturn: null,
   proposalWindowOpen: false,
   proposalWindowPosition: null,
+  newMenuOpen: false,
   proposalContext: { keys: [], messages: [] },
   orderView: "all",
   orderCollapse: {},
@@ -35,6 +36,7 @@ const icon = {
   builder: "sitemap",
   alerts: "bell",
   media: "images",
+  production: "boxes",
 };
 
 const opsCustomIconNames = new Set([
@@ -222,16 +224,24 @@ const proposedMenu = [
   { id: "orders", label: "Orders", icon: icon.orders, children: [
     { label: "Orders", page: "orders" },
     { label: "Add New Order", page: "add-order" },
-    { label: "Job Board", page: "job-board" },
     { label: "Order Status", page: "order-status" },
     { label: "Coupons / Discount", page: "coupons" },
     { label: "Store Credit", page: "store-credit" },
+    { label: "Reports", page: "order-reports" },
   ] },
   { id: "quotes", label: "Quotes", icon: icon.quotes, children: [
     { label: "Quotes", page: "quotes" },
     { label: "Add New Quote", page: "add-quote" },
     { label: "Predefined Text", page: "predefined-quotes" },
     { label: "Quote Status", page: "quote-status" },
+    { label: "Reports", page: "quote-reports" },
+  ] },
+  { id: "production", label: "Production", icon: icon.production, children: [
+    { label: "Production Dashboard", page: "production-dashboard" },
+    { label: "Job Board", page: "job-board" },
+    { label: "Statuses & Workflow", page: "statuses-workflow" },
+    { label: "Production Users", page: "workflow-admin" },
+    { label: "Production Roles", page: "workflow-roles" },
   ] },
   { id: "partners", label: "Vendors & Partners", icon: icon.partners, children: [
     { label: "Vendor Quotes", page: "vendor-quotes" },
@@ -240,12 +250,14 @@ const proposedMenu = [
   ] },
   { id: "customers", label: "Customer Accounts", icon: icon.customers, children: [
     { label: "Customers", page: "customers" },
+    { label: "Customer Workspace", page: "customer-workspace" },
     { label: "B2B Account Users", page: "b2b-account-users" },
     { label: "Store Admins", page: "store-admins" },
     { label: "User Groups", page: "user-groups" },
     { label: "Newsletter", page: "newsletter" },
     { label: "Design Proofs", page: "design-proofs" },
     { label: "Customer Templates", page: "customer-designs" },
+    { label: "Reports", page: "customer-reports" },
   ] },
   { id: "stores", label: "Store Management", icon: icon.stores, children: [
     { label: "Stores", page: "stores" },
@@ -262,12 +274,11 @@ const proposedMenu = [
     { label: "Pricing", page: "product-price" },
     { label: "Markup Master", page: "markup-master" },
     { label: "Preview Image DPI", page: "preview-image-settings" },
+    { label: "Reports", page: "product-reports" },
   ] },
-  { id: "templates", label: "Templates", icon: icon.templates, children: [
-    { label: "Product Templates", page: "templates" },
-    { label: "PDF Blocks", page: "pdf-blocks" },
-    { label: "Art Layouts", page: "art-layouts" },
-    { label: "Template Categories", page: "template-categories" },
+  { id: "design", label: "Design & Templates", icon: icon.templates, children: [
+    { label: "Templates", page: "templates" },
+    { label: "Designer Studio", page: "studio-settings" },
   ] },
   { id: "site-builder", label: "Site Builder", icon: icon.builder, children: [
     { label: "Pages", page: "cms-pages" },
@@ -300,17 +311,19 @@ const proposedMenu = [
     { label: "Alert Automations", page: "email-reminders" },
   ] },
   { id: "config", label: "Store Configuration", icon: icon.config, children: [
-    { label: "Site Settings", page: "site-settings" },
-    { label: "Languages", page: "languages" },
-    { label: "Currency", page: "currency" },
-    { label: "Country / States", page: "country-states" },
-    { label: "Web Optimization", page: "web-optimization" },
-    { label: "Manage Site Access", page: "site-access" },
+    { heading: "Commerce Settings" },
     { label: "Payments", page: "payments" },
     { label: "Shipping", page: "shipping" },
     { label: "Tax / VAT Settings", page: "tax-settings" },
-    { label: "External Service Settings", page: "external-services" },
+    { label: "Currency", page: "currency" },
+    { label: "Country / States", page: "country-states" },
+    { label: "Languages", page: "languages" },
+    { heading: "System" },
+    { label: "Site Settings", page: "site-settings" },
+    { label: "Web Optimization", page: "web-optimization" },
+    { label: "Manage Site Access", page: "site-access" },
     { label: "Manage Web Storage", page: "web-storage" },
+    { label: "External Service Settings", page: "external-services" },
     { label: "Admin Panel Text References", page: "admin-text" },
     { label: "Add on Plugins/Services", page: "addons" },
   ] },
@@ -333,12 +346,6 @@ const proposedMenu = [
     { label: "Impose Job", page: "impose-job" },
     { label: "Product Schema Settings", page: "product-schema-settings" },
   ] },
-  { id: "studio", label: "Designer Studio", icon: icon.studio, children: [
-    { label: "Studio Settings", page: "studio-settings" },
-    { label: "Language Text", page: "studio-language" },
-    { label: "Images", page: "studio-images" },
-    { label: "Fonts", page: "studio-fonts" },
-  ] },
   { id: "reports", label: "Reports & System Logs", icon: icon.reports, children: [
     { label: "Sales Reports", page: "sales-reports" },
     { label: "Production Reports", page: "production-reports" },
@@ -348,8 +355,6 @@ const proposedMenu = [
   { id: "admin", label: "Admin Users", icon: icon.admin, children: [
     { label: "Users", page: "admin-users" },
     { label: "Groups & Roles", page: "roles" },
-    { label: "Production Users", page: "workflow-admin" },
-    { label: "Production Roles", page: "workflow-roles" },
   ] },
 ];
 
@@ -379,7 +384,8 @@ const pageFamilies = {
   orders: ["orders", "payment-request", "add-order", "order-status", "coupons", "store-credit", "reward-points", "unpaid-orders", "archive-orders", "job-board", "job-board-grid"],
   quotes: ["quotes", "add-quote", "quote-status", "predefined-quotes"],
   vendor: ["vendor-quotes", "vendors", "sales-agents"],
-  customer: ["customers", "newsletter", "design-proofs", "customer-designs", "b2b-account-users", "store-admins", "user-groups"],
+  customer: ["customers", "customer-workspace", "newsletter", "design-proofs", "customer-designs", "b2b-account-users", "store-admins", "user-groups"],
+  production: ["production-dashboard", "statuses-workflow"],
   store: ["stores", "store-fields", "store-workspace", "store-workspace-edit", "store-workspace-customers", "store-workspace-products", "store-workspace-markup", "store-workspace-addresses", "store-workspace-credit", "store-workspace-builder", "store-workspace-alerts", "store-workspace-fields", "duplicate-store-data", "b2b-store-theme"],
   product: ["print-products", "ready-products", "product-catalog", "product-edit", "product-edit-inventory", "product-edit-seo", "product-options", "product-categories", "category-groups", "product-category-edit", "category-group-edit", "product-weight", "production-days", "products-sku", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-modify", "product-price-percent", "preview-image-settings", "markup-master", "manage-stock"],
   template: ["templates", "template-master", "pdf-blocks", "art-layouts", "template-categories"],
@@ -390,7 +396,7 @@ const pageFamilies = {
   api: ["export-api-orders", "order-exports", "api-webhooks"],
   imposition: ["sheet-sizes", "schemas", "imposition-symbols", "impose-job", "product-schema-settings"],
   studio: ["studio-settings", "studio-language", "studio-language-text", "studio-images", "studio-image-categories", "studio-colors", "studio-css", "studio-models", "studio-fonts"],
-  reports: ["sales-reports", "production-reports", "inventory-reports", "system-log", "system-logs", "coupon-report", "customer-details-report", "customer-order-summary", "inventory-request-report", "inventory-report", "payment-request-report", "pay-on-account-report", "vendor-commission-report", "vendor-order-summary", "stock-summary-report", "production-day-report", "production-time-report", "product-sales-report", "sales-agent-commission-report", "sales-order-product-details", "sales-order-summary", "sales-order-details", "sales-quote-summary", "shipping-report", "tax-report", "template-sales-report"],
+  reports: ["sales-reports", "production-reports", "inventory-reports", "order-reports", "quote-reports", "product-reports", "customer-reports", "system-log", "system-logs", "coupon-report", "customer-details-report", "customer-order-summary", "inventory-request-report", "inventory-report", "payment-request-report", "pay-on-account-report", "vendor-commission-report", "vendor-order-summary", "stock-summary-report", "production-day-report", "production-time-report", "product-sales-report", "sales-agent-commission-report", "sales-order-product-details", "sales-order-summary", "sales-order-details", "sales-quote-summary", "shipping-report", "tax-report", "template-sales-report"],
   admin: ["admin-users", "roles", "workflow-admin", "workflow-roles"],
 };
 
@@ -408,6 +414,13 @@ const pageAliases = {
   "product-edit": "Edit Product",
   "product-edit-inventory": "Product Inventory",
   "product-edit-seo": "Product SEO",
+  "production-dashboard": "Production Dashboard",
+  "statuses-workflow": "Statuses & Workflow",
+  "customer-workspace": "Customer Workspace",
+  "order-reports": "Order Reports",
+  "quote-reports": "Quote Reports",
+  "product-reports": "Product Reports",
+  "customer-reports": "Customer Reports",
   "product-seo": "Product SEO",
   "category-seo": "Category SEO",
   "category-group-seo": "Category Group SEO",
@@ -563,6 +576,13 @@ const modePageMap = {
     "site-access": "blocked-ips",
     "studio-language": "studio-language-text",
     "system-log": "system-logs",
+    "production-dashboard": "job-board",
+    "statuses-workflow": "order-status",
+    "customer-workspace": "customers",
+    "order-reports": "sales-order-summary",
+    "quote-reports": "sales-quote-summary",
+    "product-reports": "product-sales-report",
+    "customer-reports": "customer-details-report",
     "stores": "stores",
   },
 };
@@ -606,7 +626,7 @@ function pageForModeToggle(nextMode) {
 // Used by the info-button change highlighting (sidebar + page content).
 // ---------------------------------------------------------------------------
 
-const proposedToCurrentGroupId = { customers: "customer", catalog: "products" };
+const proposedToCurrentGroupId = { customers: "customer", catalog: "products", design: "templates" };
 
 const currentMenuIndex = (() => {
   const index = new Map();
@@ -635,6 +655,13 @@ const proposedChangeOverrides = {
   "help-media": { kind: "renamed", note: "Renamed from Media Gallery" },
   "api-webhooks": { kind: "moved", note: "Split out of Orders > Export/API Orders" },
   "store-credit": { kind: "", note: "" },
+  "production-dashboard": { kind: "new", note: "New landing page for the Production area / Workflow tool" },
+  "statuses-workflow": { kind: "new", note: "One configuration entry for order, order product, and quote statuses; originals stay in Orders and Quotes" },
+  "customer-workspace": { kind: "new", note: "Tabbed customer dashboard, same primitive as Store Workspace" },
+  "order-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
+  "quote-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
+  "product-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
+  "customer-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
 };
 
 function proposedItemChange(item, proposedGroupId) {
@@ -708,7 +735,31 @@ const proposalHighlightRules = {
   "duplicate-store-data": [
     { selector: ".page-header h1", kind: "moved", note: "Two entry points: Stores list (open) and Store Workspace (source locked)" },
   ],
+  "production-dashboard": [
+    { selector: ".ops-production-dashboard .page-header h1", kind: "new", note: "New landing page for the Production area / Workflow tool" },
+    { selector: ".ops-production-stats", kind: "new", note: "Workload summary across production states" },
+  ],
+  "statuses-workflow": [
+    { selector: ".ops-statuses-workflow .page-header h1", kind: "new", note: "One entry for order, order product, and quote status configuration" },
+    { selector: ".ops-statuses-workflow .sim-subtabs", kind: "changed", note: "Tabs cross-link to the existing status screens" },
+  ],
+  "customer-workspace": [
+    { selector: ".ops-customer-workspace .page-header h1", kind: "new", note: "Customer Details becomes a tabbed workspace" },
+    { selector: ".ops-customer-workspace .sim-subtabs", kind: "new", note: "Same context-tab primitive as Store Workspace" },
+  ],
+  "design-tabs": [
+    { selector: ".sim-subtabs", kind: "new", note: "Subpages become tabs so Design & Templates stays one small menu" },
+  ],
+  dashboard: [
+    { selector: ".ops-board-chips a", kind: "changed", note: "Chips deep-link into the filtered Orders master list", limit: 4 },
+  ],
 };
+
+const proposalGlobalHighlightRules = [
+  { selector: ".ops-topbar-new", kind: "new", note: "Global + New action replaces menu-buried add links" },
+  { selector: ".ops-pinned-block", kind: "new", note: "Pinned pages surfaced from the existing breadcrumb pin control" },
+  { selector: ".ops-nav-heading", kind: "new", note: "Section headers split commerce setup from system utilities" },
+];
 
 const proposalHighlightAliases = {
   "product-edit-inventory": "product-edit",
@@ -728,7 +779,39 @@ function proposalHighlightRulesFor(page) {
   if (proposalHighlightRules[page]) return proposalHighlightRules[page];
   if (proposalHighlightAliases[page]) return proposalHighlightRules[proposalHighlightAliases[page]] || [];
   if (page.startsWith("store-workspace")) return proposalHighlightRules["store-workspace"];
+  if (isDesignTabPage(page)) return proposalHighlightRules["design-tabs"];
   return [];
+}
+
+// Merged Design & Templates area: the sidebar stays small and each landing page
+// carries an OPS tab row over its subpages (same pattern as Stock & Settings).
+const proposedTemplateTabs = [
+  { label: "Product Templates", page: "templates" },
+  { label: "Master Templates", page: "template-master" },
+  { label: "PDF Blocks", page: "pdf-blocks" },
+  { label: "Art Layouts", page: "art-layouts" },
+  { label: "Template Categories", page: "template-categories" },
+];
+const proposedStudioTabs = [
+  { label: "Studio Settings", page: "studio-settings" },
+  { label: "Language Text", page: "studio-language" },
+  { label: "Images", page: "studio-images" },
+  { label: "Image Categories", page: "studio-image-categories" },
+  { label: "Colors", page: "studio-colors" },
+  { label: "Custom CSS", page: "studio-css" },
+  { label: "Real Preview", page: "studio-models" },
+  { label: "Fonts", page: "studio-fonts" },
+];
+
+function proposedLeadHtmlFor(page) {
+  if (OPS.mode !== "proposed") return "";
+  if (proposedTemplateTabs.some(tab => tab.page === page)) return tabStrip(proposedTemplateTabs, page);
+  if (proposedStudioTabs.some(tab => tab.page === page)) return tabStrip(proposedStudioTabs, page);
+  return "";
+}
+
+function isDesignTabPage(page) {
+  return proposedTemplateTabs.some(tab => tab.page === page) || proposedStudioTabs.some(tab => tab.page === page);
 }
 
 function isChangeHighlightActive() {
@@ -737,7 +820,7 @@ function isChangeHighlightActive() {
 
 function applyProposalHighlights() {
   if (!isChangeHighlightActive()) return;
-  proposalHighlightRulesFor(OPS.page).forEach(rule => {
+  [...proposalGlobalHighlightRules, ...proposalHighlightRulesFor(OPS.page)].forEach(rule => {
     document.querySelectorAll(rule.selector).forEach((el, index) => {
       if (index >= (rule.limit ?? 6)) return;
       el.classList.add("ops-change-mark", `ops-change-${rule.kind}`);
@@ -756,7 +839,9 @@ function setOpenMenuForPage() {
         ? "stores"
         : objectSeoHomes[OPS.page]
           ? "seo"
-          : "";
+          : isDesignTabPage(OPS.page)
+            ? "design"
+            : "";
     if (fallbackGroup) menu = proposedMenu.find(group => group.id === fallbackGroup);
   }
   OPS.openMenu = menu?.id || "dashboard";
@@ -875,6 +960,7 @@ function topbar() {
         <div class="navbar-menu collapse navbar-collapse navbar-backdrop" id="navbar-menu" role="navigation">
           <div class="navbar-nav">
             <ul class="nav align-items-md-center">
+              ${OPS.mode === "proposed" ? topbarNewAction() : ""}
               <li class="btn-danger nav-item d-flex align-items-center py-2 CatchTrash">
                 <label href="javascript:void();" class="text-white px-2 mb-0">Cache</label>
                 <input id="togglecache" checked="checked" class="ace-switch ace-switch-yesno ace-switch-bars bgc-blue-d2" type="checkbox">
@@ -907,6 +993,19 @@ function topbar() {
       </div>
     </div>
   `;
+}
+
+function topbarNewAction() {
+  const actions = [
+    { label: "New Order", page: "add-order", icon: "fa-shopping-cart" },
+    { label: "New Quote", page: "add-quote", icon: "fak fa-quote-management" },
+    { label: "New Product", page: "product-edit", icon: "fa-tags" },
+    { label: "New Customer", page: "customers", icon: "fa-user" },
+  ];
+  return `<li class="nav-item d-flex align-items-center ops-topbar-new${OPS.newMenuOpen ? " open" : ""}">
+    <button type="button" class="btn btn-success btn-sm ops-new-button" data-new-toggle aria-haspopup="menu" aria-expanded="${OPS.newMenuOpen ? "true" : "false"}"><i class="fa fa-plus-circle pr-1"></i> New <i class="fa fa-caret-down pl-1"></i></button>
+    ${OPS.newMenuOpen ? `<div class="ops-new-menu" role="menu">${actions.map(action => `<a href="#proposed/${h(action.page)}" data-page="${h(action.page)}" role="menuitem"><i class="${action.icon.includes(" ") ? h(action.icon) : `fa ${h(action.icon)}`} pr-2"></i>${h(action.label)}</a>`).join("")}</div>` : ""}
+  </li>`;
 }
 
 function subbar() {
@@ -1004,6 +1103,7 @@ function sidebar(menu) {
               </div>
             </div>
           </div>
+          ${OPS.mode === "proposed" ? sidebarPinnedBlock() : ""}
           <ul class="nav has-active-border">${menu.map(renderMenuGroup).join("")}</ul>
         </div>
         <div class="sidebar-toggle sidebar-collapse text-center" id="sidebar-collapse">
@@ -1012,6 +1112,19 @@ function sidebar(menu) {
       </div>
     </div>
   `;
+}
+
+function sidebarPinnedBlock() {
+  const pins = [
+    { label: "Orders", page: "orders" },
+    { label: "Product Catalog", page: "product-catalog" },
+    { label: "Job Board", page: "job-board" },
+    { label: "Email Templates", page: "email-templates" },
+  ];
+  return `<div class="ops-pinned-block" title="Pinned pages from the existing breadcrumb pin control">
+    <div class="ops-pinned-title"><i class="fa fa-thumbtack"></i><span class="nav-text fadeable">Pinned</span></div>
+    <ul>${pins.map(pin => `<li class="${OPS.page === pin.page ? "active" : ""}"><a href="#proposed/${h(pin.page)}" data-page="${h(pin.page)}"><span class="nav-text">${h(pin.label)}</span></a></li>`).join("")}</ul>
+  </div>`;
 }
 
 function renderMenuGroup(group) {
@@ -1033,6 +1146,9 @@ function renderMenuGroup(group) {
 }
 
 function renderChild(item, parent) {
+  if (item.heading) {
+    return `<li class="nav-item ops-nav-heading" data-change="new" data-change-note="Section headers split commerce setup from system utilities"><span class="nav-text">${h(item.heading)}</span></li>`;
+  }
   const key = `${parent}:${item.label}`;
   const open = OPS.openChild === key;
   const active = OPS.page === item.page || (item.children || []).some(c => c.page === OPS.page);
@@ -1077,11 +1193,13 @@ function content() {
   }
   if (OPS.page === "dashboard") return dashboard();
   if (OPS.mode === "proposed" && !proposedCustomPages.has(OPS.page)) {
+    const lead = proposedLeadHtmlFor(OPS.page);
     const proposedSourcePage = proposedExactExtractedPageFor(OPS.page);
-    if (proposedSourcePage) return proposedExtractedOpsPage(proposedSourcePage, `ops-proposed-${OPS.page}`);
-    if (extractedPageFor(OPS.page)) return proposedExtractedOpsPage(OPS.page, `ops-proposed-${OPS.page}`);
+    if (proposedSourcePage) return lead + proposedExtractedOpsPage(proposedSourcePage, `ops-proposed-${OPS.page}`);
+    if (extractedPageFor(OPS.page)) return lead + proposedExtractedOpsPage(OPS.page, `ops-proposed-${OPS.page}`);
   }
   const family = familyFor(OPS.page);
+  if (family === "production") return productionPage();
   if (family === "orders") return ordersPage();
   if (family === "quotes") return quotesPage();
   if (family === "vendor") return vendorPage();
@@ -1186,6 +1304,7 @@ function opsQuickLink(label, iconName, tone, border, page) {
 
 function opsCard(id, title, iconClass, body, tools = "", options = {}) {
   const viewAll = options.viewAll !== false;
+  const viewAllAttr = options.viewAllPage ? ` data-page="${h(options.viewAllPage)}"` : "";
   const bodyClass = options.bodyClass || "card-body p-0";
   const bodyStyle = options.bodyStyle ? ` style="${h(options.bodyStyle)}"` : "";
   const bodyId = options.bodyId ? ` id="${h(options.bodyId)}"` : "";
@@ -1201,7 +1320,7 @@ function opsCard(id, title, iconClass, body, tools = "", options = {}) {
         </h5>
         <div class="d-flex align-items-center">
           ${tools}
-          ${viewAll ? `<a href="#" class="text-90">View All</a>` : ""}
+          ${viewAll ? `<a href="#"${viewAllAttr} class="text-90">View All</a>` : ""}
 ${toolbar}
         </div>
       </div>
@@ -1228,13 +1347,13 @@ function opsSearchTool(placeholder) {
 function opsRecentOrdersCard() {
   return opsCard("recent_orders", "Recent Orders", "far fa-shopping-cart text-warning", `
     ${opsOrderRows()}
-  `, opsSearchTool("Order No."), { bodyId: "recent_orders_body", bodyClass: "card-body p-0 scroll-content", bodyStyle: "height: 275px;" });
+  `, opsSearchTool("Order No."), { bodyId: "recent_orders_body", bodyClass: "card-body p-0 scroll-content", bodyStyle: "height: 275px;", viewAllPage: "orders" });
 }
 
 function opsRecentQuotesCard() {
   return opsCard("recent_quotes", "Recent Quotes", "ace-icon fak fa-quote-management text-orange", `
     ${opsQuoteRows()}
-  `, opsSearchTool("Recent Quotes"), { bodyId: "recent_quotes_body", bodyClass: "card-body p-0 scroll-content", bodyStyle: "height: 275px;" });
+  `, opsSearchTool("Recent Quotes"), { bodyId: "recent_quotes_body", bodyClass: "card-body p-0 scroll-content", bodyStyle: "height: 275px;", viewAllPage: "quotes" });
 }
 
 function opsOrderRows() {
@@ -1382,7 +1501,12 @@ function opsJobBoardCard(productWise) {
       ${rows.map(row => `
         <div class="d-flex align-items-center border-bottom brc-default-l2 py-2">
           <div class="ops-board-label text-right pr-3"><span class="badge ${row[1]} radius-1">${h(row[0])}</span></div>
-          <div class="ops-board-chips flex-grow-1">${row[2].map((chip, index) => `<span class="badge label-white radius-1 ${index > row[2].length - 3 ? "border-danger text-danger" : "border-primary text-primary"}">${h(chip)}</span>`).join("")}</div>
+          <div class="ops-board-chips flex-grow-1">${row[2].map((chip, index) => {
+            const chipClass = `badge label-white radius-1 ${index > row[2].length - 3 ? "border-danger text-danger" : "border-primary text-primary"}`;
+            return OPS.mode === "proposed"
+              ? `<a href="#proposed/orders" data-page="orders" class="${chipClass}" title="Opens Orders filtered to ${h(row[0])}">${h(chip)}</a>`
+              : `<span class="${chipClass}">${h(chip)}</span>`;
+          }).join("")}</div>
         </div>
       `).join("")}
       ${productWise ? "" : `<div class="text-right pt-2 pr-2 ops-board-legend"><span class="legend-square overdue"></span> Overdue <span class="legend-square today"></span> Delivery Today <span class="legend-square tomorrow"></span> Delivery Tomorrow</div>`}
@@ -2671,6 +2795,7 @@ function vendorPage() {
 }
 
 function customerPage() {
+  if (OPS.mode === "proposed" && OPS.page === "customer-workspace") return customerWorkspacePage();
   return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Export"])}${proposalMarkup("customer-accounts")}${filters(["Search", "Customer Group", "Store", "Status"])}${dataTable(["Sr#", "Customer", "Email", "Store Scope", "Status", "Action"], [
     ["1", "Alex Loudenslager", "info@thelabna.com", "Visual Graphx", "Active", actionButton("Action")],
     ["2", "Drew Neverett", "drew.neverett@positionsports.com", "All Stores", "Active", actionButton("Action")],
@@ -2790,6 +2915,81 @@ function adminPage() {
     ["1", "Christian De Ramos", "christian@visualgraphx.com", "Admin", "Active", actionButton("Action")],
     ["2", "Developer", "dev@example.com", "Limited", "Active", actionButton("Action")],
   ])}${originalNote("Original Admin label is terse and mixes users and roles.")}</section>`;
+}
+
+function productionPage() {
+  if (OPS.page === "statuses-workflow") return statusesWorkflowPage();
+  return productionDashboardPage();
+}
+
+function productionDashboardPage() {
+  const stats = [
+    ["New Orders", "12", "badge-primary"],
+    ["In Production", "10", "badge-success"],
+    ["Awaiting Artwork", "12", "badge-secondary"],
+    ["Ready for Fulfillment", "2", "badge-info"],
+    ["Overdue", "3", "badge-danger"],
+  ];
+  return `<section class="page ops-production-dashboard">
+    ${pageHead("Production Dashboard", ["Job Board", "Workflow", "Refresh"])}
+    ${proposalMarkup("production")}
+    <div class="row ops-production-stats">
+      ${stats.map(stat => `<div class="col"><div class="card bcard text-center py-2"><span class="badge ${h(stat[2])} radius-1 mb-1 mx-auto">${h(stat[0])}</span><div class="text-180 font-weight-bold">${h(stat[1])}</div></div></div>`).join("")}
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-6">${opsJobBoardCard(false)}</div>
+      <div class="col-12 col-lg-6">${opsJobBoardCard(true)}</div>
+    </div>
+    ${changeNote("Production gets its own top-level area: the existing Workflow tool gains a dashboard landing page, and Job Board, Statuses & Workflow, and Production Users/Roles move here from Orders and Admin.")}
+  </section>`;
+}
+
+function statusesWorkflowPage() {
+  const rows = [
+    ["Order Status", "Orders", "New Order, Order Review, In Production, Fulfilled, Completed", `<a href="#proposed/order-status" data-page="order-status" class="btn btn-outline-lightgrey btn-sm">Open</a>`],
+    ["Order Product Status", "Order Products", "Awaiting Artwork, In Design, Order Processing, Ready for Fulfillment", `<a href="#proposed/order-status" data-page="order-status" class="btn btn-outline-lightgrey btn-sm">Open</a>`],
+    ["Order Product Status Rules", "Automation", "Status transitions and notifications", `<a href="#proposed/order-status" data-page="order-status" class="btn btn-outline-lightgrey btn-sm">Open</a>`],
+    ["Quote Status", "Quotes", "Draft, Active Quote, Accepted, Expired", `<a href="#proposed/quote-status" data-page="quote-status" class="btn btn-outline-lightgrey btn-sm">Open</a>`],
+  ];
+  return `<section class="page ops-statuses-workflow">
+    ${pageHead("Statuses & Workflow", ["Save", "Reset"])}
+    ${proposalMarkup("production")}
+    ${tabStrip([
+      { label: "Order Status", page: "order-status" },
+      { label: "Quote Status", page: "quote-status" },
+      { label: "Statuses Overview", page: "statuses-workflow" },
+    ])}
+    ${currentOpsDataTable(["Status Set", "Applies To", "States", "Action"], rows, "ops-statuses-workflow-table")}
+    ${changeNote("Order Status, Order Product Status and rules, and Quote Status are configured from one Statuses & Workflow entry. The originals stay reachable from Orders and Quotes as focused entry points (broad + focused).")}
+  </section>`;
+}
+
+function customerWorkspacePage() {
+  return `<section class="page ops-customer-workspace">
+    ${pageHead("Customer Workspace » Alex Loudenslager", ["Save", "Save & Back", "Back"])}
+    ${proposalMarkup("customer-workspace")}
+    ${tabStrip(["View", "Orders", "Quotes", "Payments & Credit", "Design Proofs", "Templates", "Account Users", "Addresses"])}
+    <div class="grid two">
+      <div>
+        ${panel("Customer Snapshot", currentOpsDataTable(["Field", "Value"], [
+          ["Customer", "Alex Loudenslager"],
+          ["Company", "The Lab North America Inc."],
+          ["Email", "info@thelabna.com"],
+          ["Store", "Visual Graphx"],
+          ["Status", `<span class="badge badge-success">Active</span>`],
+        ], "ops-customer-snapshot"))}
+        ${panel("Recent Orders", currentOpsDataTable(["Order", "Amount", "Status"], [
+          [`<a href="#proposed/orders" data-page="orders">3052</a>`, "$519.33", `<span class="badge badge-primary">New Order</span>`],
+          [`<a href="#proposed/orders" data-page="orders">2664</a>`, "$1,204.00", `<span class="badge badge-success">Completed</span>`],
+        ], "ops-customer-orders"))}
+      </div>
+      <div>
+        ${panel("Payments & Credit", formRows(["Store Credit Balance", "Open Invoices", "Payment Terms", "Tax Exempt"]))}
+        ${panel("Focused Context", "<p>Everything about this customer works from one tabbed workspace — orders, quotes, payments and credit, proofs, saved templates, account users, and addresses — instead of hunting across the Orders, Quotes, Customer, and Reports menus.</p>")}
+      </div>
+    </div>
+    ${changeNote("Customer Details becomes a tabbed Customer Workspace using the same context-tab primitive as Store Workspace.")}
+  </section>`;
 }
 
 function storeWorkspacePage() {
@@ -2928,7 +3128,9 @@ const proposalAnnotations = {
   dashboard: [
     ["Revision map only", "This proposed dashboard is not replacing the OPS dashboard widgets. It is a navigation and IA summary for the proposal."],
     ["Same-screen mode switch", "Current OPS and Proposed should keep the user on the same route when flipping modes."],
-    ["Change index", "The table highlights which current areas move, merge, or rename in the proposed structure."],
+    ["Cards deep-link", "Job Board chips and View All links open the corresponding filtered master lists instead of standalone pages."],
+    ["Global + New", "A topbar + New action creates orders, quotes, products, and customers without menu dives."],
+    ["Pinned pages", "The existing breadcrumb pin control gets a first-class Pinned section at the top of the sidebar."],
   ],
   orders: [
     ["One Orders list", "Payment Request, Unpaid Orders, and Archive Orders become states or filters on Orders."],
@@ -3005,19 +3207,33 @@ const proposalAnnotations = {
   reports: [
     ["Rename per doc", "Reports becomes Reports & System Logs so logs are discoverable beside reports."],
     ["Beyond requirements doc", "Grouping the 22 current report items into Sales, Production, Inventory, and System Logs is a new simulator suggestion, not a doc requirement. Every current report must remain reachable inside its group."],
+    ["Contextual entry points", "Orders, Quotes, Product Catalog, and Customer Accounts each get a Reports item that deep-links into this area pre-filtered — broad home here, focused entry there."],
+  ],
+  production: [
+    ["Production home", "The existing Workflow tool becomes a top-level Production area with a dashboard landing page."],
+    ["Moved in", "Job Board moves from Orders; Production Users and Production Roles move from Admin Users."],
+    ["Statuses & Workflow", "Order Status, Order Product Status and rules, and Quote Status are configurable from one entry; the originals stay reachable from Orders and Quotes."],
+    ["Beyond requirements doc", "This grouping goes beyond the doc — flagged for dev review. GraphX Manage's own navigation already uses a Production area, which supports the grouping."],
+  ],
+  "customer-workspace": [
+    ["Tabbed customer dashboard", "Customer Details becomes a Customer Workspace: orders, quotes, payments and credit, proofs, templates, account users, and addresses in one tabbed context."],
+    ["Same primitive", "Reuses the Store Workspace context-tab pattern; no new interaction model."],
+    ["Beyond requirements doc", "New suggestion beyond the doc — flagged for dev review."],
   ],
   templates: [
-    ["Beyond requirements doc", "The requirements doc leaves Templates unchanged. The trimmed submenu (Product Master Templates folded away) is a simulator suggestion for dev review."],
+    ["Design & Templates merge", "Templates and Designer Studio share one sidebar area; each landing page carries an OPS tab row over its subpages so the menu stays small."],
+    ["All subpages preserved", "Product Templates, Master Templates, PDF Blocks, Art Layouts, and Template Categories remain as tabs."],
+    ["Beyond requirements doc", "The doc leaves Templates and Designer Studio unchanged — this merge is a simulator suggestion for dev review."],
   ],
   studio: [
-    ["Beyond requirements doc", "The requirements doc leaves Designer Studio unchanged. The trimmed submenu (Image Categories, Color Settings, Custom CSS, Real Preview folded away) is a simulator suggestion for dev review."],
+    ["Design & Templates merge", "Designer Studio lives beside Templates under one Design & Templates area; all Studio subpages remain as tabs (Settings, Language Text, Images, Image Categories, Colors, Custom CSS, Real Preview, Fonts)."],
+    ["Beyond requirements doc", "The doc leaves Designer Studio unchanged — this merge is a simulator suggestion for dev review."],
   ],
   admin: [
     ["Users", "Admin becomes Users under Admin Users."],
     ["Groups & Roles", "Admin Group / Role becomes Groups & Roles."],
-    ["Production users", "Workflow Admin becomes Production Users."],
-    ["Production roles", "Workflow Roles is surfaced as Production Roles instead of hiding behind a page button."],
-    ["Beyond requirements doc", "The doc only renames Admin to Admin Users. The submenu relabels above are simulator suggestions for dev review."],
+    ["Production moved out", "Workflow Admin and Workflow Roles move to the new Production area as Production Users and Production Roles."],
+    ["Beyond requirements doc", "The doc only renames Admin to Admin Users. The submenu relabels and the Production move are simulator suggestions for dev review."],
   ],
   "markup-master": [
     ["Template builder", "Markup Master is the global markup template list and builder."],
@@ -3025,10 +3241,19 @@ const proposalAnnotations = {
   ],
 };
 
-// Extracted-passthrough studio routes never call proposalMarkup("studio"),
-// so alias the studio note onto each studio page id for the notes window.
-["studio-settings", "studio-language", "studio-images", "studio-fonts"].forEach(key => {
+// Extracted-passthrough routes never call proposalMarkup themselves, so alias
+// the group notes onto each page id for the notes window.
+["studio-settings", "studio-language", "studio-images", "studio-image-categories", "studio-colors", "studio-css", "studio-models", "studio-fonts"].forEach(key => {
   if (!proposalAnnotations[key]) proposalAnnotations[key] = proposalAnnotations.studio;
+});
+["templates", "template-master", "pdf-blocks", "art-layouts", "template-categories"].forEach(key => {
+  if (!proposalAnnotations[key]) proposalAnnotations[key] = proposalAnnotations.templates;
+});
+["job-board", "workflow-admin", "workflow-roles", "production-dashboard", "statuses-workflow"].forEach(key => {
+  if (!proposalAnnotations[key]) proposalAnnotations[key] = proposalAnnotations.production;
+});
+["order-reports", "quote-reports", "product-reports", "customer-reports"].forEach(key => {
+  if (!proposalAnnotations[key]) proposalAnnotations[key] = proposalAnnotations.reports;
 });
 
 function resetProposalContext() {
@@ -3441,6 +3666,17 @@ document.addEventListener("click", event => {
     }
   }
 
+  const newToggle = event.target.closest("[data-new-toggle]");
+  if (newToggle) {
+    event.preventDefault();
+    OPS.newMenuOpen = !OPS.newMenuOpen;
+    render();
+    return;
+  }
+  if (OPS.newMenuOpen && !event.target.closest(".ops-topbar-new")) {
+    OPS.newMenuOpen = false;
+  }
+
   const proposalOpen = event.target.closest("[data-proposal-open]");
   if (proposalOpen) {
     event.preventDefault();
@@ -3499,6 +3735,7 @@ document.addEventListener("click", event => {
   const page = event.target.closest("[data-page]")?.dataset.page;
   if (page) {
     OPS.modeSwitchReturn = null;
+    OPS.newMenuOpen = false;
     OPS.page = page;
     const menu = (OPS.mode === "current" ? currentMenu : proposedMenu).find(group => isActiveGroupForPage(group, page));
     if (menu) OPS.openMenu = menu.id;

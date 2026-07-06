@@ -109,6 +109,19 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 
 ## Most Recent Local Priorities
 
+- Round-2 rearrangement pass (2026-07-06, approved by Christian, all beyond-doc items annotated in the proposal dock):
+  - New top-level **Production** area (Production Dashboard landing page, Job Board moved from Orders, new Statuses & Workflow entry, Production Users/Roles moved from Admin Users).
+  - **Customer Workspace**: tabbed customer dashboard (`customer-workspace`), same context-tab primitive as Store Workspace, linked under Customer Accounts.
+  - **Design & Templates**: Templates and Designer Studio merged into one sidebar group; each landing page carries an OPS tab row over all subpages (`proposedTemplateTabs` / `proposedStudioTabs`, injected via `proposedLeadHtmlFor` for extracted passthrough routes).
+  - **Store Configuration** submenu split with non-clickable section headings (Commerce Settings / System) — heading items use `{ heading: "…" }` in the menu tree.
+  - Global **“+ New”** topbar action (proposed mode only): New Order / Quote / Product / Customer.
+  - **Pinned** sidebar block (proposed mode only) surfacing the existing breadcrumb pin control.
+  - **Statuses & Workflow** page (`statuses-workflow`) consolidating order/order-product/quote status config with cross-links to the originals (dual entry).
+  - Contextual **Reports** entries in Orders, Quotes, Product Catalog, and Customer Accounts (`order-reports` etc., alias pages in the reports family).
+  - Dashboard **deep links**: Job Board chips and card View All links navigate to the filtered master lists in proposed mode.
+  - Rejected idea (do not revive): grouping Coupons/Store Credit/Markup/Product Price into one “Pricing & Promotions” family — they serve different objects (Christian, 2026-07-06).
+  - Verified headless via `playwright-core` (scratchpad script) after the Claude preview MCP dropped: all new routes render, menu-diff classifications correct, `+ New`/pinned/headings work, current mode carries zero proposed chrome, no JS errors. Evidence: `screenshots/proposed-production-dashboard-highlights.png`, `screenshots/proposed-customer-workspace.png`, `screenshots/proposed-design-templates-tabs.png`.
+
 - Change highlighting (2026-07-06): opening the proposal-notes window (info button, Proposed mode) now outlines everything that differs from Current OPS on the visible screen — sidebar groups/items get `data-change="new|renamed|moved"` from a computed menu diff (`proposedItemChange`/`proposedGroupChangeInfo` in `simulator.js`, with `proposedChangeOverrides` for history the menus can't derive), and page content is outlined via per-route selector rules (`proposalHighlightRules`). Colors: green = new, amber = renamed, purple = moved, blue = behavior change; a legend renders at the top of the notes window and hover tooltips give the before/after. Styles live in `assets/admin_style.css` under `.gx-sim.ops-highlighting` (bumped to `?v=19`).
 
 - Proposed-mode doc-alignment pass (2026-07-06, later same day):

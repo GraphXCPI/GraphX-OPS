@@ -505,6 +505,22 @@
 .gx-sim .product-type-chip.kit{border-color:#e1c176;background:#fff9e8;color:#9a6b00;}
 .gx-sim .product-type-chip.related{border-color:#aa9bc9;background:#f7f2ff;color:#6f55a3;}
 
+/* Proposed-mode chrome: pinned sidebar block, section headings, + New action. */
+.gx-sim .ops-pinned-block{margin:.35rem .5rem .1rem;padding:.35rem .4rem .45rem;border:1px solid #d6e1eb;border-radius:.25rem;background:#f6fafc;}
+.gx-sim .ops-pinned-block .ops-pinned-title{display:flex;align-items:center;gap:.4rem;color:#6b8095;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem;}
+.gx-sim .ops-pinned-block .ops-pinned-title i{font-size:.72rem;}
+.gx-sim .ops-pinned-block ul{list-style:none;margin:0;padding:0;}
+.gx-sim .ops-pinned-block li a{display:block;padding:.18rem .4rem;color:#39516b;font-size:.8125rem;border-radius:.2rem;text-decoration:none;}
+.gx-sim .ops-pinned-block li a:hover,.gx-sim .ops-pinned-block li.active a{background:#e2eefa;color:#147ac2;}
+.gx-sim .ops-nav-heading{padding:.45rem .9rem .15rem;color:#8ba7bd;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;pointer-events:none;}
+.gx-sim .ops-topbar-new{position:relative;padding:0 .4rem;}
+.gx-sim .ops-topbar-new .ops-new-button{white-space:nowrap;}
+.gx-sim .ops-new-menu{position:absolute;top:100%;right:.4rem;min-width:180px;background:#fff;border:1px solid #cfe0ee;border-radius:.2rem;box-shadow:0 4px 14px rgba(20,50,80,.18);z-index:1040;padding:.25rem 0;}
+.gx-sim .ops-new-menu a{display:block;padding:.4rem .8rem;color:#39516b;font-size:.8125rem;text-decoration:none;white-space:nowrap;}
+.gx-sim .ops-new-menu a:hover{background:#eef6fc;color:#2679bd;}
+.gx-sim .ops-production-stats{margin-bottom:1rem;}
+.gx-sim .ops-production-stats .card{min-height:74px;}
+
 /* Change highlighting: active only while the proposal notes window is open. */
 .gx-sim.ops-highlighting .sidebar .nav-link[data-change]{outline:2px dashed transparent;outline-offset:-2px;border-radius:2px;}
 .gx-sim.ops-highlighting .sidebar .nav-link[data-change="new"]{outline-color:#3a8b3a;background:rgba(126,194,126,.14);}
