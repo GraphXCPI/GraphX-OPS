@@ -128,7 +128,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
   - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign` now use the live Tritium RTM75/PKM150 template flow;
-  - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` still needs an alternate valid source ID.
+  - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
 - Browser verification on 2026-07-06 covered:
   - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
   - `#current/product-categories` tab `Category group`;
