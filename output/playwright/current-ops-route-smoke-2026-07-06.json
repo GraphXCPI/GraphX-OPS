@@ -1,6 +1,7 @@
 {
-  "generatedAt": "2026-07-06T21:54:02.926Z",
-  "base": "http://127.0.0.1:4179/",
+  "generatedAt": "2026-07-06T22:59:25.515Z",
+  "base": "http://127.0.0.1:4179/index.html",
+  "scope": "full generated Current OPS route smoke after dashboard and local asset normalization",
   "pageCount": 389,
   "failureCount": 0,
   "byIssue": {},

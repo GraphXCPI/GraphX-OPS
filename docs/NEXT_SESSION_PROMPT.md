@@ -37,7 +37,9 @@ Critical rules:
 - The generated route-link gap pass is current as of 2026-07-06:
   `ops-extracted-pages.js` has 387 extracted pages, the full generated route-link scan has 0 missing linked targets across 372 local linked targets, and the product/settings/template/email/shipping/SEO focused scan also remains clean.
 - Current OPS route smoke is current as of 2026-07-06:
-  389/389 generated/override routes rendered locally with 0 smoke failures and 0 page errors. The `#current/vehicle-action-import-csv` extracted wizard replay is normalized to OPS `sw sw-theme-dots sw-justified` markup and its Prev/Next buttons work locally.
+  389/389 generated/override routes rendered locally with 0 smoke failures and 0 page errors. The `#current/dashboard` route intentionally uses the local OPS-styled dashboard renderer because the extracted `welcome` fragment replays as an Ajax loader shell; the verified dashboard has 7 cards and 0 visible spinners. The `#current/vehicle-action-import-csv` extracted wizard replay is normalized to OPS `sw sw-theme-dots sw-justified` markup and its Prev/Next buttons work locally.
+- Local media fallback is current as of 2026-07-06:
+  `scripts/build-extracted-pages.mjs` rewrites OPS image `src` and `data-src` attributes to committed local assets or transparent placeholders; focused browser checks for `#current/links`, `#current/print-products`, and `#current/ready-products` have 0 failed requests and 0 remaining remote image `src`s.
 - Current OPS targeted tab regression is current as of 2026-07-06:
   `#current/template-manage-block-properties-action` -> `Default Properties`, `#current/order-action` -> `Impose`, and `#current/seo-shopping-feeds` -> `Edit` passed with 0 tab failures and 0 page errors.
 - The tracked targeted capture queues are:
@@ -57,6 +59,7 @@ Current known project state:
 - Reference/handoff material is under `reference/`.
 - Older simulator attempt is archived under `archive/`.
 - Recent fixes include dashboard quick-link cards, sidebar icon/text spacing, and contextual Proposed notes.
+- Do not re-enable the extracted dashboard body without first proving the captured dashboard Ajax payloads replay locally; that is what caused the loader-only dashboard.
 - Latest extraction passes added a full-source archive, completed tab-state archive, queued safe action/detail-page target list, and targeted live queues for product/settings/template/email gaps. See `docs/HANDOFF.md` for exact counts and paths.
 
 Report back with exact files changed, exact routes/screens verified, and what remains.

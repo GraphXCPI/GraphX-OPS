@@ -60,6 +60,7 @@ const defaultSafeCaptureSearchRoot = path.resolve(root, "reference/extractions/G
 const safeCaptureRoots = resolveSafeCaptureRoots(process.env.OPS_SAFE_CAPTURE_ROOTS || "");
 const outputFile = path.join(root, "ops-extracted-pages.js");
 const auditFile = path.join(root, "raw-reference", "extracted-page-structure-audit.json");
+const remoteImageAssetMap = loadRemoteImageAssetMap();
 
 const routeAliases = {
   addon_buy_plugin: "addons",
@@ -370,9 +371,9 @@ function extractShelllessFullDocumentSnapshot(html) {
   const body = extractStandaloneBody(html);
   const headStyles = [
     ...head.matchAll(/<link\b[^>]*\brel=["']stylesheet["'][^>]*>/gi)
-  ].map(match => rewriteStudioAssetUrls(match[0]).replace(/\s+onload=(["'])[\s\S]*?\1/gi, ""));
+  ].map(match => rewriteLocalStudioAssetLinks(rewriteStudioAssetUrls(match[0])).replace(/\s+onload=(["'])[\s\S]*?\1/gi, ""));
   headStyles.push(...(head.match(/<style\b[\s\S]*?<\/style>/gi) || []));
-  const snapshotBody = replaceCanvasSnapshots(rewriteStudioAssetUrls(body));
+  const snapshotBody = replaceCanvasSnapshots(stripStudioPreloadLinks(rewriteLocalStudioAssetLinks(rewriteStudioAssetUrls(body))));
   return `<div class="ops-shellless-snapshot ops-template-designer-snapshot">${headStyles.join("\n")}\n${snapshotBody}</div>`;
 }
 
@@ -388,6 +389,35 @@ function rewriteStudioAssetUrls(html) {
   return String(html || "")
     .replace(/\b(href|src)=["']\/studio\/app\/browser\/([^"']+)["']/gi, '$1="https://visualgraphx.com/studio/app/browser/$2"')
     .replace(/\b(href|src)=["'](?!https?:|data:|#|javascript:|mailto:|tel:|\/)([^"']+)["']/gi, '$1="https://visualgraphx.com/studio/app/browser/$2"');
+}
+
+function stripStudioPreloadLinks(html) {
+  return String(html || "").replace(/<link\b(?=[^>]*\brel=(["'])(?:modulepreload|preload)\1)(?=[^>]*(?:studio\/app\/browser|chunk-|\.js\b))[^>]*>/gi, "");
+}
+
+function rewriteLocalStudioAssetLinks(html) {
+  return String(html || "").replace(/\b(href|src)=(["'])([^"']+)\2/gi, (full, attr, quote, src) => {
+    const localSrc = localStudioAssetPathForSrc(src);
+    return localSrc ? `${attr}=${quote}${localSrc}${quote}` : full;
+  });
+}
+
+function localStudioAssetPathForSrc(src) {
+  const normalized = decodeHtmlEntities(String(src || "").trim())
+    .replace(/^https?:\/\/(?:staging\.)?visualgraphx\.com\//i, "")
+    .replace(/^\/+/, "")
+    .replace(/[?#].*$/, "");
+
+  if (/^studio\/app\/browser\/styles-[^/]+\.css$/i.test(normalized)) {
+    return localExistingAssetPath(`assets/ops-studio/app/browser/${path.basename(normalized)}`);
+  }
+  if (/^studio\/app\/browser\/fontawesome\.css$/i.test(normalized)) {
+    return localExistingAssetPath("assets/ops-studio/app/browser/fontawesome.css");
+  }
+  if (/^studio\/Content\/css\/pdffonts\.min\.css$/i.test(normalized)) {
+    return localExistingAssetPath("assets/ops-studio/Content/css/pdffonts.min.css");
+  }
+  return "";
 }
 
 function replaceCanvasSnapshots(html) {
@@ -751,6 +781,10 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = cleaned.replace(/\bsrc=["']https?:\/\/(?:staging\.)?visualgraphx\.com\/([^"']+)["']/gi, 'src="https://staging.visualgraphx.com/$1"');
 
+  cleaned = rewritePublicStagingLinks(cleaned);
+
+  cleaned = rewriteLocalOpsImageSources(cleaned);
+
   cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/includes\/images\/[^"'<>\\\s)]+/gi, "");
 
   cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/([^"'<>\\\s]+\.php)([^"'<>\\\s]*)/gi, (full, file) => {
@@ -759,7 +793,156 @@ function cleanExtractedContent(content, fileRouteMap) {
     return `#current/${route}`;
   });
 
+  cleaned = stripExtractedShellChrome(cleaned);
+
   return normalizeStandaloneModalContent(cleaned.trim());
+}
+
+function rewritePublicStagingLinks(html) {
+  return String(html || "")
+    .replace(/https?:\/\/([a-z0-9-]+)\.staging\.visualgraphx\.com\//gi, "https://$1.visualgraphx.com/")
+    .replace(/https?:\/\/staging\.visualgraphx\.com\//gi, "https://visualgraphx.com/")
+    .replace(/\/ctmediaon_staging\//gi, "/ctmediaon/");
+}
+
+function rewriteLocalOpsImageSources(html) {
+  return String(html || "").replace(/\b(src|data-src)=(["'])([^"']+)\2/gi, (full, attr, quote, src) => {
+    const localSrc = localOpsImagePathForSrc(src);
+    const canonicalSrc = canonicalExternalImageSrc(src) || decodeHtmlEntities(String(src || "").trim());
+    const rewrittenSrc = localSrc || remoteImageAssetPathForSrc(canonicalSrc) || unavailableImagePlaceholderSrc(canonicalSrc || src);
+    return rewrittenSrc ? `${attr}=${quote}${rewrittenSrc}${quote}` : full;
+  });
+}
+
+function loadRemoteImageAssetMap() {
+  const manifestPath = path.join(root, "assets", "ops-remote-images", "manifest.json");
+  if (!fs.existsSync(manifestPath)) return new Map();
+  try {
+    const manifest = readJsonFile(manifestPath);
+    return new Map(Object.entries(manifest.assets || {}));
+  } catch {
+    return new Map();
+  }
+}
+
+function remoteImageAssetPathForSrc(src) {
+  const decoded = decodeHtmlEntities(String(src || "").trim());
+  if (/^https?:\/\/(?:ctmediaimg\.s3\.us-west-1\.amazonaws\.com|dei4q67dwezeh\.cloudfront\.net)\/ctmediaon(?:_staging)?\/images\/orders\//i.test(decoded)) {
+    return "";
+  }
+  return remoteImageAssetMap.get(decoded) || "";
+}
+
+function localOpsImagePathForSrc(src) {
+  const normalized = decodeHtmlEntities(String(src || "").trim())
+    .replace(/^https?:\/\/(?:staging\.)?visualgraphx\.com\//i, "")
+    .replace(/^\/+/, "")
+    .replace(/^(\.\.\/)+/, "")
+    .replace(/^\.\/+/, "");
+
+  const adminMatch = normalized.match(/^(?:admin\/)?includes\/images\/([^?#]+)/i);
+  if (adminMatch) return localOpsImageAssetPath("admin/includes/images", adminMatch[1]);
+
+  const studioMatch = normalized.match(/^studio\/thirdparty\/colorpicker\/images\/([^?#]+)/i);
+  if (studioMatch) return localOpsImageAssetPath("studio/thirdparty/colorpicker/images", studioMatch[1]);
+
+  return "";
+}
+
+function canonicalExternalImageSrc(src) {
+  const decoded = decodeHtmlEntities(String(src || "").trim());
+  if (!decoded) return "";
+
+  const nestedAnyUrl = decoded.match(/https?:\/\/[^"']*(https?:\/\/(?:ctmediaimg\.s3\.us-west-1\.amazonaws\.com|dei4q67dwezeh\.cloudfront\.net)\/ctmediaon\/[^"']+)/i)?.[1];
+  if (nestedAnyUrl) return nestedAnyUrl;
+
+  const nestedUrl = decoded.match(/https?:\/\/(?:ctmediaimg\.s3\.us-west-1\.amazonaws\.com|dei4q67dwezeh\.cloudfront\.net)\/ctmediaon_staging\/images\/[^"']*(https?:\/\/(?:ctmediaimg\.s3\.us-west-1\.amazonaws\.com|dei4q67dwezeh\.cloudfront\.net)\/ctmediaon\/[^"']+)/i)?.[1];
+  if (nestedUrl) return nestedUrl;
+
+  if (/^https?:\/\/ctmediaimg\.s3\.us-west-1\.amazonaws\.com\/ctmediaon_staging\//i.test(decoded)) {
+    return decoded.replace(/\/ctmediaon_staging\//i, "/ctmediaon/");
+  }
+
+  if (/^https?:\/\/staging\.visualgraphx\.com\/(?:common_images|themes|studio\/Content\/fontimages)\//i.test(decoded)) {
+    return decoded.replace(/^https?:\/\/staging\.visualgraphx\.com\//i, "https://visualgraphx.com/");
+  }
+
+  return "";
+}
+
+function unavailableImagePlaceholderSrc(src) {
+  const decoded = decodeHtmlEntities(String(src || "").trim());
+  if (
+    !decoded ||
+    /^https?:\/\/(?:www\.)?onprintshop\.com\/wp-content\/themes\/onprintshop\/assets\/images\/opsaddonservices\//i.test(decoded) ||
+    isOpsPublicImageUrl(decoded)
+  ) {
+    return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+  }
+  return "";
+}
+
+function isOpsPublicImageUrl(src) {
+  return (
+    /^https?:\/\/(?:ctmediaimg\.s3\.us-west-1\.amazonaws\.com|dei4q67dwezeh\.cloudfront\.net)\/ctmediaon(?:_staging)?\//i.test(src) ||
+    /^https?:\/\/(?:staging\.)?visualgraphx\.com\/(?:common_images|themes|studio\/Content\/fontimages)\//i.test(src)
+  );
+}
+
+function localOpsImageAssetPath(folder, filename) {
+  const safeName = path.basename(filename);
+  return localExistingAssetPath(`assets/ops-images/${folder}/${safeName}`);
+}
+
+function localExistingAssetPath(relative) {
+  return fs.existsSync(path.join(root, relative)) ? relative : "";
+}
+
+function stripExtractedShellChrome(html) {
+  return removeBalancedDivsByClasses(
+    removeBalancedDivsByClasses(html, ["footer", "h-auto"]),
+    ["footer-tools"]
+  );
+}
+
+function removeBalancedDivsByClasses(html, requiredClasses) {
+  let output = String(html || "");
+  let searchStart = 0;
+  const openDivRe = /<div\b[^>]*>/gi;
+  while (searchStart < output.length) {
+    openDivRe.lastIndex = searchStart;
+    const match = openDivRe.exec(output);
+    if (!match) break;
+    const openTag = match[0];
+    const classAttr = openTag.match(/\bclass=(["'])(.*?)\1/i)?.[2] || "";
+    const classSet = new Set(classAttr.split(/\s+/).filter(Boolean));
+    if (!requiredClasses.every(className => classSet.has(className))) {
+      searchStart = openDivRe.lastIndex;
+      continue;
+    }
+    const end = balancedDivEnd(output, match.index, openDivRe.lastIndex);
+    if (end <= match.index) {
+      searchStart = openDivRe.lastIndex;
+      continue;
+    }
+    output = `${output.slice(0, match.index)}${output.slice(end)}`;
+    searchStart = match.index;
+  }
+  return output;
+}
+
+function balancedDivEnd(html, openStart, afterOpenTag) {
+  let depth = 1;
+  const tagRe = /<\/?div\b[^>]*>/gi;
+  tagRe.lastIndex = afterOpenTag;
+  let match;
+  while ((match = tagRe.exec(html))) {
+    const tag = match[0];
+    if (/^<div\b/i.test(tag) && !/\/>$/.test(tag)) depth += 1;
+    if (/^<\/div/i.test(tag)) depth -= 1;
+    if (depth === 0) return tagRe.lastIndex;
+  }
+  return openStart;
 }
 
 function normalizeStandaloneModalContent(html) {

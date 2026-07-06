@@ -1237,11 +1237,11 @@ function labelForPage(page) {
 }
 
 function content() {
+  if (OPS.page === "dashboard") return dashboard();
   if (OPS.mode === "current") {
     const extracted = extractedPageFor(OPS.page);
     if (extracted) return extractedOpsPage(extracted);
   }
-  if (OPS.page === "dashboard") return dashboard();
   if (OPS.mode === "proposed" && !proposedCustomPages.has(OPS.page)) {
     const lead = proposedLeadHtmlFor(OPS.page);
     const proposedSourcePage = proposedExactExtractedPageFor(OPS.page);
