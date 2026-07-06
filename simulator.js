@@ -1295,6 +1295,7 @@ function proposedOrderDataTable(activeView) {
     ${proposedOrderTableToolbar()}
     <div class="table-responsive">
       <table id="ops-table" class="table table-striped order_listing_view table-bordered table-hover no-footer table-sm dataTable DTTT_selectable" aria-describedby="ops-table_info">
+        ${proposedOrderTableColgroup()}
         <thead>${proposedOrderTableHead()}</thead>
         <tbody>${tableBody}</tbody>
       </table>
@@ -1355,6 +1356,17 @@ function proposedOrderTableToolbar() {
   </div>`;
 }
 
+function proposedOrderTableColgroup() {
+  return `<colgroup><col width="5%">
+        <col width="7%">
+        <col width="22%">
+        <col width="18%">
+        <col width="18%">
+        <col width="14%">
+        <col width="16%">
+        </colgroup>`;
+}
+
 function proposedOrderTableHead() {
   return `<tr>
     <th data-data="chk_field" data-class="ord_chk_col d-none d-md-table-cell text-center order-td-column" class="ord_chk_col d-none d-md-table-cell text-center order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label=""><div class="custom_checkBox d-flex align-items-center justify-content-center no-print"><div class="expand-all mr-2 open data-collected"><a class="no-print btn p-0 text-white" href="javascript:void(0);" id="expand_all_order_product" aria-expanded="true"><i class="far fa-square-minus"></i></a></div><label class="checkbox d-block "><input type="checkbox" class="ace"><span class="lbl"></span></label></div></th>
@@ -1362,7 +1374,10 @@ function proposedOrderTableHead() {
     <th data-data="col_order_details" data-class="visibleonly-print col_order_details order-td-column" class="visibleonly-print col_order_details order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Details">Order Details</th>
     <th data-data="col_order_date" data-class="d-none d-md-table-cell visibleonly-print order-td-column" class="d-none d-md-table-cell text-left visibleonly-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Date & Amount">Order Date &amp; Amount</th>
     <th data-data="col_order_due_date" data-class="d-none d-md-table-cell text-left visibleonly-print order-td-column" class="d-none d-md-table-cell text-left visibleonly-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Due Date">Order Due Date</th>
-    <th data-data="col_status" data-class="ord_status d-none d-md-table-cell text-left visibleonly-print order-td-column table-text-wrap" class="text-left ord_status d-none d-md-table-cell visibleonly-print order-td-column table-text-wrap sorting_disabled" rowspan="1" colspan="1" aria-label="Notify Status">Notify <span></span><br>Status</th>
+    <th data-data="col_status" data-class="ord_status d-none d-md-table-cell text-left visibleonly-print order-td-column table-text-wrap" class="text-left ord_status d-none d-md-table-cell visibleonly-print order-td-column table-text-wrap sorting_disabled" rowspan="1" colspan="1" aria-label="Status"><span class="status-toolbar no-print">
+         <i id="btn_edit_stat" class="blk_statedit ace-icon fal fa-edit fa-lg pr-1 cursor-pointer" data-placement="top" data-toggle="tooltip" data-original-title="Edit status &amp; tracking number"></i>
+         <span class="blk_statsave d-none no-print"><label class="checkbox-inline"><input type="checkbox" name="inform_customer" id="inform_customer" value="1" class="ace"><span class="lbl"> Notify</span></label><i id="btn_update_stat" class="ace-icon fal fa-save fa-lg pl-2 pr-1 cursor-pointer" data-placement="top" data-toggle="tooltip" data-original-title="Save status &amp; tracking number"></i></span>
+        </span>Status<i class="blk_statsave ace-icon far fa-times-circle pl-1 fa-lg reset_ord_stat text-danger d-none cursor-pointer no-print" data-placement="top" data-toggle="tooltip" data-original-title="Cancel/Reset status &amp; tracking number"></i></th>
     <th data-data="Action" data-orderable="false" data-searchable="false" data-class-name="ord_status no-print d-none d-md-table-cell order-td-column" class="d-none d-md-table-cell ord_status no-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Action">Action</th>
   </tr>`;
 }
