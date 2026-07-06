@@ -602,12 +602,12 @@ function pagesForMode(mode) {
 }
 
 function isKnownPage(page) {
-  page = normalizeRouteToken(page);
-  return page === "dashboard" || Boolean(extractedPageFor(page)) || Object.values(pageFamilies).some(pages => pages.includes(page));
+  page = normalizePageToken(page);
+  return isDashboardPage(page) || Boolean(extractedPageFor(page)) || Object.values(pageFamilies).some(pages => pages.includes(page));
 }
 
 function pageForModeSwitch(page, nextMode) {
-  page = normalizeRouteToken(page);
+  page = normalizePageToken(page);
   const mapped = modePageMap[nextMode]?.[page];
   if (mapped) return mapped;
   if (pagesForMode(nextMode).includes(page) || isKnownPage(page)) return page;
@@ -863,6 +863,17 @@ function normalizeRouteToken(value) {
   return String(value || "").trim();
 }
 
+const dashboardPageAliases = new Set(["dashboard", "index", "welcome", "welcome.php"]);
+
+function normalizePageToken(value) {
+  const page = normalizeRouteToken(value);
+  return dashboardPageAliases.has(page) ? "dashboard" : page;
+}
+
+function isDashboardPage(page = OPS.page) {
+  return normalizePageToken(page) === "dashboard";
+}
+
 function normalizeModeTarget(value, mode = "") {
   const target = normalizeRouteToken(value).replace(/^(current|proposed)\/\s+/, "$1/");
   if (!mode) return target;
@@ -1063,7 +1074,7 @@ function subbar() {
   if (extractedBreadcrumbs) return extractedBreadcrumbs;
   const breadcrumbHtml = breadcrumbsForPage();
 
-  const dashboardControls = OPS.page === "dashboard" ? `
+  const dashboardControls = isDashboardPage() ? `
           <div class="col-auto px-0"><label class="mb-0"><input type="radio" class="ace"> <span class="lbl">Filter by Store</span></label></div>
           <div class="col-auto px-2"><label class="mb-0"><input type="radio" class="ace" checked> <span class="lbl">Login As</span></label></div>
           <div class="col-auto px-0"><select class="form-control form-control-sm"><option>${h(OPS.loginAs)}</option><option>gx002_admin</option></select></div>
@@ -1118,7 +1129,7 @@ function productSettingsTabLabel(page) {
 }
 
 function extractedBreadcrumbsForPage() {
-  if (OPS.page === "dashboard") return "";
+  if (isDashboardPage()) return "";
   const extracted = extractedPageFor(OPS.page);
   if (OPS.mode === "current") return extracted?.breadcrumbsHtml || "";
   if (OPS.mode === "proposed") {
@@ -1226,7 +1237,7 @@ function isActiveGroup(group) {
 }
 
 function pageTitle() {
-  if (OPS.mode === "proposed" && OPS.page === "dashboard") return "Dashboard";
+  if (OPS.mode === "proposed" && isDashboardPage()) return "Dashboard";
   if (OPS.mode === "proposed" && OPS.page === "product-tax") return "Product Tax/VAT Settings";
   return labelForPage(OPS.page) || "Dashboard";
 }
@@ -1237,7 +1248,7 @@ function labelForPage(page) {
 }
 
 function content() {
-  if (OPS.page === "dashboard") return dashboard();
+  if (isDashboardPage()) return dashboard();
   if (OPS.mode === "current") {
     const extracted = extractedPageFor(OPS.page);
     if (extracted) return extractedOpsPage(extracted);
@@ -3593,9 +3604,9 @@ function applyHash() {
   const [mode, page] = rawHash.split("/");
   if (mode === "current" || mode === "proposed") OPS.mode = mode;
   if (page) {
-    OPS.page = normalizeRouteToken(page);
+    OPS.page = normalizePageToken(page);
   } else if (rawHash && mode !== "current" && mode !== "proposed") {
-    OPS.page = normalizeRouteToken(rawHash);
+    OPS.page = normalizePageToken(rawHash);
   }
   setOpenMenuForPage();
 }
@@ -3921,7 +3932,7 @@ document.addEventListener("click", event => {
     OPS.openChild = OPS.openChild === child ? "" : child;
   }
 
-  const page = normalizeRouteToken(event.target.closest("[data-page]")?.dataset.page);
+  const page = normalizePageToken(event.target.closest("[data-page]")?.dataset.page);
   if (page) {
     OPS.modeSwitchReturn = null;
     OPS.newMenuOpen = false;
@@ -4138,6 +4149,7 @@ function isActiveGroupForPage(group, page) {
 
 window.addEventListener("hashchange", () => {
   applyHash();
+  syncHash();
   render();
 });
 
