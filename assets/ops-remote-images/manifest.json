@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T22:25:18.507Z",
+  "generatedAt": "2026-07-06T23:31:34.778Z",
   "source": "Generated from ops-extracted-pages.js public image refs",
   "assets": {
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product_icon/Signicade-Deluxe_1_1758621223704.png": "assets/ops-remote-images/files/Signicade-Deluxe_1_1758621223704-7f466430aa81.png",
@@ -104,7 +104,12 @@
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product_icon/Creative-Design_10032614202509.jpg": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product_icon/image.jpg": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/products_gallery_images/VGX_AUTOTEST-set-product-image-gallery-20260609182042.jpg": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
-    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/products_gallery_images/VGX_AUTOTEST-set-product-image-gallery-20260609182042_thumb.jpg": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/products_gallery_images/VGX_AUTOTEST-set-product-image-gallery-20260609182042_thumb.jpg": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/aTfNaygq-s1000.jpg": "assets/ops-remote-images/files/aTfNaygq-s1000-2e74edd3436b.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/6JzV9SAJ-s1000.jpg": "assets/ops-remote-images/files/6JzV9SAJ-s1000-1ccb5ec7ec1a.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/uf4fTjWs-s1000.jpg": "assets/ops-remote-images/files/uf4fTjWs-s1000-f9e236e6b242.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/X7A4DS6I-s1000.jpg": "assets/ops-remote-images/files/X7A4DS6I-s1000-b24e2da040f0.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/IfAu2WSJ-s1000_11444716202603.jpg": "assets/ops-remote-images/files/IfAu2WSJ-s1000_11444716202603-9b243b3ecf1f.jpg"
   },
   "skipped": {
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product_icon/Creative-Design_10032614202509.jpg": {
