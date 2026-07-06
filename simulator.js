@@ -887,7 +887,7 @@ function labelForPage(page) {
 }
 
 function content() {
-  if (OPS.mode === "current" && OPS.page !== "dashboard") {
+  if (OPS.mode === "current") {
     const extracted = extractedPageFor(OPS.page);
     if (extracted) return extractedOpsPage(extracted);
   }

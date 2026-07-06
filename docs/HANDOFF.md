@@ -132,6 +132,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `studio-models-action` now renders `Add Real Preview Models` from a read-only authenticated staging capture at `300-studio_models_action.html`, while `products-studio-models-action` remains the separate `Assign Real Preview` page;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
   - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: the live template cluster now covers `#current/templates`, `#current/template-assign`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-action`, `#current/template-manager-design`, `#current/template-manager-sortorder`, `#current/template-preview-image`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-properties-master-action`, `#current/template-categories`, `#current/template-category-action`, `#current/template-category-metatags`, `#current/template-master`, `#current/store-settings-templates`, and `#current/template-manager-duplicate`;
+  - Current dashboard now renders the captured OPS `welcome` dashboard from `121-welcome.html`; the simulator dashboard remains Proposed-only;
   - `template_manager_design` is now treated as a shellless live full-document snapshot because the live OPS designer is an Angular workspace outside the normal admin shell; the capture script serializes visible canvas elements, the bundle builder replays them as image snapshots, and shellless CSS maps the live designer kit/regular font glyphs to extracted SVG masks;
   - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
 - Browser verification on 2026-07-06 covered:
@@ -152,6 +153,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `#proposed/html-help` was verified to preserve the same OPS capture because no Proposed delta exists for this route.
   - `#current/template-manager-duplicate` was verified from the live-only capture `7923-template_manager_duplicate.html`; clicking `Remove Duplicate Templates` switched the local live tab pane without using the older staging tab-state DOM.
   - `#proposed/template-manager-duplicate` was verified to preserve the same live OPS capture because no Proposed delta exists for this route.
+  - `#current/dashboard` was verified from the captured OPS dashboard `121-welcome.html`, and `#proposed/dashboard` was verified to remain the simulator Proposed dashboard.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
@@ -161,7 +163,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - Earlier smoke before the expanded action/detail capture covered `121/121` generated Current OPS routes.
   - Static generated-bundle scan found `0` full-document bodies/tab states and `0` remaining `staging.visualgraphx.com/admin` or `visualgraphx.com/admin` URL references.
   - `relogin` is excluded as a non-admin re-login endpoint; `html-help` now uses the authenticated full-rendered DOM as a standalone fragment because the normal `.page-content` fragment is empty.
-- Dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
+- Proposed dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
 - Sidebar icon/text spacing was corrected.
 - Proposed notes were moved into a bottom dock and draggable modeless note window.
 - Proposed combined-list filters should use OPS tab styling, not standalone button rows.
