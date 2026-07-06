@@ -690,8 +690,13 @@ function productSettingsTabLabel(page) {
 }
 
 function extractedBreadcrumbsForPage() {
-  if (OPS.mode !== "current" || OPS.page === "dashboard") return "";
-  return extractedPageFor(OPS.page)?.breadcrumbsHtml || "";
+  if (OPS.page === "dashboard") return "";
+  const extracted = extractedPageFor(OPS.page);
+  if (OPS.mode === "current") return extracted?.breadcrumbsHtml || "";
+  if (OPS.mode === "proposed" && OPS.page === "order-status") {
+    return rewriteExtractedModeTargetsHtml(extracted?.breadcrumbsHtml || "", "proposed");
+  }
+  return "";
 }
 
 function sidebar(menu) {
@@ -810,6 +815,28 @@ function extractedPageFor(page) {
 function extractedOpsPage(page) {
   const html = page.bodyHtml || `<div class="alert alert-warning">No extracted OPS body was captured for ${h(page.sourceFile || page.slug || page.route)}.</div>`;
   return `<div class="ops-extracted-page" data-source-file="${h(page.sourceFile || "")}">${html}</div>`;
+}
+
+function rewriteExtractedModeTargetsHtml(html, mode) {
+  return String(html || "").replace(/data-tab-target="(?:current|proposed)\//g, `data-tab-target="${mode}/`);
+}
+
+function rewriteExtractedModeTargets(root, mode) {
+  root.querySelectorAll("[data-tab-target]").forEach(el => {
+    const target = el.getAttribute("data-tab-target") || "";
+    if (/^(current|proposed)\//.test(target)) {
+      el.setAttribute("data-tab-target", target.replace(/^(current|proposed)\//, `${mode}/`));
+    }
+  });
+}
+
+function proposedExtractedOpsPage(pageName, extraClass = "") {
+  const extracted = extractedPageFor(pageName);
+  if (!extracted?.bodyHtml) return genericPage(pageTitle());
+  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${h(extraClass)}" data-source-file="${h(extracted.sourceFile || "")}">${extracted.bodyHtml}</div>`, "text/html");
+  const root = doc.body.firstElementChild;
+  rewriteExtractedModeTargets(root, "proposed");
+  return root.outerHTML;
 }
 
 function dashboard() {
@@ -1175,6 +1202,7 @@ function chart() {
 function ordersPage() {
   const proposed = OPS.mode === "proposed";
   if (proposed && OPS.page === "orders") return proposedOrdersPage();
+  if (proposed && OPS.page === "order-status") return proposedOrderStatusPage();
   const title = proposed ? pageTitle() : pageTitle() || "List Orders";
   const fast = proposed ? proposedFilterTabs(["All Orders", "Open", "Fulfilled & Unpaid", "Closed & Archived"]) : "";
   const headers = ["Sr#", "Order Details", "Customer", "Products", ...(proposed ? ["Invoice", "Payment", "Archive"] : []), "Status", "Action"];
@@ -1201,6 +1229,10 @@ function ordersPage() {
   ];
   });
   return `<section class="page">${pageHead(title, proposed ? ["Add New Order", "Saved Views", "Job Board"] : ["Payment Request", "Job Board", "Order Shipment"])}${proposalMarkup("orders")}${fast}${filters(proposed ? ["Search:", "Company Name", "Store", "Order Group", "Product Status", "Date From", "Date To"] : ["Search:", "Company Name", "Order Date", "From", "To", "13 Selected"])}${dataTable(headers, rows, "ops-orders-table")}${proposed ? changeNote("Orders remains one list. The quick filters group orders by workflow state: open work, fulfilled but still unpaid work, and closed or archived work where the order is fulfilled and paid or cancelled.") : originalNote("Original Orders splits List Orders, Payment Request, Unpaid Orders, Archive Orders, Export/API Orders, and status utilities across separate menu entries.")}</section>`;
+}
+
+function proposedOrderStatusPage() {
+  return proposedExtractedOpsPage("order-status", "ops-proposed-order-status");
 }
 
 function proposedOrdersPage() {
@@ -2936,7 +2968,7 @@ document.addEventListener("click", event => {
     return;
   }
 
-  const tabAction = event.target.closest("[data-tab-target]");
+  const tabAction = event.target.closest("[data-tab-target], .ops-extracted-page a[data-toggle='tab'][href^='#']");
   if (tabAction && !tabAction.dataset.page) {
     event.preventDefault();
     activateExtractedTab(tabAction);
@@ -3055,7 +3087,8 @@ document.addEventListener("submit", event => {
 });
 
 function activateExtractedTab(tabAction) {
-  const target = tabAction.dataset.tabTarget;
+  const hrefTarget = tabAction.getAttribute("href")?.replace(/^#/, "");
+  const target = tabAction.dataset.tabTarget || hrefTarget;
   if (!target) return;
 
   const tabList = tabAction.closest(".nav-tabs, .tabs-above, .tabs-left, .tabs-right") || tabAction.closest("ul");
