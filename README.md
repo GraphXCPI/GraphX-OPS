@@ -37,6 +37,13 @@ node scripts/capture-staging-safe-pages-cdp.mjs --session-origin https://visualg
 
 `--session-origin` controls which logged-in admin tab CDP attaches to; the queue itself must contain the intended live admin URLs.
 
+The CDP capture script also accepts `--target-origin https://visualgraphx.com` when a reusable queue contains staging URLs but the authenticated session is live. This rewrites `visualgraphx.com/admin` or `staging.visualgraphx.com/admin` queue targets to the requested admin origin before navigation.
+
+Tracked targeted queue manifests from the 2026-07-06 route-gap pass:
+
+- `docs/targeted-product-settings-gap-capture-queue-2026-07-06.csv`
+- `docs/targeted-template-email-gap-capture-queue-2026-07-06.csv`
+
 The older Apple Events capture script is still available if Chrome `View > Developer > Allow JavaScript from Apple Events` is enabled:
 
 ```bash

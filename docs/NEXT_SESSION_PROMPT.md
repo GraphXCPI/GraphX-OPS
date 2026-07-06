@@ -32,9 +32,10 @@ Critical rules:
 - Before rebuilding a screen, check the newest staging reference package:
   `/Users/cderamos/Projects/OPS Simulator/reference/extractions/GraphX-OPS-staging-extraction-2026-07-06`
 - The staging tab-state archive is complete: 93 discovered, 93 captured, 0 remaining.
-- The action/detail page gap is not complete: resume from
-  `expanded-safe-page-capture-2026-07-06/indexes/canonical-safe-page-capture-queue.csv`
-  and do not claim those pages captured until rendered DOM/source/screenshot manifests exist.
+- Template and block management pages are live-only; capture those read-only from `https://visualgraphx.com/admin`, not staging.
+- The product/settings/template/email/shipping/SEO targeted linked-route gap pass is current as of 2026-07-06:
+  `ops-extracted-pages.js` has 353 extracted pages and the focused route-graph scan has 0 missing linked targets for those clusters.
+- For newly discovered action/detail pages, resume from the canonical safe queue or the tracked targeted queues in `docs/`, and do not claim those pages captured until rendered DOM/source manifests and browser verification exist.
 
 Before editing:
 - Run `git status --short`.
@@ -47,7 +48,7 @@ Current known project state:
 - Reference/handoff material is under `reference/`.
 - Older simulator attempt is archived under `archive/`.
 - Recent fixes include dashboard quick-link cards, sidebar icon/text spacing, and contextual Proposed notes.
-- Latest staging extraction pass added a full-source archive, completed tab-state archive, and a queued safe action/detail-page target list. See `docs/HANDOFF.md` for exact counts and paths.
+- Latest extraction passes added a full-source archive, completed tab-state archive, queued safe action/detail-page target list, and targeted live queues for product/settings/template/email gaps. See `docs/HANDOFF.md` for exact counts and paths.
 
 Report back with exact files changed, exact routes/screens verified, and what remains.
 ```

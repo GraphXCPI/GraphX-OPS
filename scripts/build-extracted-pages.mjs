@@ -201,6 +201,11 @@ const localTabOnlySlugs = new Set([
   "template_manager_duplicate"
 ]);
 
+const nonNavigableAdminSlugs = new Set([
+  "document_download",
+  "product_master_option_attribute_googlesheet_import"
+]);
+
 function stripNumberAndExt(filename) {
   return filename.replace(/^\d+-/, "").replace(/\.html$/, "");
 }
@@ -700,6 +705,7 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = cleaned.replace(/\b(action|href)=["'](?:https?:\/\/(?:staging\.)?visualgraphx\.com)?\/?admin\/([^"'?#]+)([^"']*)["']/gi, (full, attr, file, suffix) => {
     const base = path.basename(file, ".php");
+    if (attr.toLowerCase() === "href" && nonNavigableAdminSlugs.has(base)) return 'href="javascript:void(0)"';
     const route = fileRouteMap.get(base) || routeForSlug(base);
     if (attr.toLowerCase() === "href") return `href="#current/${route}" data-page="${route}"`;
     return `action="#current/${route}"`;
@@ -712,7 +718,10 @@ function cleanExtractedContent(content, fileRouteMap) {
   });
 
   cleaned = cleaned.replace(/\bhref=["']([^"']+\.php)([^"']*)["']/gi, (full, file) => {
+    if (/^(?:https?:|data:|javascript:|mailto:|tel:|#)/i.test(file)) return full;
+    if (/[{}]/.test(file)) return full;
     const base = path.basename(file, ".php");
+    if (nonNavigableAdminSlugs.has(base)) return 'href="javascript:void(0)"';
     const route = fileRouteMap.get(base) || routeForSlug(base);
     return `href="#current/${route}" data-page="${route}"`;
   });

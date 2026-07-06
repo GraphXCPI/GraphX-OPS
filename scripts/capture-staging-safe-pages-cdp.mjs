@@ -14,6 +14,7 @@ const onlySlug = argValue("--slug") || "";
 const overrideUrl = argValue("--override-url") || "";
 const sessionOrigin = normalizeOrigin(argValue("--session-origin") || "https://staging.visualgraphx.com");
 const landingUrl = argValue("--landing-url") || `${sessionOrigin}/admin/welcome.php`;
+const targetOrigin = argValue("--target-origin") ? normalizeOrigin(argValue("--target-origin")) : "";
 const waitMs = Number(argValue("--wait-ms") || "45000");
 const dryRun = process.argv.includes("--dry-run");
 const screenshotsEnabled = !process.argv.includes("--no-screenshots");
@@ -49,6 +50,9 @@ targets = targets.map(target => (
     ? { ...target, url: safeUrlOverrides[target.slug], overrideUrl: true }
     : target
 ));
+if (targetOrigin) {
+  targets = targets.map(target => ({ ...target, url: rewriteAdminUrlOrigin(target.url, targetOrigin) }));
+}
 if (overrideUrl) {
   if (!onlySlug || targets.length !== 1) throw new Error("--override-url requires --slug and exactly one selected target");
   targets = targets.map(target => ({ ...target, url: overrideUrl, overrideUrl: true }));
@@ -59,7 +63,7 @@ const captureManifest = {
   source: `Chrome DevTools Protocol on 127.0.0.1:${cdpPort}`,
   queuePath,
   outputRoot,
-  requested: { start, limit, onlySlug, overrideUrl, sessionOrigin, landingUrl, waitMs, screenshotsEnabled, dryRun, cdpPort, cdpTimeoutMs, serverFetchTimeoutMs, networkQuietMs, settleMs, stablePolls, forceNewTab, domOnly },
+  requested: { start, limit, onlySlug, overrideUrl, sessionOrigin, landingUrl, targetOrigin, waitMs, screenshotsEnabled, dryRun, cdpPort, cdpTimeoutMs, serverFetchTimeoutMs, networkQuietMs, settleMs, stablePolls, forceNewTab, domOnly },
   totalQueued: queue.length,
   totalSelected: targets.length,
   ok: 0,
@@ -589,6 +593,19 @@ function normalizeOrigin(value) {
   const origin = String(value || "").replace(/\/+$/, "");
   if (!/^https?:\/\/[^/]+$/i.test(origin)) throw new Error(`Invalid --session-origin: ${value}`);
   return origin;
+}
+
+function rewriteAdminUrlOrigin(value, origin) {
+  try {
+    const url = new URL(value);
+    const isOpsHost = url.hostname === "visualgraphx.com" || url.hostname === "staging.visualgraphx.com";
+    if (isOpsHost && url.pathname.startsWith("/admin/")) {
+      return `${origin}${url.pathname}${url.search}${url.hash}`;
+    }
+  } catch {
+    // Leave relative or invalid URLs untouched; callers may intentionally capture them.
+  }
+  return value;
 }
 
 function sleep(ms) {
