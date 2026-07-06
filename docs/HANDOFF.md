@@ -148,15 +148,17 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - Studio model action verification covered `#current/studio-models-action`; it rendered `Add Real Preview Models` locally from `300-studio_models_action.html` with `0` live admin links.
   - live-only template/block route verification covered `#current/templates`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-design`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-categories`, `#current/template-master`, and `#current/store-settings-templates`; each route rendered from the live capture bundle locally with `0` live admin links.
   - shellless template designer verification covered `#current/template-manager-design` at a 1200px viewport: it rendered from `155-template_manager_design.html`, used `displayMode: shellless`, had `0` admin shell wrappers, replayed `4` canvas snapshots, resolved the live designer kit icons via extracted `ops-kit-fa-*.svg` masks, and resolved the Uppy upload/color controls.
+  - `#current/html-help` was verified after the standalone full-document extraction fix: it rendered from `029-htmlhelp.html`, preserved the captured `Html Help` header and tab bar, and clicking the `Tables` tab kept the route at `#current/html-help` with `currentTab` set to `htmlhelp:tables`.
+  - `#proposed/html-help` was verified to preserve the same OPS capture because no Proposed delta exists for this route.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
-  - latest structure audit is `315` OK, `0` review, `1` reextract (`html-help`, which intentionally uses its first captured tab state because the base page-content fragment is empty).
+  - latest structure audit is `317` OK, `0` review, `0` reextract.
   - previous `290/290` generated Current OPS route smoke rendered locally without missing extracted roots, route mismatches, live admin links, or thin renders after the live-only template/block merge.
   - Two naive fallback-string hits were verified as source-content false positives: `coupons` has a real `Coming Soon` coupon state/filter, and `designer-studio-font-action` includes the Google font name `Coming Soon`.
   - Earlier smoke before the expanded action/detail capture covered `121/121` generated Current OPS routes.
   - Static generated-bundle scan found `0` full-document bodies/tab states and `0` remaining `staging.visualgraphx.com/admin` or `visualgraphx.com/admin` URL references.
-  - `relogin` is excluded as a non-admin re-login endpoint; `html-help` uses its first captured tab state as the route body because the base page-content fragment was empty.
+  - `relogin` is excluded as a non-admin re-login endpoint; `html-help` now uses the authenticated full-rendered DOM as a standalone fragment because the normal `.page-content` fragment is empty.
 - Dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
 - Sidebar icon/text spacing was corrected.
 - Proposed notes were moved into a bottom dock and draggable modeless note window.

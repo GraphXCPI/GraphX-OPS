@@ -193,6 +193,10 @@ const shelllessFullDocumentSlugs = new Set([
   "template_manager_design"
 ]);
 
+const standaloneFullDocumentSlugs = new Set([
+  "htmlhelp"
+]);
+
 function stripNumberAndExt(filename) {
   return filename.replace(/^\d+-/, "").replace(/\.html$/, "");
 }
@@ -284,8 +288,11 @@ function extractStandaloneBody(html) {
   return body.trim();
 }
 
-function extractedContentFragment(html) {
+function extractedContentFragment(html, slug = "") {
   if (/<(?:!doctype|html|body)\b/i.test(html)) {
+    if (standaloneFullDocumentSlugs.has(slug)) {
+      return extractStandaloneFullDocumentFragment(html, slug) || extractPageContent(html) || extractStandaloneBody(html) || html;
+    }
     return extractPageContent(html) || extractStandaloneBody(html) || html;
   }
   return html;
@@ -312,7 +319,7 @@ function extractJsonPayloadFragment(content) {
 
 function extractedCaptureFragment(html, slug = "") {
   const isShelllessFullDocument = shelllessFullDocumentSlugs.has(slug) && /<(?:!doctype|html|body)\b/i.test(html);
-  const fragment = isShelllessFullDocument ? extractShelllessFullDocumentSnapshot(html) : extractedContentFragment(html);
+  const fragment = isShelllessFullDocument ? extractShelllessFullDocumentSnapshot(html) : extractedContentFragment(html, slug);
   const payloadFragment = extractJsonPayloadFragment(fragment);
   if (payloadFragment?.html) {
     return {
@@ -337,6 +344,14 @@ function extractShelllessFullDocumentSnapshot(html) {
   headStyles.push(...(head.match(/<style\b[\s\S]*?<\/style>/gi) || []));
   const snapshotBody = replaceCanvasSnapshots(rewriteStudioAssetUrls(body));
   return `<div class="ops-shellless-snapshot ops-template-designer-snapshot">${headStyles.join("\n")}\n${snapshotBody}</div>`;
+}
+
+function extractStandaloneFullDocumentFragment(html, slug) {
+  if (slug !== "htmlhelp") return "";
+  const body = extractStandaloneBody(html);
+  if (!body) return "";
+  const contentStart = body.search(/<div[^>]*class=["'][^"']*\bcontainer-fluid\b[^"']*["'][^>]*>/i);
+  return (contentStart === -1 ? body : body.slice(contentStart)).trim();
 }
 
 function rewriteStudioAssetUrls(html) {
@@ -787,7 +802,7 @@ function loadTabStates(fileRouteMap) {
       continue;
     }
 
-    const rawContent = extractedContentFragment(fs.readFileSync(contentPath, "utf8"));
+    const rawContent = extractedContentFragment(fs.readFileSync(contentPath, "utf8"), parentSlug);
     const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
     const breadcrumbsRel = manifest.files?.breadcrumbsRenderedHtml;
     const breadcrumbsPath = breadcrumbsRel ? path.join(tabExtractionRoot, breadcrumbsRel) : "";
@@ -897,10 +912,8 @@ for (const file of allFiles) {
   const hasRendered = fs.existsSync(renderedPath);
   const sourcePath = hasRendered ? renderedPath : rawPath;
   if (!fs.existsSync(sourcePath)) continue;
-  const sourceKind = hasRendered ? "rendered" : "raw";
+  let sourceKind = hasRendered ? "rendered" : "raw";
   const html = fs.readFileSync(sourcePath, "utf8");
-  const rawContent = hasRendered ? extractedContentFragment(html) : extractPageContent(html);
-  const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
   const breadcrumbsPath = hasRendered && fs.existsSync(path.join(breadcrumbsDir, file))
     ? path.join(breadcrumbsDir, file)
     : "";
@@ -908,6 +921,15 @@ for (const file of allFiles) {
     ? path.join(renderedFullDir, file)
     : rawPath;
   const fullHtml = fs.existsSync(fullHtmlPath) ? fs.readFileSync(fullHtmlPath, "utf8") : html;
+  let rawContent = hasRendered ? extractedContentFragment(html, slug) : extractPageContent(html);
+  if (standaloneFullDocumentSlugs.has(slug) && !meaningfulPageContent(rawContent)) {
+    const fullDocumentContent = extractedContentFragment(fullHtml, slug);
+    if (meaningfulPageContent(fullDocumentContent)) {
+      rawContent = fullDocumentContent;
+      sourceKind = "rendered-full-document-fragment";
+    }
+  }
+  const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
   const breadcrumbsSource = breadcrumbsPath ? fs.readFileSync(breadcrumbsPath, "utf8") : extractDivById(fullHtml, "breadcrumbs");
   const breadcrumbsHtml = cleanExtractedContent(breadcrumbsSource, fileRouteMap);
   const title = titleFromHtml(rawContent || html, slug);
