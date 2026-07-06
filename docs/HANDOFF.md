@@ -72,11 +72,14 @@ All OPS simulator reference material now lives inside this project under `refere
   - Contents: 93 tab-state manifests and screenshots.
   - Status: 93 discovered, 93 captured, 0 remaining.
   - Capture modes: 56 live-clicked states, 37 source-derived active-tab variants from authenticated staging DOM after Chrome automation timed out.
+  - Runtime status: `ops-extracted-pages.js` now includes these 93 tab states. Current OPS tab clicks swap to captured tab DOM while preserving the current hash route.
 - Missing action/detail page audit:
   - Path: `expanded-safe-page-capture-2026-07-06`
   - Key index: `indexes/canonical-safe-page-capture-queue.csv`
   - Status: queue only, not live-captured yet.
   - Counts: 177 canonical safe page/action targets, 7,527 safe uncaptured URL variants, 292 unsafe/mutation-like targets excluded from the safe queue.
+  - Resume script: `node scripts/capture-staging-safe-pages.mjs --start <queueIndex>` uses the front Google Chrome staging session and writes ignored `live-capture-*` folders.
+  - Current blocker: Chrome currently denies `execute javascript` from Apple Events. Enable Chrome `View > Developer > Allow JavaScript from Apple Events`, log in to staging, then rerun the resume script.
 - Use the staging package before changing parity-sensitive simulator screens. Treat source-derived tab screenshots as source reference; local-rendered screenshots may show square placeholder icons where webfonts did not load.
 
 ### Historical Simulator Archive
@@ -112,8 +115,17 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - Orders collapse controls are synced after render so OPS plus/minus icons, `aria-expanded`, and visible child rows stay aligned.
 - Staging extraction gap pass was expanded on 2026-07-06:
   - tab states are now fully indexed (`93/93`, zero remaining);
+  - generated Current OPS routes now use captured tab-state DOM for OPS tabs, including PHP-query style tab links;
   - missed safe action/detail pages are queued for a resumed authenticated capture (`177` canonical targets);
-  - source-derived tab states are clearly marked in their manifests.
+  - source-derived tab states are clearly marked in their manifests;
+  - `scripts/capture-staging-safe-pages.mjs` was added for resumed safe-page capture once Chrome Apple Events JavaScript permission and staging auth are available.
+- Browser verification on 2026-07-06 covered:
+  - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
+  - `#current/product-categories` tab `Category group`;
+  - `#current/site-settings` tab `Product`;
+  - `#current/payment-request` tab `Completed`;
+  - `#current/cms-pages` tab `Dynamic Pages`.
+  - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
 - Sidebar icon/text spacing was corrected.
 - Proposed notes were moved into a bottom dock and draggable modeless note window.
@@ -122,6 +134,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 ## Known Open Work
 
 - Resume authenticated staging capture for the 177 canonical safe page/action targets in `expanded-safe-page-capture-2026-07-06/indexes/canonical-safe-page-capture-queue.csv`.
+- Before running the safe-page capture, Chrome must allow JavaScript from Apple Events and the front Chrome window must be logged in to `https://staging.visualgraphx.com/admin`.
 - Do not claim the action/detail page gap is captured until the queue has rendered DOM/source/screenshot manifests, not just target rows.
 - Continue screen-by-screen parity verification.
 - Do not assume a page is done because the route exists.

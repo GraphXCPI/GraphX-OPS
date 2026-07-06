@@ -10,6 +10,10 @@ function firstExistingPath(paths) {
   return paths.find(candidate => fs.existsSync(candidate)) || paths[0];
 }
 
+function optionalExistingPath(paths) {
+  return paths.find(candidate => candidate && fs.existsSync(candidate)) || "";
+}
+
 const rawDir = firstExistingPath([
   ...(extractionRoot ? [
     path.join(extractionRoot, "raw-source-html"),
@@ -46,6 +50,12 @@ const breadcrumbsDir = firstExistingPath([
     path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/breadcrumbs-html")
   ])
 ].filter(Boolean));
+const tabExtractionRoot = process.env.OPS_TAB_EXTRACTION_ROOT
+  ? path.resolve(root, process.env.OPS_TAB_EXTRACTION_ROOT)
+  : optionalExistingPath([
+    extractionRoot ? path.join(path.dirname(extractionRoot), "interactive-tab-state-capture-2026-07-06") : "",
+    path.resolve(root, "reference/extractions/GraphX-OPS-staging-extraction-2026-07-06/interactive-tab-state-capture-2026-07-06")
+  ]);
 const outputFile = path.join(root, "ops-extracted-pages.js");
 const auditFile = path.join(root, "raw-reference", "extracted-page-structure-audit.json");
 
@@ -273,6 +283,110 @@ function cleanExtractedContent(content, fileRouteMap) {
   return cleaned.trim();
 }
 
+function decodeHtmlEntities(value) {
+  return String(value || "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(Number.parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number.parseInt(code, 10)));
+}
+
+function normalizeTabToken(value) {
+  return decodeHtmlEntities(value)
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function tabTargetFromHref(href) {
+  const value = decodeHtmlEntities(href).trim();
+  if (!value) return "";
+  const hashMatch = value.match(/#([^?&]+)/);
+  if (hashMatch?.[1]) return hashMatch[1];
+  const tabMatch = value.match(/[?&]tab=([^&#]+)/);
+  if (tabMatch?.[1]) return `tab:${decodeURIComponent(tabMatch[1])}`;
+  return value;
+}
+
+function tabStateKey(parentSlug, text, href) {
+  const target = tabTargetFromHref(href) || text;
+  return `${parentSlug}:${normalizeTabToken(target || text).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+}
+
+function loadTabStates(fileRouteMap) {
+  const manifestDir = tabExtractionRoot ? path.join(tabExtractionRoot, "state-manifests") : "";
+  if (!manifestDir || !fs.existsSync(manifestDir)) {
+    return { byRoute: new Map(), audit: [], total: 0, loaded: 0 };
+  }
+
+  const byRoute = new Map();
+  const audit = [];
+  const manifestFiles = fs.readdirSync(manifestDir).filter(file => file.endsWith(".json")).sort();
+  for (const file of manifestFiles) {
+    const manifestPath = path.join(manifestDir, file);
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    const parentSlug = manifest.parent?.slug || manifest.parentSlug || "";
+    if (!parentSlug || invalidExtractedSlugs.has(parentSlug)) continue;
+    const route = fileRouteMap.get(parentSlug) || routeAliases[parentSlug] || fallbackRoute(parentSlug);
+    const contentRel = manifest.files?.pageContentRenderedHtml;
+    const contentPath = contentRel ? path.join(tabExtractionRoot, contentRel) : "";
+    if (!contentPath || !fs.existsSync(contentPath)) {
+      audit.push({ file, parentSlug, route, status: "missing-content" });
+      continue;
+    }
+
+    const rawContent = fs.readFileSync(contentPath, "utf8");
+    const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
+    const breadcrumbsRel = manifest.files?.breadcrumbsRenderedHtml;
+    const breadcrumbsPath = breadcrumbsRel ? path.join(tabExtractionRoot, breadcrumbsRel) : "";
+    const breadcrumbsHtml = breadcrumbsPath && fs.existsSync(breadcrumbsPath)
+      ? cleanExtractedContent(fs.readFileSync(breadcrumbsPath, "utf8"), fileRouteMap)
+      : "";
+    const text = decodeHtmlEntities(manifest.tab?.text || manifest.tabText || "").replace(/\s+/g, " ").trim();
+    const href = decodeHtmlEntities(manifest.tab?.href || manifest.href || "").trim();
+    const dataUrl = decodeHtmlEntities(manifest.tab?.dataUrl || manifest.dataUrl || "").trim();
+    const target = tabTargetFromHref(href || dataUrl);
+    const state = {
+      key: tabStateKey(parentSlug, text, href || dataUrl),
+      route,
+      parentSlug,
+      text,
+      href,
+      target,
+      dataUrl,
+      sourceFile: contentRel,
+      sourceKind: `tab-state:${manifest.captureMode || "captured"}`,
+      breadcrumbsHtml,
+      bodyHtml
+    };
+    if (!byRoute.has(route)) byRoute.set(route, []);
+    byRoute.get(route).push(state);
+    audit.push({
+      file,
+      parentSlug,
+      route,
+      key: state.key,
+      text,
+      href,
+      target,
+      status: "ok",
+      bodyLength: bodyHtml.length
+    });
+  }
+
+  return {
+    byRoute,
+    audit,
+    total: manifestFiles.length,
+    loaded: audit.filter(state => state.status === "ok").length
+  };
+}
+
 function auditPage({ file, slug, route, rawContent, bodyHtml, sourceKind }) {
   const checks = {
     hasPageContent: rawContent.trim().length > 0,
@@ -359,6 +473,13 @@ for (const file of allFiles) {
   audit.push(auditPage({ file, slug, route, rawContent, bodyHtml, sourceKind }));
 }
 
+const tabStates = loadTabStates(fileRouteMap);
+for (const [route, states] of tabStates.byRoute.entries()) {
+  if (pages[route]) {
+    pages[route].tabStates = states;
+  }
+}
+
 const output = `// Generated by scripts/build-extracted-pages.mjs from OPS rendered captures with raw extraction fallback.\n` +
   `// Do not edit this file by hand; edit the generator or raw extraction mapping.\n` +
   `window.OPS_EXTRACTED_PAGES = ${JSON.stringify(pages, null, 2)};\n` +
@@ -373,11 +494,16 @@ fs.writeFileSync(auditFile, `${JSON.stringify({
   renderedFullDir,
   renderedAvailable: renderedFiles.length,
   renderedUsed: audit.filter(page => page.sourceKind === "rendered").length,
+  tabExtractionRoot,
+  tabStatesAvailable: tabStates.total,
+  tabStatesLoaded: tabStates.loaded,
   total: audit.length,
   ok: audit.filter(page => page.status === "ok").length,
   review: audit.filter(page => page.status === "review").length,
   reextract: audit.filter(page => page.status === "reextract").length,
-  pages: audit
+  pages: audit,
+  tabStates: tabStates.audit
 }, null, 2)}\n`);
 console.log(`Generated ${routes.length} extracted OPS pages at ${outputFile}`);
+console.log(`Loaded ${tabStates.loaded}/${tabStates.total} captured OPS tab states`);
 console.log(`Wrote structure audit at ${auditFile}`);

@@ -906,7 +906,7 @@ function extractedPageFor(page) {
 
 function extractedOpsPage(page) {
   const html = page.bodyHtml || `<div class="alert alert-warning">No extracted OPS body was captured for ${h(page.sourceFile || page.slug || page.route)}.</div>`;
-  return `<div class="ops-extracted-page" data-source-file="${h(page.sourceFile || "")}">${html}</div>`;
+  return `<div class="ops-extracted-page" data-route="${h(page.route || OPS.page)}" data-source-file="${h(page.sourceFile || "")}">${html}</div>`;
 }
 
 function rewriteExtractedModeTargetsHtml(html, mode) {
@@ -925,7 +925,7 @@ function rewriteExtractedModeTargets(root, mode) {
 function proposedExtractedOpsPage(pageName, extraClass = "") {
   const extracted = extractedPageFor(pageName);
   if (!extracted?.bodyHtml) return genericPage(pageTitle());
-  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${h(extraClass)}" data-source-file="${h(extracted.sourceFile || "")}">${extracted.bodyHtml}</div>`, "text/html");
+  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${h(extraClass)}" data-route="${h(extracted.route || pageName)}" data-source-file="${h(extracted.sourceFile || "")}">${extracted.bodyHtml}</div>`, "text/html");
   const root = doc.body.firstElementChild;
   rewriteExtractedModeTargets(root, "proposed");
   return root.outerHTML;
@@ -3075,11 +3075,17 @@ document.addEventListener("click", event => {
     return;
   }
 
-  const tabAction = event.target.closest("[data-tab-target], .ops-extracted-page a[data-toggle='tab'][href^='#']");
-  if (tabAction && !tabAction.dataset.page) {
-    event.preventDefault();
-    activateExtractedTab(tabAction);
-    return;
+  const tabAction = event.target.closest("[data-captured-tab-key], [data-tab-target], .ops-extracted-page a[data-toggle='tab'][href^='#'], .ops-extracted-page .nav-tabs a");
+  if (tabAction) {
+    if (activateCapturedTabState(tabAction)) {
+      event.preventDefault();
+      return;
+    }
+    if (!tabAction.dataset.page) {
+      event.preventDefault();
+      activateExtractedTab(tabAction);
+      return;
+    }
   }
 
   const proposalOpen = event.target.closest("[data-proposal-open]");
@@ -3192,6 +3198,102 @@ document.addEventListener("pointerup", event => {
 document.addEventListener("submit", event => {
   if (event.target.closest(".ops-extracted-page")) event.preventDefault();
 });
+
+function normalizeCapturedTabToken(value) {
+  return String(value || "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function capturedTabTargetFromHref(href) {
+  const value = String(href || "").trim();
+  if (!value || value === "javascript:void(0)") return "";
+  const hashMatch = value.match(/#([^?&]+)/);
+  if (hashMatch?.[1]) return hashMatch[1];
+  const tabMatch = value.match(/[?&]tab=([^&#]+)/);
+  if (tabMatch?.[1]) return `tab:${decodeURIComponent(tabMatch[1])}`;
+  return value;
+}
+
+function capturedTabCandidates(tabAction) {
+  const values = [
+    tabAction.dataset.capturedTabKey,
+    tabAction.dataset.tabTarget,
+    tabAction.getAttribute("href"),
+    capturedTabTargetFromHref(tabAction.getAttribute("href")),
+    tabAction.textContent,
+  ];
+  const page = tabAction.dataset.page;
+  if (page && page === OPS.page) values.push(tabAction.textContent);
+  return new Set(values.map(normalizeCapturedTabToken).filter(Boolean));
+}
+
+function capturedTabStateMatches(state, candidates) {
+  const values = [
+    state.key,
+    state.text,
+    state.href,
+    state.target,
+    state.dataUrl,
+    capturedTabTargetFromHref(state.href),
+    capturedTabTargetFromHref(state.dataUrl),
+  ];
+  return values.some(value => candidates.has(normalizeCapturedTabToken(value)));
+}
+
+function tabLinkMatchesState(link, state) {
+  const candidates = new Set([
+    link.dataset.capturedTabKey,
+    link.dataset.tabTarget,
+    link.getAttribute("href"),
+    capturedTabTargetFromHref(link.getAttribute("href")),
+    link.textContent,
+  ].map(normalizeCapturedTabToken).filter(Boolean));
+  return capturedTabStateMatches(state, candidates);
+}
+
+function markCapturedTabActive(pageRoot, state) {
+  pageRoot.querySelectorAll(".nav-tabs a.active, .nav-tabs li.active").forEach(el => el.classList.remove("active", "show"));
+  pageRoot.querySelectorAll(".nav-tabs a[aria-selected]").forEach(el => el.setAttribute("aria-selected", "false"));
+  const activeLink = Array.from(pageRoot.querySelectorAll(".nav-tabs a")).find(link => tabLinkMatchesState(link, state));
+  if (activeLink) {
+    activeLink.classList.add("active", "show");
+    activeLink.setAttribute("aria-selected", "true");
+    activeLink.closest("li")?.classList.add("active");
+  }
+
+  const target = state.target || capturedTabTargetFromHref(state.href) || capturedTabTargetFromHref(state.dataUrl);
+  if (!target || /^(?:https?:)?\/\//i.test(target) || target.startsWith("tab:")) return;
+  const pane = pageRoot.querySelector(`#${CSS.escape(target)}`);
+  if (!pane) return;
+  const contentRoot = pane.closest(".tab-content") || pageRoot;
+  contentRoot.querySelectorAll(".tab-pane.active, .tab-pane.show").forEach(el => el.classList.remove("active", "show"));
+  pane.classList.add("active", "show");
+}
+
+function activateCapturedTabState(tabAction) {
+  const pageRoot = tabAction.closest(".ops-extracted-page");
+  if (!pageRoot) return false;
+  const route = pageRoot.dataset.route || OPS.page;
+  const states = extractedPageFor(route)?.tabStates || [];
+  if (!states.length) return false;
+
+  const candidates = capturedTabCandidates(tabAction);
+  const state = states.find(candidate => capturedTabStateMatches(candidate, candidates));
+  if (!state?.bodyHtml) return false;
+
+  pageRoot.innerHTML = rewriteExtractedModeTargetsHtml(state.bodyHtml, OPS.mode);
+  pageRoot.dataset.currentTabState = state.key || "";
+  pageRoot.dataset.sourceFile = state.sourceFile || pageRoot.dataset.sourceFile || "";
+  pageRoot.dataset.route = state.route || route;
+  rewriteExtractedModeTargets(pageRoot, OPS.mode);
+  markCapturedTabActive(pageRoot, state);
+  syncRenderedOrderCollapseControls(pageRoot);
+  return true;
+}
 
 function activateExtractedTab(tabAction) {
   const hrefTarget = tabAction.getAttribute("href")?.replace(/^#/, "");

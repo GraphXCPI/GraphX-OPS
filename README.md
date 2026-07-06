@@ -23,6 +23,12 @@ The newest staging OPS reference package is documented in `docs/HANDOFF.md`. The
 - **Current OPS** renders the local generated OPS extraction bundle so admin routes preserve the live OPS layout, tables, tabs, row structures, icons, and controls without hitting OPS admin endpoints.
 - **Proposed** renders the revised navigation and workflow model for review with the dev team.
 
+Current OPS extracted tabs are generated from the authenticated staging tab-state archive. To resume the remaining safe action/detail-page capture after logging in to staging, enable Chrome `View > Developer > Allow JavaScript from Apple Events` and run:
+
+```bash
+node scripts/capture-staging-safe-pages.mjs --start <queueIndex>
+```
+
 ## Scope
 
 This is a front-end review artifact. It does not include hidden PHP source or production backend logic.
