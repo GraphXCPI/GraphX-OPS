@@ -121,12 +121,15 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `scripts/capture-staging-safe-pages-cdp.mjs` was added for repeatable safe captures that wait for network quiet, DOM stability, and final settle before saving page content;
   - source-derived tab states are clearly marked in their manifests;
   - `scripts/capture-staging-safe-pages.mjs` was added for resumed safe-page capture once Chrome Apple Events JavaScript permission and staging auth are available.
-- Final generated bundle status from the 2026-07-06 CDP merge:
-  - `ops-extracted-pages.js` generated `290` extracted OPS routes;
-  - safe capture roots loaded `178/182` available safe pages plus `93/93` captured tab states;
+- Final generated bundle status from the latest 2026-07-06 full-source/CDP merge:
+  - `ops-extracted-pages.js` generated `297` extracted OPS routes;
+  - the generator now uses `full-source-cdp-capture-2026-07-06` as the primary extraction root so full-source routes such as `quote-action` are available;
+  - safe capture roots loaded `179/183` available safe pages plus `93/93` captured tab states;
   - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
   - the Current/Proposed `add-quote` simulator route now renders the captured OPS `quote-request` source page so Add New Quote no longer falls back to the generic quotes screen or the Add Order form;
+  - `quote-action` now renders the full-source `View/Update Quote` page from `068-quote_action.html`;
+  - `studio-models-action` now renders `Add Real Preview Models` from a read-only authenticated staging capture at `300-studio_models_action.html`, while `products-studio-models-action` remains the separate `Assign Real Preview` page;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
   - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign` now use the live Tritium RTM75/PKM150 template flow;
   - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
@@ -140,11 +143,14 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - direct route checks also covered `#current/sales-agents`, `#current/sales-order-details`, `#current/sales-order-product-details`, `#current/sales-order-summary`, `#current/schemas`, and `#current/seo-global`.
   - targeted retry verification covered `#current/send-custom-mail-popup` and confirmed `#proposed/send-custom-mail-popup` preserves the same OPS route because no proposed delta exists.
   - Add New Quote verification covered `#current/add-quote` and `#proposed/add-quote`; both render the captured OPS Add New Quote form while preserving the visible `add-quote` route.
+  - Full-source rebuild verification covered `#current/quote-action` and `#current/orders`.
+  - Studio model action verification covered `#current/studio-models-action`; it rendered `Add Real Preview Models` locally from `300-studio_models_action.html` with `0` live admin links.
   - live-only template/block route verification covered `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign`; each rendered the live Tritium RTM75/PKM150 content locally with `0` live admin links.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
-  - `290/290` generated Current OPS routes render locally without missing extracted roots, route mismatches, live admin links, or thin renders after the live-only template/block merge.
+  - latest structure audit is `299` OK, `0` review, `1` reextract (`html-help`, which intentionally uses its first captured tab state because the base page-content fragment is empty).
+  - previous `290/290` generated Current OPS route smoke rendered locally without missing extracted roots, route mismatches, live admin links, or thin renders after the live-only template/block merge.
   - Two naive fallback-string hits were verified as source-content false positives: `coupons` has a real `Coming Soon` coupon state/filter, and `designer-studio-font-action` includes the Google font name `Coming Soon`.
   - Earlier smoke before the expanded action/detail capture covered `121/121` generated Current OPS routes.
   - Static generated-bundle scan found `0` full-document bodies/tab states and `0` remaining `staging.visualgraphx.com/admin` or `visualgraphx.com/admin` URL references.
