@@ -178,6 +178,7 @@ const routeAliases = {
 };
 
 const invalidExtractedSlugs = new Set([
+  "relogin",
   "studio_configuration_setting-c54df0",
   "template_manager-717761"
 ]);
@@ -477,6 +478,11 @@ const tabStates = loadTabStates(fileRouteMap);
 for (const [route, states] of tabStates.byRoute.entries()) {
   if (pages[route]) {
     pages[route].tabStates = states;
+    if (!pages[route].bodyHtml && states[0]?.bodyHtml) {
+      pages[route].bodyHtml = states[0].bodyHtml;
+      pages[route].sourceFile = states[0].sourceFile || pages[route].sourceFile;
+      pages[route].sourceKind = `${pages[route].sourceKind}+tab-state-fallback`;
+    }
   }
 }
 
