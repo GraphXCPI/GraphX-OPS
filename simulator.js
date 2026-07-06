@@ -2976,6 +2976,7 @@ function formUsesSelect(normalized) {
 
 function render() {
   document.getElementById("app").innerHTML = app();
+  syncExtractedStaticWidgets();
   syncRenderedOrderCollapseControls();
 }
 
@@ -3064,6 +3065,109 @@ function syncRenderedOrderCollapseControls(scope = document) {
   syncOrderExpandAll(scope);
 }
 
+function extractedWizardLinkTarget(link) {
+  return link?.dataset.tabTarget || link?.getAttribute("href")?.replace(/^#/, "") || "";
+}
+
+function normalizeExtractedWizardStep(link) {
+  if (!link || link.querySelector(".step-title-value")) return;
+  const item = link.closest("li");
+  const description = item?.querySelector(":scope > .step-description");
+  const title = description?.textContent?.trim() || link.textContent.trim();
+  const stepNumber = link.querySelector(".step-num, .step-title")?.textContent?.trim() || item?.dataset.step || "";
+  const doneHtml = link.querySelector(".step-title-done")?.innerHTML || '<i class="fa fa-check text-success-m1"></i>';
+
+  link.textContent = "";
+
+  const numberEl = document.createElement("div");
+  numberEl.className = "num step-num";
+  numberEl.textContent = stepNumber;
+
+  const doneEl = document.createElement("div");
+  doneEl.className = "num step-title-done";
+  doneEl.innerHTML = doneHtml;
+
+  const titleEl = document.createElement("div");
+  titleEl.className = "step-title-value";
+  titleEl.textContent = title;
+
+  link.append(numberEl, doneEl, titleEl);
+  description?.remove();
+}
+
+function syncExtractedWizard(wizard) {
+  wizard.classList.remove("d-none");
+  wizard.classList.add("sw", "sw-theme-dots", "sw-justified");
+
+  const steps = wizard.querySelector(".wizard-steps");
+  steps?.classList.add("nav", "nav-progress", "step-anchor");
+
+  const links = Array.from(wizard.querySelectorAll(".wizard-steps a"));
+  links.forEach(link => {
+    normalizeExtractedWizardStep(link);
+    link.classList.add("nav-link", "default");
+    link.closest("li")?.classList.add("nav-item");
+  });
+
+  const target = extractedWizardLinkTarget(
+    wizard.querySelector(".wizard-steps a.active, .wizard-steps li.active a") || links[0]
+  );
+  if (!target) return;
+
+  links.forEach(link => {
+    const active = extractedWizardLinkTarget(link) === target;
+    link.classList.toggle("active", active);
+    link.closest("li")?.classList.toggle("active", active);
+  });
+
+  const content = wizard.querySelector(".wizard-content, .tab-content");
+  if (content) {
+    content.classList.remove("wizard-content", "border-bottom-0");
+    content.classList.add("tab-content", "border-0");
+    content.querySelectorAll(":scope > [id]").forEach(pane => {
+      const active = pane.id === target;
+      pane.classList.add("tab-pane");
+      pane.setAttribute("role", "tabpanel");
+      pane.setAttribute("aria-labelledby", pane.id);
+      pane.classList.toggle("active", active);
+      pane.classList.toggle("show", active);
+      pane.style.display = active ? "block" : "";
+    });
+  }
+
+  const activeIndex = Math.max(0, links.findIndex(link => extractedWizardLinkTarget(link) === target));
+  const card = wizard.closest(".card") || wizard.parentElement;
+  card?.querySelectorAll(".btn-prev").forEach(button => {
+    button.toggleAttribute("disabled", activeIndex <= 0);
+  });
+  card?.querySelectorAll(".btn-next").forEach(button => {
+    button.toggleAttribute("disabled", activeIndex >= links.length - 1);
+  });
+}
+
+function syncExtractedStaticWidgets(scope = document) {
+  scope.querySelectorAll(".ops-extracted-page #fuelux-wizard-container").forEach(syncExtractedWizard);
+}
+
+function activateExtractedWizardButton(button) {
+  const card = button.closest(".card");
+  const wizard = card?.querySelector("#fuelux-wizard-container");
+  if (!wizard) return false;
+  const links = Array.from(wizard.querySelectorAll(".wizard-steps a"));
+  if (!links.length) return false;
+  const currentIndex = Math.max(0, links.findIndex(link => link.classList.contains("active")));
+  const nextIndex = button.classList.contains("btn-prev") ? currentIndex - 1 : currentIndex + 1;
+  const nextLink = links[nextIndex];
+  if (!nextLink) return false;
+  links.forEach(link => {
+    const active = link === nextLink;
+    link.classList.toggle("active", active);
+    link.closest("li")?.classList.toggle("active", active);
+  });
+  syncExtractedWizard(wizard);
+  return true;
+}
+
 function toggleOrderCollapse(button) {
   const orderId = orderButtonId(button);
   const collapse = orderProductsCollapse(orderId);
@@ -3146,6 +3250,12 @@ document.addEventListener("click", event => {
       activateExtractedTab(tabAction);
       return;
     }
+  }
+
+  const wizardAction = event.target.closest(".ops-extracted-page .btn-prev, .ops-extracted-page .btn-next");
+  if (wizardAction && activateExtractedWizardButton(wizardAction)) {
+    event.preventDefault();
+    return;
   }
 
   const proposalOpen = event.target.closest("[data-proposal-open]");
@@ -3353,6 +3463,7 @@ function activateCapturedTabState(tabAction) {
   pageRoot.dataset.route = state.route || route;
   rewriteExtractedModeTargets(pageRoot, OPS.mode);
   markCapturedTabActive(pageRoot, state);
+  syncExtractedStaticWidgets(pageRoot);
   syncRenderedOrderCollapseControls(pageRoot);
   return true;
 }
@@ -3376,6 +3487,7 @@ function activateExtractedTab(tabAction) {
   panelRoot.querySelectorAll(".tab-pane.active, .tab-pane.show").forEach(el => el.classList.remove("active", "show"));
   const pane = panelRoot.querySelector(`#${CSS.escape(target)}`);
   if (pane) pane.classList.add("active", "show");
+  syncExtractedStaticWidgets(panelRoot);
 }
 
 function isActiveGroupForPage(group, page) {
