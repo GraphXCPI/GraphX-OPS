@@ -539,10 +539,12 @@ function pagesForMode(mode) {
 }
 
 function isKnownPage(page) {
+  page = normalizeRouteToken(page);
   return page === "dashboard" || Boolean(extractedPageFor(page)) || Object.values(pageFamilies).some(pages => pages.includes(page));
 }
 
 function pageForModeSwitch(page, nextMode) {
+  page = normalizeRouteToken(page);
   const mapped = modePageMap[nextMode]?.[page];
   if (mapped) return mapped;
   if (pagesForMode(nextMode).includes(page) || isKnownPage(page)) return page;
@@ -575,6 +577,16 @@ function setOpenMenuForPage() {
 
 function h(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+}
+
+function normalizeRouteToken(value) {
+  return String(value || "").trim();
+}
+
+function normalizeModeTarget(value, mode = "") {
+  const target = normalizeRouteToken(value).replace(/^(current|proposed)\/\s+/, "$1/");
+  if (!mode) return target;
+  return target.replace(/^(current|proposed)\//, `${mode}/`);
 }
 
 function app() {
@@ -940,6 +952,7 @@ function content() {
 }
 
 function extractedPageFor(page) {
+  page = normalizeRouteToken(page);
   const sourcePage = extractedPageAliases[page] || page;
   const extracted = window.OPS_EXTRACTED_PAGES?.[sourcePage];
   if (!extracted || sourcePage === page) return extracted;
@@ -953,15 +966,20 @@ function extractedOpsPage(page) {
 }
 
 function rewriteExtractedModeTargetsHtml(html, mode) {
-  return String(html || "").replace(/data-tab-target="(?:current|proposed)\//g, `data-tab-target="${mode}/`);
+  return String(html || "")
+    .replace(/data-tab-target="(?:current|proposed)\/\s*/g, `data-tab-target="${mode}/`)
+    .replace(/data-page="([^"]*)"/g, (_match, value) => `data-page="${h(normalizeRouteToken(value))}"`);
 }
 
 function rewriteExtractedModeTargets(root, mode) {
   root.querySelectorAll("[data-tab-target]").forEach(el => {
-    const target = el.getAttribute("data-tab-target") || "";
+    const target = normalizeModeTarget(el.getAttribute("data-tab-target"), mode);
     if (/^(current|proposed)\//.test(target)) {
-      el.setAttribute("data-tab-target", target.replace(/^(current|proposed)\//, `${mode}/`));
+      el.setAttribute("data-tab-target", target);
     }
+  });
+  root.querySelectorAll("[data-page]").forEach(el => {
+    el.setAttribute("data-page", normalizeRouteToken(el.getAttribute("data-page")));
   });
 }
 
@@ -2998,9 +3016,9 @@ function applyHash() {
   const [mode, page] = rawHash.split("/");
   if (mode === "current" || mode === "proposed") OPS.mode = mode;
   if (page) {
-    OPS.page = page;
+    OPS.page = normalizeRouteToken(page);
   } else if (rawHash && mode !== "current" && mode !== "proposed") {
-    OPS.page = rawHash;
+    OPS.page = normalizeRouteToken(rawHash);
   }
   setOpenMenuForPage();
 }
@@ -3146,6 +3164,7 @@ function syncExtractedWizard(wizard) {
 }
 
 function syncExtractedStaticWidgets(scope = document) {
+  scope.querySelectorAll(".ops-extracted-page").forEach(root => rewriteExtractedModeTargets(root, OPS.mode));
   scope.querySelectorAll(".ops-extracted-page #fuelux-wizard-container").forEach(syncExtractedWizard);
 }
 
@@ -3245,7 +3264,7 @@ document.addEventListener("click", event => {
       event.preventDefault();
       return;
     }
-    if (!tabAction.dataset.page) {
+    if (!normalizeRouteToken(tabAction.dataset.page)) {
       event.preventDefault();
       activateExtractedTab(tabAction);
       return;
@@ -3314,7 +3333,7 @@ document.addEventListener("click", event => {
     OPS.openChild = OPS.openChild === child ? "" : child;
   }
 
-  const page = event.target.closest("[data-page]")?.dataset.page;
+  const page = normalizeRouteToken(event.target.closest("[data-page]")?.dataset.page);
   if (page) {
     OPS.modeSwitchReturn = null;
     OPS.userMenuOpen = false;
@@ -3398,7 +3417,7 @@ function capturedTabCandidates(tabAction) {
     capturedTabTargetFromHref(tabAction.getAttribute("href")),
     tabAction.textContent,
   ];
-  const page = tabAction.dataset.page;
+  const page = normalizeRouteToken(tabAction.dataset.page);
   if (page && page === OPS.page) values.push(tabAction.textContent);
   return new Set(values.map(normalizeCapturedTabToken).filter(Boolean));
 }
@@ -3449,7 +3468,7 @@ function markCapturedTabActive(pageRoot, state) {
 function activateCapturedTabState(tabAction) {
   const pageRoot = tabAction.closest(".ops-extracted-page");
   if (!pageRoot) return false;
-  const route = pageRoot.dataset.route || OPS.page;
+  const route = normalizeRouteToken(pageRoot.dataset.route || OPS.page);
   const states = extractedPageFor(route)?.tabStates || [];
   if (!states.length) return false;
 
@@ -3460,7 +3479,7 @@ function activateCapturedTabState(tabAction) {
   pageRoot.innerHTML = rewriteExtractedModeTargetsHtml(state.bodyHtml, OPS.mode);
   pageRoot.dataset.currentTabState = state.key || "";
   pageRoot.dataset.sourceFile = state.sourceFile || pageRoot.dataset.sourceFile || "";
-  pageRoot.dataset.route = state.route || route;
+  pageRoot.dataset.route = normalizeRouteToken(state.route || route);
   rewriteExtractedModeTargets(pageRoot, OPS.mode);
   markCapturedTabActive(pageRoot, state);
   syncExtractedStaticWidgets(pageRoot);
@@ -3468,9 +3487,30 @@ function activateCapturedTabState(tabAction) {
   return true;
 }
 
+function extractedTabContentRoot(tabAction, panelRoot) {
+  const tabList = tabAction.closest(".nav-tabs, .tabs-above, .tabs-left, .tabs-right");
+  const tabContainer = tabList?.matches(".nav-tabs")
+    ? tabList.closest(".tabbable, .tabable, .tabs-above, .tabs-left, .tabs-right") || tabList.parentElement
+    : tabList;
+  return tabContainer?.querySelector(":scope > .tab-content")
+    || tabContainer?.parentElement?.querySelector(":scope > .tab-content")
+    || panelRoot;
+}
+
+function revealExtractedActivePaneContent(pane) {
+  if (pane.innerText.replace(/\s+/g, " ").trim().length) return;
+  const hiddenContent = Array.from(pane.children).filter(child => {
+    const textLength = child.innerText.replace(/\s+/g, " ").trim().length;
+    return textLength && (child.style.display === "none" || child.classList.contains("d-none"));
+  });
+  if (hiddenContent.length !== 1) return;
+  hiddenContent[0].classList.remove("d-none");
+  hiddenContent[0].style.display = "block";
+}
+
 function activateExtractedTab(tabAction) {
-  const hrefTarget = tabAction.getAttribute("href")?.replace(/^#/, "");
-  const target = tabAction.dataset.tabTarget || hrefTarget;
+  const hrefTarget = normalizeRouteToken(tabAction.getAttribute("href")?.replace(/^#/, ""));
+  const target = normalizeRouteToken(tabAction.dataset.tabTarget) || hrefTarget;
   if (!target) return;
 
   const tabList = tabAction.closest(".nav-tabs, .tabs-above, .tabs-left, .tabs-right") || tabAction.closest("ul");
@@ -3484,9 +3524,22 @@ function activateExtractedTab(tabAction) {
   const parent = tabAction.closest("li");
   if (parent) parent.classList.add("active");
 
-  panelRoot.querySelectorAll(".tab-pane.active, .tab-pane.show").forEach(el => el.classList.remove("active", "show"));
-  const pane = panelRoot.querySelector(`#${CSS.escape(target)}`);
-  if (pane) pane.classList.add("active", "show");
+  const contentRoot = extractedTabContentRoot(tabAction, panelRoot);
+  const panes = Array.from(contentRoot.querySelectorAll(":scope > .tab-pane"));
+  let pane = panelRoot.querySelector(`#${CSS.escape(target)}`);
+  if (!pane && tabList && panes.length) {
+    const links = Array.from(tabList.querySelectorAll("a"));
+    pane = panes[links.indexOf(tabAction)] || null;
+  }
+  panes.forEach(el => {
+    el.classList.remove("active", "show");
+    el.style.display = "";
+  });
+  if (pane) {
+    pane.classList.add("active", "show");
+    pane.style.display = "block";
+    revealExtractedActivePaneContent(pane);
+  }
   syncExtractedStaticWidgets(panelRoot);
 }
 
