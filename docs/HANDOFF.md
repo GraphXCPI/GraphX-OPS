@@ -109,6 +109,19 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 
 ## Most Recent Local Priorities
 
+- Proposed-mode doc-alignment pass (2026-07-06, later same day):
+  - Fixed a routing bug where the custom proposed Orders page was shadowed by the extracted `orders` route; `proposedCustomPages` in `simulator.js` now keeps `orders` and the new `product-edit*` routes on their dedicated renderers.
+  - Proposed SEO menu is central/technical only (Global SEO, Sitemaps, Metatags, Robots, Redirects, HTML Help). Per-object SEO pages were removed from the menu; their old routes render pointer screens into the owning object. `#proposed/image-alt` points to Asset Manager; mode switch from `#current/image-alt` lands on `asset-manager`.
+  - New proposed product edit screens: `product-edit`, `product-edit-inventory` (SKU, weight, production days, stock), `product-edit-seo`, linked from the Product Catalog mixed rows. Category Group edit gained an SEO card.
+  - Store Workspace Site Builder tab now lists the full store-locked workspace (7 builder areas + 10-item Content Management group) plus a store-locked Duplicate Store Data entry.
+  - Proposed Orders search row expanded (customer/company, store, payment status, order status, product status, date range); heading is "Orders".
+  - Product Catalog extracted overlay injects Product Type chips and system tag pills into every row; `.gx-sim .pill` and unscoped `.product-type-chip` styles added to `assets/admin_style.css` (bumped to `?v=18`).
+  - Re-homed items in the proposed nav: Job Board (Orders), Predefined Text (Quotes), Customer Templates (Customer Accounts), Promotional Message (Site Builder content group), Preview Image DPI (Product Catalog), Manage Web Storage + Add on Plugins/Services (Store Configuration), Marks Management (Product Imposition).
+  - Proposal-dock notes now flag beyond-doc consolidations (Reports grouping, Stock & Settings merge, Templates/Studio trims, Admin submenu relabels).
+  - The Google requirements doc was updated in place: Unpaid/Archive contradiction resolved (filters/saved views win), duplicated "page categories" removed, and an addendum added (Unchanged/Parked Items, Additional Proposed Consolidations, changelog).
+  - Note: root `simulator.css` is NOT loaded by `index.html`; active simulator styles live in `assets/admin_style.css` under `.gx-sim`. Treat `simulator.css` as legacy.
+  - Verified in browser: `#proposed/orders` (tabs, chips, filters), `#proposed/product-catalog`, `#proposed/product-edit{,-inventory,-seo}`, `#proposed/store-workspace-builder`, central SEO routes, all re-homed routes, per-object SEO pointers, current-mode smoke (orders, print-products, image-alt, sitemaps, site-settings, payment-request, product-categories, media-gallery), and mode-switch round trips.
+
 - Current OPS exact-match pass was refreshed on 2026-07-06:
   - `ops-extracted-pages.js` now builds from `full-source-cdp-capture-2026-07-06/page-content-rendered-html` so Ajax-loaded datatable rows and nested order structures render in the simulator;
   - `scripts/build-extracted-pages.mjs` supports the full CDP folder names (`server-html`, `page-content-rendered-html`, and rendered breadcrumb captures);

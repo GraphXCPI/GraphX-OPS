@@ -9,3 +9,6 @@ reference/handoff/GraphX-OPS-handoff/01_extractions/html-sanitized/
 reference/handoff/GraphX-OPS-handoff/02_live_references/
 reference/handoff/GraphX-OPS-handoff/03_simulator_repo_snapshot/
 reference/handoff/GraphX-OPS-handoff/04_verification/
+
+# Local Claude Code session settings
+.claude/settings.local.json

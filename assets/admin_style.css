@@ -499,6 +499,11 @@
 .gx-sim .ops-proposed-product-catalog .product-type-chip.ready{border-color:#7ec27e;background:#f2fff2;color:#3a8b3a;}
 .gx-sim .ops-proposed-product-catalog .product-type-chip.kit{border-color:#e1c176;background:#fff9e8;color:#9a6b00;}
 .gx-sim .ops-proposed-product-catalog .product-type-chip.related{border-color:#aa9bc9;background:#f7f2ff;color:#6f55a3;}
+.gx-sim .pill{display:inline-block;border:1px solid #c8d8e6;background:#f6fafc;color:#51606f;border-radius:.6rem;padding:.08rem .45rem;font-size:.72rem;line-height:1.2;white-space:nowrap;margin:.12rem .25rem .12rem 0;}
+.gx-sim .product-type-chip{display:inline-block;border:1px solid #aad1ef;background:#eef8ff;color:#2679bd;border-radius:.125rem;padding:.08rem .35rem;font-size:.72rem;line-height:1.2;white-space:nowrap;margin:.12rem .25rem .12rem 0;}
+.gx-sim .product-type-chip.ready{border-color:#7ec27e;background:#f2fff2;color:#3a8b3a;}
+.gx-sim .product-type-chip.kit{border-color:#e1c176;background:#fff9e8;color:#9a6b00;}
+.gx-sim .product-type-chip.related{border-color:#aa9bc9;background:#f7f2ff;color:#6f55a3;}
 .gx-sim .fa-percent:before{content:"";display:inline-block;width:1em;height:1em;background-color:currentColor;vertical-align:-.125em;-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat;-webkit-mask-image:url("../icon-mapping/extracted-svgs/ops-fa-percentage.svg");mask-image:url("../icon-mapping/extracted-svgs/ops-fa-percentage.svg");}
 
 /* Simulator SVG icon renderer: keep OPS FA class contracts, render local extracted SVGs. */
