@@ -12,6 +12,8 @@ const limit = Number(argValue("--limit") || "0");
 const start = Math.max(1, Number(argValue("--start") || "1"));
 const onlySlug = argValue("--slug") || "";
 const overrideUrl = argValue("--override-url") || "";
+const sessionOrigin = normalizeOrigin(argValue("--session-origin") || "https://staging.visualgraphx.com");
+const landingUrl = argValue("--landing-url") || `${sessionOrigin}/admin/welcome.php`;
 const waitMs = Number(argValue("--wait-ms") || "45000");
 const dryRun = process.argv.includes("--dry-run");
 const screenshotsEnabled = !process.argv.includes("--no-screenshots");
@@ -57,7 +59,7 @@ const captureManifest = {
   source: `Chrome DevTools Protocol on 127.0.0.1:${cdpPort}`,
   queuePath,
   outputRoot,
-  requested: { start, limit, onlySlug, overrideUrl, waitMs, screenshotsEnabled, dryRun, cdpPort, cdpTimeoutMs, serverFetchTimeoutMs, networkQuietMs, settleMs, stablePolls, forceNewTab, domOnly },
+  requested: { start, limit, onlySlug, overrideUrl, sessionOrigin, landingUrl, waitMs, screenshotsEnabled, dryRun, cdpPort, cdpTimeoutMs, serverFetchTimeoutMs, networkQuietMs, settleMs, stablePolls, forceNewTab, domOnly },
   totalQueued: queue.length,
   totalSelected: targets.length,
   ok: 0,
@@ -67,7 +69,8 @@ const captureManifest = {
   pages: []
 };
 
-console.log(`Safe staging CDP capture queue: ${targets.length}/${queue.length} selected`);
+console.log(`Safe admin CDP capture queue: ${targets.length}/${queue.length} selected`);
+console.log(`Session origin: ${sessionOrigin}`);
 console.log(`Output: ${outputRoot}`);
 
 if (dryRun) {
@@ -76,7 +79,7 @@ if (dryRun) {
   process.exit(0);
 }
 
-let cdp = await connectToStagingPage(cdpPort);
+let cdp = await connectToAdminPage(cdpPort);
 await prepareCdp(cdp);
 
 try {
@@ -162,7 +165,7 @@ try {
       writeManifest({ ...captureManifest, updatedAt: new Date().toISOString() });
 
       if (loginOrDenied) {
-        console.warn(`Stopped at ${target.slug}: staging returned login/denied screen. Log in to the debug Chrome profile and rerun with --start ${target.queueIndex}.`);
+        console.warn(`Stopped at ${target.slug}: ${sessionOrigin} returned login/denied screen. Log in to the debug Chrome profile and rerun with --start ${target.queueIndex}.`);
         break;
       }
     } catch (error) {
@@ -184,7 +187,7 @@ try {
         } catch {
           // Best-effort cleanup only.
         }
-        cdp = await connectToStagingPage(cdpPort);
+        cdp = await connectToAdminPage(cdpPort);
         await prepareCdp(cdp);
       }
     }
@@ -199,13 +202,13 @@ try {
 
 console.log(`Captured ${captureManifest.ok}/${captureManifest.pages.length} selected pages. loginOrDenied=${captureManifest.loginOrDenied} timedOut=${captureManifest.timedOut} errors=${captureManifest.errors}`);
 
-async function connectToStagingPage(port) {
+async function connectToAdminPage(port) {
   const targets = await getJson(`http://127.0.0.1:${port}/json/list`);
-  let target = targets.find(item => item.type === "page" && item.url?.startsWith("https://staging.visualgraphx.com/admin/"));
+  let target = targets.find(item => item.type === "page" && item.url?.startsWith(`${sessionOrigin}/admin/`));
   if (forceNewTab || !target) {
-    target = await getJson(`http://127.0.0.1:${port}/json/new?${encodeURIComponent("https://staging.visualgraphx.com/admin/welcome.php")}`, { method: "PUT" });
+    target = await getJson(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(landingUrl)}`, { method: "PUT" });
   }
-  if (!target?.webSocketDebuggerUrl) throw new Error(`No debuggable staging page found on 127.0.0.1:${port}`);
+  if (!target?.webSocketDebuggerUrl) throw new Error(`No debuggable ${sessionOrigin}/admin page found on 127.0.0.1:${port}`);
   return new CdpClient(target.webSocketDebuggerUrl, cdpTimeoutMs);
 }
 
@@ -580,6 +583,12 @@ function argValue(name) {
   const index = process.argv.indexOf(name);
   if (index === -1 || index + 1 >= process.argv.length) return "";
   return process.argv[index + 1];
+}
+
+function normalizeOrigin(value) {
+  const origin = String(value || "").replace(/\/+$/, "");
+  if (!/^https?:\/\/[^/]+$/i.test(origin)) throw new Error(`Invalid --session-origin: ${value}`);
+  return origin;
 }
 
 function sleep(ms) {
