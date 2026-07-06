@@ -2932,6 +2932,7 @@ function formUsesSelect(normalized) {
 
 function render() {
   document.getElementById("app").innerHTML = app();
+  syncRenderedOrderCollapseControls();
 }
 
 let proposalDrag = null;
@@ -3003,6 +3004,20 @@ function syncOrderExpandAll(scope) {
   control.setAttribute("aria-expanded", allExpanded ? "true" : "false");
   control.closest(".expand-all")?.classList.toggle("open", allExpanded);
   setOrderCollapseIcon(control.querySelector("i"), allExpanded);
+}
+
+function syncRenderedOrderCollapseControls(scope = document) {
+  scope.querySelectorAll("[id^='expand_order_product_'], [data-order-collapse]").forEach(button => {
+    const orderId = orderButtonId(button);
+    const collapse = orderProductsCollapse(orderId);
+    if (!orderId || !collapse) return;
+    const expanded = collapse.classList.contains("show");
+    button.setAttribute("aria-expanded", expanded ? "true" : "false");
+    button.closest(".expand-op")?.classList.toggle("open", expanded);
+    setOrderCollapseIcon(button.querySelector("i"), expanded);
+    OPS.orderCollapse[String(orderId)] = expanded;
+  });
+  syncOrderExpandAll(scope);
 }
 
 function toggleOrderCollapse(button) {

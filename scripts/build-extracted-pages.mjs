@@ -11,25 +11,38 @@ function firstExistingPath(paths) {
 }
 
 const rawDir = firstExistingPath([
-  ...(extractionRoot ? [path.join(extractionRoot, "raw-source-html")] : [
+  ...(extractionRoot ? [
+    path.join(extractionRoot, "raw-source-html"),
+    path.join(extractionRoot, "server-html")
+  ] : [
     path.resolve(root, "reference/extractions/GraphX-OPS-raw-extraction-2026-07-03/raw-source-html"),
     path.resolve(root, "../GraphX-OPS-raw-extraction-2026-07-03/raw-source-html")
   ])
 ].filter(Boolean));
 const renderedDir = firstExistingPath([
-  ...(extractionRoot ? [path.join(extractionRoot, "page-content-html")] : [
+  ...(extractionRoot ? [
+    path.join(extractionRoot, "page-content-html"),
+    path.join(extractionRoot, "page-content-rendered-html")
+  ] : [
     path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/page-content-html"),
     path.resolve(root, "../GraphX-OPS-rendered-extraction-2026-07-04/page-content-html")
   ])
 ].filter(Boolean));
 const renderedFullDir = firstExistingPath([
-  ...(extractionRoot ? [path.join(extractionRoot, "rendered-source-html")] : [
+  ...(extractionRoot ? [
+    path.join(extractionRoot, "rendered-source-html"),
+    path.join(extractionRoot, "full-rendered-dom-html"),
+    path.join(extractionRoot, "full-rendered-html")
+  ] : [
     path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/rendered-source-html"),
     path.resolve(root, "../GraphX-OPS-rendered-extraction-2026-07-04/rendered-source-html")
   ])
 ].filter(Boolean));
 const breadcrumbsDir = firstExistingPath([
-  ...(extractionRoot ? [path.join(extractionRoot, "breadcrumbs-html")] : [
+  ...(extractionRoot ? [
+    path.join(extractionRoot, "breadcrumbs-html"),
+    path.join(extractionRoot, "breadcrumbs-rendered-html")
+  ] : [
     path.resolve(root, "reference/extractions/GraphX-OPS-rendered-extraction-2026-07-04/breadcrumbs-html")
   ])
 ].filter(Boolean));
@@ -234,11 +247,17 @@ function cleanExtractedContent(content, fileRouteMap) {
     .replace(/\s(?:onclick|onchange|onsubmit|onload|onmouseover|onmouseout|onblur|onfocus)='[^']*'/gi, "")
     .replace(/\sdata-cf-modified-[^=]+="[^"]*"/gi, "");
 
-  cleaned = cleaned.replace(/\b(action|href)=["'](?:https:\/\/visualgraphx\.com)?\/?admin\/([^"'?#]+)([^"']*)["']/gi, (full, attr, file, suffix) => {
+  cleaned = cleaned.replace(/\b(action|href)=["'](?:https?:\/\/(?:staging\.)?visualgraphx\.com)?\/?admin\/([^"'?#]+)([^"']*)["']/gi, (full, attr, file, suffix) => {
     const base = path.basename(file, ".php");
     const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
     if (attr.toLowerCase() === "href") return `href="#current/${route}" data-page="${route}"`;
     return `action="#current/${route}"`;
+  });
+
+  cleaned = cleaned.replace(/\bdata-link=["']https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/([^"'?#]+)([^"']*)["']/gi, (full, file) => {
+    const base = path.basename(file, ".php");
+    const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
+    return `data-link="#current/${route}" data-page="${route}"`;
   });
 
   cleaned = cleaned.replace(/\bhref=["']([^"']+\.php)([^"']*)["']/gi, (full, file) => {
@@ -249,7 +268,7 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = cleaned.replace(/\bhref=(["'])#([^"']+)\1/gi, 'href="javascript:void(0)" data-tab-target="$2"');
 
-  cleaned = cleaned.replace(/\bsrc=["']https:\/\/visualgraphx\.com\/([^"']+)["']/gi, 'src="https://visualgraphx.com/$1"');
+  cleaned = cleaned.replace(/\bsrc=["']https?:\/\/(?:staging\.)?visualgraphx\.com\/([^"']+)["']/gi, 'src="https://staging.visualgraphx.com/$1"');
 
   return cleaned.trim();
 }

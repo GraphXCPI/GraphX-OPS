@@ -106,6 +106,10 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 
 ## Most Recent Local Priorities
 
+- Current OPS exact-match pass was refreshed on 2026-07-06:
+  - `ops-extracted-pages.js` now builds from `full-source-cdp-capture-2026-07-06/page-content-rendered-html` so Ajax-loaded datatable rows and nested order structures render in the simulator;
+  - `scripts/build-extracted-pages.mjs` supports the full CDP folder names (`server-html`, `page-content-rendered-html`, and rendered breadcrumb captures);
+  - Orders collapse controls are synced after render so OPS plus/minus icons, `aria-expanded`, and visible child rows stay aligned.
 - Staging extraction gap pass was expanded on 2026-07-06:
   - tab states are now fully indexed (`93/93`, zero remaining);
   - missed safe action/detail pages are queued for a resumed authenticated capture (`177` canonical targets);

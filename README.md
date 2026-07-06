@@ -20,27 +20,29 @@ The newest staging OPS reference package is documented in `docs/HANDOFF.md`. The
 
 ## Live Modes
 
-- **Current OPS** renders a code-native reconstruction of the live OPS dashboard so layout, tables, job boards, Font Awesome-style controls, and the jqPlot-style sales chart can be tested interactively.
+- **Current OPS** renders the local generated OPS extraction bundle so admin routes preserve the live OPS layout, tables, tabs, row structures, icons, and controls without hitting OPS admin endpoints.
 - **Proposed** renders the revised navigation and workflow model for review with the dev team.
 
 ## Scope
 
 This is a front-end review artifact. It does not include hidden PHP source or production backend logic.
 
-The simulator is intentionally closed from OPS systems:
+The simulator is intentionally closed from OPS admin systems:
 
 - `index.html`
 - `simulator.css`
 - `simulator.js`
+- `ops-extracted-pages.js`
+- `ops-extracted-overrides.js`
 
-It does not load captured HTML, live OPS pages, iframes, `capture-data.js`, PHP, backend data, or live admin endpoints. All representative workflow data used by the simulator is local inside `simulator.js`.
+It does not load live OPS pages, iframes, `capture-data.js`, PHP, backend data, or live admin endpoints. Current OPS page HTML is generated into `ops-extracted-pages.js` from authenticated reference captures and runs locally inside the simulator.
 
 The only external runtime assets are public presentation dependencies:
 
 - Google Fonts for typography
 - Font Awesome for maintained icon rendering
 
-Raw extraction material remains outside this published simulator as source-reference material only. The simulator itself is rebuilt as HTML/CSS/JS so it can be evolved into the requested revisions without coupling to OPS or any extraction artifact.
+Raw extraction material remains outside this published simulator as source-reference material only. The published simulator uses the generated local bundle plus local HTML/CSS/JS so it can be evolved into the requested revisions without coupling to live OPS.
 
 ## Key Review Areas
 
