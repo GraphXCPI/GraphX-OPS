@@ -29,6 +29,12 @@ Critical rules:
 - Current OPS must not include Proposed changes.
 - Proposed pages must not show broken bare tables or browser-default controls.
 - When combining screens into one proposed screen, use OPS tab styling, not standalone button rows.
+- Before rebuilding a screen, check the newest staging reference package:
+  `/Users/cderamos/Projects/OPS Simulator/reference/extractions/GraphX-OPS-staging-extraction-2026-07-06`
+- The staging tab-state archive is complete: 93 discovered, 93 captured, 0 remaining.
+- The action/detail page gap is not complete: resume from
+  `expanded-safe-page-capture-2026-07-06/indexes/canonical-safe-page-capture-queue.csv`
+  and do not claim those pages captured until rendered DOM/source/screenshot manifests exist.
 
 Before editing:
 - Run `git status --short`.
@@ -41,6 +47,7 @@ Current known project state:
 - Reference/handoff material is under `reference/`.
 - Older simulator attempt is archived under `archive/`.
 - Recent fixes include dashboard quick-link cards, sidebar icon/text spacing, and contextual Proposed notes.
+- Latest staging extraction pass added a full-source archive, completed tab-state archive, and a queued safe action/detail-page target list. See `docs/HANDOFF.md` for exact counts and paths.
 
 Report back with exact files changed, exact routes/screens verified, and what remains.
 ```

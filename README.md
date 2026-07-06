@@ -16,6 +16,8 @@ The active simulator is the project root. Historical extraction and handoff mate
 
 For a fresh session prompt, use `docs/NEXT_SESSION_PROMPT.md`.
 
+The newest staging OPS reference package is documented in `docs/HANDOFF.md`. The raw extraction folders are intentionally ignored by Git; the tracked docs record the current capture counts and remaining action/detail-page queue.
+
 ## Live Modes
 
 - **Current OPS** renders a code-native reconstruction of the live OPS dashboard so layout, tables, job boards, Font Awesome-style controls, and the jqPlot-style sales chart can be tested interactively.
