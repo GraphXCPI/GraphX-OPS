@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T23:31:34.778Z",
+  "generatedAt": "2026-07-06T23:37:14.932Z",
   "source": "Generated from ops-extracted-pages.js public image refs",
   "assets": {
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product_icon/Signicade-Deluxe_1_1758621223704.png": "assets/ops-remote-images/files/Signicade-Deluxe_1_1758621223704-7f466430aa81.png",
@@ -109,7 +109,28 @@
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/6JzV9SAJ-s1000.jpg": "assets/ops-remote-images/files/6JzV9SAJ-s1000-1ccb5ec7ec1a.jpg",
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/uf4fTjWs-s1000.jpg": "assets/ops-remote-images/files/uf4fTjWs-s1000-f9e236e6b242.jpg",
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/X7A4DS6I-s1000.jpg": "assets/ops-remote-images/files/X7A4DS6I-s1000-b24e2da040f0.jpg",
-    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/IfAu2WSJ-s1000_11444716202603.jpg": "assets/ops-remote-images/files/IfAu2WSJ-s1000_11444716202603-9b243b3ecf1f.jpg"
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/IfAu2WSJ-s1000_11444716202603.jpg": "assets/ops-remote-images/files/IfAu2WSJ-s1000_11444716202603-9b243b3ecf1f.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/button_2_girls_01541012202603.jpg": "assets/ops-remote-images/files/button_2_girls_01541012202603-63877334bf57.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/button_2_girls.jpg": "assets/ops-remote-images/files/button_2_girls-63877334bf57.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/aTfNaygq-s1000_11142716202603.jpg": "assets/ops-remote-images/files/aTfNaygq-s1000_11142716202603-2e74edd3436b.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/6JzV9SAJ-s1000_11074516202603.jpg": "assets/ops-remote-images/files/6JzV9SAJ-s1000_11074516202603-1ccb5ec7ec1a.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/uf4fTjWs-s1000_11255416202603.jpg": "assets/ops-remote-images/files/uf4fTjWs-s1000_11255416202603-f9e236e6b242.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/X7A4DS6I-s1000_11284416202603.jpg": "assets/ops-remote-images/files/X7A4DS6I-s1000_11284416202603-b24e2da040f0.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/IfAu2WSJ-s1000_11445916202603.jpg": "assets/ops-remote-images/files/IfAu2WSJ-s1000_11445916202603-9b243b3ecf1f.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/ONE-CHOICE-10ft-Steel-Canopy-Tent_Graphic-Package-White-Trim-01_02181217202603.jpg": "assets/ops-remote-images/files/ONE-CHOICE-10ft-Steel-Canopy-Tent_Graphic-Package-White-Trim-01_02181217202603-c9dd1b095a04.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/ONE-CHOICE-10ft-Steel-Canopy-Tent_Graphic-Package-White-Trim-01.jpg": "assets/ops-remote-images/files/ONE-CHOICE-10ft-Steel-Canopy-Tent_Graphic-Package-White-Trim-01-c9dd1b095a04.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/EmWZUCQX-s1000_1__11534616202603.jpg": "assets/ops-remote-images/files/EmWZUCQX-s1000_1__11534616202603-863fe1d7b242.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/EmWZUCQX-s1000_1_.jpg": "assets/ops-remote-images/files/EmWZUCQX-s1000_1_-863fe1d7b242.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/QgBqDTht-s1000_1__12102917202603.jpg": "assets/ops-remote-images/files/QgBqDTht-s1000_1__12102917202603-9263743039bd.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/QgBqDTht-s1000_1_.jpg": "assets/ops-remote-images/files/QgBqDTht-s1000_1_-9263743039bd.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/3y2sDaqQ-s1000_1__01453017202603.jpg": "assets/ops-remote-images/files/3y2sDaqQ-s1000_1__01453017202603-bb4aa746d9df.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/3y2sDaqQ-s1000_1_.jpg": "assets/ops-remote-images/files/3y2sDaqQ-s1000_1_-bb4aa746d9df.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/ONE-CHOICE-10-ft-Fabric-Pop-Up-Display_01_default_01595717202603.jpg": "assets/ops-remote-images/files/ONE-CHOICE-10-ft-Fabric-Pop-Up-Display_01_default_01595717202603-b61d2728a581.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/ONE-CHOICE-10-ft-Fabric-Pop-Up-Display_01_default.jpg": "assets/ops-remote-images/files/ONE-CHOICE-10-ft-Fabric-Pop-Up-Display_01_default-b61d2728a581.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/15-x-7_5-ft_-RPL-Fabric-Pop-Up-Display-Straight_01_default_1__02084917202603.jpg": "assets/ops-remote-images/files/15-x-7_5-ft_-RPL-Fabric-Pop-Up-Display-Straight_01_default_1__02084917202603-c03b93ba3c8a.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/15-x-7_5-ft_-RPL-Fabric-Pop-Up-Display-Straight_01_default_1_.jpg": "assets/ops-remote-images/files/15-x-7_5-ft_-RPL-Fabric-Pop-Up-Display-Straight_01_default_1_-c03b93ba3c8a.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/ONE-CHOICE-Feather-Flag-Large-14-Ft_Graphic_Package-Double_Sided-X_Base-01_02345917202603.jpg": "assets/ops-remote-images/files/ONE-CHOICE-Feather-Flag-Large-14-Ft_Graphic_Package-Double_Sided-X_Base-01_02345917202603-668a90cf4bb1.jpg",
+    "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/ONE-CHOICE-Feather-Flag-Large-14-Ft_Graphic_Package-Double_Sided-X_Base-01.jpg": "assets/ops-remote-images/files/ONE-CHOICE-Feather-Flag-Large-14-Ft_Graphic_Package-Double_Sided-X_Base-01-668a90cf4bb1.jpg"
   },
   "skipped": {
     "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product_icon/Creative-Design_10032614202509.jpg": {
