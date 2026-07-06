@@ -441,6 +441,7 @@ const pageAliases = {
 };
 
 const proposedExtractedPageAliases = {
+  "customer-workspace": "user-view-details",
   "store-credit": "reward-points",
   "country-states": "countries",
   "web-optimization": "image-optimization",
@@ -582,7 +583,7 @@ const modePageMap = {
     "system-log": "system-logs",
     "production-dashboard": "job-board",
     "statuses-workflow": "order-status",
-    "customer-workspace": "customers",
+    "customer-workspace": "user-view-details",
     "order-reports": "sales-order-summary",
     "quote-reports": "sales-quote-summary",
     "product-reports": "product-sales-report",
@@ -663,7 +664,7 @@ const proposedChangeOverrides = {
   "store-credit": { kind: "", note: "" },
   "production-dashboard": { kind: "new", note: "New landing page for the Production area / Workflow tool" },
   "statuses-workflow": { kind: "new", note: "One configuration entry for order, order product, and quote statuses; originals stay in Orders and Quotes" },
-  "customer-workspace": { kind: "new", note: "Tabbed customer dashboard, same primitive as Store Workspace" },
+  "customer-workspace": { kind: "new", note: "The OPS Customer Details screen with workspace tabs added — same primitive as Store Workspace" },
   "order-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
   "quote-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
   "product-reports": { kind: "new", note: "Contextual entry deep-linking into Reports & System Logs (dual entry)" },
@@ -750,8 +751,7 @@ const proposalHighlightRules = {
     { selector: ".ops-statuses-workflow .sim-subtabs", kind: "changed", note: "Tabs cross-link to the existing status screens" },
   ],
   "customer-workspace": [
-    { selector: ".ops-customer-workspace .page-header h1", kind: "new", note: "Customer Details becomes a tabbed workspace" },
-    { selector: ".ops-customer-workspace .sim-subtabs", kind: "new", note: "Same context-tab primitive as Store Workspace" },
+    { selector: ".sim-subtabs", kind: "new", note: "Customer Details gains workspace tabs — the screen itself is the unchanged OPS Customer Details page" },
   ],
   "design-tabs": [
     { selector: ".sim-subtabs", kind: "new", note: "Subpages become tabs so Design & Templates stays one small menu" },
@@ -779,6 +779,7 @@ const proposalHighlightAliases = {
   "sms-templates": "email-templates",
   "email-reminders": "email-templates",
   "help-media": "asset-manager",
+  "user-view-details": "customer-workspace",
 };
 
 function proposalHighlightRulesFor(page) {
@@ -809,10 +810,27 @@ const proposedStudioTabs = [
   { label: "Fonts", page: "studio-fonts" },
 ];
 
+function customerWorkspaceTabs(activePage) {
+  return tabStrip([
+    { label: "View", page: activePage },
+    "Orders",
+    "Quotes",
+    "Payments & Credit",
+    "Design Proofs",
+    "Templates",
+    "Account Users",
+    "Addresses",
+  ], activePage);
+}
+
 function proposedLeadHtmlFor(page) {
   if (OPS.mode !== "proposed") return "";
   if (proposedTemplateTabs.some(tab => tab.page === page)) return tabStrip(proposedTemplateTabs, page);
   if (proposedStudioTabs.some(tab => tab.page === page)) return tabStrip(proposedStudioTabs, page);
+  if (page === "customer-workspace" || page === "user-view-details") {
+    proposalMarkup("customer-workspace");
+    return customerWorkspaceTabs(page);
+  }
   return "";
 }
 
@@ -2867,7 +2885,6 @@ function vendorPage() {
 }
 
 function customerPage() {
-  if (OPS.mode === "proposed" && OPS.page === "customer-workspace") return customerWorkspacePage();
   return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Export"])}${proposalMarkup("customer-accounts")}${filters(["Search", "Customer Group", "Store", "Status"])}${dataTable(["Sr#", "Customer", "Email", "Store Scope", "Status", "Action"], [
     ["1", "Alex Loudenslager", "info@thelabna.com", "Visual Graphx", "Active", actionButton("Action")],
     ["2", "Drew Neverett", "drew.neverett@positionsports.com", "All Stores", "Active", actionButton("Action")],
@@ -3033,34 +3050,6 @@ function statusesWorkflowPage() {
     ])}
     ${currentOpsDataTable(["Status Set", "Applies To", "States", "Action"], rows, "ops-statuses-workflow-table")}
     ${changeNote("Order Status, Order Product Status and rules, and Quote Status are configured from one Statuses & Workflow entry. The originals stay reachable from Orders and Quotes as focused entry points (broad + focused).")}
-  </section>`;
-}
-
-function customerWorkspacePage() {
-  return `<section class="page ops-customer-workspace">
-    ${pageHead("Customer Workspace » Alex Loudenslager", ["Save", "Save & Back", "Back"])}
-    ${proposalMarkup("customer-workspace")}
-    ${tabStrip(["View", "Orders", "Quotes", "Payments & Credit", "Design Proofs", "Templates", "Account Users", "Addresses"])}
-    <div class="grid two">
-      <div>
-        ${panel("Customer Snapshot", currentOpsDataTable(["Field", "Value"], [
-          ["Customer", "Alex Loudenslager"],
-          ["Company", "The Lab North America Inc."],
-          ["Email", "info@thelabna.com"],
-          ["Store", "Visual Graphx"],
-          ["Status", `<span class="badge badge-success">Active</span>`],
-        ], "ops-customer-snapshot"))}
-        ${panel("Recent Orders", currentOpsDataTable(["Order", "Amount", "Status"], [
-          [`<a href="#proposed/orders" data-page="orders">3052</a>`, "$519.33", `<span class="badge badge-primary">New Order</span>`],
-          [`<a href="#proposed/orders" data-page="orders">2664</a>`, "$1,204.00", `<span class="badge badge-success">Completed</span>`],
-        ], "ops-customer-orders"))}
-      </div>
-      <div>
-        ${panel("Payments & Credit", formRows(["Store Credit Balance", "Open Invoices", "Payment Terms", "Tax Exempt"]))}
-        ${panel("Focused Context", "<p>Everything about this customer works from one tabbed workspace — orders, quotes, payments and credit, proofs, saved templates, account users, and addresses — instead of hunting across the Orders, Quotes, Customer, and Reports menus.</p>")}
-      </div>
-    </div>
-    ${changeNote("Customer Details becomes a tabbed Customer Workspace using the same context-tab primitive as Store Workspace.")}
   </section>`;
 }
 
@@ -3288,9 +3277,13 @@ const proposalAnnotations = {
     ["Beyond requirements doc", "This grouping goes beyond the doc — flagged for dev review. GraphX Manage's own navigation already uses a Production area, which supports the grouping."],
   ],
   "customer-workspace": [
-    ["Tabbed customer dashboard", "Customer Details becomes a Customer Workspace: orders, quotes, payments and credit, proofs, templates, account users, and addresses in one tabbed context."],
-    ["Same primitive", "Reuses the Store Workspace context-tab pattern; no new interaction model."],
+    ["Customer Details is the workspace", "The existing OPS Customer Details screen is unchanged; it gains context tabs for orders, quotes, payments and credit, proofs, templates, account users, and addresses."],
+    ["Same primitive", "Reuses the Store Workspace context-tab pattern; no new interaction model or screen redesign."],
     ["Beyond requirements doc", "New suggestion beyond the doc — flagged for dev review."],
+  ],
+  "user-view-details": [
+    ["Customer Details is the workspace", "The existing OPS Customer Details screen is unchanged; it gains context tabs for orders, quotes, payments and credit, proofs, templates, account users, and addresses."],
+    ["Same primitive", "Reuses the Store Workspace context-tab pattern; no new interaction model or screen redesign."],
   ],
   templates: [
     ["Design & Templates merge", "Templates and Designer Studio share one sidebar area; each landing page carries an OPS tab row over its subpages so the menu stays small."],
