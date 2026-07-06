@@ -340,6 +340,37 @@ async function collectPageRuntime(cdp) {
     } catch (error) {
       serverHtml = "";
     }
+    const canvasSnapshots = [];
+    document.querySelectorAll("canvas").forEach((canvas, index) => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      try {
+        const dataUrl = canvas.toDataURL("image/png");
+        if (!dataUrl || dataUrl.length < 100) return;
+        canvas.setAttribute("data-ops-canvas-snapshot", dataUrl);
+        canvas.setAttribute("data-ops-canvas-index", String(index));
+        canvas.setAttribute("data-ops-canvas-css-width", String(Math.round(rect.width)));
+        canvas.setAttribute("data-ops-canvas-css-height", String(Math.round(rect.height)));
+        canvasSnapshots.push({
+          index,
+          width: canvas.width,
+          height: canvas.height,
+          cssWidth: Math.round(rect.width),
+          cssHeight: Math.round(rect.height),
+          bytes: dataUrl.length
+        });
+      } catch {
+        canvasSnapshots.push({
+          index,
+          width: canvas.width,
+          height: canvas.height,
+          cssWidth: Math.round(rect.width),
+          cssHeight: Math.round(rect.height),
+          bytes: 0,
+          tainted: true
+        });
+      }
+    });
     const pageContent = document.querySelector(".page-content");
     const breadcrumbs = document.querySelector("#breadcrumbs");
     return {
@@ -380,7 +411,8 @@ async function collectPageRuntime(cdp) {
           stylesheets: document.querySelectorAll('link[rel~="stylesheet"], link[href]').length,
           scripts: document.scripts.length,
           images: document.images.length
-        }
+        },
+        canvasSnapshots
       }
     };
   `);

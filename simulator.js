@@ -580,6 +580,15 @@ function app() {
   const menu = OPS.mode === "current" ? currentMenu : proposedMenu;
   resetProposalContext();
   const pageContent = content();
+  if (isShelllessExtractedPage()) {
+    return `
+      <div class="body-container gx-sim gx-shellless-page">
+        ${pageContent}
+        ${modeSwitch()}
+        ${proposalWindow()}
+      </div>
+    `;
+  }
   return `
     <div class="body-container gx-sim">
       ${topbar()}
@@ -597,6 +606,10 @@ function app() {
       ${proposalWindow()}
     </div>
   `;
+}
+
+function isShelllessExtractedPage() {
+  return extractedPageFor(OPS.page)?.displayMode === "shellless";
 }
 
 function modeSwitch() {
@@ -913,7 +926,8 @@ function extractedPageFor(page) {
 
 function extractedOpsPage(page) {
   const html = page.bodyHtml || `<div class="alert alert-warning">No extracted OPS body was captured for ${h(page.sourceFile || page.slug || page.route)}.</div>`;
-  return `<div class="ops-extracted-page" data-route="${h(page.route || OPS.page)}" data-source-file="${h(page.sourceFile || "")}">${html}</div>`;
+  const displayMode = page.displayMode || "";
+  return `<div class="ops-extracted-page ${displayMode === "shellless" ? "ops-extracted-shellless" : ""}" data-route="${h(page.route || OPS.page)}" data-source-file="${h(page.sourceFile || "")}" data-display-mode="${h(displayMode)}">${html}</div>`;
 }
 
 function rewriteExtractedModeTargetsHtml(html, mode) {
@@ -932,7 +946,8 @@ function rewriteExtractedModeTargets(root, mode) {
 function proposedExtractedOpsPage(pageName, extraClass = "") {
   const extracted = extractedPageFor(pageName);
   if (!extracted?.bodyHtml) return genericPage(pageTitle());
-  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${h(extraClass)}" data-route="${h(extracted.route || pageName)}" data-source-file="${h(extracted.sourceFile || "")}">${extracted.bodyHtml}</div>`, "text/html");
+  const displayMode = extracted.displayMode || "";
+  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ${displayMode === "shellless" ? "ops-extracted-shellless" : ""} ${h(extraClass)}" data-route="${h(extracted.route || pageName)}" data-source-file="${h(extracted.sourceFile || "")}" data-display-mode="${h(displayMode)}">${extracted.bodyHtml}</div>`, "text/html");
   const root = doc.body.firstElementChild;
   rewriteExtractedModeTargets(root, "proposed");
   return root.outerHTML;

@@ -189,6 +189,10 @@ const validFragmentSlugs = new Set([
   "product_popover"
 ]);
 
+const shelllessFullDocumentSlugs = new Set([
+  "template_manager_design"
+]);
+
 function stripNumberAndExt(filename) {
   return filename.replace(/^\d+-/, "").replace(/\.html$/, "");
 }
@@ -306,8 +310,9 @@ function extractJsonPayloadFragment(content) {
   }
 }
 
-function extractedCaptureFragment(html) {
-  const fragment = extractedContentFragment(html);
+function extractedCaptureFragment(html, slug = "") {
+  const isShelllessFullDocument = shelllessFullDocumentSlugs.has(slug) && /<(?:!doctype|html|body)\b/i.test(html);
+  const fragment = isShelllessFullDocument ? extractShelllessFullDocumentSnapshot(html) : extractedContentFragment(html);
   const payloadFragment = extractJsonPayloadFragment(fragment);
   if (payloadFragment?.html) {
     return {
@@ -319,8 +324,55 @@ function extractedCaptureFragment(html) {
   return {
     rawContent: fragment,
     title: "",
-    payloadType: ""
+    payloadType: isShelllessFullDocument ? "full-document-snapshot" : ""
   };
+}
+
+function extractShelllessFullDocumentSnapshot(html) {
+  const head = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] || "";
+  const body = extractStandaloneBody(html);
+  const headStyles = [
+    ...head.matchAll(/<link\b[^>]*\brel=["']stylesheet["'][^>]*>/gi)
+  ].map(match => rewriteStudioAssetUrls(match[0]).replace(/\s+onload=(["'])[\s\S]*?\1/gi, ""));
+  headStyles.push(...(head.match(/<style\b[\s\S]*?<\/style>/gi) || []));
+  const snapshotBody = replaceCanvasSnapshots(rewriteStudioAssetUrls(body));
+  return `<div class="ops-shellless-snapshot ops-template-designer-snapshot">${headStyles.join("\n")}\n${snapshotBody}</div>`;
+}
+
+function rewriteStudioAssetUrls(html) {
+  return String(html || "")
+    .replace(/\b(href|src)=["']\/studio\/app\/browser\/([^"']+)["']/gi, '$1="https://visualgraphx.com/studio/app/browser/$2"')
+    .replace(/\b(href|src)=["'](?!https?:|data:|#|javascript:|mailto:|tel:|\/)([^"']+)["']/gi, '$1="https://visualgraphx.com/studio/app/browser/$2"');
+}
+
+function replaceCanvasSnapshots(html) {
+  return String(html || "").replace(/<canvas\b([^>]*)\bdata-ops-canvas-snapshot=(["'])(data:image\/png;base64,[^"']+)\2([^>]*)>[\s\S]*?<\/canvas>/gi, (match, beforeAttrs, quote, dataUrl, afterAttrs) => {
+    const attrs = `${beforeAttrs || ""} ${afterAttrs || ""}`;
+    const className = extractHtmlAttribute(attrs, "class");
+    const style = extractHtmlAttribute(attrs, "style");
+    const cssWidth = extractHtmlAttribute(attrs, "data-ops-canvas-css-width");
+    const cssHeight = extractHtmlAttribute(attrs, "data-ops-canvas-css-height");
+    const index = extractHtmlAttribute(attrs, "data-ops-canvas-index");
+    const sizing = [
+      style,
+      cssWidth ? `width:${cssWidth}px` : "",
+      cssHeight ? `height:${cssHeight}px` : ""
+    ].filter(Boolean).join(";").replace(/;+/g, ";");
+    return `<img class="ops-canvas-snapshot ${escapeHtmlAttribute(className)}" src="${dataUrl}" alt="" data-ops-canvas-index="${escapeHtmlAttribute(index)}"${sizing ? ` style="${escapeHtmlAttribute(sizing)}"` : ""}>`;
+  });
+}
+
+function extractHtmlAttribute(attrs, name) {
+  const pattern = new RegExp(`\\b${name}=([\"'])(.*?)\\1`, "i");
+  return String(attrs || "").match(pattern)?.[2] || "";
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 function readJsonFile(file) {
@@ -524,7 +576,7 @@ function pickSafeCaptureContent(entry) {
       attempts.push({ ...candidate, status: "missing" });
       continue;
     }
-    const fragment = extractedCaptureFragment(fs.readFileSync(contentPath, "utf8"));
+    const fragment = extractedCaptureFragment(fs.readFileSync(contentPath, "utf8"), entry.slug);
     if (candidate.jsonOnly && fragment.payloadType !== "json-html") {
       attempts.push({ ...candidate, status: "not-json" });
       continue;
@@ -593,6 +645,7 @@ function loadSafePages(captureEntries, fileRouteMap) {
       slug,
       sourceFile,
       sourceKind,
+      displayMode: shelllessFullDocumentSlugs.has(slug) ? "shellless" : "",
       breadcrumbsHtml,
       bodyHtml
     });

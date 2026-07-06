@@ -132,6 +132,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `studio-models-action` now renders `Add Real Preview Models` from a read-only authenticated staging capture at `300-studio_models_action.html`, while `products-studio-models-action` remains the separate `Assign Real Preview` page;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
   - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: the live template cluster now covers `#current/templates`, `#current/template-assign`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-action`, `#current/template-manager-design`, `#current/template-manager-sortorder`, `#current/template-preview-image`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-properties-master-action`, `#current/template-categories`, `#current/template-category-action`, `#current/template-category-metatags`, `#current/template-master`, and `#current/store-settings-templates`;
+  - `template_manager_design` is now treated as a shellless live full-document snapshot because the live OPS designer is an Angular workspace outside the normal admin shell; the capture script serializes visible canvas elements, the bundle builder replays them as image snapshots, and shellless CSS maps the live designer kit/regular font glyphs to extracted SVG masks;
   - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
 - Browser verification on 2026-07-06 covered:
   - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
@@ -146,6 +147,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - Full-source rebuild verification covered `#current/quote-action` and `#current/orders`.
   - Studio model action verification covered `#current/studio-models-action`; it rendered `Add Real Preview Models` locally from `300-studio_models_action.html` with `0` live admin links.
   - live-only template/block route verification covered `#current/templates`, `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, `#current/template-manager-design`, `#current/template-properties-assign`, `#current/pdf-blocks`, `#current/template-categories`, `#current/template-master`, and `#current/store-settings-templates`; each route rendered from the live capture bundle locally with `0` live admin links.
+  - shellless template designer verification covered `#current/template-manager-design` at a 1200px viewport: it rendered from `155-template_manager_design.html`, used `displayMode: shellless`, had `0` admin shell wrappers, replayed `4` canvas snapshots, resolved the live designer kit icons via extracted `ops-kit-fa-*.svg` masks, and resolved the Uppy upload/color controls.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
@@ -167,6 +169,6 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 - Do not claim a page is parity-complete until the generated route is visually checked against staging/current OPS, not just because rendered DOM/source manifests exist.
 - Continue screen-by-screen parity verification.
 - Do not assume a page is done because the route exists.
-- `#current/template-manager-design` now uses live rendered DOM, but true parity still needs a dedicated full-screen/canvas replay treatment; live OPS is an Angular designer workspace outside the normal admin shell.
+- `#current/template-manager-design` is a shellless static replay of the live Angular designer with captured canvas images and extracted SVG icon masks. It is suitable for Current OPS visual parity, but it is not a functional Angular editor.
 - Review Product Catalog, Orders, Stock & Settings, Product Tax/VAT, and dashboard surfaces against live OPS references before changing adjacent pages.
 - Keep legacy handoff docs as context, but prefer the active root simulator over old `03_simulator_repo_snapshot` files.
