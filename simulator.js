@@ -601,6 +601,151 @@ function pageForModeToggle(nextMode) {
   return pageForModeSwitch(OPS.page, nextMode);
 }
 
+// ---------------------------------------------------------------------------
+// Change classification: what differs in the proposed menu vs Current OPS.
+// Used by the info-button change highlighting (sidebar + page content).
+// ---------------------------------------------------------------------------
+
+const proposedToCurrentGroupId = { customers: "customer", catalog: "products" };
+
+const currentMenuIndex = (() => {
+  const index = new Map();
+  currentMenu.forEach(group => {
+    flattenMenu(group).forEach(item => {
+      if (item.page && !index.has(item.page)) {
+        index.set(item.page, { label: item.label, groupId: group.id, groupLabel: group.label });
+      }
+    });
+  });
+  return index;
+})();
+
+function currentMenuEntryFor(page) {
+  return currentMenuIndex.get(page)
+    || currentMenuIndex.get(proposedExtractedPageAliases[page] || "")
+    || currentMenuIndex.get(modePageMap.current?.[page] || "")
+    || null;
+}
+
+// Items whose history is not derivable from the menu trees alone.
+const proposedChangeOverrides = {
+  "markup-master": { kind: "moved", note: "Moved from Store Management > Stores actions to pricing context" },
+  "duplicate-store-data": { kind: "moved", note: "Promoted from a Stores-list action; also store-locked inside Store Workspace" },
+  "asset-manager": { kind: "new", note: "Surfaced from the hidden CMS Browse Server / Image Manager" },
+  "help-media": { kind: "renamed", note: "Renamed from Media Gallery" },
+  "api-webhooks": { kind: "moved", note: "Split out of Orders > Export/API Orders" },
+  "store-credit": { kind: "", note: "" },
+};
+
+function proposedItemChange(item, proposedGroupId) {
+  if (!item.page) return null;
+  const override = proposedChangeOverrides[item.page];
+  if (override) return override.kind ? override : null;
+  const cur = currentMenuEntryFor(item.page);
+  if (!cur) return { kind: "new", note: "New in the proposed IA" };
+  const expectedGroup = proposedToCurrentGroupId[proposedGroupId] || proposedGroupId;
+  if (cur.groupId !== expectedGroup) {
+    return { kind: "moved", note: `Moved from ${cur.groupLabel} > ${cur.label}` };
+  }
+  if (cur.label !== item.label) {
+    return { kind: "renamed", note: `Renamed from “${cur.label}”` };
+  }
+  return null;
+}
+
+function proposedGroupChangeInfo(group) {
+  const currentId = proposedToCurrentGroupId[group.id] || group.id;
+  const cur = currentMenu.find(item => item.id === currentId);
+  if (!cur) return { kind: "new", note: "New top-level area in the proposed IA" };
+  if (cur.label !== group.label) return { kind: "renamed", note: `Renamed from “${cur.label}”` };
+  return null;
+}
+
+function changeAttr(change) {
+  if (!change || OPS.mode !== "proposed") return "";
+  return ` data-change="${h(change.kind)}" data-change-note="${h(change.note || "")}"`;
+}
+
+// Per-route content highlights applied while the proposal notes window is open.
+const proposalHighlightRules = {
+  orders: [
+    { selector: ".ops-proposed-orders-page .page-header h1", kind: "renamed", note: "List Orders becomes Orders" },
+    { selector: ".ops-proposed-orders-page .ops-context-tabs", kind: "new", note: "Unpaid, Payment Request, and Archive become same-page views instead of menu items" },
+    { selector: ".ops-proposed-orders-page #frmordsearch", kind: "changed", note: "Adds payment status, order/product status, customer, and date-range filters" },
+    { selector: ".order-group-row", kind: "new", note: "Workflow-state group rows inside the one Orders list", limit: 3 },
+  ],
+  "product-catalog": [
+    { selector: ".ops-proposed-product-catalog .page-header h1", kind: "renamed", note: "Print Products / Ready To Buy merge into one Product Catalog" },
+    { selector: ".ops-proposed-product-catalog .ops-context-tabs", kind: "new", note: "Quick filters over one list, not separate list pages" },
+    { selector: ".ops-proposed-product-catalog .page-header .action_area", kind: "changed", note: "Typed add actions route to the right creation flow" },
+    { selector: ".ops-proposed-product-catalog .product-type-chip", kind: "new", note: "Product Type shown on every row", limit: 3 },
+  ],
+  "product-edit": [
+    { selector: ".ops-product-edit-page .sim-subtabs", kind: "new", note: "Inventory and SEO become product-context tabs" },
+  ],
+  "stock-settings": [
+    { selector: ".ops-stock-settings-page .ops-context-tabs", kind: "changed", note: "Stock and Tax/VAT join Weight, Days, and SKU in one tabset" },
+    { selector: ".ops-stock-settings-page .page-header h1", kind: "renamed", note: "Grouped as Stock & Settings" },
+  ],
+  "store-workspace": [
+    { selector: ".sim-subtabs", kind: "new", note: "Store-locked workspace tabs, including Site Builder and Alerts & Notifications" },
+    { selector: ".page-header h1", kind: "new", note: "Focused store context with the store locked" },
+  ],
+  "order-exports": [
+    { selector: ".page-header h1", kind: "moved", note: "Lifted out of Orders into the global Export & API area" },
+    { selector: ".sim-subtabs", kind: "new", note: "Two sections: Order Exports and API & Webhooks" },
+  ],
+  "email-templates": [
+    { selector: ".sim-subtabs", kind: "moved", note: "Email/SMS moves out of Content Management into Alerts & Notifications" },
+  ],
+  "asset-manager": [
+    { selector: ".page-header h1", kind: "new", note: "Hidden CMS Image Manager surfaced as Asset Manager" },
+    { selector: ".page .form-group row, .page .card.bcard", kind: "changed", note: "Folders, tags, alt text, and external media metadata", limit: 2 },
+  ],
+  "markup-master": [
+    { selector: ".page-header h1", kind: "moved", note: "Template builder moves to pricing context; store assignment stays in Edit Store" },
+  ],
+  "duplicate-store-data": [
+    { selector: ".page-header h1", kind: "moved", note: "Two entry points: Stores list (open) and Store Workspace (source locked)" },
+  ],
+};
+
+const proposalHighlightAliases = {
+  "product-edit-inventory": "product-edit",
+  "product-edit-seo": "product-edit",
+  "manage-stock": "stock-settings",
+  "product-weight": "stock-settings",
+  "production-days": "stock-settings",
+  "products-sku": "stock-settings",
+  "product-tax": "stock-settings",
+  "api-webhooks": "order-exports",
+  "sms-templates": "email-templates",
+  "email-reminders": "email-templates",
+  "help-media": "asset-manager",
+};
+
+function proposalHighlightRulesFor(page) {
+  if (proposalHighlightRules[page]) return proposalHighlightRules[page];
+  if (proposalHighlightAliases[page]) return proposalHighlightRules[proposalHighlightAliases[page]] || [];
+  if (page.startsWith("store-workspace")) return proposalHighlightRules["store-workspace"];
+  return [];
+}
+
+function isChangeHighlightActive() {
+  return OPS.mode === "proposed" && OPS.proposalWindowOpen;
+}
+
+function applyProposalHighlights() {
+  if (!isChangeHighlightActive()) return;
+  proposalHighlightRulesFor(OPS.page).forEach(rule => {
+    document.querySelectorAll(rule.selector).forEach((el, index) => {
+      if (index >= (rule.limit ?? 6)) return;
+      el.classList.add("ops-change-mark", `ops-change-${rule.kind}`);
+      if (rule.note && !el.getAttribute("title")) el.setAttribute("title", rule.note);
+    });
+  });
+}
+
 function setOpenMenuForPage() {
   const menuItems = OPS.mode === "current" ? currentMenu : proposedMenu;
   let menu = menuItems.find(group => isActiveGroupForPage(group, OPS.page));
@@ -628,7 +773,7 @@ function app() {
   resetProposalContext();
   const pageContent = content();
   return `
-    <div class="body-container gx-sim">
+    <div class="body-container gx-sim${isChangeHighlightActive() ? " ops-highlighting" : ""}">
       ${topbar()}
       <div class="main-container" id="main-container">
         ${sidebar(menu)}
@@ -873,9 +1018,10 @@ function renderMenuGroup(group) {
   const open = OPS.openMenu === group.id;
   const active = isActiveGroup(group);
   const iconClass = opsIconClass(group);
+  const change = OPS.mode === "proposed" ? proposedGroupChangeInfo(group) : null;
   return `
     <li class="nav-item ${open ? "open" : ""} ${active ? "active" : ""}">
-      <a href="#" class="nav-link${group.children ? " dropdown-toggle" : ""}" data-menu="${h(group.id)}" ${group.page ? `data-page="${h(group.page)}"` : ""}>
+      <a href="#" class="nav-link${group.children ? " dropdown-toggle" : ""}" data-menu="${h(group.id)}" ${group.page ? `data-page="${h(group.page)}"` : ""}${changeAttr(change)}${change ? ` title="${h(change.note)}"` : ""}>
         <i class="nav-icon ${h(iconClass)}"></i>
         <span class="nav-text fadeable">${h(group.label)}</span>
         ${group.children ? `<i class="arrow fa fa-${open ? "angle-up" : "angle-down"}"></i>` : ""}
@@ -890,12 +1036,16 @@ function renderChild(item, parent) {
   const key = `${parent}:${item.label}`;
   const open = OPS.openChild === key;
   const active = OPS.page === item.page || (item.children || []).some(c => c.page === OPS.page);
+  const change = OPS.mode === "proposed" ? proposedItemChange(item, parent) : null;
   return `
     <li class="nav-item ${open ? "open" : ""} ${active ? "active" : ""}">
-      <a href="#" class="nav-link${item.children ? " dropdown-toggle" : ""}" data-child="${h(key)}" ${item.page ? `data-page="${h(item.page)}"` : ""}>
+      <a href="#" class="nav-link${item.children ? " dropdown-toggle" : ""}" data-child="${h(key)}" ${item.page ? `data-page="${h(item.page)}"` : ""}${changeAttr(change)}${change ? ` title="${h(change.note)}"` : ""}>
         <span class="nav-text">${h(item.label)}</span>${item.children ? `<i class="arrow fa fa-${open ? "angle-up" : "angle-down"}"></i>` : ""}
       </a>
-      ${item.children && open ? `<div class="submenu collapse hideable show"><ul class="submenu-inner">${item.children.map(grand => `<li class="nav-item ${OPS.page === grand.page ? "active" : ""}"><a href="#" class="nav-link" data-page="${h(grand.page)}"><span class="nav-text">${h(grand.label)}</span></a></li>`).join("")}</ul></div>` : ""}
+      ${item.children && open ? `<div class="submenu collapse hideable show"><ul class="submenu-inner">${item.children.map(grand => {
+        const grandChange = OPS.mode === "proposed" ? proposedItemChange(grand, parent) : null;
+        return `<li class="nav-item ${OPS.page === grand.page ? "active" : ""}"><a href="#" class="nav-link" data-page="${h(grand.page)}"${changeAttr(grandChange)}${grandChange ? ` title="${h(grandChange.note)}"` : ""}><span class="nav-text">${h(grand.label)}</span></a></li>`;
+      }).join("")}</ul></div>` : ""}
     </li>
   `;
 }
@@ -2941,6 +3091,16 @@ function proposalWindow() {
       <button type="button" class="btn btn-xs btn-light-lightgrey ops-proposal-close" data-proposal-close aria-label="Close proposal notes"><i class="fa fa-times"></i></button>
     </div>
     <div class="card-body ops-proposal-window-body">
+      <div class="ops-proposal-window-section ops-change-legend">
+        <h4>Change highlights</h4>
+        <div class="ops-change-legend-chips">
+          <span class="ops-change-legend-chip new">New</span>
+          <span class="ops-change-legend-chip renamed">Renamed</span>
+          <span class="ops-change-legend-chip moved">Moved</span>
+          <span class="ops-change-legend-chip changed">Behavior</span>
+        </div>
+        <p>While this window is open, everything that differs from Current OPS on this screen is outlined — including sidebar menus. Hover a highlight for the before/after.</p>
+      </div>
       ${messages.length ? `<div class="ops-proposal-window-section"><h4>Proposed changes</h4>${messages.map(item => `<div class="ops-proposal-window-item"><b>${h(item.title)}</b><p>${h(item.body)}</p></div>`).join("")}</div>` : ""}
       ${notes.length ? `<div class="ops-proposal-window-section"><h4>Screen notes</h4>${notes.map(item => `<div class="ops-proposal-window-item"><b>${h(item.title)}</b><p>${h(item.body)}</p></div>`).join("")}</div>` : ""}
     </div>
@@ -3125,6 +3285,7 @@ function formUsesSelect(normalized) {
 function render() {
   document.getElementById("app").innerHTML = app();
   syncRenderedOrderCollapseControls();
+  applyProposalHighlights();
 }
 
 let proposalDrag = null;

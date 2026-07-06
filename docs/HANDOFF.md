@@ -109,6 +109,8 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 
 ## Most Recent Local Priorities
 
+- Change highlighting (2026-07-06): opening the proposal-notes window (info button, Proposed mode) now outlines everything that differs from Current OPS on the visible screen — sidebar groups/items get `data-change="new|renamed|moved"` from a computed menu diff (`proposedItemChange`/`proposedGroupChangeInfo` in `simulator.js`, with `proposedChangeOverrides` for history the menus can't derive), and page content is outlined via per-route selector rules (`proposalHighlightRules`). Colors: green = new, amber = renamed, purple = moved, blue = behavior change; a legend renders at the top of the notes window and hover tooltips give the before/after. Styles live in `assets/admin_style.css` under `.gx-sim.ops-highlighting` (bumped to `?v=19`).
+
 - Proposed-mode doc-alignment pass (2026-07-06, later same day):
   - Fixed a routing bug where the custom proposed Orders page was shadowed by the extracted `orders` route; `proposedCustomPages` in `simulator.js` now keeps `orders` and the new `product-edit*` routes on their dedicated renderers.
   - Proposed SEO menu is central/technical only (Global SEO, Sitemaps, Metatags, Robots, Redirects, HTML Help). Per-object SEO pages were removed from the menu; their old routes render pointer screens into the owning object. `#proposed/image-alt` points to Asset Manager; mode switch from `#current/image-alt` lands on `asset-manager`.
