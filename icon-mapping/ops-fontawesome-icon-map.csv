@@ -108,6 +108,7 @@ OPS FA,fa-ellipsis,No,(Custom SVG Extracted),extracted-svgs/ops-fa-ellipsis-bold
 OPS Custom,fa-payment-request,No,(Custom SVG Extracted),extracted-svgs/ops-fa-payment-request.svg,Custom SVG extracted (Custom icons only support single default style).
 OPS FA,fa-save,No,(Custom SVG Extracted),extracted-svgs/ops-fa-save-bold.svg,"All 3 styles extracted: -bold (filled), -line (outline), and -light (lightweight)."
 OPS FA,fa-sliders,No,(Custom SVG Extracted),extracted-svgs/ops-fa-sliders-bold.svg,"All 3 styles extracted: -bold (filled), -line (outline), and -light (lightweight)."
+OPS FA,fa-square-minus,No,(Custom SVG Extracted),extracted-svgs/ops-fa-square-minus.svg,Single extracted SVG used for OPS regular collapse controls.
 OPS FA,fa-square-plus,No,(Custom SVG Extracted),extracted-svgs/ops-fa-square-plus-bold.svg,"All 3 styles extracted: -bold (filled), -line (outline), and -light (lightweight)."
 OPS FA,fa-times-circle,No,(Custom SVG Extracted),extracted-svgs/ops-fa-times-circle-bold.svg,"All 3 styles extracted: -bold (filled), -line (outline), and -light (lightweight)."
 OPS FA,fa-truck,No,(Custom SVG Extracted),extracted-svgs/ops-fa-truck-bold.svg,"All 3 styles extracted: -bold (filled), -line (outline), and -light (lightweight)."

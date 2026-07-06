@@ -1357,7 +1357,7 @@ function proposedOrderTableToolbar() {
 
 function proposedOrderTableHead() {
   return `<tr>
-    <th data-data="chk_field" data-class="ord_chk_col d-none d-md-table-cell text-center order-td-column" class="ord_chk_col d-none d-md-table-cell text-center order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
+    <th data-data="chk_field" data-class="ord_chk_col d-none d-md-table-cell text-center order-td-column" class="ord_chk_col d-none d-md-table-cell text-center order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label=""><div class="custom_checkBox d-flex align-items-center justify-content-center no-print"><div class="expand-all mr-2 open data-collected"><a class="no-print btn p-0 text-white" href="javascript:void(0);" id="expand_all_order_product" aria-expanded="true"><i class="far fa-square-minus"></i></a></div><label class="checkbox d-block "><input type="checkbox" class="ace"><span class="lbl"></span></label></div></th>
     <th data-data="order_id_type" data-class="d-none d-md-table-cell visibleonly-print order-td-column" class="d-none d-md-table-cell text-center visibleonly-print order-td-column sorting_disabled sorting_desc" rowspan="1" colspan="1" aria-label="ID">ID</th>
     <th data-data="col_order_details" data-class="visibleonly-print col_order_details order-td-column" class="visibleonly-print col_order_details order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Details">Order Details</th>
     <th data-data="col_order_date" data-class="d-none d-md-table-cell visibleonly-print order-td-column" class="d-none d-md-table-cell text-left visibleonly-print order-td-column sorting_disabled" rowspan="1" colspan="1" aria-label="Order Date & Amount">Order Date &amp; Amount</th>
@@ -1391,9 +1391,9 @@ function isProposedOrderExpanded(orderId) {
 }
 
 function proposedOrderCheckbox(orderId, expanded) {
-  const iconClass = expanded ? "ops-order-collapse-icon-minus" : "ops-order-collapse-icon-plus";
+  const iconClass = expanded ? "fa-square-minus" : "fa-square-plus";
   const label = expanded ? "Collapse order products" : "Expand order products";
-  return `<div class="custom_checkBox d-flex align-items-center justify-content-center no-print"><div class="expand-op mr-2 ${expanded ? "open" : ""}"><button type="button" data-target="#collapse_${orderId}" aria-controls="collapse_${orderId}" data-toggle="collapse" aria-expanded="${expanded ? "true" : "false"}" aria-label="${label}" class="btn text-secondary p-0 no-print" id="expand_order_product_${orderId}" data-order_id="${orderId}" data-order-collapse="${orderId}"><span class="ops-order-collapse-icon ${iconClass}" aria-hidden="true"></span></button></div><label class="checkbox d-block "><input type="checkbox" name="order_check[]" id="checkbox_${orderId}" value="${orderId}" class="ace"><span class="lbl"></span></label></div>`;
+  return `<div class="custom_checkBox d-flex align-items-center justify-content-center no-print"><div class="expand-op mr-2 ${expanded ? "open" : ""}"><button type="button" data-target="#collapse_${orderId}" aria-controls="collapse_${orderId}" data-toggle="collapse" aria-expanded="${expanded ? "true" : "false"}" aria-label="${label}" class="btn text-secondary p-0 no-print" id="expand_order_product_${orderId}" data-order_id="${orderId}" data-order-collapse="${orderId}"><i class="far ${iconClass}"></i></button></div><label class="checkbox d-block "><input type="checkbox" name="order_check[]" id="checkbox_${orderId}" value="${orderId}" class="ace"><span class="lbl"></span></label></div>`;
 }
 
 function proposedOrderIdCell(record) {
@@ -2820,16 +2820,99 @@ function applyHash() {
   setOpenMenuForPage();
 }
 
-document.addEventListener("click", event => {
-  const orderCollapseAction = event.target.closest(".ops-proposed-orders-page [data-order-collapse]");
-  if (orderCollapseAction) {
-    event.preventDefault();
-    const orderId = orderCollapseAction.dataset.orderCollapse;
-    OPS.orderCollapse[orderId] = !isProposedOrderExpanded(orderId);
-    render();
-    return;
+function orderProductsCollapse(orderId) {
+  return document.getElementById(`collapse_oid:${orderId}`);
+}
+
+function setOrderCollapseIcon(icon, expanded) {
+  if (!icon) return;
+  icon.classList.remove("fa-square-plus", "fa-square-minus");
+  icon.classList.add(expanded ? "fa-square-minus" : "fa-square-plus");
+  if (!icon.classList.contains("far")) icon.classList.add("far");
+}
+
+function orderButtonId(button) {
+  if (!button) return "";
+  if (button.dataset.orderCollapse) return button.dataset.orderCollapse;
+  if (button.dataset.order_id) return button.dataset.order_id;
+  return button.id.replace(/^expand_order_product_/, "");
+}
+
+function setOrderCollapseState(orderId, expanded) {
+  const collapse = orderProductsCollapse(orderId);
+  if (!collapse) return;
+  collapse.classList.toggle("show", expanded);
+  const button = document.getElementById(`expand_order_product_${orderId}`);
+  if (button) {
+    button.setAttribute("aria-expanded", expanded ? "true" : "false");
+    setOrderCollapseIcon(button.querySelector("i"), expanded);
+    button.closest(".expand-op")?.classList.toggle("open", expanded);
+  }
+  OPS.orderCollapse[String(orderId)] = expanded;
+}
+
+function orderIdsInScope(scope) {
+  return Array.from(scope.querySelectorAll(".order-product-view .collapse[id^='collapse_oid:']"))
+    .map(collapse => collapse.id.replace("collapse_oid:", ""));
+}
+
+function syncOrderExpandAll(scope) {
+  const ids = orderIdsInScope(scope);
+  const allExpanded = ids.length > 0 && ids.every(orderId => orderProductsCollapse(orderId)?.classList.contains("show"));
+  const control = scope.querySelector("#expand_all_order_product");
+  if (!control) return;
+  control.setAttribute("aria-expanded", allExpanded ? "true" : "false");
+  control.closest(".expand-all")?.classList.toggle("open", allExpanded);
+  setOrderCollapseIcon(control.querySelector("i"), allExpanded);
+}
+
+function toggleOrderCollapse(button) {
+  const orderId = orderButtonId(button);
+  const collapse = orderProductsCollapse(orderId);
+  if (!orderId || !collapse) return false;
+  setOrderCollapseState(orderId, !collapse.classList.contains("show"));
+  syncOrderExpandAll(button.closest(".ops-proposed-orders-page, .order_listing_view, .page") || document);
+  return true;
+}
+
+function toggleAllOrderProducts(control) {
+  const scope = control.closest(".ops-proposed-orders-page, .order_listing_view, .page") || document;
+  const ids = orderIdsInScope(scope);
+  if (!ids.length) return false;
+  const allExpanded = ids.every(orderId => orderProductsCollapse(orderId)?.classList.contains("show"));
+  ids.forEach(orderId => setOrderCollapseState(orderId, !allExpanded));
+  syncOrderExpandAll(scope);
+  return true;
+}
+
+function consumeOrderCollapseEvent(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation?.();
+}
+
+function handleOrderCollapseClick(event) {
+  const orderExpandAllAction = event.target.closest("#expand_all_order_product");
+  if (orderExpandAllAction && toggleAllOrderProducts(orderExpandAllAction)) {
+    consumeOrderCollapseEvent(event);
+    return true;
   }
 
+  const orderCollapseAction = event.target.closest("[data-order-collapse], [id^='expand_order_product_']");
+  if (orderCollapseAction) {
+    const isOrderCollapse = orderCollapseAction.closest(".ops-proposed-orders-page, .order_listing_view, .page");
+    if (isOrderCollapse && toggleOrderCollapse(orderCollapseAction)) {
+      consumeOrderCollapseEvent(event);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+document.addEventListener("click", handleOrderCollapseClick, true);
+
+document.addEventListener("click", event => {
   const orderViewAction = event.target.closest("[data-order-view]");
   if (orderViewAction) {
     event.preventDefault();

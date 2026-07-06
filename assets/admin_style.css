@@ -670,8 +670,10 @@
 .gx-sim .fa-sliders{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-sliders.svg");}
 .gx-sim .fa-sort-amount-up{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-arrow-up-short-wide-regular.svg");}
 .gx-sim .fa-spinner{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-spinner.svg");}
-.gx-sim .fa-square-minus{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-times-circle-line.svg");}
+.gx-sim .fa-square-minus{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-square-minus.svg");}
 .gx-sim .fa-square-plus{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-square-plus.svg");}
+.gx-sim .far.fa-square-minus{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-square-minus.svg");}
+.gx-sim .far.fa-square-plus{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-square-plus-lightweight.svg");}
 .gx-sim .fa-star{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-star.svg");}
 .gx-sim .fa-sync{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-sync.svg");}
 .gx-sim .fa-sync-alt{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-sync-alt.svg");}
@@ -722,8 +724,3 @@
 .gx-sim .fa-store{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-store.svg");}
 .gx-sim .fa-templates{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-templates.svg");}
 .gx-sim .fa-boxes{--ops-icon-url:url("../icon-mapping/extracted-svgs/ops-fa-boxes.svg");}
-
-.gx-sim .ops-proposed-orders-page [data-order-collapse]{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;line-height:1;}
-.gx-sim .ops-proposed-orders-page .ops-order-collapse-icon{display:inline-block;width:12px;height:12px;background-color:currentColor;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;}
-.gx-sim .ops-proposed-orders-page .ops-order-collapse-icon-plus{-webkit-mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-plus.svg");mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-plus.svg");}
-.gx-sim .ops-proposed-orders-page .ops-order-collapse-icon-minus{-webkit-mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-minus.svg");mask-image:url("../icon-mapping/extracted-svgs/ops-fa-square-minus.svg");}
