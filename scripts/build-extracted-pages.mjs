@@ -251,6 +251,13 @@ function extractStandaloneBody(html) {
   return body.trim();
 }
 
+function extractedContentFragment(html) {
+  if (/<(?:!doctype|html|body)\b/i.test(html)) {
+    return extractPageContent(html) || extractStandaloneBody(html) || html;
+  }
+  return html;
+}
+
 function cleanExtractedContent(content, fileRouteMap) {
   let cleaned = content
     .replace(/<script\b[\s\S]*?<\/script>/gi, "")
@@ -280,6 +287,12 @@ function cleanExtractedContent(content, fileRouteMap) {
   cleaned = cleaned.replace(/\bhref=(["'])#([^"']+)\1/gi, 'href="javascript:void(0)" data-tab-target="$2"');
 
   cleaned = cleaned.replace(/\bsrc=["']https?:\/\/(?:staging\.)?visualgraphx\.com\/([^"']+)["']/gi, 'src="https://staging.visualgraphx.com/$1"');
+
+  cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/([^"'<>\\\s]+\.php)([^"'<>\\\s]*)/gi, (full, file) => {
+    const base = path.basename(file, ".php");
+    const route = fileRouteMap.get(base) || routeAliases[base] || fallbackRoute(base);
+    return `#current/${route}`;
+  });
 
   return cleaned.trim();
 }
@@ -341,7 +354,7 @@ function loadTabStates(fileRouteMap) {
       continue;
     }
 
-    const rawContent = fs.readFileSync(contentPath, "utf8");
+    const rawContent = extractedContentFragment(fs.readFileSync(contentPath, "utf8"));
     const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
     const breadcrumbsRel = manifest.files?.breadcrumbsRenderedHtml;
     const breadcrumbsPath = breadcrumbsRel ? path.join(tabExtractionRoot, breadcrumbsRel) : "";
@@ -448,7 +461,7 @@ for (const file of allFiles) {
   if (!fs.existsSync(sourcePath)) continue;
   const sourceKind = hasRendered ? "rendered" : "raw";
   const html = fs.readFileSync(sourcePath, "utf8");
-  const rawContent = hasRendered ? html : extractPageContent(html);
+  const rawContent = hasRendered ? extractedContentFragment(html) : extractPageContent(html);
   const bodyHtml = cleanExtractedContent(rawContent, fileRouteMap);
   const breadcrumbsPath = hasRendered && fs.existsSync(path.join(breadcrumbsDir, file))
     ? path.join(breadcrumbsDir, file)

@@ -126,6 +126,10 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `#current/payment-request` tab `Completed`;
   - `#current/cms-pages` tab `Dynamic Pages`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
+- Current OPS generated-route smoke on 2026-07-06:
+  - `121/121` generated Current OPS routes render locally without missing extracted roots, route mismatches, simulator fallback-body warnings, or thin renders.
+  - Static generated-bundle scan found `0` full-document bodies/tab states and `0` remaining `staging.visualgraphx.com/admin` or `visualgraphx.com/admin` URL references.
+  - `relogin` is excluded as a non-admin re-login endpoint; `html-help` uses its first captured tab state as the route body because the base page-content fragment was empty.
 - Dashboard quick-link cards were corrected to OPS-like fixed dimensions, rounded corners, and thicker colored top borders.
 - Sidebar icon/text spacing was corrected.
 - Proposed notes were moved into a bottom dock and draggable modeless note window.
