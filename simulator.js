@@ -410,7 +410,6 @@ const pageAliases = {
 };
 
 const proposedExtractedPageAliases = {
-  "add-quote": "add-order",
   "store-credit": "reward-points",
   "country-states": "countries",
   "web-optimization": "image-optimization",
@@ -418,6 +417,10 @@ const proposedExtractedPageAliases = {
   "order-exports": "export-api-orders",
   "studio-language": "studio-language-text",
   "system-log": "system-logs",
+};
+
+const extractedPageAliases = {
+  "add-quote": "quote-request",
 };
 
 const proposedExactExtractedPages = new Set([
@@ -902,7 +905,10 @@ function content() {
 }
 
 function extractedPageFor(page) {
-  return window.OPS_EXTRACTED_PAGES?.[page];
+  const sourcePage = extractedPageAliases[page] || page;
+  const extracted = window.OPS_EXTRACTED_PAGES?.[sourcePage];
+  if (!extracted || sourcePage === page) return extracted;
+  return { ...extracted, route: page, sourceRoute: sourcePage };
 }
 
 function extractedOpsPage(page) {

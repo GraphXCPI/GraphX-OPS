@@ -185,6 +185,10 @@ const invalidExtractedSlugs = new Set([
   "template_manager-717761"
 ]);
 
+const validFragmentSlugs = new Set([
+  "product_popover"
+]);
+
 function stripNumberAndExt(filename) {
   return filename.replace(/^\d+-/, "").replace(/\.html$/, "");
 }
@@ -791,7 +795,7 @@ function auditPage({ file, slug, route, rawContent, bodyHtml, sourceKind }) {
   const missing = Object.entries(checks).filter(([, ok]) => !ok).map(([key]) => key);
   let status = "ok";
   if (!checks.hasPageContent || !checks.hasVisibleBody) status = "reextract";
-  else if (!checks.hasPageHeader && !checks.hasTable && !checks.hasFormControls && !checks.hasRowsOrPanels) status = "review";
+  else if (!validFragmentSlugs.has(slug) && !checks.hasPageHeader && !checks.hasTable && !checks.hasFormControls && !checks.hasRowsOrPanels) status = "review";
 
   return {
     file,

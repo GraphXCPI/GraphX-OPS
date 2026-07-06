@@ -126,6 +126,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - safe capture roots loaded `178/182` available safe pages plus `93/93` captured tab states;
   - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
+  - the Current/Proposed `add-quote` simulator route now renders the captured OPS `quote-request` source page so Add New Quote no longer falls back to the generic quotes screen or the Add Order form;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
   - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign` now use the live Tritium RTM75/PKM150 template flow;
   - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` is a file-download endpoint on live and should not be committed as a customer PDF artifact.
@@ -138,6 +139,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - safe action/detail routes `#current/order-action`, `#current/quote-request`, `#current/product-action`, `#current/theme-css-action`, `#current/user-action`, `#current/workflow-listing`, `#current/product-popover`, `#current/template-manager-design`, and `#current/quote-product-assign-printer`.
   - direct route checks also covered `#current/sales-agents`, `#current/sales-order-details`, `#current/sales-order-product-details`, `#current/sales-order-summary`, `#current/schemas`, and `#current/seo-global`.
   - targeted retry verification covered `#current/send-custom-mail-popup` and confirmed `#proposed/send-custom-mail-popup` preserves the same OPS route because no proposed delta exists.
+  - Add New Quote verification covered `#current/add-quote` and `#proposed/add-quote`; both render the captured OPS Add New Quote form while preserving the visible `add-quote` route.
   - live-only template/block route verification covered `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign`; each rendered the live Tritium RTM75/PKM150 content locally with `0` live admin links.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
