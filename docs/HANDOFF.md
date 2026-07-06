@@ -154,6 +154,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - `#current/template-manager-duplicate` was verified from the live-only capture `7923-template_manager_duplicate.html`; clicking `Remove Duplicate Templates` switched the local live tab pane without using the older staging tab-state DOM.
   - `#proposed/template-manager-duplicate` was verified to preserve the same live OPS capture because no Proposed delta exists for this route.
   - `#current/dashboard` was verified from the captured OPS dashboard `121-welcome.html`, and `#proposed/dashboard` was verified to remain the simulator Proposed dashboard.
+  - topbar user menu verification covered the real OPS dropdown items `Set favorite links`, `Change Password`, and `Logout`; `Set favorite links` routes locally to `#current/admin-favourite-link` from `003-admin_favourite_link.html`, `Change Password` routes locally to `#current/changepassword` from `008-changepassword.html`, and mode switching preserves Change Password at `#proposed/changepassword`.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:

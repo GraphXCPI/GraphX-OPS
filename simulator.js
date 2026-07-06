@@ -10,6 +10,7 @@ const OPS = {
   proposalContext: { keys: [], messages: [] },
   orderView: "all",
   orderCollapse: {},
+  userMenuOpen: false,
 };
 
 window.OPS = OPS;
@@ -715,12 +716,33 @@ function topbar() {
               <li class="transparent d-none d-md-flex nav-item opclso align-items-center btn-success" id="lchat">
                 <a href="#" class="px-2 lz_cbl"><i class="fa fa-2x fa-comments text-white"></i></a>
               </li>
-              <li class="nav-item user-dropdown d-flex d-md-block border-right-0">
-                <a href="#" class="dropdown-toggle nav-link">
+              <li class="nav-item dropdown user-dropdown d-flex d-md-block border-right-0 ${OPS.userMenuOpen ? "show" : ""}">
+                <a href="#" data-user-menu-toggle class="dropdown-toggle nav-link" aria-haspopup="true" aria-expanded="${OPS.userMenuOpen ? "true" : "false"}">
                   <i class="fa fa-user mr-2"></i>
                   <span class="user-info"><small>Welcome, </small> ${h(OPS.loginAs)}</span>
                   <i class="ace-icon fa fa-caret-down ml-2 d-none d-lg-inline-block"></i>
                 </a>
+                <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-caret dropdown-close py-0 border-left ${OPS.userMenuOpen ? "show" : ""}">
+                  <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                    <a href="#${OPS.mode}/admin-favourite-link" data-page="admin-favourite-link">
+                      <i class="ace-icon fa fa-star"></i>
+                      <span class="d-none d-md-inline-block">Set favorite links</span>
+                    </a>
+                  </li>
+                  <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                    <a href="#${OPS.mode}/changepassword" data-page="changepassword">
+                      <i class="ace-icon fa fa-user"></i>
+                      <span class="d-none d-md-inline-block">Change Password</span>
+                    </a>
+                  </li>
+                  <li class="dropdown-divider brc-primary-l2 my-0 d-none d-md-block"></li>
+                  <li class="dropdown-item btn btn-outline-text-grey btn-h-lighter-primary btn-a-lighter-primary">
+                    <a href="#" id="logout-btn" data-no-route>
+                      <i class="ace-icon fa fa-power-off"></i>
+                      <span class="d-none d-md-inline-block">Logout</span>
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -3089,6 +3111,22 @@ function handleOrderCollapseClick(event) {
 document.addEventListener("click", handleOrderCollapseClick, true);
 
 document.addEventListener("click", event => {
+  const userMenuToggle = event.target.closest("[data-user-menu-toggle]");
+  if (userMenuToggle) {
+    event.preventDefault();
+    OPS.userMenuOpen = !OPS.userMenuOpen;
+    render();
+    return;
+  }
+
+  const inertAction = event.target.closest("[data-no-route]");
+  if (inertAction) {
+    event.preventDefault();
+    OPS.userMenuOpen = false;
+    render();
+    return;
+  }
+
   const orderViewAction = event.target.closest("[data-order-view]");
   if (orderViewAction) {
     event.preventDefault();
@@ -3139,6 +3177,7 @@ document.addEventListener("click", event => {
       OPS.page = nextPage;
       OPS.mode = mode;
       if (mode !== "proposed") OPS.proposalWindowOpen = false;
+      OPS.userMenuOpen = false;
       setOpenMenuForPage();
       syncHash();
       render();
@@ -3168,6 +3207,7 @@ document.addEventListener("click", event => {
   const page = event.target.closest("[data-page]")?.dataset.page;
   if (page) {
     OPS.modeSwitchReturn = null;
+    OPS.userMenuOpen = false;
     OPS.page = page;
     const menu = (OPS.mode === "current" ? currentMenu : proposedMenu).find(group => isActiveGroupForPage(group, page));
     if (menu) OPS.openMenu = menu.id;
