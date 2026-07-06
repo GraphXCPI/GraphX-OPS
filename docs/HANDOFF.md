@@ -122,12 +122,13 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - source-derived tab states are clearly marked in their manifests;
   - `scripts/capture-staging-safe-pages.mjs` was added for resumed safe-page capture once Chrome Apple Events JavaScript permission and staging auth are available.
 - Final generated bundle status from the 2026-07-06 CDP merge:
-  - `ops-extracted-pages.js` generated `289` extracted OPS routes;
-  - safe capture roots loaded `175/179` available safe pages plus `93/93` captured tab states;
+  - `ops-extracted-pages.js` generated `290` extracted OPS routes;
+  - safe capture roots loaded `178/182` available safe pages plus `93/93` captured tab states;
   - static generated-bundle scan found `0` live `visualgraphx.com/admin` URLs and `0` full-document bodies in generated route content;
   - `product_popover` is decoded from OPS JSON popup payload, and `template_manager_design` falls back to usable full rendered DOM because it does not render inside `.page-content`;
   - `send_custom_mail_popup` was recaptured with a valid staging order data ID and is now available as `#current/send-custom-mail-popup`;
-  - four skipped safe queue entries remain in the audit: the original errored `quote_request` and original empty-`dataId` `send_custom_mail_popup` entries are superseded by loaded retry captures, while `template_manage_block_properties_listing` and `user_print_ready_file` still need alternate valid source IDs.
+  - live-only template/block pages were recaptured read-only from `visualgraphx.com` because staging returns `Temporary Down`: `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign` now use the live Tritium RTM75/PKM150 template flow;
+  - four skipped safe queue entries remain in the audit: the original errored `quote_request`, original empty-`dataId` `send_custom_mail_popup`, and original staging `template_manage_block_properties_listing` entries are superseded by loaded retry/live captures, while `user_print_ready_file` still needs an alternate valid source ID.
 - Browser verification on 2026-07-06 covered:
   - `#current/order-status` tabs `Order Product Status` and `Order Product Status Rules`;
   - `#current/product-categories` tab `Category group`;
@@ -137,6 +138,7 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
   - safe action/detail routes `#current/order-action`, `#current/quote-request`, `#current/product-action`, `#current/theme-css-action`, `#current/user-action`, `#current/workflow-listing`, `#current/product-popover`, `#current/template-manager-design`, and `#current/quote-product-assign-printer`.
   - direct route checks also covered `#current/sales-agents`, `#current/sales-order-details`, `#current/sales-order-product-details`, `#current/sales-order-summary`, `#current/schemas`, and `#current/seo-global`.
   - targeted retry verification covered `#current/send-custom-mail-popup` and confirmed `#proposed/send-custom-mail-popup` preserves the same OPS route because no proposed delta exists.
+  - live-only template/block route verification covered `#current/template-block-manager`, `#current/template-manage-block-properties-listing`, and `#current/template-properties-assign`; each rendered the live Tritium RTM75/PKM150 content locally with `0` live admin links.
   - mode switching was verified from `#current/order-action` to `#proposed/order-action` and back to `#current/order-action`.
   - Evidence screenshots: `screenshots/qa-current-*-2026-07-06.png`.
 - Current OPS generated-route smoke on 2026-07-06:
