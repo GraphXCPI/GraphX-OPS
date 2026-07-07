@@ -810,6 +810,41 @@ function anonymizeExtractedHtml(html) {
     .replace(/\b(user_login_type|LoginUserId|AdminUserId|OrderId|UserId|CustomerId|CompanyId)=([^&"'<>\s]+)/gi, "$1=demo");
 }
 
+// Real client/partner names and media hosts that appear inside captured OPS HTML.
+// Keep this list in sync with the manual sample data in simulator.js.
+const CLIENT_TERMS_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "anonymize-client-terms.json");
+const CLIENT_TERMS = fs.existsSync(CLIENT_TERMS_PATH)
+  ? JSON.parse(fs.readFileSync(CLIENT_TERMS_PATH, "utf8"))
+  : { pairs: [], orgs: [], persons: [], addresses: [] };
+if (!CLIENT_TERMS.orgs.length) {
+  console.warn("WARNING: scripts/anonymize-client-terms.json missing or empty — rebuild output will NOT be fully anonymized. This file is local-only (gitignored) because it lists the real names it scrubs.");
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function boundedRule(name, replacement) {
+  const tail = /\w$/.test(name) ? "\\b" : "";
+  return [new RegExp(`\\b${escapeRegExp(name)}${tail}`, "gi"), replacement];
+}
+
+// Real client/partner names and media hosts inside captured OPS HTML. All real
+// names live in the local-only terms file; only generic rules are inline here.
+const ANON_TERM_RULES = [
+  [/https?:\/\/ctmediaimg[^"'\s<>)\\]+/gi, "./assets/product-category-images/custom-graphics.jpg"],
+  ...(CLIENT_TERMS.pairs || []).map(([name, replacement]) => boundedRule(name, replacement)),
+  ...(CLIENT_TERMS.orgs || []).map((name, index) => boundedRule(name, `Demo Client ${String(index + 1).padStart(3, "0")}`)),
+  ...(CLIENT_TERMS.persons || []).map((name, index) => boundedRule(name, `Demo Person ${index + 1}`)),
+  ...(CLIENT_TERMS.addresses || []).map(addr => [new RegExp(escapeRegExp(addr), "gi"), "1200 Demo St"]),
+];
+
+function applyAnonTermRules(value) {
+  let text = String(value || "");
+  for (const [pattern, replacement] of ANON_TERM_RULES) text = text.replace(pattern, replacement);
+  return text;
+}
+
 function anonymizeSensitiveText(value) {
   let emailIndex = 0;
   let phoneIndex = 0;
@@ -817,13 +852,7 @@ function anonymizeSensitiveText(value) {
   let userIndex = 0;
   let companyIndex = 0;
 
-  return String(value || "")
-    .replace(/KunglJungle\w*/gi, "DemoStore")
-    .replace(/\bRahul Shekhawat\b/gi, "Demo Designer 01")
-    .replace(/\bChristian De Ramos\b/gi, "Demo Admin")
-    .replace(/\bPriyank Patel\b/gi, "Demo Designer 02")
-    .replace(/\bAlex Loudenslager\b/gi, "Demo Customer 01")
-    .replace(/\bDrew Neverett\b/gi, "Demo Customer 02")
+  return applyAnonTermRules(value)
     .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, () => {
       emailIndex += 1;
       return `ops.customer${String(emailIndex).padStart(2, "0")}@example.test`;
@@ -851,12 +880,12 @@ function anonymizeSensitiveText(value) {
       userIndex += 1;
       return `${label}Demo User ${userIndex}`;
     })
-    .replace(/(<option\b[^>]*\bvalue=(["'])?\d+\2?[^>]*\btitle=)(["'])([^"']{3,140})(\3[^>]*>)([^<]{3,140})(<\/option>)/gi, (full, prefix, valueQuote, titleQuote, title, middle, label, close) => {
+    .replace(/(<option\b[^>]*\bvalue=(["'])?[\d_]+\2?[^>]*\btitle=)(["'])([^"']{3,140})(\3[^>]*>)([^<]{3,140})(<\/option>)/gi, (full, prefix, valueQuote, titleQuote, title, middle, label, close) => {
       if (isStructuralOptionLabel(title) || isStructuralOptionLabel(label)) return full;
       companyIndex += 1;
       return `${prefix}${titleQuote}Demo Company ${companyIndex}${middle}Demo Company ${companyIndex}${close}`;
     })
-    .replace(/<option\b(?=[^>]*\bvalue=(["'])?\d+\1?)(?=[^>]*\btitle=(["'])([^"']{3,140})\2)([^>]*)>([^<]{3,140})(<\/option>)/gi, (full, valueQuote, titleQuote, title, attrs, label, close) => {
+    .replace(/<option\b(?=[^>]*\bvalue=(["'])?[\d_]+\1?)(?=[^>]*\btitle=(["'])([^"']{3,140})\2)([^>]*)>([^<]{3,140})(<\/option>)/gi, (full, valueQuote, titleQuote, title, attrs, label, close) => {
       if (isStructuralOptionLabel(title) || isStructuralOptionLabel(label)) return full;
       companyIndex += 1;
       const updatedAttrs = attrs.replace(/\btitle=(["'])([^"']*)\1/i, `title=${titleQuote}Demo Company ${companyIndex}${titleQuote}`);
@@ -872,6 +901,24 @@ function anonymizeSensitiveText(value) {
       if (/^\s*(view|edit|delete|download|action|reset|search|select|new|paid|unpaid|fulfilled)\s*$/i.test(text)) return full;
       userIndex += 1;
       return `${open}Demo User ${userIndex}${close}`;
+    })
+    .replace(/\bdata-tokens=(["'])[^"']*\1/gi, 'data-tokens=$1$1')
+    .replace(/(value=(["'])\d[\d_]*_)([A-Za-z][^"']{2,119})(\2)/gi, "$1Demo$4")
+    .replace(/\bMonica\b/g, "Demo Person 1")
+    .replace(/(class=(["'])lbl width-80[^"']*\2[^>]*data-original-title=(["']))([^"']{2,120})(\3[^>]*>)([^<]{0,120})(<)/gi, (full, prefix, q1, q2, title, middle, label, close) => {
+      if (/^(?:all|select|demo)/i.test(title)) return full;
+      companyIndex += 1;
+      return `${prefix}Demo Company ${companyIndex}${middle}Demo Company ${companyIndex}${close}`;
+    })
+    .replace(/(filter-option-inner-inner(["'])>)([^<]{2,140})(<)/gi, (full, prefix, quote, text, close) => {
+      if (/^\s*(?:all\b|select|demo|none|nothing|choose|[\d\s-]+$)/i.test(text)) return full;
+      companyIndex += 1;
+      return `${prefix}Demo Company ${companyIndex}${close}`;
+    })
+    .replace(/(data-id=(["'])user_list\2[^>]*title=(["']))([^"']{2,160})(\3)/gi, (full, prefix, q1, q2, title, close) => {
+      if (/^(?:all|select|demo)/i.test(title)) return full;
+      userIndex += 1;
+      return `${prefix}Demo User ${userIndex}${close}`;
     });
 }
 
@@ -879,11 +926,16 @@ function isStructuralOptionLabel(value) {
   return /^(?:all|select|common|orders|list orders|add new order|export\/api orders|order status|coupons \/ discount|store credit|unpaid orders|archive orders|quote management|view quotes|printer quotes|quote status|customer|website customers|newsletter subscribers|customer templates|store management|products|templates|content management|store personalization|seo|business partners|store configuration|designer studio|reports|admin)$/i.test(String(value || "").trim());
 }
 
+const SENSITIVE_TOOLTIP_PATTERN = new RegExp(
+  ["Visual Graphx", ...(CLIENT_TERMS.pairs || []).map(([name]) => escapeRegExp(name)), ...(CLIENT_TERMS.orgs || []).map(escapeRegExp)].join("|"),
+  "i"
+);
+
 function isLikelySensitiveTooltip(value) {
   const text = String(value || "").trim();
   if (!text || /^(?:edit|delete|view|copy|download|save|reset|search|print|action|mark as paid|send reminder|mark as cancel|toggle full screen|pin this page|help)$/i.test(text)) return false;
   if (/^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}(?:\s+\([^)]+\))?$/i.test(text)) return true;
-  return /\b(?:Visual Graphx|Position Sports|Silent-Aire|2CT Media|The Lab North America|Queen Creek|Ascend Graphics)\b/i.test(text);
+  return SENSITIVE_TOOLTIP_PATTERN.test(text);
 }
 
 function stripTemporaryDownFragments(html) {

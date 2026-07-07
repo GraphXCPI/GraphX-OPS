@@ -12,3 +12,6 @@ reference/handoff/GraphX-OPS-handoff/04_verification/
 
 # Local Claude Code session settings
 .claude/settings.local.json
+
+# Local-only anonymization term map (contains the real names it scrubs)
+scripts/anonymize-client-terms.json

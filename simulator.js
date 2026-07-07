@@ -1829,10 +1829,10 @@ function proposedOrderTabCount(view, records = proposedOrderRecords()) {
 
 function proposedOrderRecords() {
   const workflow = [
-    { view: "open", orderStatus: "New Order", statusClass: "badge-primary", amount: "$519.33", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-03-2026 08:03", due: "Order: 07-13-2026<br>Production: 07-08-2026", notify: "New Order", notifyClass: "badge-primary", productStatus: ["In Design", "Order Processing", "Order Review"], action: "Action", company: "The Lab North America Inc.", shipping: "Fedex Ground" },
-    { view: "open", orderStatus: "Order Review", statusClass: "badge-danger", amount: "$686.00", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-02-2026 14:47", due: "Order: 07-10-2026<br>Production: 07-07-2026", notify: "Order Review", notifyClass: "badge-warning text-dark", productStatus: ["Pending", "Order Processing", "Proof Required"], action: "Action", company: "Position Sports", shipping: "Will Call" },
-    { view: "fulfilled-unpaid", orderStatus: "Fulfilled", statusClass: "badge-info", amount: "$686.00", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-02-2026 14:45", due: "Order: 07-10-2026<br>Production: 07-07-2026", notify: "Payment Request", notifyClass: "badge-info", productStatus: ["Ready for Fulfillment", "Fulfilled", "Invoice Pending"], action: "Payment Request", company: "Position Sports", shipping: "Fedex Ground" },
-    { view: "closed-archived", orderStatus: "Order Completed", statusClass: "badge-success", amount: "$692.35", payment: "Paid", paymentClass: "badge-success", ordered: "07-02-2026 14:43", due: "Order: 07-10-2026<br>Archived: 07-05-2026", notify: "Archived", notifyClass: "badge-secondary", productStatus: ["Fulfilled", "Order Completed", "Paid"], action: "Archive", company: "Position Sports", shipping: "Fedex Ground" },
+    { view: "open", orderStatus: "New Order", statusClass: "badge-primary", amount: "$519.33", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-03-2026 08:03", due: "Order: 07-13-2026<br>Production: 07-08-2026", notify: "New Order", notifyClass: "badge-primary", productStatus: ["In Design", "Order Processing", "Order Review"], action: "Action", company: "Demo Labs NA Inc.", shipping: "Fedex Ground" },
+    { view: "open", orderStatus: "Order Review", statusClass: "badge-danger", amount: "$686.00", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-02-2026 14:47", due: "Order: 07-10-2026<br>Production: 07-07-2026", notify: "Order Review", notifyClass: "badge-warning text-dark", productStatus: ["Pending", "Order Processing", "Proof Required"], action: "Action", company: "Demo Sports", shipping: "Will Call" },
+    { view: "fulfilled-unpaid", orderStatus: "Fulfilled", statusClass: "badge-info", amount: "$686.00", payment: "Unpaid", paymentClass: "badge-danger", ordered: "07-02-2026 14:45", due: "Order: 07-10-2026<br>Production: 07-07-2026", notify: "Payment Request", notifyClass: "badge-info", productStatus: ["Ready for Fulfillment", "Fulfilled", "Invoice Pending"], action: "Payment Request", company: "Demo Sports", shipping: "Fedex Ground" },
+    { view: "closed-archived", orderStatus: "Order Completed", statusClass: "badge-success", amount: "$692.35", payment: "Paid", paymentClass: "badge-success", ordered: "07-02-2026 14:43", due: "Order: 07-10-2026<br>Archived: 07-05-2026", notify: "Archived", notifyClass: "badge-secondary", productStatus: ["Fulfilled", "Order Completed", "Paid"], action: "Archive", company: "Demo Sports", shipping: "Fedex Ground" },
   ];
   return orders.map((order, index) => ({ order, ...workflow[index % workflow.length] }));
 }
@@ -2355,31 +2355,31 @@ function productCategoriesPage() {
     return `./assets/product-category-images/${categoryImageName(row.title)}.${ext}`;
   };
   const categoryRows = [
-    { sr: 1, title: "All [ featured ]", group: "Featured", sort: "-10", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Decals-General-Performance_1_1752668747185__1___1__jpg_1769184948518.jpg" },
-    { sr: 2, title: "Yellowstone Landscape", group: "Custom", sort: "-1" },
+    { sr: 1, title: "All [ featured ]", group: "Featured", sort: "-10", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 2, title: "Evergreen Landscape", group: "Custom", sort: "-1" },
     { sr: 3, title: "Vehicle Kits", group: "Custom", sort: "-1" },
     { sr: 4, title: "Vehicle Kit Parts", group: "Custom", sort: "-1" },
-    { sr: 5, title: "ER2", group: "Custom", sort: "-1", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/2022_ER2_LOGO_1711890989288.png" },
-    { sr: 6, title: "RCS", group: "Custom", sort: "-1" },
-    { sr: 7, title: "Town of Queen Creek", group: "Custom", sort: "-1", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/12in_-_TOQC_Logo_1718972917609.jpg" },
-    { sr: 8, title: "PAI Products", group: "Custom", sort: "-1" },
+    { sr: 5, title: "ERX", group: "Custom", sort: "-1" },
+    { sr: 6, title: "RCG", group: "Custom", sort: "-1" },
+    { sr: 7, title: "Town of Cedar Creek", group: "Custom", sort: "-1" },
+    { sr: 8, title: "PMI Products", group: "Custom", sort: "-1" },
     { sr: 9, title: "Visual Graphx", group: "Custom", sort: "-1" },
-    { sr: 10, title: "Silent-Aire", group: "Custom", sort: "-1" },
+    { sr: 10, title: "Stillaire", group: "Custom", sort: "-1" },
     { sr: 11, title: "IT Printing", group: "Custom", sort: "-1" },
-    { sr: 12, title: "SRS", group: "Custom", sort: "-1", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Oval_SRS_Regulator_Decal_-_2_5x1_25_1752854901176.png" },
-    { sr: 13, title: "Decals", group: "Decals", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Decals_1756197957902.jpg" },
-    { sr: 14, title: "Architectural Signage", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Architectural-Signage_1754564415171.jpg" },
-    { sr: 15, title: "Commercial Advertising", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Commercial-Advertising_1756197807588.jpg" },
-    { sr: 16, title: "Construction & Industrial", group: "by-industry", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Construction-_-Industrial_1756197835124.jpg" },
-    { sr: 17, title: "Job Site & Safety Signage", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Group_1000006313_1751367898881_jpg_1769184465704.jpg" },
-    { sr: 18, title: "Corporate & Office Branding", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Corporate___Office_Branding_1756197861376.jpg" },
-    { sr: 19, title: "Custom Graphics", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Custom_Graphics_1756197922266.jpg" },
-    { sr: 20, title: "Education & Schools", group: "by-industry", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Education___Schools_1756198011592.jpg" },
-    { sr: 21, title: "Event Signage [ Event Signage ]", group: "by-industry", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Events_1754481837770.jpg" },
-    { sr: 22, title: "Fleet Graphics", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Fleet-Graphics_1756964232490.jpg" },
-    { sr: 23, title: "Small Business Advertising [ Small Business Advertising ]", group: "by-industry", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Banner-Stand-Film_1_1752665660199_jpg_1769184753950.jpg" },
-    { sr: 24, title: "Signs & Graphics", group: "by-use-case", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Decals-Floor-_Heavy-Duty__1_1752668642343_jpg_1769184633589.jpg" },
-    { sr: 25, title: "Healthcare & Public Services [ Healthcare & Public Services ]", group: "by-industry", sort: "0", img: "https://ctmediaimg.s3.us-west-1.amazonaws.com/ctmediaon/images/product/Healthcare-_-Public-Services_1756198166879.jpg" },
+    { sr: 12, title: "SRX", group: "Custom", sort: "-1" },
+    { sr: 13, title: "Decals", group: "Decals", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 14, title: "Architectural Signage", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 15, title: "Commercial Advertising", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 16, title: "Construction & Industrial", group: "by-industry", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 17, title: "Job Site & Safety Signage", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 18, title: "Corporate & Office Branding", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 19, title: "Custom Graphics", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 20, title: "Education & Schools", group: "by-industry", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 21, title: "Event Signage [ Event Signage ]", group: "by-industry", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 22, title: "Fleet Graphics", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 23, title: "Small Business Advertising [ Small Business Advertising ]", group: "by-industry", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 24, title: "Signs & Graphics", group: "by-use-case", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
+    { sr: 25, title: "Healthcare & Public Services [ Healthcare & Public Services ]", group: "by-industry", sort: "0", img: "./assets/product-category-images/custom-graphics.jpg" },
   ];
   const groupRows = [
     { sr: 1, title: "Featured", key: "featured", sort: "-10" },
@@ -3112,13 +3112,13 @@ function statusesWorkflowPage() {
 
 function customerWorkspaceTabPage() {
   const key = OPS.page;
-  const head = pageHead("Customer Details \u25ab Prashant Parihar", ["Edit", "Back"]);
+  const head = pageHead("Customer Details \u25ab Pat Rivera", ["Edit", "Back"]);
   proposalMarkup("customer-workspace");
   let body = "";
   if (key === "customer-workspace-orders") {
     body = currentOpsDataTable(["ID", "Order Details", "Order Date & Amount", "Status", "Action"], [
-      [`<a href="#proposed/orders" data-page="orders">3061</a>`, "Order Name : Radix Storefront Decals<br><small>prashant.radixweb@gmail.com</small>", `06-30-2026 11:12<br><span class="text-primary">$412.60</span> <span class="badge badge-danger">Unpaid</span>`, `<span class="badge badge-primary">New Order</span>`, actionButton("Action")],
-      [`<a href="#proposed/orders" data-page="orders">2993</a>`, "Order Name : Radix Window Perf<br><small>prashant.radixweb@gmail.com</small>", `06-21-2026 09:40<br><span class="text-primary">$188.00</span> <span class="badge badge-success">Paid</span>`, `<span class="badge badge-success">In Production</span>`, actionButton("Action")],
+      [`<a href="#proposed/orders" data-page="orders">3061</a>`, "Order Name : Riverside Storefront Decals<br><small>pat.rivera@example.test</small>", `06-30-2026 11:12<br><span class="text-primary">$412.60</span> <span class="badge badge-danger">Unpaid</span>`, `<span class="badge badge-primary">New Order</span>`, actionButton("Action")],
+      [`<a href="#proposed/orders" data-page="orders">2993</a>`, "Order Name : Riverside Window Perf<br><small>pat.rivera@example.test</small>", `06-21-2026 09:40<br><span class="text-primary">$188.00</span> <span class="badge badge-success">Paid</span>`, `<span class="badge badge-success">In Production</span>`, actionButton("Action")],
     ], "ops-customer-ws-orders") + changeNote("The Orders tab lists this customer's orders with the same columns and controls as the master Orders list, pre-filtered to the customer.");
   } else if (key === "customer-workspace-quotes") {
     body = `<div class="alert alert-warning"><i class="fa fa-exclamation-triangle pr-1"></i>No records found</div>` + changeNote("Quotes for this customer appear here with the master Quotes treatment; this customer has none yet.");
@@ -3139,20 +3139,20 @@ function customerWorkspaceTabPage() {
     </div>` + changeNote("Payment limits, invoices, store credit, and terms live on one tab instead of Reports and Store Credit screens.");
   } else if (key === "customer-workspace-proofs") {
     body = currentOpsDataTable(["Sr#", "Proof", "Order", "Sent", "Status", "Action"], [
-      ["1", "Radix Storefront Decals - Side A", `<a href="#proposed/orders" data-page="orders">3061</a>`, "06-30-2026", `<span class="badge badge-warning text-dark">Awaiting Approval</span>`, actionButton("Action")],
+      ["1", "Riverside Storefront Decals - Side A", `<a href="#proposed/orders" data-page="orders">3061</a>`, "06-30-2026", `<span class="badge badge-warning text-dark">Awaiting Approval</span>`, actionButton("Action")],
     ], "ops-customer-ws-proofs") + changeNote("Design Proofs shows this customer's proof activity from the existing Design Proofs system, in customer context.");
   } else if (key === "customer-workspace-templates") {
     body = currentOpsDataTable(["Sr#", "Template", "Product", "Last Updated", "Action"], [
-      ["1", "Radix Business Card v2", "Business Cards", "06-28-2026", actionButton("Action")],
+      ["1", "Riverside Business Card v2", "Business Cards", "06-28-2026", actionButton("Action")],
     ], "ops-customer-ws-templates") + changeNote("Customer Templates (saved designs) move into customer context from the Customer menu.");
   } else if (key === "customer-workspace-users") {
     body = currentOpsDataTable(["Sr#", "User", "Email", "Role", "Status", "Action"], [
-      ["1", "Prashant Parihar", "prashant.radixweb@gmail.com", "Primary", `<span class="badge badge-success">Active</span>`, actionButton("Action")],
+      ["1", "Pat Rivera", "pat.rivera@example.test", "Primary", `<span class="badge badge-success">Active</span>`, actionButton("Action")],
     ], "ops-customer-ws-users") + changeNote("B2B account users and store admin assignments for this customer are managed here without leaving customer context.");
   } else {
     body = currentOpsDataTable(["Sr#", "Type", "Address", "Default", "Action"], [
-      ["1", "Billing", "Radixweb, Ekyarth, B/H Bhagwati Nagar, Ahmedabad 380024", `<span class="badge badge-success">Yes</span>`, actionButton("Action")],
-      ["2", "Shipping", "601 Coppercreek Ct, Champaign, IL 61822", `<span class="badge badge-secondary">No</span>`, actionButton("Action")],
+      ["1", "Billing", "100 Demo Way, Suite 2, Springfield, IL 62701", `<span class="badge badge-success">Yes</span>`, actionButton("Action")],
+      ["2", "Shipping", "245 Commerce Dr, Springfield, IL 62702", `<span class="badge badge-secondary">No</span>`, actionButton("Action")],
     ], "ops-customer-ws-addresses") + changeNote("Both saved addresses stay editable from customer context.");
   }
   return `<section class="page ops-customer-workspace">
@@ -3163,7 +3163,7 @@ function customerWorkspaceTabPage() {
 }
 
 function storeWorkspacePage() {
-  return `<section class="page">${pageHead("Store Workspace » Konala", ["Save", "Save & Back", "Back"])}${proposalMarkup("store-workspace")}${storeWorkspaceTabs()}${storeWorkspaceBody()}${changeNote("Store context keeps focused tools beside the selected store while broad/global tools stay in their global areas.")}</section>`;
+  return `<section class="page">${pageHead("Store Workspace » Kestrel", ["Save", "Save & Back", "Back"])}${proposalMarkup("store-workspace")}${storeWorkspaceTabs()}${storeWorkspaceBody()}${changeNote("Store context keeps focused tools beside the selected store while broad/global tools stay in their global areas.")}</section>`;
 }
 
 function storeWorkspaceTabs() {
@@ -3197,21 +3197,21 @@ function storeWorkspaceBody() {
     "store-workspace-fields": ["Store Fields", ["Field Rules", "Required Customer Fields", "Checkout Fields"], "Store Field Rules"],
   };
   const [title, rows, sideTitle] = screens[key] || screens["store-workspace-view"];
-  return `<div class="grid two"><div>${panel(title, dataTable(["Area", "Scope", "Status", "Action"], rows.map(row => [row, "Konala store", "<span class=\"toggle on\"></span>", actionButton("Open")])))}</div><div>${panel(sideTitle, formRows(["Default", "Custom", "Store Override", "Status"]))}${panel("Focused Context", `<p>${title} is locked to the selected store. Global versions of these systems remain in their own broad menu sections.</p>`)}</div></div>`;
+  return `<div class="grid two"><div>${panel(title, dataTable(["Area", "Scope", "Status", "Action"], rows.map(row => [row, "Kestrel store", "<span class=\"toggle on\"></span>", actionButton("Open")])))}</div><div>${panel(sideTitle, formRows(["Default", "Custom", "Store Override", "Status"]))}${panel("Focused Context", `<p>${title} is locked to the selected store. Global versions of these systems remain in their own broad menu sections.</p>`)}</div></div>`;
 }
 
 function storeWorkspaceBuilderBody() {
   const builderAreas = ["Pages", "Links & Menus", "Sidebar Management", "Themes", "Account Pages", "Product Layout Builder", "Product Showcase"];
   const contentAreas = ["Website Logos", "Storefront Text References", "Banners", "Asset Manager", "Help Media", "SEO", "Form Management", "Breadcrumbs", "FAQs", "Testimonials"];
-  const areaRow = area => [area, "Konala store (locked)", "<span class=\"toggle on\"></span>", actionButton("Open")];
+  const areaRow = area => [area, "Kestrel store (locked)", "<span class=\"toggle on\"></span>", actionButton("Open")];
   return `<div class="grid two">
     <div>
       ${panel("Store Site Builder", dataTable(["Area", "Scope", "Status", "Action"], builderAreas.map(areaRow), "ops-store-builder-areas"))}
       ${panel("Content Management Group", dataTable(["Area", "Scope", "Status", "Action"], contentAreas.map(areaRow), "ops-store-builder-content"))}
     </div>
     <div>
-      ${panel("Focused Context", "<p>Every item opens forced to the Konala store so admins never hunt through global navigation. The global Site Builder menu keeps the broad versions of the same tools.</p>")}
-      ${panel("Store Actions", `<p><a href="#proposed/duplicate-store-data" data-page="duplicate-store-data" class="btn btn-info btn-sm rounded"><i class="fa fa-copy pr-1"></i> Duplicate Store Data</a></p><p class="mb-0">Launched from here, the source store is locked to Konala; only destination and sections are selectable.</p>`)}
+      ${panel("Focused Context", "<p>Every item opens forced to the Kestrel store so admins never hunt through global navigation. The global Site Builder menu keeps the broad versions of the same tools.</p>")}
+      ${panel("Store Actions", `<p><a href="#proposed/duplicate-store-data" data-page="duplicate-store-data" class="btn btn-info btn-sm rounded"><i class="fa fa-copy pr-1"></i> Duplicate Store Data</a></p><p class="mb-0">Launched from here, the source store is locked to Kestrel; only destination and sections are selectable.</p>`)}
     </div>
   </div>`;
 }

@@ -107,6 +107,15 @@ When verifying a screen, save new evidence under `screenshots/` unless a task ex
 - Do not batch all routes unless each route was actually checked.
 - Current/Proposed mode switching must preserve the current route.
 
+## Anonymization Policy (2026-07-06)
+
+- All published simulator data must be anonymized. The build pipeline enforces this: `scripts/build-extracted-pages.mjs` applies structural rules (emails, phones, option labels/titles/compound values, `data-tokens`, bootstrap-select faces, checkbox labels, `user_list` titles, remote `ctmediaimg` URLs) plus a client-name term map.
+- The term map lives in `scripts/anonymize-client-terms.json` — **local-only and gitignored**, because it necessarily lists the real names it scrubs (pairs, ~170 client orgs, persons, street addresses). Keep it beside the raw extraction folders; a rebuild without it prints a loud warning and produces non-anonymized output. Do not commit it.
+- The 2026-07-06 anonymization pass scrubbed the generated bundle (~60k replacements: dropdown options with compound `value="0_171"`-style values that the original pass missed, `data-tokens` search metadata, rendered select faces, client company names in table cells, person names, street addresses) and the hand-written sample data in `simulator.js` (customer workspace, category rows, store names).
+- Client logo/image assets were removed (`er2.png`, `srs.png`, `town-of-queen-creek.jpg`, `2ctmedia-*.png`); the affected category rows fall back to the OPS no-image placeholder.
+- `screenshots/`, `live-screenshots/`, and `output/playwright/` were purged — they were captured before anonymization and showed real customer data. Fresh evidence must be captured from the anonymized simulator (see `screenshots/qa-anonymized-*.png`). Old images remain in git history only.
+- **Git history still contains pre-anonymization data.** If this repo is ever shared or made public, rewrite history (e.g. squash to a fresh root or `git filter-repo`) first.
+
 ## Most Recent Local Priorities
 
 - Round-2 rearrangement pass (2026-07-06, approved by Christian, all beyond-doc items annotated in the proposal dock):
