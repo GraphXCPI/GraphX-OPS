@@ -385,10 +385,10 @@ const pageFamilies = {
   orders: ["orders", "payment-request", "add-order", "order-status", "coupons", "store-credit", "reward-points", "unpaid-orders", "archive-orders", "job-board", "job-board-grid"],
   quotes: ["quotes", "add-quote", "quote-status", "predefined-quotes"],
   vendor: ["vendor-quotes", "vendors", "sales-agents"],
-  customer: ["customers", "customer-workspace", "newsletter", "design-proofs", "customer-designs", "b2b-account-users", "store-admins", "user-groups"],
+  customer: ["customers", "customer-workspace", "customer-workspace-orders", "customer-workspace-quotes", "customer-workspace-payments", "customer-workspace-proofs", "customer-workspace-templates", "customer-workspace-users", "customer-workspace-addresses", "newsletter", "design-proofs", "customer-designs", "b2b-account-users", "store-admins", "user-groups"],
   production: ["production-dashboard", "statuses-workflow"],
   store: ["stores", "store-fields", "store-workspace", "store-workspace-edit", "store-workspace-customers", "store-workspace-products", "store-workspace-markup", "store-workspace-addresses", "store-workspace-credit", "store-workspace-builder", "store-workspace-alerts", "store-workspace-fields", "duplicate-store-data", "b2b-store-theme"],
-  product: ["print-products", "ready-products", "product-catalog", "product-edit", "product-edit-inventory", "product-edit-seo", "product-options", "product-categories", "category-groups", "product-category-edit", "category-group-edit", "product-weight", "production-days", "products-sku", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-modify", "product-price-percent", "preview-image-settings", "markup-master", "manage-stock"],
+  product: ["print-products", "ready-products", "product-catalog", "product-edit", "product-edit-inventory", "product-edit-seo", "product-edit-options", "product-edit-designer", "product-edit-price", "product-options", "product-categories", "category-groups", "product-category-edit", "category-group-edit", "product-weight", "production-days", "products-sku", "stock-settings", "product-tax", "product-price", "product-price-bulk", "product-option-price-bulk", "product-price-excel", "product-price-modify", "product-price-percent", "preview-image-settings", "markup-master", "manage-stock"],
   template: ["templates", "template-master", "pdf-blocks", "art-layouts", "template-categories"],
   builder: ["cms-pages", "site-content", "page-categories", "links", "sidebar-management", "sidebar-widget", "themes", "account-pages", "product-page-layout", "product-showcase", "website-logos", "language-text", "banners", "promotional", "asset-manager", "help-media", "media-gallery", "form-management", "breadcrumbs", "faqs", "testimonials"],
   alerts: ["email-templates", "sms-templates", "email-reminders"],
@@ -418,6 +418,16 @@ const pageAliases = {
   "production-dashboard": "Production Dashboard",
   "statuses-workflow": "Statuses & Workflow",
   "customer-workspace": "Customer Workspace",
+  "customer-workspace-orders": "Customer Orders",
+  "customer-workspace-quotes": "Customer Quotes",
+  "customer-workspace-payments": "Payments & Credit",
+  "customer-workspace-proofs": "Design Proofs",
+  "customer-workspace-templates": "Customer Templates",
+  "customer-workspace-users": "Account Users",
+  "customer-workspace-addresses": "Customer Addresses",
+  "product-edit-options": "Additional Options",
+  "product-edit-designer": "Product Designer",
+  "product-edit-price": "Product Price",
   "order-reports": "Order Reports",
   "quote-reports": "Quote Reports",
   "product-reports": "Product Reports",
@@ -584,6 +594,16 @@ const modePageMap = {
     "production-dashboard": "job-board",
     "statuses-workflow": "order-status",
     "customer-workspace": "user-view-details",
+    "customer-workspace-orders": "user-view-details",
+    "customer-workspace-quotes": "user-view-details",
+    "customer-workspace-payments": "user-view-details",
+    "customer-workspace-proofs": "user-view-details",
+    "customer-workspace-templates": "user-view-details",
+    "customer-workspace-users": "user-view-details",
+    "customer-workspace-addresses": "user-view-details",
+    "product-edit-options": "print-products",
+    "product-edit-designer": "print-products",
+    "product-edit-price": "product-price",
     "order-reports": "sales-order-summary",
     "quote-reports": "sales-quote-summary",
     "product-reports": "product-sales-report",
@@ -596,7 +616,7 @@ const proposedProductSettingsPages = new Set(["product-weight", "production-days
 
 // Pages with dedicated proposed-mode renderers that must NOT fall back to the
 // extracted current-OPS page even though an extracted route with the same name exists.
-const proposedCustomPages = new Set(["orders", "product-edit", "product-edit-inventory", "product-edit-seo", "image-alt"]);
+const proposedCustomPages = new Set(["orders", "product-edit", "product-edit-inventory", "product-edit-seo", "product-edit-options", "product-edit-designer", "product-edit-price", "image-alt"]);
 
 function pagesForMode(mode) {
   return (mode === "current" ? currentMenu : proposedMenu).flatMap(flattenMenu).map(item => item.page).filter(Boolean);
@@ -786,6 +806,8 @@ function proposalHighlightRulesFor(page) {
   if (proposalHighlightRules[page]) return proposalHighlightRules[page];
   if (proposalHighlightAliases[page]) return proposalHighlightRules[proposalHighlightAliases[page]] || [];
   if (page.startsWith("store-workspace")) return proposalHighlightRules["store-workspace"];
+  if (page.startsWith("customer-workspace")) return proposalHighlightRules["customer-workspace"];
+  if (page.startsWith("product-edit")) return proposalHighlightRules["product-edit"];
   if (isDesignTabPage(page)) return proposalHighlightRules["design-tabs"];
   return [];
 }
@@ -811,15 +833,16 @@ const proposedStudioTabs = [
 ];
 
 function customerWorkspaceTabs(activePage) {
+  const viewPage = activePage === "user-view-details" ? "user-view-details" : "customer-workspace";
   return contextTabs([
-    { label: "View", page: activePage, icon: "fa fa-eye" },
-    { label: "Orders", icon: "fa fa-shopping-cart" },
-    { label: "Quotes", icon: "fak fa-quote-management" },
-    { label: "Payments & Credit", icon: "fa fa-dollar-sign" },
-    { label: "Design Proofs", icon: "fa fa-image" },
-    { label: "Templates", icon: "fak fa-templates" },
-    { label: "Account Users", icon: "fa fa-users" },
-    { label: "Addresses", icon: "fa fa-map-marker-alt" },
+    { label: "View", page: viewPage, icon: "fa fa-eye" },
+    { label: "Orders", page: "customer-workspace-orders", icon: "fa fa-shopping-cart" },
+    { label: "Quotes", page: "customer-workspace-quotes", icon: "fak fa-quote-management" },
+    { label: "Payments & Credit", page: "customer-workspace-payments", icon: "fa fa-dollar-sign" },
+    { label: "Design Proofs", page: "customer-workspace-proofs", icon: "fa fa-image" },
+    { label: "Templates", page: "customer-workspace-templates", icon: "fak fa-templates" },
+    { label: "Account Users", page: "customer-workspace-users", icon: "fa fa-users" },
+    { label: "Addresses", page: "customer-workspace-addresses", icon: "fa fa-map-marker-alt" },
   ], activePage);
 }
 
@@ -868,11 +891,13 @@ function setOpenMenuForPage() {
       ? "catalog"
       : OPS.page.startsWith("store-workspace")
         ? "stores"
-        : objectSeoHomes[OPS.page]
-          ? "seo"
-          : isDesignTabPage(OPS.page)
-            ? "design"
-            : "";
+        : OPS.page.startsWith("customer-workspace")
+          ? "customers"
+          : objectSeoHomes[OPS.page]
+            ? "seo"
+            : isDesignTabPage(OPS.page)
+              ? "design"
+              : "";
     if (fallbackGroup) menu = proposedMenu.find(group => group.id === fallbackGroup);
   }
   OPS.openMenu = menu?.id || "dashboard";
@@ -2173,17 +2198,41 @@ function proposedProductCatalogPage() {
 }
 
 function productEditPage() {
-  const view = OPS.page === "product-edit-seo" ? "seo" : OPS.page === "product-edit-inventory" ? "inventory" : "general";
+  const view = OPS.page.replace("product-edit-", "");
   const tabs = contextTabs([
     { label: "Settings", page: "product-edit", icon: "fa fa-cog" },
-    { label: "Additional Options", icon: "fa fa-list" },
-    { label: "Designer", icon: "fak fa-designer-studio" },
-    { label: "Price", icon: "fa fa-dollar-sign" },
+    { label: "Additional Options", page: "product-edit-options", icon: "fa fa-list" },
+    { label: "Designer", page: "product-edit-designer", icon: "fak fa-designer-studio" },
+    { label: "Price", page: "product-edit-price", icon: "fa fa-dollar-sign" },
     { label: "Inventory", page: "product-edit-inventory", icon: "fa fa-boxes" },
     { label: "SEO", page: "product-edit-seo", icon: "fa fa-globe" },
-  ], OPS.page === "product-edit" ? "product-edit" : OPS.page);
+  ], OPS.page);
   let body = "";
-  if (view === "inventory") {
+  if (view === "options") {
+    body = currentOpsDataTable(["Sr#", "Option", "Display Type", "Values", "Required", "Action"], [
+      ["1", "Size", "Dropdown", "5 x 15", "Yes", actionButton("Action")],
+      ["2", "Material", "Dropdown", "Vinyl, Reflective Vinyl", "Yes", actionButton("Action")],
+      ["3", "Lamination", "Checkbox", "Gloss, Matte", "No", actionButton("Action")],
+    ], "ops-product-edit-options") + changeNote("Additional Options keeps the existing product option assignment in product context.");
+  } else if (view === "designer") {
+    body = `<div class="row">
+      <div class="col-lg-6">${currentOpsCard("Designer Setup", [
+        currentFormRow("Enable Designer Studio", currentStatusToggle(true)),
+        currentFormRow("Design Area (W x H)", currentTextInput("5 x 15 Inch")),
+        currentFormRow("Bleed", currentTextInput("0.125 Inch")),
+        currentFormRow("Safe Zone", currentTextInput("0.25 Inch")),
+      ].join(""), "fa-pencil")}</div>
+      <div class="col-lg-6">${currentOpsCard("Templates", currentOpsDataTable(["Sr#", "Template", "Status"], [
+        ["1", "NOW HIRING - Red", `<span class=\"badge badge-success\">Active</span>`],
+      ], "ops-product-edit-designer-templates"), "fa-columns")}</div>
+    </div>` + changeNote("Designer settings stay with the product, matching the existing OPS product designer tab.");
+  } else if (view === "price") {
+    body = currentOpsDataTable(["Qty", "Price Per Piece", "Total"], [
+      ["25", "$4.20", "$105.00"],
+      ["50", "$3.60", "$180.00"],
+      ["100", "$2.95", "$295.00"],
+    ], "ops-product-edit-price") + changeNote("Product pricing stays editable in product context; bulk tools remain under Product Catalog > Pricing.");
+  } else if (view === "inventory") {
     body = `<div class="row">
       <div class="col-lg-6">
         ${currentOpsCard("SKU & Weight", [
@@ -2892,6 +2941,7 @@ function vendorPage() {
 }
 
 function customerPage() {
+  if (OPS.mode === "proposed" && OPS.page.startsWith("customer-workspace")) return customerWorkspaceTabPage();
   return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Export"])}${proposalMarkup("customer-accounts")}${filters(["Search", "Customer Group", "Store", "Status"])}${dataTable(["Sr#", "Customer", "Email", "Store Scope", "Status", "Action"], [
     ["1", "Alex Loudenslager", "info@thelabna.com", "Visual Graphx", "Active", actionButton("Action")],
     ["2", "Drew Neverett", "drew.neverett@positionsports.com", "All Stores", "Active", actionButton("Action")],
@@ -3057,6 +3107,58 @@ function statusesWorkflowPage() {
     ])}
     ${currentOpsDataTable(["Status Set", "Applies To", "States", "Action"], rows, "ops-statuses-workflow-table")}
     ${changeNote("Order Status, Order Product Status and rules, and Quote Status are configured from one Statuses & Workflow entry. The originals stay reachable from Orders and Quotes as focused entry points (broad + focused).")}
+  </section>`;
+}
+
+function customerWorkspaceTabPage() {
+  const key = OPS.page;
+  const head = pageHead("Customer Details \u25ab Prashant Parihar", ["Edit", "Back"]);
+  proposalMarkup("customer-workspace");
+  let body = "";
+  if (key === "customer-workspace-orders") {
+    body = currentOpsDataTable(["ID", "Order Details", "Order Date & Amount", "Status", "Action"], [
+      [`<a href="#proposed/orders" data-page="orders">3061</a>`, "Order Name : Radix Storefront Decals<br><small>prashant.radixweb@gmail.com</small>", `06-30-2026 11:12<br><span class="text-primary">$412.60</span> <span class="badge badge-danger">Unpaid</span>`, `<span class="badge badge-primary">New Order</span>`, actionButton("Action")],
+      [`<a href="#proposed/orders" data-page="orders">2993</a>`, "Order Name : Radix Window Perf<br><small>prashant.radixweb@gmail.com</small>", `06-21-2026 09:40<br><span class="text-primary">$188.00</span> <span class="badge badge-success">Paid</span>`, `<span class="badge badge-success">In Production</span>`, actionButton("Action")],
+    ], "ops-customer-ws-orders") + changeNote("The Orders tab lists this customer's orders with the same columns and controls as the master Orders list, pre-filtered to the customer.");
+  } else if (key === "customer-workspace-quotes") {
+    body = `<div class="alert alert-warning"><i class="fa fa-exclamation-triangle pr-1"></i>No records found</div>` + changeNote("Quotes for this customer appear here with the master Quotes treatment; this customer has none yet.");
+  } else if (key === "customer-workspace-payments") {
+    body = `<div class="row">
+      <div class="col-lg-6">${currentOpsCard("Pay On Account", currentOpsDataTable(["Field", "Value"], [
+        ["Pay On Limit", "$1,000.00"],
+        ["Remaining Paid Limit", "$1,000.00"],
+        ["Remaining Invoice Amount", "$0.00"],
+        ["Payment Term", "Default Payment Term"],
+      ], "ops-customer-ws-poa"), "fa-dollar-sign")}</div>
+      <div class="col-lg-6">${currentOpsCard("Store Credit & Payment Options", currentOpsDataTable(["Field", "Value"], [
+        ["Store Credit Balance", "$0.00"],
+        ["Allow Partial Payment", `<span class=\"badge badge-success\">Yes</span>`],
+        ["Disable Reward Module", `<span class=\"badge badge-danger\">No</span>`],
+        ["Currency", "US Dollar"],
+      ], "ops-customer-ws-credit"), "fa-credit-card")}</div>
+    </div>` + changeNote("Payment limits, invoices, store credit, and terms live on one tab instead of Reports and Store Credit screens.");
+  } else if (key === "customer-workspace-proofs") {
+    body = currentOpsDataTable(["Sr#", "Proof", "Order", "Sent", "Status", "Action"], [
+      ["1", "Radix Storefront Decals - Side A", `<a href="#proposed/orders" data-page="orders">3061</a>`, "06-30-2026", `<span class="badge badge-warning text-dark">Awaiting Approval</span>`, actionButton("Action")],
+    ], "ops-customer-ws-proofs") + changeNote("Design Proofs shows this customer's proof activity from the existing Design Proofs system, in customer context.");
+  } else if (key === "customer-workspace-templates") {
+    body = currentOpsDataTable(["Sr#", "Template", "Product", "Last Updated", "Action"], [
+      ["1", "Radix Business Card v2", "Business Cards", "06-28-2026", actionButton("Action")],
+    ], "ops-customer-ws-templates") + changeNote("Customer Templates (saved designs) move into customer context from the Customer menu.");
+  } else if (key === "customer-workspace-users") {
+    body = currentOpsDataTable(["Sr#", "User", "Email", "Role", "Status", "Action"], [
+      ["1", "Prashant Parihar", "prashant.radixweb@gmail.com", "Primary", `<span class="badge badge-success">Active</span>`, actionButton("Action")],
+    ], "ops-customer-ws-users") + changeNote("B2B account users and store admin assignments for this customer are managed here without leaving customer context.");
+  } else {
+    body = currentOpsDataTable(["Sr#", "Type", "Address", "Default", "Action"], [
+      ["1", "Billing", "Radixweb, Ekyarth, B/H Bhagwati Nagar, Ahmedabad 380024", `<span class="badge badge-success">Yes</span>`, actionButton("Action")],
+      ["2", "Shipping", "601 Coppercreek Ct, Champaign, IL 61822", `<span class="badge badge-secondary">No</span>`, actionButton("Action")],
+    ], "ops-customer-ws-addresses") + changeNote("Both saved addresses stay editable from customer context.");
+  }
+  return `<section class="page ops-customer-workspace">
+    ${customerWorkspaceTabs(key)}
+    ${head}
+    ${body}
   </section>`;
 }
 
