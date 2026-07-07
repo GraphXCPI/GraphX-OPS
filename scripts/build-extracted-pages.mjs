@@ -61,6 +61,7 @@ const safeCaptureRoots = resolveSafeCaptureRoots(process.env.OPS_SAFE_CAPTURE_RO
 const outputFile = path.join(root, "ops-extracted-pages.js");
 const auditFile = path.join(root, "raw-reference", "extracted-page-structure-audit.json");
 const remoteImageAssetMap = loadRemoteImageAssetMap();
+const sanitizeExtractedPages = process.env.OPS_SANITIZE_EXTRACTED !== "0";
 
 const routeAliases = {
   addon_buy_plugin: "addons",
@@ -785,6 +786,8 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = rewriteLocalOpsImageSources(cleaned);
 
+  cleaned = stripTemporaryDownFragments(cleaned);
+
   cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/includes\/images\/[^"'<>\\\s)]+/gi, "");
 
   cleaned = cleaned.replace(/https?:\/\/(?:staging\.)?visualgraphx\.com\/admin\/([^"'<>\\\s]+\.php)([^"'<>\\\s]*)/gi, (full, file) => {
@@ -795,7 +798,117 @@ function cleanExtractedContent(content, fileRouteMap) {
 
   cleaned = stripExtractedShellChrome(cleaned);
 
-  return normalizeStandaloneModalContent(cleaned.trim());
+  cleaned = normalizeStandaloneModalContent(cleaned.trim());
+
+  return sanitizeExtractedPages ? anonymizeExtractedHtml(cleaned) : cleaned;
+}
+
+function anonymizeExtractedHtml(html) {
+  return anonymizeSensitiveText(String(html || ""))
+    .replace(/\b(?:src|data-src)=(["'])assets\/ops-remote-images\/files\/[^"']+\1/gi, `src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="`)
+    .replace(/\b(?:href|data-link|data-url|action)=(["'])[^"']*relogin\.php[^"']*\1/gi, 'href="javascript:void(0)"')
+    .replace(/\b(user_login_type|LoginUserId|AdminUserId|OrderId|UserId|CustomerId|CompanyId)=([^&"'<>\s]+)/gi, "$1=demo");
+}
+
+function anonymizeSensitiveText(value) {
+  let emailIndex = 0;
+  let phoneIndex = 0;
+  let orderIndex = 1000;
+  let userIndex = 0;
+  let companyIndex = 0;
+
+  return String(value || "")
+    .replace(/KunglJungle\w*/gi, "DemoStore")
+    .replace(/\bRahul Shekhawat\b/gi, "Demo Designer 01")
+    .replace(/\bChristian De Ramos\b/gi, "Demo Admin")
+    .replace(/\bPriyank Patel\b/gi, "Demo Designer 02")
+    .replace(/\bAlex Loudenslager\b/gi, "Demo Customer 01")
+    .replace(/\bDrew Neverett\b/gi, "Demo Customer 02")
+    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, () => {
+      emailIndex += 1;
+      return `ops.customer${String(emailIndex).padStart(2, "0")}@example.test`;
+    })
+    .replace(/(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}\b/g, () => {
+      phoneIndex += 1;
+      return `555-010-${String(phoneIndex % 100).padStart(2, "0")}`;
+    })
+    .replace(/(relogin\.php\?)[^"'<>\s]+/gi, "$1demo=1")
+    .replace(/(\bOrder Name\s*:\s*)([^<\r\n]+)/gi, () => {
+      orderIndex += 1;
+      return `$1Demo Order ${orderIndex}`;
+    })
+    .replace(/(\bCompany Name\s*:\s*)([^<\r\n]+)/gi, () => {
+      companyIndex += 1;
+      return `$1Demo Company ${companyIndex}`;
+    })
+    .replace(/(\b(?:Customer|Contact|Billing Contact|Shipping Contact|Admin|Sales Agent)\s*:\s*)([^<\r\n|]+)/gi, (full, label) => {
+      userIndex += 1;
+      return `${label}Demo User ${userIndex}`;
+    })
+    .replace(/(\bPO\s*:\s*)([^<\r\n|]+)/gi, "$1PO-DEMO")
+    .replace(/(\b(?:Address|Address 1|Address 2|City|State|Zip|Postal Code)\s*:\s*)([^<\r\n|]+)/gi, "$1Demo")
+    .replace(/(\b(?:Name|Full Name|User Name|Username)\s*:\s*)([^<\r\n|]+)/gi, (full, label) => {
+      userIndex += 1;
+      return `${label}Demo User ${userIndex}`;
+    })
+    .replace(/(<option\b[^>]*\bvalue=(["'])?\d+\2?[^>]*\btitle=)(["'])([^"']{3,140})(\3[^>]*>)([^<]{3,140})(<\/option>)/gi, (full, prefix, valueQuote, titleQuote, title, middle, label, close) => {
+      if (isStructuralOptionLabel(title) || isStructuralOptionLabel(label)) return full;
+      companyIndex += 1;
+      return `${prefix}${titleQuote}Demo Company ${companyIndex}${middle}Demo Company ${companyIndex}${close}`;
+    })
+    .replace(/<option\b(?=[^>]*\bvalue=(["'])?\d+\1?)(?=[^>]*\btitle=(["'])([^"']{3,140})\2)([^>]*)>([^<]{3,140})(<\/option>)/gi, (full, valueQuote, titleQuote, title, attrs, label, close) => {
+      if (isStructuralOptionLabel(title) || isStructuralOptionLabel(label)) return full;
+      companyIndex += 1;
+      const updatedAttrs = attrs.replace(/\btitle=(["'])([^"']*)\1/i, `title=${titleQuote}Demo Company ${companyIndex}${titleQuote}`);
+      return `<option${updatedAttrs}>Demo Company ${companyIndex}${close}`;
+    })
+    .replace(/(<\/a>\s*)\(\s*[^)<]{2,100}\s*\)(\s*(?:<br>|<\/span>))/gi, "$1( Demo Company )$2")
+    .replace(/\bdata-original-title=(["'])([^"']{2,160})\1/gi, (full, quote, title) => {
+      if (!isLikelySensitiveTooltip(title)) return full;
+      userIndex += 1;
+      return `data-original-title=${quote}Demo User ${userIndex}${quote}`;
+    })
+    .replace(/(<a\b[^>]*class=(["'])[^"']*(?:popover-ajaxinfo|cust[^"']*|user[^"']*)[^"']*\2[^>]*>)([^<]{2,80})(<\/a>)/gi, (full, open, quote, text, close) => {
+      if (/^\s*(view|edit|delete|download|action|reset|search|select|new|paid|unpaid|fulfilled)\s*$/i.test(text)) return full;
+      userIndex += 1;
+      return `${open}Demo User ${userIndex}${close}`;
+    });
+}
+
+function isStructuralOptionLabel(value) {
+  return /^(?:all|select|common|orders|list orders|add new order|export\/api orders|order status|coupons \/ discount|store credit|unpaid orders|archive orders|quote management|view quotes|printer quotes|quote status|customer|website customers|newsletter subscribers|customer templates|store management|products|templates|content management|store personalization|seo|business partners|store configuration|designer studio|reports|admin)$/i.test(String(value || "").trim());
+}
+
+function isLikelySensitiveTooltip(value) {
+  const text = String(value || "").trim();
+  if (!text || /^(?:edit|delete|view|copy|download|save|reset|search|print|action|mark as paid|send reminder|mark as cancel|toggle full screen|pin this page|help)$/i.test(text)) return false;
+  if (/^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}(?:\s+\([^)]+\))?$/i.test(text)) return true;
+  return /\b(?:Visual Graphx|Position Sports|Silent-Aire|2CT Media|The Lab North America|Queen Creek|Ascend Graphics)\b/i.test(text);
+}
+
+function stripTemporaryDownFragments(html) {
+  return String(html || "")
+    .replace(/<meta\b[^>]*http-equiv=(["'])Content-Type\1[^>]*>\s*<title>Temporary Down<\/title>[\s\S]*?(?:<\/html>|<\/table>)/gi, "")
+    .replace(/<title>Temporary Down<\/title>[\s\S]*?(?:<\/html>|<\/table>)/gi, "")
+    .replace(/Unfortunately, the website is temporarily unavailable[\s\S]*?Please try again after some time\./gi, "");
+}
+
+function anonymizePageRecord(page) {
+  page.title = anonymizeSensitiveText(page.title);
+  page.breadcrumbsHtml = anonymizeSensitiveText(page.breadcrumbsHtml);
+  page.bodyHtml = anonymizeSensitiveText(page.bodyHtml);
+  if (Array.isArray(page.tabStates)) {
+    page.tabStates = page.tabStates.map(tab => ({
+      ...tab,
+      text: anonymizeSensitiveText(tab.text),
+      href: anonymizeSensitiveText(tab.href),
+      target: anonymizeSensitiveText(tab.target),
+      dataUrl: anonymizeSensitiveText(tab.dataUrl),
+      breadcrumbsHtml: anonymizeSensitiveText(tab.breadcrumbsHtml),
+      bodyHtml: anonymizeSensitiveText(tab.bodyHtml)
+    }));
+  }
+  return page;
 }
 
 function rewritePublicStagingLinks(html) {
@@ -1200,8 +1313,14 @@ for (const [route, states] of tabStates.byRoute.entries()) {
   }
 }
 
+if (sanitizeExtractedPages) {
+  for (const page of Object.values(pages)) anonymizePageRecord(page);
+  for (const route of routes) route.title = anonymizeSensitiveText(route.title);
+}
+
 const output = `// Generated by scripts/build-extracted-pages.mjs from OPS rendered captures with raw extraction fallback.\n` +
   `// Do not edit this file by hand; edit the generator or raw extraction mapping.\n` +
+  `// Sensitive production values are anonymized by default. Set OPS_SANITIZE_EXTRACTED=0 only for private local debugging.\n` +
   `window.OPS_EXTRACTED_PAGES = ${JSON.stringify(pages, null, 2)};\n` +
   `window.OPS_EXTRACTED_PAGE_ROUTES = ${JSON.stringify(routes, null, 2)};\n`;
 

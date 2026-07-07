@@ -360,17 +360,17 @@ const proposedMenu = [
 ];
 
 const orders = [
-  ["3052", "New Order", "2 Items", "$519.33", "6 hr 11 min ago", "Alex Loudenslager", "info@thelabna.com", ["Arlon V9700 - Vehicle Wrap Film (1 Qty)", "Window Perf (1 Qty)"]],
-  ["3051", "New Order", "4 Items", "$686.00", "23 hr 27 min ago", "Drew Neverett", "drew.neverett@positionsports.com", ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "+2"]],
-  ["3050", "New Order", "4 Items", "$686.00", "23 hr 29 min ago", "Drew Neverett", "drew.neverett@positionsports.com", ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "+2"]],
-  ["3049", "New Order", "4 Items", "$692.35", "23 hr 31 min ago", "Drew Neverett", "drew.neverett@positionsports.com", ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "More"]],
+  ["3052", "New Order", "2 Items", "$519.33", "6 hr 11 min ago", "Demo Customer 01", "ops.customer01@example.test", ["Arlon V9700 - Vehicle Wrap Film (1 Qty)", "Window Perf (1 Qty)"]],
+  ["3051", "New Order", "4 Items", "$686.00", "23 hr 27 min ago", "Demo Customer 02", "ops.customer02@example.test", ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "+2"]],
+  ["3050", "New Order", "4 Items", "$686.00", "23 hr 29 min ago", "Demo Customer 03", "ops.customer03@example.test", ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "+2"]],
+  ["3049", "New Order", "4 Items", "$692.35", "23 hr 31 min ago", "Demo Customer 04", "ops.customer04@example.test", ["PolyBoard (1 Qty)", "Large Retractable Pull-Up Banner (1 Qty)", "More"]],
 ];
 
 const quotes = [
-  ["2285", "Active Quote", "Pair of Vehicle ...", "07-02-2026", "Misty Galica", "Misty@Azsmithpainting.com", ["Magnets"]],
-  ["2284", "Active Quote", "Decals/ Floor- ...", "07-02-2026", "Gerald Sherrill", "gerald@commandlink.com", ["Wraps - Walls", "Decals - Floor,", "+1"]],
-  ["2283", "Draft", "Decals - Cut Vinyl", "07-02-2026", "Derek Petrucci", "derek.petrucci@hotmail.com", ["Decals - Cut Vinyl"]],
-  ["2282", "Active Quote", "1/2 MDO Direct...", "07-01-2026", "Jake Kungl", "jake@kungljunglesigns.com", ["1/2 MDO Direct Print 8' x 4'", "+1"]],
+  ["2285", "Active Quote", "Pair of Vehicle ...", "07-02-2026", "Demo Customer 05", "ops.customer05@example.test", ["Magnets"]],
+  ["2284", "Active Quote", "Decals/ Floor- ...", "07-02-2026", "Demo Customer 06", "ops.customer06@example.test", ["Wraps - Walls", "Decals - Floor,", "+1"]],
+  ["2283", "Draft", "Decals - Cut Vinyl", "07-02-2026", "Demo Customer 07", "ops.customer07@example.test", ["Decals - Cut Vinyl"]],
+  ["2282", "Active Quote", "1/2 MDO Direct...", "07-01-2026", "Demo Customer 08", "ops.customer08@example.test", ["1/2 MDO Direct Print 8' x 4'", "+1"]],
 ];
 
 const products = [
@@ -2624,7 +2624,7 @@ function stockSettingsPage() {
 function storesPage() {
   if (OPS.mode === "proposed" && OPS.page.startsWith("store-workspace")) return storeWorkspacePage();
   if (OPS.mode === "proposed" && OPS.page === "duplicate-store-data") return duplicateStorePage();
-  const rows = [["1", "Demo Store", "johnDoe@graphxcpi.com"], ["2", "Konala", "rdickson@alphagraphics.com"], ["3", "Socure", "rdickson+socure@alphagraphics.com"]];
+  const rows = [["1", "Demo Store", "store.admin01@example.test"], ["2", "Demo Store 2", "store.admin02@example.test"], ["3", "Demo Store 3", "store.admin03@example.test"]];
   const proposed = OPS.mode === "proposed";
   return `<section class="page">${pageHead(pageTitle(), proposed ? ["Add", "Duplicate Store Data", "Open Store Workspace", "Store Settings Templates"] : ["Add", "Import Department", "Duplicate Store Data", "Markup Master", "Store Settings Templates"])}${proposalMarkup("stores")}${filters(["Search"])}${dataTable(["Sr#", "Logo", "Store Details", "Settings", "Status", "Action"], rows.map(r => [
     r[0],
@@ -2893,8 +2893,8 @@ function vendorPage() {
 
 function customerPage() {
   return `<section class="page">${pageHead(pageTitle(), ["Add", "Import", "Export"])}${proposalMarkup("customer-accounts")}${filters(["Search", "Customer Group", "Store", "Status"])}${dataTable(["Sr#", "Customer", "Email", "Store Scope", "Status", "Action"], [
-    ["1", "Alex Loudenslager", "info@thelabna.com", "Visual Graphx", "Active", actionButton("Action")],
-    ["2", "Drew Neverett", "drew.neverett@positionsports.com", "All Stores", "Active", actionButton("Action")],
+    ["1", "Demo Customer 01", "ops.customer01@example.test", "Visual Graphx", "Active", actionButton("Action")],
+    ["2", "Demo Customer 02", "ops.customer02@example.test", "All Stores", "Active", actionButton("Action")],
   ])}${OPS.mode === "proposed" ? changeNote("Customer becomes Customer Accounts and owns account users, store admins, user groups, and account access context.") : originalNote("Original Customer label is broad and repeats in the sidebar.")}</section>`;
 }
 
@@ -2969,7 +2969,7 @@ function adminPage() {
         filters: ["Search", "Group / Role", "Status"],
         headers: ["Sr#", "Admin User", "Email", "Group / Role", "Status", "Action"],
         rows: [
-          ["1", "Christian De Ramos", "christian@visualgraphx.com", "Admin", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["1", "Demo Admin", "admin.user01@example.test", "Admin", "<span class=\"toggle on\"></span>", actionButton("Action")],
           ["2", "Developer", "dev@example.com", "Limited", "<span class=\"toggle on\"></span>", actionButton("Action")],
         ],
       },
@@ -2989,8 +2989,8 @@ function adminPage() {
         filters: ["Search", "Production Role", "Status"],
         headers: ["Sr#", "Production User", "Email", "Production Role", "Status", "Action"],
         rows: [
-          ["1", "Rahul Shekhawat", "rahul@example.com", "Production Admin", "<span class=\"toggle on\"></span>", actionButton("Action")],
-          ["2", "Priyank Patel", "priyank@example.com", "Production User", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["1", "Demo Production Admin", "production.admin@example.test", "Production Admin", "<span class=\"toggle on\"></span>", actionButton("Action")],
+          ["2", "Demo Production User", "production.user@example.test", "Production User", "<span class=\"toggle on\"></span>", actionButton("Action")],
         ],
       },
       "workflow-roles": {
@@ -3008,7 +3008,7 @@ function adminPage() {
     return `<section class="page">${pageHead(screen.title, screen.actions)}${proposalMarkup("admin")}${filters(screen.filters)}${dataTable(screen.headers, screen.rows, `ops-admin-${OPS.page}`)}${proposalCallout("Admin Users separates staff users, groups and roles, production users, and production roles while preserving the existing OPS user-management flows.")}</section>`;
   }
   return `<section class="page">${pageHead(pageTitle(), ["Add User", "Save"])}${filters(["Search", "Role", "Status"])}${dataTable(["Sr#", "Admin User", "Email", "Role", "Status", "Action"], [
-    ["1", "Christian De Ramos", "christian@visualgraphx.com", "Admin", "Active", actionButton("Action")],
+    ["1", "Demo Admin", "admin.user01@example.test", "Admin", "Active", actionButton("Action")],
     ["2", "Developer", "dev@example.com", "Limited", "Active", actionButton("Action")],
   ])}${originalNote("Original Admin label is terse and mixes users and roles.")}</section>`;
 }

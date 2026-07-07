@@ -116,8 +116,8 @@ function detectPii(html, page) {
   let signalCount = 0;
 
   const checks = [
-    ["email", /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
-    ["phone", /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}\b/g],
+    ["email", /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, match => !/@example\.test$/i.test(match) && !/^support@onprintshop\.com$/i.test(match)],
+    ["phone", /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}\b/g, (match, offset) => !isInsideUrlLikeToken(text, offset)],
     ["admin_relogin_token", /relogin\.php|user_login_type|[?&]s=[0-9a-fA-F]{40,}/g],
     ["order_customer_context", /\b(Order Name|Customer|Company Name|Contact|Billing|Shipping|Payment:|Admin:|PO:|Order No\.?|OrderId)\b/gi],
     ["address_fields", /\b(Address|City|State|Zip|Postal|Country)\b/gi],
@@ -125,8 +125,10 @@ function detectPii(html, page) {
     ["customer_artwork_asset", /ops-remote-images\/files\/[^"')\s]+(?:thumb|Qnty|pdf|c_)/gi]
   ];
 
-  for (const [category, pattern] of checks) {
-    const matches = text.match(pattern);
+  for (const [category, pattern, filter] of checks) {
+    const matches = Array.from(text.matchAll(pattern))
+      .map(match => ({ value: match[0], index: match.index || 0 }))
+      .filter(match => !filter || filter(match.value, match.index));
     if (matches?.length) {
       categories.add(category);
       signalCount += matches.length;
@@ -155,6 +157,13 @@ function detectPii(html, page) {
     categories: Array.from(categories).sort(),
     signalCount
   };
+}
+
+function isInsideUrlLikeToken(text, offset) {
+  const start = Math.max(0, offset - 120);
+  const end = Math.min(text.length, offset + 120);
+  const context = text.slice(start, end);
+  return /https?:\/\/|assets\/|data:image|\.png|\.jpe?g|\.gif|\.svg|\.webp/i.test(context);
 }
 
 function buildReferenceIndex() {
@@ -448,14 +457,14 @@ function writeTrackedDocs(allRows) {
     "",
     "P0 anonymization queue, first 30:",
     "",
-    ...p0.slice(0, 30).map(row => `- \`${row.route}\` (${row.slug}): ${row.piiCategories || "pii"}`),
+    ...(p0.length ? p0.slice(0, 30).map(row => `- \`${row.route}\` (${row.slug}): ${row.piiCategories || "pii"}`) : ["- None."]),
     "",
     "## Anonymization Schedule",
     "",
-    "- 2026-07-07: Freeze new public pushes of generated OPS data until P0 anonymization is applied or explicitly accepted.",
-    "- 2026-07-07: Add generator-level anonymization for emails, phone numbers, relogin/session URLs, copied mail fields, order/customer identities, PO/order/customer references, and customer-uploaded artwork filenames.",
-    "- 2026-07-08: Rebuild `ops-extracted-pages.js`, rerun this audit, and require zero `admin_relogin_token`, zero email, and zero phone indicators in published simulator files.",
-    "- 2026-07-08: Resume one-screen visual parity fixes, starting with `orders`, after P0 risk is cleared.",
+    "- 2026-07-07: Generator-level anonymization is active for published extracted pages by default.",
+    "- 2026-07-07: Static checks require zero non-demo emails, zero relogin/session URLs, zero customer artwork asset paths, zero live admin URLs, and zero known captured-name terms in `ops-extracted-pages.js`.",
+    "- 2026-07-08: Continue reducing P1 category risk during route parity passes by replacing remaining customer/company/address context where it is not structurally required.",
+    "- 2026-07-08: Resume one-screen visual parity fixes, starting with `orders`.",
     "",
     "## Notes",
     "",

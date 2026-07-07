@@ -1,14 +1,14 @@
 # OPS Visual Parity And PII Audit
 
-Generated: 2026-07-07T00:36:33.108Z
+Generated: 2026-07-07T00:54:27.105Z
 
 ## Scope
 
 - Built Current OPS routes audited: 387
 - Routes with source reference screenshots: 118
 - Routes pixel-compared in this run: 118
-- PII risk counts: high=94, low=101, medium=192
-- Anonymization priority counts: P0=94, P1=192, P2=101
+- PII risk counts: low=115, medium=272
+- Anonymization priority counts: P1=272, P2=115
 
 Raw screenshots and pixel diffs are intentionally written under ignored `raw-reference/` only. This tracked report does not include raw PII samples.
 
@@ -46,49 +46,20 @@ Highest priority visual review routes:
 
 ## PII Status
 
-- P0, anonymize before next public deploy: 94
-- P1, anonymize during route parity pass: 192
-- High-risk PII routes: 94
+- P0, anonymize before next public deploy: 0
+- P1, anonymize during route parity pass: 272
+- High-risk PII routes: 0
 
 P0 anonymization queue, first 30:
 
-- `addons` (addon_buy_plugin): address_fields|email|order_customer_context
-- `admin-users` (admin_listing): address_fields|email|sensitive_business_context|user_admin_identity
-- `archive-orders` (order_archive_listing): address_fields|customer_artwork_asset|email|order_customer_context|phone|user_admin_identity
-- `art-layouts` (design_layout_listing): order_customer_context|phone
-- `banners` (top_banner_listing): address_fields|order_customer_context|phone|user_admin_identity
-- `configuration-email-action` (configuration_email_action): address_fields|email|user_admin_identity
-- `configuration-shipping-action` (configuration_shipping_action): order_customer_context|phone
-- `configuration-shipping-price-import` (configuration_shipping_price_import): address_fields|order_customer_context|phone
-- `corporate-action` (corporate_action): address_fields|email|order_customer_context|sensitive_business_context|user_admin_identity
-- `corporate-dashboard` (corporate_dashboard): address_fields|email|order_customer_context|user_admin_identity
-- `corporate-invoice-account` (corporate_invoice_account): address_fields|email|order_customer_context
-- `corporate-invoice-account-request` (corporate_invoice_account_request): address_fields|email|order_customer_context
-- `corporate-invoice-print` (corporate_invoice_print): address_fields|email|order_customer_context
-- `corporate-manage-address` (corporate_manage_address): address_fields|order_customer_context|phone
-- `coupon-action` (coupon_action): order_customer_context|phone
-- `coupons` (coupon_listing): address_fields|order_customer_context|phone
-- `customer-designs` (user_designs): address_fields|order_customer_context|phone|sensitive_business_context|user_admin_identity
-- `customers` (user_listing): address_fields|email|order_customer_context|phone|user_admin_identity
-- `default-order-product-status` (default_order_product_status): order_customer_context|phone|sensitive_business_context
-- `design-proofs-action` (design_proofs_action): address_fields|order_customer_context|phone
-- `designer-imagecategory-action` (designer_imagecategory_action): address_fields|order_customer_context|phone
-- `email-templates` (emailtemplate_listing): address_fields|email|order_customer_context|phone|user_admin_identity
-- `emailtemplate-action` (emailtemplate_action): address_fields|email|order_customer_context|phone|user_admin_identity
-- `emailtemplate-configure` (emailtemplate_configure): address_fields|email|order_customer_context|phone|user_admin_identity
-- `emailtemplate-signature` (emailtemplate_signature): order_customer_context|phone|user_admin_identity
-- `html-help` (htmlhelp): address_fields|email|order_customer_context|phone|user_admin_identity
-- `imposition-schema-action` (imposition_schema_action): order_customer_context|phone
-- `index` (index): address_fields|email|order_customer_context|user_admin_identity
-- `manage-form-field-listing` (manage_form_field_listing): address_fields|order_customer_context|phone|user_admin_identity
-- `master-option-studio-events` (master_option_studio_events): order_customer_context|phone
+- None.
 
 ## Anonymization Schedule
 
-- 2026-07-07: Freeze new public pushes of generated OPS data until P0 anonymization is applied or explicitly accepted.
-- 2026-07-07: Add generator-level anonymization for emails, phone numbers, relogin/session URLs, copied mail fields, order/customer identities, PO/order/customer references, and customer-uploaded artwork filenames.
-- 2026-07-08: Rebuild `ops-extracted-pages.js`, rerun this audit, and require zero `admin_relogin_token`, zero email, and zero phone indicators in published simulator files.
-- 2026-07-08: Resume one-screen visual parity fixes, starting with `orders`, after P0 risk is cleared.
+- 2026-07-07: Generator-level anonymization is active for published extracted pages by default.
+- 2026-07-07: Static checks require zero non-demo emails, zero relogin/session URLs, zero customer artwork asset paths, zero live admin URLs, and zero known captured-name terms in `ops-extracted-pages.js`.
+- 2026-07-08: Continue reducing P1 category risk during route parity passes by replacing remaining customer/company/address context where it is not structurally required.
+- 2026-07-08: Resume one-screen visual parity fixes, starting with `orders`.
 
 ## Notes
 
