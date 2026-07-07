@@ -1,0 +1,388 @@
+route,slug,sourceKind,tabStateCount,referenceStatus,referenceSource,visualStatus,visualDiffRatio,dimensionDelta,piiRisk,piiCategories,piiSignals,anonymizationPriority,anonymizationAction,anonymizationStatus
+add-order,create_order_user,rendered,0,available,full-source,review,0.02711,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context,9,P1,anonymize during route parity pass,queued
+addons,addon_buy_plugin,rendered,2,available,full-source,review,0.07986,1688x2155 vs 1688x2155,medium,address_fields|order_customer_context,63,P1,anonymize during route parity pass,queued
+admin-action,admin_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,36,P1,anonymize during route parity pass,queued
+admin-config-text-reference,admin_config_text_reference,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,165,P1,anonymize during route parity pass,queued
+admin-favourite-link,admin_favourite_link,rendered,0,available,full-source,review,0.05165,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,55,P1,anonymize during route parity pass,queued
+admin-group-action,admin_group_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,28,P1,anonymize during route parity pass,queued
+admin-left-menu-text-reference,admin_left_menu_text_reference,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,22,P1,anonymize during route parity pass,queued
+admin-price-calculator,admin_price_calculator,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context,14,P1,anonymize during route parity pass,queued
+admin-text,admin_constants,rendered,0,available,full-source,review,0.06071,1703x1146 vs 1703x1146,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,218,P1,anonymize during route parity pass,queued
+admin-users,admin_listing,rendered,0,available,full-source,review,0.06286,1688x1681 vs 1688x1681,medium,address_fields|sensitive_business_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+archive-orders,order_archive_listing,rendered,0,available,full-source,review,0.06177,1688x7790 vs 1688x7790,medium,address_fields|order_customer_context|user_admin_identity,263,P1,anonymize during route parity pass,queued
+art-layouts,design_layout_listing,rendered,0,available,full-source,review,0.05784,1688x3117 vs 1688x3117,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+banners,top_banner_listing,rendered,0,available,full-source,review,0.05571,1688x1297 vs 1688x1297,medium,address_fields|order_customer_context|user_admin_identity,18,P1,anonymize during route parity pass,queued
+blocked-ips,block_ip_action,rendered,2,available,full-source,review,0.05012,1688x1295 vs 1688x1295,medium,address_fields,111,P1,anonymize during route parity pass,queued
+changepassword,changepassword,rendered,0,available,full-source,review,0.02217,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+cms-action,cms_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,10,P1,anonymize during route parity pass,queued
+cms-pages,cms_listing,rendered,3,available,full-source,review,0.05179,1688x1857 vs 1688x1857,medium,address_fields|order_customer_context|user_admin_identity,65,P1,anonymize during route parity pass,queued
+configuration-email-action,configuration_email_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,6,P1,anonymize during route parity pass,queued
+configuration-email-listing,configuration_email_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+configuration-external-service-action,configuration_external_service_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,2,P1,anonymize during route parity pass,queued
+configuration-payment-action,configuration_payment_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+configuration-shipping-action,configuration_shipping_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,41,P1,anonymize during route parity pass,queued
+configuration-shipping-price-import,configuration_shipping_price_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,72,P1,anonymize during route parity pass,queued
+corporate-account-history,corporate_account_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,16,P1,anonymize during route parity pass,queued
+corporate-action,corporate_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,37,P1,anonymize during route parity pass,queued
+corporate-configuration-settings,corporate_configuration_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,72,P1,anonymize during route parity pass,queued
+corporate-custom-css,corporate_custom_css,safe-page:timed-out-captured,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+corporate-custom-js,corporate_custom_js,safe-page:timed-out-captured,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+corporate-dashboard,corporate_dashboard,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,39,P1,anonymize during route parity pass,queued
+corporate-department-action,corporate_department_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,2,P1,anonymize during route parity pass,queued
+corporate-department-listing,corporate_department_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,18,P1,anonymize during route parity pass,queued
+corporate-duplicate,corporate_duplicate,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+corporate-external-services-assign,corporate_external_services_assign,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+corporate-inventory-configuration,corporate_inventory_configuration,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+corporate-invoice,corporate_invoice,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,16,P1,anonymize during route parity pass,queued
+corporate-invoice-account,corporate_invoice_account,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,9,P1,anonymize during route parity pass,queued
+corporate-invoice-account-request,corporate_invoice_account_request,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,6,P1,anonymize during route parity pass,queued
+corporate-invoice-print,corporate_invoice_print,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,6,P1,anonymize during route parity pass,queued
+corporate-manage-address,corporate_manage_address,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,137,P1,anonymize during route parity pass,queued
+corporate-markup-master,corporate_markup_master,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+corporate-monthly-invoice-setting,corporate_monthly_invoice_setting,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,8,P1,anonymize during route parity pass,queued
+corporate-personalization,corporate_personalization,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,16,P1,anonymize during route parity pass,queued
+corporate-personalization-page,corporate_personalization_page,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,3,P1,anonymize during route parity pass,queued
+corporate-product-assign,corporate_product_assign,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,16,P1,anonymize during route parity pass,queued
+corporate-product-markup,corporate_product_markup,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,16,P1,anonymize during route parity pass,queued
+corporate-store-profile-action,corporate_store_profile_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,6,P1,anonymize during route parity pass,queued
+corporate-store-profile-group,corporate_store_profile_group,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+corporate-theme-configuration,corporate_theme_configuration,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+corporate-user-access-role,corporate_user_access_role,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,11,P1,anonymize during route parity pass,queued
+countries,country_listing,rendered,0,available,full-source,review,0.07419,1688x1426 vs 1688x1426,medium,address_fields,216,P1,anonymize during route parity pass,queued
+country-action,country_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,9,P1,anonymize during route parity pass,queued
+coupon-action,coupon_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,35,P1,anonymize during route parity pass,queued
+coupon-report,report_coupon_summary,rendered,0,available,full-source,review,0.04396,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,27,P1,anonymize during route parity pass,queued
+coupons,coupon_listing,rendered,0,available,full-source,review,0.07627,1688x1459 vs 1688x1459,medium,address_fields|order_customer_context,23,P1,anonymize during route parity pass,queued
+currency,currency_listing,rendered,0,available,full-source,review,0.05491,1703x900 vs 1703x900,medium,address_fields,1,P1,anonymize during route parity pass,queued
+currency-action,currency_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,1,P1,anonymize during route parity pass,queued
+customer-designs,user_designs,rendered,0,available,full-source,review,0.05735,1688x2806 vs 1688x2806,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,53,P1,anonymize during route parity pass,queued
+customer-details-report,report_customer_details,rendered,0,available,full-source,review,0.03316,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,43,P1,anonymize during route parity pass,queued
+customer-order-summary,report_customer_order_summary,rendered,0,available,full-source,review,0.03232,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,46,P1,anonymize during route parity pass,queued
+customers,user_listing,rendered,0,available,full-source,review,0.05997,1688x1898 vs 1688x1898,medium,address_fields|order_customer_context|user_admin_identity,263,P1,anonymize during route parity pass,queued
+dashboard,welcome,rendered,3,available,full-source,review,0.07195,1688x1303 vs 1688x1303,medium,address_fields|order_customer_context|user_admin_identity,9,P1,anonymize during route parity pass,queued
+default-order-product-status,default_order_product_status,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,12,P1,anonymize during route parity pass,queued
+design-layout-action,design_layout_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+design-proofs,design_proofs_listing,rendered,4,available,full-source,review,0.04755,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+design-proofs-action,design_proofs_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,17,P1,anonymize during route parity pass,queued
+designer-imagecategory-action,designer_imagecategory_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,22,P1,anonymize during route parity pass,queued
+designer-studio-font-action,designer_studio_font_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,14,P1,anonymize during route parity pass,queued
+email-reminders,emailtemplate_reminder_listing,rendered,2,available,full-source,review,0.07975,1703x900 vs 1703x900,medium,address_fields|order_customer_context|user_admin_identity,96,P1,anonymize during route parity pass,queued
+email-scheduler-setting,email_scheduler_setting,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context,2,P1,anonymize during route parity pass,queued
+email-templates,emailtemplate_listing,rendered,0,available,full-source,review,0.06931,1688x2159 vs 1688x2159,medium,address_fields|order_customer_context|user_admin_identity,105,P1,anonymize during route parity pass,queued
+emailtemplate-action,emailtemplate_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,14,P1,anonymize during route parity pass,queued
+emailtemplate-configure,emailtemplate_configure,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,91,P1,anonymize during route parity pass,queued
+emailtemplate-signature,emailtemplate_signature,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|user_admin_identity,6,P1,anonymize during route parity pass,queued
+emailtemplate-structure-action,emailtemplate_structure_action,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+emailtemplate-structure-listing,emailtemplate_structure_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,19,P1,anonymize during route parity pass,queued
+emailtemplate-structure-popup,emailtemplate_structure_popup,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+export-api-orders,export_orders,rendered,0,available,full-source,review,0.03997,1703x900 vs 1703x900,medium,order_customer_context,1,P1,anonymize during route parity pass,queued
+export-orders-settings,export_orders_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,240,P1,anonymize during route parity pass,queued
+external-services,configuration_external_service_listing,rendered,9,available,full-source,review,0.07328,1703x951 vs 1703x951,medium,address_fields|order_customer_context|user_admin_identity,350,P1,anonymize during route parity pass,queued
+extra-fields-rules-action,extra_fields_rules_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,3,P1,anonymize during route parity pass,queued
+extra-fields-rules-listing,extra_fields_rules_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+faq-action,faq_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+faq-action-import-csv,faq_action_import_csv,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+faq-category-action,faq_category_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+faq-category-listing,faq_category_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+faqs,faq_listing,rendered,0,available,full-source,review,0.06793,1688x1414 vs 1688x1414,medium,address_fields|order_customer_context|user_admin_identity,15,P1,anonymize during route parity pass,queued
+form-fields-group,form_fields_group,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+form-fields-rules-action,form_fields_rules_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+form-fields-rules-listing,form_fields_rules_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+form-management,manage_form_listing,rendered,0,available,full-source,review,0.03661,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+html-help,htmlhelp,rendered-full-document-fragment,10,available,full-source,mismatch,0.14591,1688x1619 vs 1688x1619,medium,address_fields|order_customer_context|user_admin_identity,398,P1,anonymize during route parity pass,queued
+image-alt,seo_image_alt_text,rendered,0,available,full-source,review,0.02227,1703x900 vs 1703x900,medium,address_fields|user_admin_identity,14,P1,anonymize during route parity pass,queued
+image-optimization,manage_image_optimization,rendered,0,available,full-source,review,0.05582,1688x1322 vs 1688x1322,medium,address_fields,1,P1,anonymize during route parity pass,queued
+impose-job,imposition_impose_job,rendered,0,available,full-source,review,0.02222,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+imposition-impose-order,imposition_impose_order,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,4,P1,anonymize during route parity pass,queued
+imposition-schema-action,imposition_schema_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,10,P1,anonymize during route parity pass,queued
+imposition-sheet-size-action,imposition_sheet_size_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+imposition-symbol-action,imposition_symbol_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+imposition-symbols,imposition_symbol_listing,rendered,0,available,full-source,review,0.03531,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+index,index,rendered,3,available,full-source,review,0.07216,1688x1303 vs 1688x1303,medium,address_fields|order_customer_context|user_admin_identity,52,P1,anonymize during route parity pass,queued
+inventory-report,report_inventory,rendered,0,available,full-source,review,0.03099,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,31,P1,anonymize during route parity pass,queued
+inventory-request-report,report_inventory_request,rendered,0,available,full-source,review,0.03094,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,33,P1,anonymize during route parity pass,queued
+job-board,job_board_order,rendered,0,available,full-source,review,0.03485,1703x900 vs 1703x900,medium,address_fields|order_customer_context|user_admin_identity,10,P1,anonymize during route parity pass,queued
+job-board-grid,job_board_order_grid,rendered,0,available,full-source,review,0.03711,1703x933 vs 1703x933,medium,user_admin_identity,1,P1,anonymize during route parity pass,queued
+kit-products-rules,kit_products_rules,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+language-action,language_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+language-text,language_constant_action,rendered,0,available,full-source,review,0.05936,1688x2334 vs 1688x2334,medium,address_fields|user_admin_identity,14,P1,anonymize during route parity pass,queued
+languages,language_listing,rendered,0,available,full-source,review,0.05029,1703x900 vs 1703x900,medium,address_fields,1,P1,anonymize during route parity pass,queued
+links,menulink_listing,rendered,0,available,full-source,review,0.05531,1688x1767 vs 1688x1767,medium,address_fields|order_customer_context|user_admin_identity,18,P1,anonymize during route parity pass,queued
+make-ready-waste-management,make_ready_waste_management,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+manage-form-action,manage_form_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,5,P1,anonymize during route parity pass,queued
+manage-form-emailtemplate-listing,manage_form_emailtemplate_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+manage-form-field-action,manage_form_field_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,16,P1,anonymize during route parity pass,queued
+manage-form-field-listing,manage_form_field_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,9,P1,anonymize during route parity pass,queued
+manage-payment-status,manage_payment_status,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+master-option-stock-action,master_option_stock_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,20,P1,anonymize during route parity pass,queued
+master-option-stock-history,master_option_stock_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+master-option-stock-import,master_option_stock_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,10,P1,anonymize during route parity pass,queued
+master-option-stock-listing,master_option_stock_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+master-option-stock-settings,master_option_stock_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+master-option-studio-events,master_option_studio_events,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+media-gallery,media_gallery_listing,rendered,0,available,full-source,review,0.05545,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+media-gallery-action,media_gallery_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,14,P1,anonymize during route parity pass,queued
+menulink-action,menulink_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+metatags,metatag,rendered,0,available,full-source,review,0.04868,1688x1726 vs 1688x1726,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+newsletter,subscriber_listing,rendered,2,available,full-source,review,0.06801,1688x1517 vs 1688x1517,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+offline-order-address,offline_order_address,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,41,P1,anonymize during route parity pass,queued
+order-action,order_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,196,P1,anonymize during route parity pass,queued
+order-approval-pending-listing,order_approval_pending_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,40,P1,anonymize during route parity pass,queued
+order-comment-message,order_comment_message,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,14,P1,anonymize during route parity pass,queued
+order-email-template-action,order_email_template_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,27,P1,anonymize during route parity pass,queued
+order-email-template-listing,order_email_template_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,21,P1,anonymize during route parity pass,queued
+order-feedback,order_feedback,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,4,P1,anonymize during route parity pass,queued
+order-modify,order_modify,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,14,P1,anonymize during route parity pass,queued
+order-modify-design,order_modify_design,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,26,P1,anonymize during route parity pass,queued
+order-print,order_print,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,26,P1,anonymize during route parity pass,queued
+order-print-job-ticket,order_print_job_ticket,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,26,P1,anonymize during route parity pass,queued
+order-printer-assign-job,order_printer_assign_job,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,4,P1,anonymize during route parity pass,queued
+order-shipment-generate,order_shipment_generate,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,2,P1,anonymize during route parity pass,queued
+order-status,process_status_listing,rendered,5,available,full-source,mismatch,0.11241,1688x1148 vs 1688x1148,medium,order_customer_context|sensitive_business_context,24,P1,anonymize during route parity pass,queued
+order-user-designs,order_user_designs,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,2,P1,anonymize during route parity pass,queued
+orders,order_listing,rendered,0,available,full-source,review,0.07211,1688x8170 vs 1688x8170,medium,address_fields|order_customer_context|user_admin_identity,367,P1,anonymize during route parity pass,queued
+overwrite-product-options-action,overwrite_product_options_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+package-calculator,package_calculator,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,15,P1,anonymize during route parity pass,queued
+pay-on-account-report,report_payon_account,rendered,0,available,full-source,review,0.03027,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,28,P1,anonymize during route parity pass,queued
+payment-process-fees-configuration,payment_process_fees_configuration,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context,21,P1,anonymize during route parity pass,queued
+payment-request,order_payment_request,rendered,5,available,full-source,mismatch,0.08073,1688x2245 vs 1688x2245,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,964,P1,anonymize during route parity pass,queued
+payment-request-report,report_payment_request,rendered,0,available,full-source,review,0.04420,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,61,P1,anonymize during route parity pass,queued
+payments,configuration_payment_listing,rendered,0,available,full-source,mismatch,0.10566,1688x1201 vs 1688x1201,low,,0,P2,no immediate anonymization needed,defer
+payonbalance-settings,payonbalance_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+pdf-blocks,template_properties_master,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+predefined-product-action,predefined_product_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,39,P1,anonymize during route parity pass,queued
+predefined-product-print-upload,predefined_product_print_upload,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,18,P1,anonymize during route parity pass,queued
+predefined-product-size,predefined_product_size,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+predefined-quote-action,predefined_quote_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,8,P1,anonymize during route parity pass,queued
+predefined-quote-category-listing,predefined_quote_category_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+predefined-quotes,predefined_quote_listing,rendered,0,available,full-source,review,0.06228,1688x1918 vs 1688x1918,medium,address_fields|order_customer_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+preview-image-settings,preview_image_settings,rendered,0,available,full-source,mismatch,0.08374,1703x1020 vs 1703x1020,low,,0,P2,no immediate anonymization needed,defer
+pricing-tiers,pricing_tiers,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+print-products,product_listing,rendered,0,available,full-source,review,0.06608,1688x3149 vs 1688x3149,medium,address_fields|user_admin_identity,7,P1,anonymize during route parity pass,queued
+printer-action,printer_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,47,P1,anonymize during route parity pass,queued
+printer-assign-product-listing,printer_assign_product_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+printer-assign-products,printer_assign_products,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,12,P1,anonymize during route parity pass,queued
+printer-commission,printer_commission,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+printer-user-view-details,printer_user_view_details,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context|user_admin_identity,6,P1,anonymize during route parity pass,queued
+process-status-action,process_status_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,18,P1,anonymize during route parity pass,queued
+product-action,product_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,39,P1,anonymize during route parity pass,queued
+product-additional-option-group,product_additional_option_group,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-additionalinfo-action,product_additionalinfo_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-additionalinfo-list,product_additionalinfo_list,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-additionalinfo-price,product_additionalinfo_price,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-additionalrules-action,product_additionalrules_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-additionalrules-list,product_additionalrules_list,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-categories,product_category_listing,rendered,2,available,full-source,review,0.04977,1688x3125 vs 1688x3125,low,,0,P2,no immediate anonymization needed,defer
+product-category-action,product_category_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,1,P1,anonymize during route parity pass,queued
+product-days,product_days,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,9,P1,anonymize during route parity pass,queued
+product-days-import,product_days_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+product-description,product_description,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,1,P1,anonymize during route parity pass,queued
+product-designer-action,product_designer_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-duplicate,product_duplicate,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-filters-action,product_filters_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-filters-listing,product_filters_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-image-gallery-listing,product_image_gallery_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-import,product_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,14,P1,anonymize during route parity pass,queued
+product-info-layout-action,product_info_layout_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,161,P1,anonymize during route parity pass,queued
+product-kit-action,product_kit_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+product-mask-action,product_mask_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-mask-listing,product_mask_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-master-designer-rule,product_master_designer_rule,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-master-option-action,product_master_option_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,7,P1,anonymize during route parity pass,queued
+product-master-option-assign,product_master_option_assign,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,12,P1,anonymize during route parity pass,queued
+product-master-option-associate-action,product_master_option_associate_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,11,P1,anonymize during route parity pass,queued
+product-master-option-associate-listing,product_master_option_associate_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-master-option-attribute-import,product_master_option_attribute_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,3,P1,anonymize during route parity pass,queued
+product-master-option-attribute-range,product_master_option_attribute_range,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-master-option-price,product_master_option_price,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-master-option-rule-action,product_master_option_rule_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,30,P1,anonymize during route parity pass,queued
+product-master-option-rule-listing,product_master_option_rule_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-metatags,product_metatags,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-option-price-bulk,product_price_bulk_option_update,rendered,0,available,full-source,review,0.05074,1703x1036 vs 1703x1036,low,,0,P2,no immediate anonymization needed,defer
+product-option-wise-shipping-package,product_option_wise_shipping_package,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,12,P1,anonymize during route parity pass,queued
+product-options,product_master_option_listing,rendered,0,available,full-source,mismatch,0.08143,1688x1783 vs 1688x1783,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-options-duplicate,product_options_duplicate,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-page-layout,product_info_layout_listing,rendered,5,available,full-source,review,0.05052,1688x2764 vs 1688x2764,medium,address_fields|order_customer_context|user_admin_identity,17,P1,anonymize during route parity pass,queued
+product-popover,product_popover,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-presentation-settings,product_presentation_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,17,P1,anonymize during route parity pass,queued
+product-price,product_price,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,2,P1,anonymize during route parity pass,queued
+product-price-bulk,product_price_bulk_update,rendered,0,available,full-source,review,0.05376,1703x1036 vs 1703x1036,medium,address_fields,21,P1,anonymize during route parity pass,queued
+product-price-modify,modify_products_price,rendered,5,available,full-source,review,0.05372,1688x1216 vs 1688x1216,medium,address_fields|order_customer_context,60,P1,anonymize during route parity pass,queued
+product-price-percent,all_products_price_bulk_update,rendered,0,available,full-source,review,0.04156,1703x900 vs 1703x900,medium,order_customer_context,8,P1,anonymize during route parity pass,queued
+product-promotional-listing,product_promotional_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-related-products,product_related_products,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,17,P1,anonymize during route parity pass,queued
+product-sales-report,report_products_sales,rendered,0,available,full-source,review,0.03129,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,23,P1,anonymize during route parity pass,queued
+product-schema-settings,imposition_products_schema_setting,rendered,0,available,full-source,review,0.04466,1688x1466 vs 1688x1466,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+product-settings,product_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,9,P1,anonymize during route parity pass,queued
+product-settings-duplicate,product_settings_duplicate,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-size-option-stock-history,product_size_option_stock_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-size-options-sku,product_size_options_sku,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,9,P1,anonymize during route parity pass,queued
+product-size-options-sku-import,product_size_options_sku_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,13,P1,anonymize during route parity pass,queued
+product-stock-history,product_stock_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-stock-import,product_stock_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-studio-events,product_studio_events,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-tax,product_tax_setting,rendered,0,available,full-source,review,0.04923,1688x1509 vs 1688x1509,low,,0,P2,no immediate anonymization needed,defer
+product-temp-listing,product_temp_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+product-template-upload,product_template_upload,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-template-upload-action,product_template_upload_action,safe-page:ok,0,missing,live-template,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+product-view-details,product_view_details,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+product-weight,product_weight,rendered,0,available,full-source,review,0.05026,1688x3365 vs 1688x3365,medium,address_fields|order_customer_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+product-weight-import,product_weight_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+production-day-report,report_production_day_summary,rendered,0,available,full-source,review,0.04176,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,33,P1,anonymize during route parity pass,queued
+production-time-report,report_production_time_spent,rendered,0,available,full-source,review,0.02299,1703x900 vs 1703x900,medium,address_fields|sensitive_business_context,10,P1,anonymize during route parity pass,queued
+products-studio-models-action,products_studio_models_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+promotional,promotional_listing,rendered,0,available,full-source,review,0.04259,1703x900 vs 1703x900,medium,address_fields|user_admin_identity,14,P1,anonymize during route parity pass,queued
+promotional-action,promotional_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+quote-action,quote_action,rendered,3,available,full-source,review,0.03845,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context,108,P1,anonymize during route parity pass,queued
+quote-convert-order,quote_convert_order,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+quote-email-template-action,quote_email_template_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,9,P1,anonymize during route parity pass,queued
+quote-email-template-listing,quote_email_template_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,22,P1,anonymize during route parity pass,queued
+quote-product-assign-printer,quote_product_assign_printer,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+quote-request,quote_request,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,14,P1,anonymize during route parity pass,queued
+quote-status,quote_status_listing,rendered,2,available,full-source,review,0.05553,1703x976 vs 1703x976,medium,order_customer_context|sensitive_business_context,13,P1,anonymize during route parity pass,queued
+quote-status-action,quote_status_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+quotes,quote_listing,rendered,0,available,full-source,review,0.07408,1688x2643 vs 1688x2643,medium,address_fields|order_customer_context|user_admin_identity,48,P1,anonymize during route parity pass,queued
+ready-products,predefined_product_listing,rendered,0,available,full-source,review,0.05980,1688x3151 vs 1688x3151,medium,address_fields|order_customer_context|user_admin_identity,11,P1,anonymize during route parity pass,queued
+redirects,url_redirection_listing,rendered,0,available,full-source,review,0.07621,1688x1769 vs 1688x1769,low,,0,P2,no immediate anonymization needed,defer
+report-download-print-file,report_download_print_file,rendered,0,available,full-source,review,0.03389,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,33,P1,anonymize during route parity pass,queued
+report-email-log,report_email_log,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,38,P1,anonymize during route parity pass,queued
+report-master-option-stock-summary,report_master_option_stock_summary,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context,10,P1,anonymize during route parity pass,queued
+report-process-log,report_process_log,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+report-site-log,report_site_log,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,2,P1,anonymize during route parity pass,queued
+report-sms-log,report_sms_log,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context|user_admin_identity,22,P1,anonymize during route parity pass,queued
+reward-coupon-history,reward_coupon_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+reward-coupon-listing,reward_coupon_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+reward-point-action,reward_point_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,1,P1,anonymize during route parity pass,queued
+reward-points,reward_point_listing,rendered,0,available,full-source,review,0.06115,1688x1401 vs 1688x1401,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+reward-settings,reward_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,7,P1,anonymize during route parity pass,queued
+robots,robot_creation,rendered,0,available,full-source,review,0.05260,1688x1593 vs 1688x1593,medium,address_fields|order_customer_context|user_admin_identity,6,P1,anonymize during route parity pass,queued
+roles,admin_group,rendered,0,available,full-source,review,0.07644,1703x900 vs 1703x900,medium,order_customer_context|sensitive_business_context,5,P1,anonymize during route parity pass,queued
+sales-agent-action,sales_agent_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context|user_admin_identity,23,P1,anonymize during route parity pass,queued
+sales-agent-commission,sales_agent_commission,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+sales-agent-commission-report,report_sales_agent_commission,rendered,0,available,full-source,review,0.03060,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context,22,P1,anonymize during route parity pass,queued
+sales-agents,sales_agent_listing,rendered,0,available,full-source,review,0.03115,1703x900 vs 1703x900,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+sales-order-details,report_sales_orderdetails,rendered,0,available,full-source,review,0.04514,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,167,P1,anonymize during route parity pass,queued
+sales-order-product-details,report_sales_order_product_details,rendered,0,available,full-source,review,0.04552,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,68,P1,anonymize during route parity pass,queued
+sales-order-summary,report_sales_order_summary,rendered,0,available,full-source,review,0.04555,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,41,P1,anonymize during route parity pass,queued
+sales-quote-summary,report_sales_quote_summary,rendered,0,available,full-source,review,0.04332,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,34,P1,anonymize during route parity pass,queued
+schemas,imposition_schema_listing,rendered,0,available,full-source,review,0.06306,1688x1449 vs 1688x1449,low,,0,P2,no immediate anonymization needed,defer
+send-custom-mail-popup,send_custom_mail_popup,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,58,P1,anonymize during route parity pass,queued
+seo-global,seo_all,rendered,0,available,full-source,review,0.04013,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+seo-import,seo_import,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+seo-product-feed-variants,seo_product_feed_variants,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+seo-product-feed-variants-action,seo_product_feed_variants_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,4,P1,anonymize during route parity pass,queued
+seo-product-feed-variants-import,seo_product_feed_variants_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+seo-shopping-feeds,seo_shopping_feeds,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,7,P1,anonymize during route parity pass,queued
+sheet-sizes,imposition_sheet_size_listing,rendered,0,available,full-source,review,0.03721,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+shipping,configuration_shipping_listing,rendered,0,available,full-source,review,0.05556,1703x900 vs 1703x900,medium,address_fields|order_customer_context,66,P1,anonymize during route parity pass,queued
+shipping-address-settings,shipping_address_settings,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,69,P1,anonymize during route parity pass,queued
+shipping-local-pickup-address-action,shipping_local_pickup_address_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,56,P1,anonymize during route parity pass,queued
+shipping-local-pickup-address-listing,shipping_local_pickup_address_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,27,P1,anonymize during route parity pass,queued
+shipping-markup,shipping_markup,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,20,P1,anonymize during route parity pass,queued
+shipping-order-pickup,shipping_order_pickup,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context,7,P1,anonymize during route parity pass,queued
+shipping-order-subtotal-price-action,shipping_order_subtotal_price_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,26,P1,anonymize during route parity pass,queued
+shipping-package,shipping_package,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,22,P1,anonymize during route parity pass,queued
+shipping-package-configuration-import,shipping_package_configuration_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,21,P1,anonymize during route parity pass,queued
+shipping-package-master-action,shipping_package_master_action,safe-page:ok,0,missing,live-template,missing-reference,,,medium,order_customer_context,16,P1,anonymize during route parity pass,queued
+shipping-package-master-listing,shipping_package_master_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,113,P1,anonymize during route parity pass,queued
+shipping-pickup-configuration,shipping_pickup_configuration,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,50,P1,anonymize during route parity pass,queued
+shipping-pickup-log,shipping_pickup_log,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,7,P1,anonymize during route parity pass,queued
+shipping-price-action,shipping_price_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,17,P1,anonymize during route parity pass,queued
+shipping-quantity,shipping_quantity,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,25,P1,anonymize during route parity pass,queued
+shipping-report,report_shipping_summary,rendered,0,available,full-source,review,0.04525,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,51,P1,anonymize during route parity pass,queued
+shipping-type-action,shipping_type_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,14,P1,anonymize during route parity pass,queued
+shipping-type-listing,shipping_type_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,24,P1,anonymize during route parity pass,queued
+shipping-types-groups,shipping_types_groups,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,14,P1,anonymize during route parity pass,queued
+shipping-weight-action,shipping_weight_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,9,P1,anonymize during route parity pass,queued
+shipping-weight-listing,shipping_weight_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context,14,P1,anonymize during route parity pass,queued
+shipping-zone-action,shipping_zone_action,safe-page:ok,0,missing,live-template,missing-reference,,,medium,address_fields|order_customer_context,10,P1,anonymize during route parity pass,queued
+shipping-zone-listing,shipping_zone_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,32,P1,anonymize during route parity pass,queued
+sidebar-management,sidebar_management,rendered,0,available,full-source,review,0.06608,1703x927 vs 1703x927,medium,address_fields|order_customer_context|user_admin_identity,24,P1,anonymize during route parity pass,queued
+sidebar-widget,sidebar_widget,rendered,0,available,full-source,review,0.04012,1703x992 vs 1703x992,medium,address_fields|order_customer_context|user_admin_identity,16,P1,anonymize during route parity pass,queued
+sidebar-widget-action,sidebar_widget_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+site-settings,configuration_settings,rendered,10,available,full-source,review,0.07079,1688x1512 vs 1688x1512,medium,address_fields|order_customer_context,1529,P1,anonymize during route parity pass,queued
+sitemaps,sitemap_xml,rendered,3,available,full-source,review,0.04154,1688x1540 vs 1688x1540,low,,0,P2,no immediate anonymization needed,defer
+sms-notification-action,sms_notification_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+sms-templates,sms_notification_listing,rendered,0,available,full-source,review,0.03485,1703x900 vs 1703x900,medium,address_fields|user_admin_identity,14,P1,anonymize during route parity pass,queued
+state-action,state_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,14,P1,anonymize during route parity pass,queued
+state-listing,state_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,127,P1,anonymize during route parity pass,queued
+stock-summary-report,report_product_stock_summary,rendered,0,available,full-source,review,0.03202,1703x900 vs 1703x900,medium,address_fields|sensitive_business_context|user_admin_identity,25,P1,anonymize during route parity pass,queued
+store-credit-summary,store_credit_summary,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,19,P1,anonymize during route parity pass,queued
+store-fields,corporate_store_profile_listing,rendered,0,available,full-source,review,0.04207,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,15,P1,anonymize during route parity pass,queued
+store-settings-templates,store_settings_templates,safe-page:ok,0,missing,live-template,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,30,P1,anonymize during route parity pass,queued
+stores,corporate_listing,rendered,0,available,full-source,mismatch,0.08993,1688x3120 vs 1688x3120,medium,address_fields|order_customer_context|user_admin_identity,248,P1,anonymize during route parity pass,queued
+studio-block-color-setting,studio_block_color_setting,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+studio-color-setting-action,studio_color_setting_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+studio-colors,studio_color_setting_listing,rendered,0,available,full-source,review,0.06894,1703x900 vs 1703x900,low,,0,P2,no immediate anonymization needed,defer
+studio-css,studio_css_setting_action,rendered,0,available,full-source,review,0.02805,1703x1146 vs 1703x1146,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+studio-fonts,designer_studio_font_listing,rendered,3,available,full-source,review,0.07251,1688x1586 vs 1688x1586,medium,address_fields|order_customer_context|user_admin_identity,80,P1,anonymize during route parity pass,queued
+studio-image-categories,designer_imagecategory_listing,rendered,0,available,full-source,review,0.05555,1688x1373 vs 1688x1373,medium,address_fields|order_customer_context|user_admin_identity,19,P1,anonymize during route parity pass,queued
+studio-images,designer_image_gallery_listing,rendered,0,available,full-source,review,0.05957,1688x2896 vs 1688x2896,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+studio-language-text,studio_language_constant_action,rendered,0,available,full-source,review,0.06586,1688x2453 vs 1688x2453,medium,address_fields|user_admin_identity,14,P1,anonymize during route parity pass,queued
+studio-models,products_studio_models_listing,rendered,0,available,full-source,review,0.06552,1703x900 vs 1703x900,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+studio-models-action,studio_models_action,safe-page:ok,0,available,safe-capture,review,0.03656,1185x1406 vs 1185x1406,low,,0,P2,no immediate anonymization needed,defer
+studio-models-listing,studio_models_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+studio-rgb-cmyk-mapping,studio_rgb_cmyk_mapping,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+studio-settings,studio_configuration_setting,rendered,0,available,full-source,mismatch,0.09072,1703x1102 vs 1703x1102,medium,address_fields|order_customer_context|user_admin_identity,7,P1,anonymize during route parity pass,queued
+system-logs,report_audit_log,rendered,0,available,full-source,review,0.02845,1703x900 vs 1703x900,medium,address_fields,8,P1,anonymize during route parity pass,queued
+tax-action,tax_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,22,P1,anonymize during route parity pass,queued
+tax-import,tax_import,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context,50,P1,anonymize during route parity pass,queued
+tax-report,report_tax_summary,rendered,0,available,full-source,review,0.04364,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,34,P1,anonymize during route parity pass,queued
+tax-settings,tax_listing,rendered,0,available,full-source,review,0.04318,1688x1495 vs 1688x1495,medium,address_fields|order_customer_context,13,P1,anonymize during route parity pass,queued
+template-assign,template_assign,safe-page:ok,0,missing,live-template,missing-reference,,,medium,order_customer_context,11,P1,anonymize during route parity pass,queued
+template-block-dependency-rules,template_block_dependency_rules,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-block-dependency-rules-action,template_block_dependency_rules_action,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-block-groups,template_block_groups,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-block-groups-action,template_block_groups_action,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-block-manager,template_block_manager,safe-page:ok,0,missing,live-template,missing-reference,,,medium,order_customer_context,2,P1,anonymize during route parity pass,queued
+template-categories,template_category_listing,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-category-action,template_category_action,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-category-metatags,template_category_metatags,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-color-action,template_color_action,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-indesign-upload,template_indesign_upload,safe-page:ok,0,missing,live-template,missing-reference,,,medium,address_fields,5,P1,anonymize during route parity pass,queued
+template-manage-block-properties-action,template_manage_block_properties_action,safe-page:ok,1,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-manage-block-properties-listing,template_manage_block_properties_listing,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-manage-textarea,template_manage_textarea,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-manager-action,template_manager_action,safe-page:ok,0,missing,live-template,missing-reference,,,medium,address_fields|order_customer_context,22,P1,anonymize during route parity pass,queued
+template-manager-design,template_manager_design,safe-page:timed-out-captured,0,available,live-template,mismatch,0.10964,1200x900 vs 1200x900,low,,0,P2,no immediate anonymization needed,defer
+template-manager-duplicate,template_manager_duplicate,safe-page:ok,0,available,live-template,review,0.05548,1200x900 vs 1200x900,medium,address_fields|order_customer_context,17,P1,anonymize during route parity pass,queued
+template-manager-sortorder,template_manager_sortorder,safe-page:ok,0,missing,live-template,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+template-master,master_template_manager,safe-page:ok,0,missing,live-template,missing-reference,,,medium,order_customer_context,3,P1,anonymize during route parity pass,queued
+template-pdf-block-upload,template_pdf_block_upload,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-preview-image,template_preview_image,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-properties-assign,template_properties_assign,safe-page:ok,0,missing,live-template,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+template-properties-master-action,template_properties_master_action,safe-page:ok,0,missing,live-template,missing-reference,,,medium,address_fields,14,P1,anonymize during route parity pass,queued
+template-sales-report,report_templates_sales,rendered,0,available,full-source,review,0.03210,1703x900 vs 1703x900,medium,address_fields|sensitive_business_context|user_admin_identity,19,P1,anonymize during route parity pass,queued
+templates,template_manager,safe-page:ok,0,missing,live-template,missing-reference,,,medium,address_fields|order_customer_context|user_admin_identity,11,P1,anonymize during route parity pass,queued
+testimonial-action,testimonial_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+testimonials,testimonial_listing,rendered,0,available,full-source,review,0.04751,1703x900 vs 1703x900,medium,address_fields|user_admin_identity,14,P1,anonymize during route parity pass,queued
+theme-css-action,theme_css_action,safe-page:timed-out-captured,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+theme-js-action,theme_js_action,safe-page:timed-out-captured,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+theme-setting-configuration,theme_setting_configuration,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+themes,theme_listing,rendered,0,available,full-source,review,0.04127,1703x976 vs 1703x976,low,,0,P2,no immediate anonymization needed,defer
+top-banner-action,top_banner_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+top-banner-configuration,top_banner_configuration,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+unpaid-orders,order_pending_listing,rendered,0,available,full-source,review,0.03950,1703x900 vs 1703x900,medium,address_fields|order_customer_context|user_admin_identity,38,P1,anonymize during route parity pass,queued
+url-redirection-action,url_redirection_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+user-account-history,user_account_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,262,P1,anonymize during route parity pass,queued
+user-action,user_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,89,P1,anonymize during route parity pass,queued
+user-address,user_address,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,50,P1,anonymize during route parity pass,queued
+user-extra-fields-action,user_extra_fields_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context,34,P1,anonymize during route parity pass,queued
+user-extra-fields-group,user_extra_fields_group,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+user-extra-fields-listing,user_extra_fields_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,21,P1,anonymize during route parity pass,queued
+user-payon-balance-history,user_payon_balance_history,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,11,P1,anonymize during route parity pass,queued
+user-profile,user_profile,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context,2,P1,anonymize during route parity pass,queued
+user-view-details,user_view_details,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|order_customer_context|sensitive_business_context|user_admin_identity,12,P1,anonymize during route parity pass,queued
+user-wishlist,user_wishlist,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,sensitive_business_context,0,P2,no immediate anonymization needed,defer
+vehicle-action-import-csv,vehicle_action_import_csv,safe-page:ok,0,missing,safe-capture,missing-reference,,,low,,0,P2,no immediate anonymization needed,defer
+vendor-commission-report,report_printer_commission,rendered,0,available,full-source,review,0.03073,1703x900 vs 1703x900,medium,address_fields|order_customer_context|sensitive_business_context,16,P1,anonymize during route parity pass,queued
+vendor-order-summary,report_printer_order_summary,rendered,0,available,full-source,review,0.03042,1703x900 vs 1703x900,medium,address_fields|sensitive_business_context,8,P1,anonymize during route parity pass,queued
+vendor-quotes,quote_product_printer_listing,rendered,6,available,full-source,review,0.05225,1703x900 vs 1703x900,medium,address_fields|user_admin_identity,5,P1,anonymize during route parity pass,queued
+vendors,printer_listing,rendered,0,available,full-source,review,0.03373,1703x900 vs 1703x900,medium,address_fields|user_admin_identity,6,P1,anonymize during route parity pass,queued
+web-storage,manage_web_storage,rendered,0,available,full-source,review,0.06110,1703x900 vs 1703x900,medium,address_fields|order_customer_context,17,P1,anonymize during route parity pass,queued
+website-logos-listing,website_logos_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields,62,P1,anonymize during route parity pass,queued
+workflow-action,workflow_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context|user_admin_identity,13,P1,anonymize during route parity pass,queued
+workflow-admin,workflow_admin_listing,rendered,0,available,full-source,review,0.05924,1703x900 vs 1703x900,medium,address_fields|sensitive_business_context|user_admin_identity,11,P1,anonymize during route parity pass,queued
+workflow-admin-action,workflow_admin_action,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,address_fields|sensitive_business_context|user_admin_identity,20,P1,anonymize during route parity pass,queued
+workflow-listing,workflow_listing,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,order_customer_context|sensitive_business_context|user_admin_identity,15,P1,anonymize during route parity pass,queued
+workflow-status-group,workflow_status_group,safe-page:ok,0,missing,safe-capture,missing-reference,,,medium,sensitive_business_context|user_admin_identity,1,P1,anonymize during route parity pass,queued
