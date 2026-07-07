@@ -504,6 +504,10 @@
 .gx-sim .product-type-chip.ready{border-color:#7ec27e;background:#f2fff2;color:#3a8b3a;}
 .gx-sim .product-type-chip.kit{border-color:#e1c176;background:#fff9e8;color:#9a6b00;}
 .gx-sim .product-type-chip.related{border-color:#aa9bc9;background:#f7f2ff;color:#6f55a3;}
+.gx-sim .ops-proposed-orders-page .ops-context-tabs{margin-bottom:1rem;}
+.gx-sim .ops-proposed-orders-page .order-group-row td{padding:.35rem .55rem!important;background:#f7f7f7!important;border-top:1px solid #cfdde9!important;border-bottom:1px solid #cfdde9!important;font-size:.8125rem;line-height:1.25;}
+.gx-sim .ops-proposed-orders-page .order-group-row .badge{font-weight:400;}
+.gx-sim .ops-proposed-orders-page table.order_listing_view tbody tr[id^="oid:"] td{vertical-align:top;}
 
 /* Proposed-mode chrome: pinned sidebar block, section headings, + New action. */
 .gx-sim .ops-pinned-block{margin:.35rem .5rem .1rem;padding:.35rem .4rem .45rem;border:1px solid #d6e1eb;border-radius:.25rem;background:#f6fafc;}

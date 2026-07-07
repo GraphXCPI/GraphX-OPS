@@ -1775,6 +1775,8 @@ function proposedOrderStatusPage() {
 }
 
 function proposedOrdersPage() {
+  const extracted = extractedPageFor("orders");
+  if (extracted?.bodyHtml) return proposedOrdersExtractedPage(extracted);
   proposalMarkup("orders");
   const activeView = validOrderView(OPS.orderView);
   OPS.orderView = activeView;
@@ -1787,6 +1789,91 @@ function proposedOrdersPage() {
     ${proposedOrderDataTable(activeView)}
     ${changeNote("Orders keeps the OPS list layout and DataTables treatment. The proposed IA consolidates List Orders, Payment Request/Unpaid Orders, and Archive Orders into All Orders, Active, Unpaid, and Closed tabs without changing the route.")}
   </section>`;
+}
+
+function proposedOrdersExtractedPage(extracted) {
+  const activeView = validOrderView(OPS.orderView);
+  OPS.orderView = activeView;
+  const doc = new DOMParser().parseFromString(`<div class="ops-extracted-page ops-proposed-page ops-proposed-orders-page">${extracted.bodyHtml}</div>`, "text/html");
+  const root = doc.body.firstElementChild;
+  const groups = proposedExtractedOrderGroups(root);
+  const counts = proposedExtractedOrderCounts(groups);
+
+  const heading = root.querySelector(".page-header h1, .page-head h1, h1");
+  if (heading) heading.textContent = "Orders";
+
+  const actionArea = root.querySelector(".page-header .action_area, .page-head .action_area, .action_area");
+  if (actionArea) {
+    actionArea.innerHTML = ["Add New Order", "Job Board", "Order Shipment"].map(pageButton).join("");
+  }
+
+  const proposalLead = `${proposalMarkup("orders")}${proposedOrderTabs(activeView, counts)}`;
+  const searchBlock = root.querySelector("#frmordsearch")?.closest(".row, .mb-md-3, .form-row") || root.querySelector("form")?.closest(".row");
+  if (searchBlock) {
+    searchBlock.insertAdjacentHTML("beforebegin", proposalLead);
+  } else {
+    const pageHeader = root.querySelector(".page-header, .page-head");
+    pageHeader?.insertAdjacentHTML("afterend", proposalLead);
+  }
+
+  proposedApplyExtractedOrderView(root, groups, activeView);
+  addProposalMessage("All Orders, Active, Unpaid, and Closed are same-page OPS tabs over the captured OPS order list. The route remains #proposed/orders while the table state changes.", "Orders tab behavior");
+  root.insertAdjacentHTML("beforeend", changeNote("Orders keeps the captured OPS list layout, DataTables treatment, product-row collapses, and action controls. The proposed IA consolidates List Orders, Payment Request/Unpaid Orders, and Archive Orders into All Orders, Active, Unpaid, and Closed tabs without changing the route."));
+  return root.outerHTML;
+}
+
+function proposedExtractedOrderGroups(root) {
+  const tbody = root.querySelector("table#ops-table tbody, table.order_listing_view tbody");
+  if (!tbody) return [];
+  const groups = [];
+  let current = null;
+  Array.from(tbody.children).forEach(row => {
+    if (row.matches("tr[id^='oid:']")) {
+      current = { parent: row, rows: [row], view: proposedExtractedOrderViewFor(row) };
+      groups.push(current);
+      return;
+    }
+    if (current) current.rows.push(row);
+  });
+  return groups;
+}
+
+function proposedExtractedOrderViewFor(row) {
+  const cells = Array.from(row.children);
+  const statusText = (cells[cells.length - 2]?.textContent || "").trim();
+  const rowText = row.textContent || "";
+  if (/unpaid/i.test(rowText) && /fulfilled|completed|ready for fulfillment/i.test(statusText)) return "fulfilled-unpaid";
+  if (/closed|archived|completed|cancelled|fulfilled/i.test(statusText)) return "closed-archived";
+  return "open";
+}
+
+function proposedExtractedOrderCounts(groups) {
+  return groups.reduce((counts, group) => {
+    counts.all += 1;
+    counts[group.view] = (counts[group.view] || 0) + 1;
+    return counts;
+  }, { all: 0, open: 0, "fulfilled-unpaid": 0, "closed-archived": 0 });
+}
+
+function proposedApplyExtractedOrderView(root, groups, activeView) {
+  const tbody = root.querySelector("table#ops-table tbody, table.order_listing_view tbody");
+  if (!tbody || !groups.length) return;
+  tbody.textContent = "";
+  const buckets = activeView === "all"
+    ? proposedExtractedOrderGroupDefinitions().map(group => ({ ...group, records: groups.filter(record => record.view === group.view) })).filter(group => group.records.length)
+    : [{ records: groups.filter(record => record.view === activeView) }];
+  buckets.forEach(bucket => {
+    if (activeView === "all") tbody.insertAdjacentHTML("beforeend", proposedOrderGroupHeader(bucket));
+    bucket.records.forEach(record => record.rows.forEach(row => tbody.appendChild(row)));
+  });
+}
+
+function proposedExtractedOrderGroupDefinitions() {
+  return [
+    { view: "open", label: "Active Orders", description: "Orders still moving through intake, proof, design, and production review.", badge: "Active", badgeClass: "badge-primary" },
+    { view: "fulfilled-unpaid", label: "Unpaid Orders", description: "Fulfilled orders that still need payment, invoice, or collection follow-up.", badge: "Unpaid", badgeClass: "badge-info" },
+    { view: "closed-archived", label: "Closed Orders", description: "Completed or archived orders kept in the combined view for quick reference.", badge: "Closed", badgeClass: "badge-secondary" },
+  ];
 }
 
 function proposedOrderTabItems() {
@@ -1802,14 +1889,14 @@ function validOrderView(view) {
   return proposedOrderTabItems().some(item => item.view === view) ? view : "all";
 }
 
-function proposedOrderTabs(activeView) {
+function proposedOrderTabs(activeView, counts = null) {
   const records = proposedOrderRecords();
   return `<div class="row">
     <div class="col-12">
       <div class="tabs-above ops-context-tabs" role="tablist">
         <ul class="nav nav-tabs">${proposedOrderTabItems().map(item => {
           const active = item.view === activeView;
-          const count = proposedOrderTabCountLabel(item.view, records);
+          const count = proposedOrderTabCountLabel(item.view, records, counts);
           return `<li class="nav-item text-md-center"><a href="javascript:void(0)" class="nav-link ${active ? "active" : ""}" data-toggle="tab" data-order-view="${h(item.view)}" aria-selected="${active ? "true" : "false"}"><i class="${h(item.icon)}"></i><span class="menu-text">${h(item.label)}</span><span class="badge badge-light border ml-1">${h(count)}</span></a></li>`;
         }).join("")}</ul>
       </div>
@@ -1817,7 +1904,8 @@ function proposedOrderTabs(activeView) {
   </div>`;
 }
 
-function proposedOrderTabCountLabel(view, records = proposedOrderRecords()) {
+function proposedOrderTabCountLabel(view, records = proposedOrderRecords(), counts = null) {
+  if (counts && Object.prototype.hasOwnProperty.call(counts, view)) return String(counts[view]);
   const count = proposedOrderTabCount(view, records);
   return String(count);
 }
